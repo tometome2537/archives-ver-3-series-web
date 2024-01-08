@@ -1,0 +1,285 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+model Person {
+  id                 String             @id @unique @default(uuid())
+  status             Status
+  birthday           DateTime?
+  searchName         String
+  homepage           String?
+  ignoreBirthdayYear Boolean
+  names              Name[]
+  belongHistories    BelongHistory[]
+  videos             Video[]
+  xTwitterAccounts   XTwitterAccount[]
+  instagramAccounts  InstagramAccount[]
+  youTubeAccounts    YouTubeAccount[]
+  appleMusicArtists  AppleMusicArtist[]
+  singActors         SingActor[]
+  mainActors         MainActor[]
+  subActors          SubActor[]
+  secretActors       SecretActor[]
+  staffActors        StaffActor[]
+}
+
+model XTwitterAccount {
+  id             String        @id @unique @default(uuid())
+  active         Boolean
+  userId         String?       @unique
+  userName       String        @unique
+  personId       String?
+  organizationId String?
+  person         Person?       @relation(fields: [personId], references: [id])
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+
+  @@index([personId])
+  @@index([organizationId])
+}
+
+model InstagramAccount {
+  id             String        @id @unique @default(uuid())
+  active         Boolean
+  userId         String?       @unique
+  personId       String?
+  organizationId String?
+  userName       String        @unique
+  person         Person?       @relation(fields: [personId], references: [id])
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+
+  @@index([personId])
+  @@index([organizationId])
+}
+
+model YouTubeAccount {
+  id                         String        @id @unique @db.VarChar(24)
+  active                     Boolean
+  lastUpdated                DateTime
+  userName                   String
+  title                      String
+  thumbnailsMediumUrl        String
+  topic                      Boolean
+  officialArtistChannel      Boolean?
+  unsubscribedTrailerVideoId String?       @db.VarChar(11)
+  subscriberCount            Int
+  hiddenSubscriberCount      Boolean
+  viewCount                  Int           @db.UnsignedInt
+  commentCount               Int           @db.UnsignedInt
+  videoCountFromYTApi        Int           @db.UnsignedInt
+  videos                     Video[]
+  personId                   String?
+  organizationId             String?
+  person                     Person?       @relation(fields: [personId], references: [id])
+  organization               Organization? @relation(fields: [organizationId], references: [id])
+
+  @@index([personId])
+  @@index([organizationId])
+}
+
+model AppleMusicArtist {
+  id             String        @id @unique @db.VarChar(10)
+  personId       String?
+  organizationId String?
+  person         Person?       @relation(fields: [personId], references: [id])
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+
+  @@index([personId])
+  @@index([organizationId])
+}
+
+model Name {
+  id             String       @id @default(uuid())
+  personId       String
+  displayName    String
+  organizationId String
+  person         Person       @relation(fields: [personId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  @@index([personId])
+  @@index([organizationId])
+}
+
+model Organization {
+  id                   String               @id @unique @default(uuid())
+  parentId             String?
+  name                 String
+  homePage             String
+  active               Boolean
+  parent               Organization?        @relation("organization", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  children             Organization[]       @relation("organization")
+  prganizationCategory OrganizationCategory @default(undefined)
+  memberNames          Name[]
+  instagramAccounts    InstagramAccount[]
+  xTwitterAccounts     XTwitterAccount[]
+  youTubeAccounts      YouTubeAccount[]
+  appleMusicArtists    AppleMusicArtist[]
+  belongHistory        BelongHistory[]
+
+  @@index([parentId])
+}
+
+model Video {
+  id                   String               @id @unique @db.VarChar(11)
+  category             Int
+  videoCategory        VideoCategory        @default(official)
+  categoryChecked      Boolean
+  title                String
+  publishedAt          DateTime
+  privacyStatus        PrivacyStatus
+  liveBroadcastContent LiveBroadcastContent
+  viewCount            Int                  @db.UnsignedInt
+  likeCount            Int?                 @db.UnsignedInt
+  duration             Int                  @db.UnsignedInt
+  start                Int?                 @db.UnsignedInt
+  end                  Int?                 @db.UnsignedInt
+  description          String               @db.LongText
+  embeddable           Boolean
+  short                Boolean?
+  karaokeKey           Int?
+  musicTitle           String
+  musicArtist          String
+  subscriptionUrl      String
+  channelId            String
+  searchText           String
+  actorChecked         Boolean
+  singActors           SingActor[]
+  mainActors           MainActor[]
+  subActor             SubActor[]
+  secretActor          SecretActor[]
+  staffActor           StaffActor[]
+  channel              YouTubeAccount       @relation(fields: [channelId], references: [id])
+  person               Person[]
+
+  @@index([channelId])
+}
+
+model SingActor {
+  personId String
+  videoId  String
+  actor    Person @relation(fields: [personId], references: [id])
+  video    Video  @relation(fields: [videoId], references: [id])
+
+  @@unique([personId, videoId])
+  @@index([personId])
+  @@index([videoId])
+}
+
+model MainActor {
+  personId String
+  videoId  String
+  actor    Person @relation(fields: [personId], references: [id])
+  video    Video  @relation(fields: [videoId], references: [id])
+
+  @@unique([personId, videoId])
+  @@index([personId])
+  @@index([videoId])
+}
+
+model SubActor {
+  personId String
+  videoId  String
+  actor    Person @relation(fields: [personId], references: [id])
+  video    Video  @relation(fields: [videoId], references: [id])
+
+  @@unique([personId, videoId])
+  @@index([personId])
+  @@index([videoId])
+}
+
+model SecretActor {
+  personId String
+  videoId  String
+  actor    Person @relation(fields: [personId], references: [id])
+  video    Video  @relation(fields: [videoId], references: [id])
+
+  @@unique([personId, videoId])
+  @@index([personId])
+  @@index([videoId])
+}
+
+model StaffActor {
+  personId String
+  videoId  String
+  actor    Person @relation(fields: [personId], references: [id])
+  video    Video  @relation(fields: [videoId], references: [id])
+
+  @@unique([personId, videoId])
+  @@index([personId])
+  @@index([videoId])
+}
+
+model BelongHistory {
+  id             String       @id @unique @default(uuid())
+  joinDate       DateTime
+  leaveDate      DateTime?
+  personId       String
+  organizationId String
+  person         Person       @relation(fields: [personId], references: [id])
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  @@index([personId])
+  @@index([organizationId])
+}
+
+model OrganizationToPerson {
+  A String
+  B String
+
+  @@unique([A, B], map: "_OrganizationToPerson_AB_unique")
+  @@index([B], map: "_OrganizationToPerson_B_index")
+  @@map("_OrganizationToPerson")
+}
+
+model PersonToVideo {
+  A String
+  B String @db.VarChar(11)
+
+  @@unique([A, B], map: "_PersonToVideo_AB_unique")
+  @@index([B], map: "_PersonToVideo_B_index")
+  @@map("_PersonToVideo")
+}
+
+enum Status {
+  active
+  break
+}
+
+enum VideoCategory {
+  official // 公式またはオリジナル
+  cover // カバー楽曲
+  teaser // テザー楽曲(動画)
+  medley // メドレー楽曲
+  radio // ラジオ（音声主体の動画）
+  vlog //  ブイログ(videoログ・日記)
+  making // メイキング映像（オフショット含む）
+  live //ライブ映像
+  other // その他
+  undefined //未定義、初期値
+}
+
+enum PrivacyStatus {
+  public // 公開
+  unlisted // 限定公開
+  private // 非公開
+  undefined // 不明
+}
+
+enum LiveBroadcastContent {
+  live // ライブ放送中
+  upcoming // 近日公開
+  none // その他
+}
+
+enum OrganizationCategory {
+  campany // 会社組織
+  bandMembers // バンドメンバー
+  artistGroup // アーティストグループ
+  undefined // デフォルト
+}

@@ -22,6 +22,7 @@ model Person {
   xTwitterAccounts   XTwitterAccount[]
   instagramAccounts  InstagramAccount[]
   youTubeAccounts    YouTubeAccount[]
+  tiktokAccounts     TikTokAccount[]
   appleMusicArtists  AppleMusicArtist[]
   singActors         SingActor[]
   mainActors         MainActor[]
@@ -83,8 +84,23 @@ model YouTubeAccount {
   @@index([organizationId])
 }
 
+model TikTokAccount {
+  id             String        @id @unique @default(uuid())
+  active         Boolean
+  userId         String?       @unique
+  userName       String        @unique
+  personId       String?
+  organizationId String?
+  Person         Person?       @relation(fields: [personId], references: [id])
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+
+  @@index([personId])
+  @@index([organizationId])
+}
+
 model AppleMusicArtist {
   id             String        @id @unique @db.VarChar(10)
+  userName       String        @unique
   personId       String?
   organizationId String?
   person         Person?       @relation(fields: [personId], references: [id])
@@ -119,6 +135,7 @@ model Organization {
   instagramAccounts    InstagramAccount[]
   xTwitterAccounts     XTwitterAccount[]
   youTubeAccounts      YouTubeAccount[]
+  tikTokAccounts       TikTokAccount[]
   appleMusicArtists    AppleMusicArtist[]
   belongHistory        BelongHistory[]
 

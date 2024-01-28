@@ -22,7 +22,6 @@ model Person {
   xTwitterAccounts   XTwitterAccount[]
   instagramAccounts  InstagramAccount[]
   youTubeAccounts    YouTubeAccount[]
-  tiktokAccounts     TikTokAccount[]
   appleMusicArtists  AppleMusicArtist[]
   singActors         SingActor[]
   mainActors         MainActor[]
@@ -46,14 +45,15 @@ model XTwitterAccount {
 }
 
 model InstagramAccount {
-  id             String        @id @unique @default(uuid())
+  id             String                   @id @unique @default(uuid())
   active         Boolean
-  userId         String?       @unique
+  userId         String?                  @unique
   personId       String?
   organizationId String?
-  userName       String        @unique
-  person         Person?       @relation(fields: [personId], references: [id])
-  organization   Organization? @relation(fields: [organizationId], references: [id])
+  userName       String                   @unique
+  threads        Threads
+  person         Person?                  @relation(fields: [personId], references: [id])
+  organization   Organization?            @relation(fields: [organizationId], references: [id])
 
   @@index([personId])
   @@index([organizationId])
@@ -62,21 +62,21 @@ model InstagramAccount {
 model YouTubeAccount {
   id                         String        @id @unique @db.VarChar(24)
   active                     Boolean
-  lastUpdated                DateTime
-  userName                   String
-  title                      String
+  personId                   String?
+  organizationId             String?
   thumbnailsMediumUrl        String
+  title                      String
   topic                      Boolean
   officialArtistChannel      Boolean?
   unsubscribedTrailerVideoId String?       @db.VarChar(11)
-  subscriberCount            Int
   hiddenSubscriberCount      Boolean
+  subscriberCount            Int
   viewCount                  Int           @db.UnsignedInt
-  commentCount               Int           @db.UnsignedInt
+  lastUpdated                DateTime
+  userName                   String
   videoCountFromYTApi        Int           @db.UnsignedInt
+  commentCount               Int           @db.UnsignedInt
   videos                     Video[]
-  personId                   String?
-  organizationId             String?
   person                     Person?       @relation(fields: [personId], references: [id])
   organization               Organization? @relation(fields: [organizationId], references: [id])
 
@@ -84,30 +84,28 @@ model YouTubeAccount {
   @@index([organizationId])
 }
 
-model TikTokAccount {
-  id             String        @id @unique @default(uuid())
-  active         Boolean
-  userId         String?       @unique
-  userName       String        @unique
+model AppleMusicArtist {
+  id             String        @id @unique @db.VarChar(10)
   personId       String?
   organizationId String?
-  Person         Person?       @relation(fields: [personId], references: [id])
+  userName       String        @unique
+  person         Person?       @relation(fields: [personId], references: [id])
   organization   Organization? @relation(fields: [organizationId], references: [id])
 
   @@index([personId])
   @@index([organizationId])
 }
 
-model AppleMusicArtist {
-  id             String        @id @unique @db.VarChar(10)
-  userName       String        @unique
+model TikTokAccount {
+  id             String  @id @unique
+  active         Boolean
+  userId         String? @unique
+  userName       String  @unique
   personId       String?
   organizationId String?
-  person         Person?       @relation(fields: [personId], references: [id])
-  organization   Organization? @relation(fields: [organizationId], references: [id])
 
-  @@index([personId])
   @@index([organizationId])
+  @@index([personId])
 }
 
 model Name {
@@ -128,14 +126,13 @@ model Organization {
   name                 String
   homePage             String
   active               Boolean
+  prganizationCategory OrganizationCategory @default(undefined)
   parent               Organization?        @relation("organization", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
   children             Organization[]       @relation("organization")
-  prganizationCategory OrganizationCategory @default(undefined)
   memberNames          Name[]
   instagramAccounts    InstagramAccount[]
   xTwitterAccounts     XTwitterAccount[]
   youTubeAccounts      YouTubeAccount[]
-  tikTokAccounts       TikTokAccount[]
   appleMusicArtists    AppleMusicArtist[]
   belongHistory        BelongHistory[]
 
@@ -144,28 +141,28 @@ model Organization {
 
 model Video {
   id                   String               @id @unique @db.VarChar(11)
-  category             Int
-  videoCategory        VideoCategory        @default(official)
   categoryChecked      Boolean
   title                String
   publishedAt          DateTime
-  privacyStatus        PrivacyStatus
-  liveBroadcastContent LiveBroadcastContent
   viewCount            Int                  @db.UnsignedInt
-  likeCount            Int?                 @db.UnsignedInt
-  duration             Int                  @db.UnsignedInt
   start                Int?                 @db.UnsignedInt
   end                  Int?                 @db.UnsignedInt
   description          String               @db.LongText
-  embeddable           Boolean
-  short                Boolean?
   karaokeKey           Int?
   musicTitle           String
   musicArtist          String
   subscriptionUrl      String
   channelId            String
+  short                Boolean?
   searchText           String
   actorChecked         Boolean
+  videoCategory        VideoCategory        @default(official)
+  category             Int
+  privacyStatus        PrivacyStatus
+  liveBroadcastContent LiveBroadcastContent
+  embeddable           Boolean
+  likeCount            Int?                 @db.UnsignedInt
+  duration             Int                  @db.UnsignedInt
   singActors           SingActor[]
   mainActors           MainActor[]
   subActor             SubActor[]
@@ -299,4 +296,11 @@ enum OrganizationCategory {
   bandMembers // バンドメンバー
   artistGroup // アーティストグループ
   undefined // デフォルト
+}
+
+enum Threads {
+  active // アカウントが存在し更新されている。
+  inactive // アカウントは存在するが更新されていない。
+  notExist // 存在しない。
+  undefined // 未定義。デフォルト値。
 }

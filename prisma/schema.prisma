@@ -45,15 +45,15 @@ model XTwitterAccount {
 }
 
 model InstagramAccount {
-  id             String                   @id @unique @default(uuid())
+  id             String        @id @unique @default(uuid())
   active         Boolean
-  userId         String?                  @unique
+  userId         String?       @unique
   personId       String?
   organizationId String?
-  userName       String                   @unique
+  userName       String        @unique
   threads        Threads
-  person         Person?                  @relation(fields: [personId], references: [id])
-  organization   Organization?            @relation(fields: [organizationId], references: [id])
+  person         Person?       @relation(fields: [personId], references: [id])
+  organization   Organization? @relation(fields: [organizationId], references: [id])
 
   @@index([personId])
   @@index([organizationId])
@@ -75,7 +75,6 @@ model YouTubeAccount {
   lastUpdated                DateTime
   userName                   String
   videoCountFromYTApi        Int           @db.UnsignedInt
-  commentCount               Int           @db.UnsignedInt
   videos                     Video[]
   person                     Person?       @relation(fields: [personId], references: [id])
   organization               Organization? @relation(fields: [organizationId], references: [id])
@@ -145,6 +144,7 @@ model Video {
   title                String
   publishedAt          DateTime
   viewCount            Int                  @db.UnsignedInt
+  commentCount         Int                  @db.UnsignedInt
   start                Int?                 @db.UnsignedInt
   end                  Int?                 @db.UnsignedInt
   description          String               @db.LongText

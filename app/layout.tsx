@@ -1,12 +1,7 @@
-import { Metadata, ResolvingMetadata } from "next";
+import { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
-
-type Props = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
 
 export default function RootLayout({
   children,
@@ -33,11 +28,8 @@ export default function RootLayout({
   );
 }
 
-export async function generateMetadata(
-  { params, searchParams }: Props,
-  parent: ResolvingMetadata
-): Promise<Metadata> {
+export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "タイトルだね",
+    title: "タイトルですね",
   };
 }

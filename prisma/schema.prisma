@@ -140,6 +140,7 @@ model Organization {
 
 model Video {
   id                   String               @id @unique @db.VarChar(11)
+  createdAt            DateTime             @default(now())
   categoryChecked      Boolean
   title                String
   publishedAt          DateTime

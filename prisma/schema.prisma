@@ -71,7 +71,7 @@ model YouTubeAccount {
   unsubscribedTrailerVideoId String?       @db.VarChar(11)
   hiddenSubscriberCount      Boolean
   subscriberCount            Int
-  viewCount                  Int           @db.UnsignedInt
+  viewCount                  BigInt        @db.UnsignedBigInt
   lastUpdated                DateTime
   userName                   String
   videoCountFromYTApi        Int           @db.UnsignedInt
@@ -143,7 +143,7 @@ model Video {
   categoryChecked      Boolean
   title                String
   publishedAt          DateTime
-  viewCount            Int                  @db.UnsignedInt
+  viewCount            BigInt               @db.UnsignedBigInt
   commentCount         Int                  @db.UnsignedInt
   start                Int?                 @db.UnsignedInt
   end                  Int?                 @db.UnsignedInt

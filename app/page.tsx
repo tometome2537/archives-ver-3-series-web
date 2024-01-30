@@ -102,7 +102,7 @@ export default function Home() {
             {
               <div className="grid grid-cols-5 gap-4 mb-4">
                 {items.map((i, index) => (
-                  <Thumbnail title={index.toString()}></Thumbnail>
+                  <Thumbnail key={index} title={index.toString()}></Thumbnail>
                 ))}
               </div>
             }

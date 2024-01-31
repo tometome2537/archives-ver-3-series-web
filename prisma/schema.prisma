@@ -1,6 +1,6 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity"]
+  previewFeatures = ["referentialIntegrity", "fullTextSearch", "fullTextIndex"]
 }
 
 datasource db {
@@ -173,6 +173,8 @@ model Video {
   person               Person[]
 
   @@index([channelId])
+  @@fulltext([title])
+  @@fulltext([description])
 }
 
 model SingActor {

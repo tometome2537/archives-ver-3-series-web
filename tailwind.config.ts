@@ -22,7 +22,11 @@ const config: Config = {
         256: "64rem",
       },
     },
+    states: {
+      on: true,
+      current: true,
+    },
   },
-  plugins: [require("flowbite/plugin")],
+  plugins: [require("flowbite/plugin"), require("tailwindcss-state")],
 };
 export default config;

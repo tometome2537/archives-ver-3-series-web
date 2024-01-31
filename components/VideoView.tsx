@@ -119,15 +119,17 @@ export default function VideoView({ playerSize }: Props) {
   );
 
   const scrollContents = (
-    <div className="grid grid-cols-5 gap-4 mb-4">
-      {items.map((item, index) => (
-        <Thumbnail
-          key={index}
-          id={item.id}
-          title={item.title}
-          onClick={onClickVideo}
-        ></Thumbnail>
-      ))}
+    <div className="container mx-auto">
+      <div className="grid grid-cols-auto gap-4 place-items-center mb-4">
+        {items.map((item, index) => (
+          <Thumbnail
+            key={index}
+            id={item.id}
+            title={item.title}
+            onClick={onClickVideo}
+          ></Thumbnail>
+        ))}
+      </div>
     </div>
   );
 
@@ -152,6 +154,7 @@ export default function VideoView({ playerSize }: Props) {
 
     e.currentTarget.classList.add("current");
     setSortOrder(e.currentTarget.dataset.order || "");
+    setHasMore(true);
     setItems([]);
   };
 

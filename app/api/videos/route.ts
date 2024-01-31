@@ -1,8 +1,6 @@
 import prisma from "@/libs/prisma.helper";
 import { NextRequest, NextResponse } from "next/server";
 
-export const dynamic = "force-dynamic";
-
 export async function GET(request: NextRequest) {
   const err = NextResponse.json({ message: "error" }, { status: 400 });
 

@@ -86,7 +86,7 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
 
   //ロード中に表示する項目
   const loader = (
-    <div className="grid grid-cols-subgrid col-span-5">
+    <div className="grid grid-cols-subgrid col-span-full">
       <div className="flex items-center justify-center my-8">
         <div role="status">
           <svg
@@ -144,7 +144,9 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
       <div className="flex items-start">
         <div
           className={`${
-            isLargePlayer ? playerSizeAsClassName() : "w-0"
+            isLargePlayer && visibleYoutubePlayer
+              ? playerSizeAsClassName()
+              : "w-0"
           } shrink-0 relative mr-4 bg-transparent h-1`}
         >
           <div

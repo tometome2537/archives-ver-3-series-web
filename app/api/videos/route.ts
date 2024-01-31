@@ -1,17 +1,20 @@
 import prisma from "@/libs/prisma.helper";
 import { NextRequest, NextResponse } from "next/server";
 
+export const dynamic = "dynamic force";
+
 export async function GET(request: NextRequest) {
-  const err = NextResponse.json({ message: "error" }, { status: 400 });
+  const err = (type: string) =>
+    NextResponse.json({ message: `error:${type}` }, { status: 400 });
 
   try {
     const query = request.nextUrl.searchParams;
     const qTake = query.get("take");
     const qSort = query.get("sort");
     //takeはstringのみ
-    if (qTake == null) return err;
+    if (qTake == null) return err("take is null");
     if (qSort != null && qSort != "pop" && qSort != "new" && qSort != "old")
-      return err;
+      return err("sort is not valid");
 
     const skip = parseInt(query.get("skip") || "0");
     const take = parseInt(qTake);
@@ -55,8 +58,8 @@ export async function GET(request: NextRequest) {
     return NextResponse.json(videos, {
       status: 200,
     });
-  } catch (error) {
+  } catch (error: any) {
     console.log(error);
-    return err;
+    return err(error.toString());
   }
 }

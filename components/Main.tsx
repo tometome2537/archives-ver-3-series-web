@@ -1,9 +1,17 @@
 import SearchBar from "@/components/SearchBar";
 import Image from "next/image";
+import { useState } from "react";
 import { Fa500Px } from "react-icons/fa";
 import Item from "./Sidebar/Item";
+import VideoView from "./VideoView";
 
 export default function Main() {
+  const [playerSize, setPlayerSize] = useState(0);
+
+  const onPlayerSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPlayerSize(parseInt(e.target.value));
+  };
+
   return (
     <>
       <nav className="fixed top-0 z-50 w-full bg-white border-b border-gray-200 dark:bg-gray-800 dark:border-gray-700">
@@ -33,7 +41,7 @@ export default function Main() {
                     ></path>
                   </svg>
                 </button>
-                <a href="https://flowbite.com" className="flex ms-2 md:me-24">
+                <a href="/" className="flex ms-2 md:me-24">
                   <Image
                     src={"/MAP.png"}
                     width={150}
@@ -234,9 +242,43 @@ export default function Main() {
                 <span className="flex-1 ms-3 whitespace-nowrap">Sign Up</span>
               </a>
             </li>
+            <li>
+              <div className="relative mb-6">
+                <label htmlFor="labels-range-input" className="sr-only">
+                  Labels range
+                </label>
+                {/* <input
+                  id="labels-range-input"
+                  type="range"
+                  defaultValue={1000}
+                  min="100"
+                  max="1500"
+                  className="w-full h-2 accent-red-500 bg-gray-200 rounded-lg appearance-none cursor-pointer dark:bg-gray-700"
+                /> */}
+                <input
+                  type="range"
+                  min={0}
+                  max={2}
+                  step={1}
+                  className="transparent h-2 w-full cursor-pointer appearance-none rounded-lg border-transparent hover:accent-green-700 active:accent-green-800 bg-gray-100"
+                  onChange={onPlayerSizeChange}
+                />
+                <span className="text-sm text-gray-500 dark:text-gray-400 absolute start-0 -bottom-6">
+                  小
+                </span>
+                <span className="text-base text-gray-500 dark:text-gray-400 absolute start-1/2 -translate-x-1/2 -bottom-6">
+                  中
+                </span>
+                <span className="text-lg text-gray-500 dark:text-gray-400 absolute end-0 -bottom-6">
+                  大
+                </span>
+              </div>
+            </li>
           </ul>
         </div>
       </aside>
+
+      <VideoView playerSize={playerSize} />
     </>
   );
 }

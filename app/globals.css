@@ -25,3 +25,15 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+input[type="range"]::-moz-range-thumb {
+  /*same as green 700*/
+  background-color: #15803d !important;
+}
+
+input[type="range"]::-moz-range-progress {
+  /*same as green 600*/
+  background-color: #16a34a !important;
+  height: 0.5rem;
+  border-radius: .5rem;
+}

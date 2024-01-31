@@ -6,7 +6,7 @@ import Item from "./Sidebar/Item";
 import VideoView from "./VideoView";
 
 export default function Main() {
-  const [playerSize, setPlayerSize] = useState(0);
+  const [playerSize, setPlayerSize] = useState(1);
 
   const onPlayerSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlayerSize(parseInt(e.target.value));

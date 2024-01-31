@@ -11,9 +11,10 @@ interface Video {
 
 type Props = {
   playerSize: number;
+  isLargePlayer: boolean;
 };
 
-export default function VideoView({ playerSize }: Props) {
+export default function VideoView({ playerSize, isLargePlayer }: Props) {
   const [items, setItems] = useState<Video[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
 
@@ -118,22 +119,76 @@ export default function VideoView({ playerSize }: Props) {
     </p>
   );
 
+  const playerSizeAsClassName = () => {
+    switch (playerSize) {
+      case 0:
+        return "w-96";
+      case 1:
+        return "w-128";
+      case 2:
+        return "w-192";
+    }
+  };
+
+  const largePlayerAsClassName = () => {
+    if (isLargePlayer) {
+      return "absolute top-0 left-0";
+    }
+    return "fixed bottom-0 right-0";
+  };
+
+  const sortRadio = useRef<HTMLDivElement>(null);
+
   const scrollContents = (
     <div className="container mx-auto">
-      <div className="grid grid-cols-auto gap-4 place-items-center mb-4">
-        {items.map((item, index) => (
-          <Thumbnail
-            key={index}
-            id={item.id}
-            title={item.title}
-            onClick={onClickVideo}
-          ></Thumbnail>
-        ))}
+      <div className="flex items-start">
+        <div
+          className={`${
+            isLargePlayer ? playerSizeAsClassName() : "w-0"
+          } shrink-0 relative mr-4 bg-transparent h-1`}
+        >
+          <div
+            className={`${playerSizeAsClassName()} ${largePlayerAsClassName()} rounded-lg transition-transform ${
+              visibleYoutubePlayer ? "translate-x-0" : "translate-x-full hidden"
+            }`}
+          >
+            <button
+              className="absolute -top-12 right-0 rounded-t-lg bg-green-700 w-12 h-12 flex items-center justify-center"
+              onClick={() => {
+                setVisibleYoutubePlayer(false);
+                // youtubePlayer.current?.internalPlayer
+                //   .getIframe()
+                //   .then((x: HTMLIFrameElement) => {
+                //     const node = x.parentNode?.parentNode;
+                //   });
+                youtubePlayer.current?.internalPlayer.pauseVideo();
+              }}
+            >
+              <IoClose size={32} />
+            </button>
+            <YouTube
+              className="relative w-full pt-[56.25%] bg-white rounded-tl-lg rounded-tr-lg rounded-bl-lg"
+              iframeClassName="absolute top-0 right-0 w-full h-full rounded-tl-lg rounded-tr-lg rounded-bl-lg"
+              videoId={youtubeId}
+              opts={opts}
+              onReady={onPlayerReady}
+              ref={youtubePlayer}
+            />
+          </div>
+        </div>
+        <div className="grid grid-cols-auto gap-4 w-full place-items-center mb-4">
+          {items.map((item, index) => (
+            <Thumbnail
+              key={index}
+              id={item.id}
+              title={item.title}
+              onClick={onClickVideo}
+            ></Thumbnail>
+          ))}
+        </div>
       </div>
     </div>
   );
-
-  const sortRadio = useRef<HTMLDivElement>(null);
 
   const sort = (e: MouseEvent<HTMLButtonElement>) => {
     const current = sortRadio.current;
@@ -158,16 +213,6 @@ export default function VideoView({ playerSize }: Props) {
     setItems([]);
   };
 
-  const playerSizeAsClassName = () => {
-    switch (playerSize) {
-      case 0:
-        return "w-96";
-      case 1:
-        return "w-128";
-      case 2:
-        return "w-192";
-    }
-  };
   return (
     <>
       <div className="p-4">
@@ -211,29 +256,6 @@ export default function VideoView({ playerSize }: Props) {
             {scrollContents}
           </InfiniteScroll>
         </div>
-      </div>
-      <div
-        className={`fixed bottom-0 right-0  ${playerSizeAsClassName()} rounded-lg transition-transform ${
-          visibleYoutubePlayer ? "translate-x-0" : "translate-x-full"
-        }`}
-      >
-        <button
-          className="absolute -top-12 right-0 rounded-t-lg bg-green-700 w-12 h-12 flex items-center justify-center"
-          onClick={() => {
-            setVisibleYoutubePlayer(false);
-            youtubePlayer.current?.internalPlayer.pauseVideo();
-          }}
-        >
-          <IoClose size={32} />
-        </button>
-        <YouTube
-          className="relative w-full pt-[56.25%] bg-white rounded-tl-lg rounded-tr-lg rounded-bl-lg"
-          iframeClassName="absolute top-0 right-0 w-full h-full rounded-tl-lg rounded-tr-lg rounded-bl-lg"
-          videoId={youtubeId}
-          opts={opts}
-          onReady={onPlayerReady}
-          ref={youtubePlayer}
-        />
       </div>
     </>
   );

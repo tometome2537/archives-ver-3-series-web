@@ -1,15 +1,21 @@
 import SearchBar from "@/components/SearchBar";
 import Image from "next/image";
-import { useState } from "react";
+import React, { useState } from "react";
 import { Fa500Px } from "react-icons/fa";
 import Item from "./Sidebar/Item";
 import VideoView from "./VideoView";
 
 export default function Main() {
   const [playerSize, setPlayerSize] = useState(1);
+  const [isLargePlayer, setIsLargePlayer] = useState(false);
 
   const onPlayerSizeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setPlayerSize(parseInt(e.target.value));
+  };
+
+  const onPlayerTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    console.log(e.target.value);
+    setIsLargePlayer(e.target.checked);
   };
 
   return (
@@ -243,7 +249,7 @@ export default function Main() {
               </a>
             </li>
             <li>
-              <div className="relative mb-6">
+              <div className="relative mb-6 p-2">
                 <label htmlFor="labels-range-input" className="sr-only">
                   Labels range
                 </label>
@@ -274,11 +280,27 @@ export default function Main() {
                 </span>
               </div>
             </li>
+            <li>
+              <div className="p-2">
+                <label className="relative inline-flex items-center me-5 cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value=""
+                    className="sr-only peer"
+                    onChange={onPlayerTypeChange}
+                  />
+                  <div className="w-11 h-6 bg-gray-200 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-0.5 after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-green-600"></div>
+                  <span className="ms-3  text-gray-900 dark:text-gray-300">
+                    でかいプレイヤー
+                  </span>
+                </label>
+              </div>
+            </li>
           </ul>
         </div>
       </aside>
 
-      <VideoView playerSize={playerSize} />
+      <VideoView playerSize={playerSize} isLargePlayer={isLargePlayer} />
     </>
   );
 }

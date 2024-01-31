@@ -12,7 +12,7 @@ type Props = {
 export default function Thumbnail({ id, title, onClick }: Props) {
   return (
     <button
-      className="max-w-sm rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700"
+      className="max-w-sm rounded-lg flex-1 bg-white dark:bg-gray-800 dark:border-gray-700"
       key={title}
       data-id={id}
       onClick={onClick}

@@ -26,7 +26,6 @@ const config: Config = {
     states: {
       on: true,
       current: true,
-      active: true,
     },
   },
   plugins: [require("flowbite/plugin"), require("tailwindcss-state")],

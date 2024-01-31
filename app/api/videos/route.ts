@@ -1,7 +1,7 @@
 import prisma from "@/libs/prisma.helper";
 import { NextRequest, NextResponse } from "next/server";
 
-export const dynamic = "dynamic force";
+export const dynamic = "force-dynamic";
 
 export async function GET(request: NextRequest) {
   const err = (type: string) =>

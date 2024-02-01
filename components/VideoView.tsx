@@ -129,16 +129,18 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
           } w-full max-w-full shrink-0`}
         >
           <div
-            className={` ${
-              isLargePlayer
-                ? "w-full"
-                : `${playerSizeAsClassName()} xl:fixed xl:bottom-0 xl:right-0 translate-x-0`
-            } rounded-lg transition-transform ${
-              visibleYoutubePlayer ? "xl:translate-x-0" : "xl:translate-x-full"
+            className={`${playerSizeAsClassName()} ${
+              isLargePlayer ? `w-full` : `xl:fixed xl:bottom-0 xl:right-0`
+            } rounded-lg transition-transform flex flex-col items-end fixed ${
+              visibleYoutubePlayer
+                ? "xl:translate-x-0 translate-y-0"
+                : `-translate-y-[150%] ${
+                    isLargePlayer ? "" : "xl:translate-x-full xl:translate-y-0"
+                  }`
             }`}
           >
             <button
-              className="absolute -top-12 right-0 rounded-t-lg bg-green-700 w-12 h-12 flex items-center justify-center"
+              className="rounded-t-lg bg-green-700 w-12 h-12 flex items-center justify-center"
               onClick={() => {
                 setVisibleYoutubePlayer(false);
                 youtubePlayer.current?.internalPlayer.pauseVideo();

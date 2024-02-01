@@ -14,7 +14,6 @@ export default function Main() {
   };
 
   const onPlayerTypeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    console.log(e.target.value);
     setIsLargePlayer(e.target.checked);
   };
 

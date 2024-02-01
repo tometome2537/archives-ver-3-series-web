@@ -5,7 +5,7 @@ interface SidebarItemProps {
   icon: IconType;
 }
 
-function Item({ href, icon: Icon }: SidebarItemProps) {
+export default function Item({ href, icon: Icon }: SidebarItemProps) {
   return (
     <li>
       <a
@@ -18,5 +18,3 @@ function Item({ href, icon: Icon }: SidebarItemProps) {
     </li>
   );
 }
-
-export default Item;

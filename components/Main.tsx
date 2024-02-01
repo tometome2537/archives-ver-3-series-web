@@ -247,7 +247,7 @@ export default function Main() {
                 <span className="flex-1 ms-3 whitespace-nowrap">Sign Up</span>
               </a>
             </li>
-            <li>
+            <li className="hidden xl:block">
               <div className="relative mb-6 p-2">
                 <label htmlFor="labels-range-input" className="sr-only">
                   Labels range
@@ -279,7 +279,7 @@ export default function Main() {
                 </span>
               </div>
             </li>
-            <li>
+            <li className="hidden xl:block">
               <div className="p-2">
                 <label className="relative inline-flex items-center me-5 cursor-pointer">
                   <input

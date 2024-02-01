@@ -11,7 +11,7 @@ type Props = {
 
 export default function Thumbnail({ id, title, onClick }: Props) {
   return (
-    <div className="w-80 mx-auto rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-80 rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700">
       <button key={title} data-id={id} onClick={onClick}>
         <div className="overflow-hidden">
           <Image

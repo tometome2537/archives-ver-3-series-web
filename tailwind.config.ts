@@ -1,11 +1,11 @@
 import type { Config } from "tailwindcss";
 
 const config: Config = {
+  mode: "jit",
   content: [
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
     "./node_modules/flowbite/**/*.js",
-    "./node_modules/flowbite-react/lib/**/*.js",
     "./public/**/*.html",
   ],
   theme: {
@@ -16,6 +16,8 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       spacing: {
+        84: "21rem",
+        88: "22rem",
         92: "23rem",
         112: "28rem",
         128: "32rem",
@@ -28,6 +30,6 @@ const config: Config = {
       current: true,
     },
   },
-  plugins: [require("flowbite/plugin"), require("tailwindcss-state")],
+  plugins: [require("tailwindcss-state")],
 };
 export default config;

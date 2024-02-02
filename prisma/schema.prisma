@@ -157,11 +157,11 @@ model Video {
   short                Boolean?
   searchText           String
   actorChecked         Boolean
-  videoCategory        VideoCategory        @default(official)
+  videoCategory        VideoCategory        @default(undefined)
   category             Int
   privacyStatus        PrivacyStatus
-  liveBroadcastContent LiveBroadcastContent
-  embeddable           Boolean
+  liveBroadcastContent LiveBroadcastContent @default(none)
+  embeddable           Boolean              @default(true)
   likeCount            Int?                 @db.UnsignedInt
   duration             Int                  @db.UnsignedInt
   singActors           SingActor[]

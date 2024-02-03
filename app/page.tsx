@@ -1,11 +1,14 @@
 "use client";
 
 import Main from "@/components/Main";
+import { ThemeProvider } from "next-themes";
 
 export default function Home() {
   return (
     <>
-      <Main />
+      <ThemeProvider attribute="class">
+        <Main />
+      </ThemeProvider>
     </>
   );
 }

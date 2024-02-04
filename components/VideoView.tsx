@@ -159,14 +159,15 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
           </div>
         </div>
         <div className={`flex flex-wrap justify-around w-full mb-4`}>
-          {items.map((item, index) => (
-            <Thumbnail
-              key={index}
-              id={item.id}
-              title={item.title}
-              onClick={onClickVideo}
-            ></Thumbnail>
-          ))}
+          {items.length > 0 &&
+            items.map((item, index) => (
+              <Thumbnail
+                key={index}
+                id={item.id}
+                title={item.title}
+                onClick={onClickVideo}
+              ></Thumbnail>
+            ))}
         </div>
       </div>
     </div>

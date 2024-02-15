@@ -69,9 +69,14 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
     fetch(`/api/videos/count`, {
       cache: "no-store",
     })
-      .then((x) => x.text())
       .then((x) => {
-        setHitVideos(parseInt(x));
+        return x.text();
+      })
+      .then((x) => {
+        //エラーのときは処理しない
+        if (x.includes("error") == false) {
+          setHitVideos(parseInt(x));
+        }
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sortOrder]);

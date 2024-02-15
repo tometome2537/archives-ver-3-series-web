@@ -93,13 +93,13 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
 
   //ロード中に表示する項目
   const loader = (
-    <div className="flex items-center justify-center my-8">
+    <div className="my-8 flex items-center justify-center">
       <Loading />
     </div>
   );
 
   const endMessage = (
-    <p className="flex items-center justify-center text-3xl py-8">
+    <p className="flex items-center justify-center py-8 text-3xl">
       {items.length > 0
         ? "これ以上動画はありません(´;ω;｀)"
         : "動画が見つかりませんでした(´;ω;｀)"}
@@ -122,8 +122,8 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
   const scrollContents = (
     <div className="container mx-auto">
       <div
-        className={`flex flex-col xl:flex-row gap-4 justify-center items-center
-        ${isLargePlayer ? "xl:justify-start xl:items-start" : ""}
+        className={`flex flex-col items-center justify-center gap-4 xl:flex-row
+        ${isLargePlayer ? "xl:items-start xl:justify-start" : ""}
         `}
       >
         <div
@@ -136,16 +136,16 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
           <div
             className={`${playerSizeAsClassName()} ${
               isLargePlayer ? `w-full` : `xl:fixed xl:bottom-0 xl:right-0`
-            } rounded-lg transition-transform flex flex-col items-end fixed ${
+            } fixed flex flex-col items-end rounded-lg transition-transform ${
               visibleYoutubePlayer
-                ? "xl:translate-x-0 translate-y-0"
-                : `-translate-y-[150%] ${
+                ? "translate-y-0 xl:translate-x-0"
+                : `translate-y-[-150%] ${
                     isLargePlayer ? "" : "xl:translate-x-full xl:translate-y-0"
                   }`
             }`}
           >
             <button
-              className="rounded-t-lg bg-green-700 w-12 h-12 flex items-center justify-center"
+              className="flex size-12 items-center justify-center rounded-t-lg bg-green-700"
               onClick={() => {
                 setVisibleYoutubePlayer(false);
                 youtubePlayer.current?.internalPlayer.pauseVideo();
@@ -154,7 +154,7 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
               <IoClose size={32} />
             </button>
             <YouTube
-              className="relative w-full pt-[56.25%] rounded-tl-lg rounded-tr-lg rounded-bl-lg"
+              className="relative w-full rounded-t-lg rounded-bl-lg pt-[56.25%]"
               iframeClassName="absolute top-0 right-0 w-full h-full rounded-tl-lg rounded-tr-lg rounded-bl-lg"
               videoId={youtubeId}
               opts={opts}
@@ -163,7 +163,7 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
             />
           </div>
         </div>
-        <div className={`flex flex-wrap justify-around w-full mb-4`}>
+        <div className={`mb-4 flex w-full flex-wrap justify-around`}>
           {items.length > 0 &&
             items.map((item, index) => (
               <Thumbnail
@@ -204,7 +204,7 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
   return (
     <>
       <div className="p-4">
-        <div className="pt-2 mt-14">
+        <div className="mt-14 pt-2">
           <div className="flex flex-row items-center justify-between pb-4">
             <p className="text-xl">{hitVideos.toLocaleString()} 件</p>
             <div
@@ -213,21 +213,21 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
             >
               <button
                 data-order="pop"
-                className="current text-white bg-stone-500 current:bg-green-700 hover:bg-green-800 rounded-lg px-10 py-2 text-center inline-flex items-center dark:bg-stone-500 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                className="current current:bg-green-700 inline-flex items-center rounded-lg bg-stone-500 px-10 py-2 text-center text-white hover:bg-green-800 dark:bg-stone-500 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
               >
                 人気順
               </button>
               <button
                 data-order="new"
-                className="text-white bg-stone-500 current:bg-green-700 hover:bg-green-800 rounded-lg px-10 py-2 text-center inline-flex items-center dark:bg-stone-500 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                className="current:bg-green-700 inline-flex items-center rounded-lg bg-stone-500 px-10 py-2 text-center text-white hover:bg-green-800 dark:bg-stone-500 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
               >
                 新しい順
               </button>
               <button
                 data-order="old"
-                className="text-white bg-stone-500 current:bg-green-700 hover:bg-green-800 rounded-lg px-10 py-2 text-center inline-flex items-center dark:bg-stone-500 dark:hover:bg-green-700 dark:focus:ring-green-800"
+                className="current:bg-green-700 inline-flex items-center rounded-lg bg-stone-500 px-10 py-2 text-center text-white hover:bg-green-800 dark:bg-stone-500 dark:hover:bg-green-700 dark:focus:ring-green-800"
                 onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
               >
                 古い順

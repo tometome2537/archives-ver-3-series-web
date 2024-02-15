@@ -11,7 +11,7 @@ type Props = {
 
 export default function Thumbnail({ id, title, onClick }: Props) {
   return (
-    <div className="w-80 rounded-lg bg-white dark:bg-gray-800 dark:border-gray-700">
+    <div className="w-80 rounded-lg bg-white dark:border-gray-700 dark:bg-gray-800">
       <button key={title} data-id={id} onClick={onClick}>
         <div className="overflow-hidden">
           <Image
@@ -21,10 +21,10 @@ export default function Thumbnail({ id, title, onClick }: Props) {
             width={480}
             height={360}
             alt={`https://youtube.com/watch?v=${id}`}
-            className="rounded-t-lg w-ful h-full object-cover hover:scale-110 transition-all duration-300"
+            className="size-full rounded-t-lg object-cover transition-all duration-300 hover:scale-110"
           />
         </div>
-        <p className="my-1 ml-2 text-left line-clamp-2 font-normal text-gray-700 dark:text-gray-400">
+        <p className="my-1 ml-2 line-clamp-2 text-left font-normal text-gray-700 dark:text-gray-400">
           {title}
         </p>
       </button>

@@ -4,23 +4,23 @@ import Image from "next/image";
 import { MouseEventHandler } from "react";
 
 type Props = {
-  id: string;
+  videoId: string;
   title: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
 };
 
-export default function Thumbnail({ id, title, onClick }: Props) {
+export default function Thumbnail({ videoId, title, onClick }: Props) {
   return (
     <div className="w-80 rounded-lg bg-white dark:border-gray-700 dark:bg-gray-800">
-      <button key={title} data-id={id} onClick={onClick}>
+      <button key={title} data-videoId={videoId} onClick={onClick}>
         <div className="overflow-hidden">
           <Image
             //sddefault
             //hqdefault
-            src={`https://img.youtube.com/vi/${id}/hqdefault.jpg`}
+            src={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
             width={480}
             height={360}
-            alt={`https://youtube.com/watch?v=${id}`}
+            alt={`https://youtube.com/watch?v=${videoId}`}
             className="size-full rounded-t-lg object-cover transition-all duration-300 hover:scale-110"
           />
         </div>

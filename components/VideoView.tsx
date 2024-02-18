@@ -1,6 +1,5 @@
 import Thumbnail from "@/components/Thumbnail";
 import { MouseEvent, useEffect, useRef, useState } from "react";
-import { IoClose } from "react-icons/io5";
 import InfiniteScroll from "react-infinite-scroll-component";
 import YouTube, { YouTubeProps } from "react-youtube";
 import Loading from "./Loading";
@@ -120,55 +119,18 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
   const sortRadio = useRef<HTMLDivElement>(null);
 
   const scrollContents = (
-    <div className="container mx-auto">
+    <div className="container mx-[48px]">
       <div
         className={`flex flex-col items-center justify-center gap-4 xl:flex-row
         ${isLargePlayer ? "xl:items-start xl:justify-start" : ""}
         `}
       >
-        <div
-          className={`${
-            isLargePlayer && visibleYoutubePlayer
-              ? playerSizeAsClassName()
-              : "xl:w-0"
-          } w-full max-w-full shrink-0`}
-        >
-          <div
-            className={`${playerSizeAsClassName()} ${
-              isLargePlayer ? `w-full` : `xl:fixed xl:bottom-0 xl:right-0`
-            } fixed flex flex-col items-end rounded-lg transition-transform ${
-              visibleYoutubePlayer
-                ? "translate-y-0 xl:translate-x-0"
-                : `translate-y-[-150%] ${
-                    isLargePlayer ? "" : "xl:translate-x-full xl:translate-y-0"
-                  }`
-            }`}
-          >
-            <button
-              className="flex size-12 items-center justify-center rounded-t-lg bg-green-700"
-              onClick={() => {
-                setVisibleYoutubePlayer(false);
-                youtubePlayer.current?.internalPlayer.pauseVideo();
-              }}
-            >
-              <IoClose size={32} />
-            </button>
-            <YouTube
-              className="relative w-full rounded-t-lg rounded-bl-lg pt-[56.25%]"
-              iframeClassName="absolute top-0 right-0 w-full h-full rounded-tl-lg rounded-tr-lg rounded-bl-lg"
-              videoId={youtubeId}
-              opts={opts}
-              onReady={onPlayerReady}
-              ref={youtubePlayer}
-            />
-          </div>
-        </div>
-        <div className={`mb-4 flex w-full flex-wrap justify-around`}>
+        <div className={`mb-4 flex max-w-full flex-wrap justify-between`}>
           {items.length > 0 &&
             items.map((item, index) => (
               <Thumbnail
                 key={index}
-                id={item.id}
+                videoId={item.id}
                 title={item.title}
                 onClick={onClickVideo}
               ></Thumbnail>
@@ -203,7 +165,7 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
 
   return (
     <>
-      <div className="p-4">
+      <div className="p-3">
         <div className="mt-14 pt-2">
           <div className="flex flex-row items-center justify-between pb-4">
             <p className="text-xl">{hitVideos.toLocaleString()} 件</p>

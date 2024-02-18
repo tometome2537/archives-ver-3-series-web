@@ -16,13 +16,15 @@ const config: Config = {
           "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       spacing: {
-        84: "21rem",
-        88: "22rem",
-        92: "23rem",
-        112: "28rem",
-        128: "32rem",
-        192: "48rem",
-        256: "64rem",
+        38: "9.5rem" /* 152px */,
+        62: "15.5rem" /* 248px */,
+        84: "21rem" /* 336px */,
+        88: "22rem" /* 352px */,
+        92: "23rem" /* 368px */,
+        112: "28rem" /* 448px */,
+        128: "32rem" /* 512px */,
+        192: "48rem" /* 768px */,
+        256: "64rem" /* 1024px */,
       },
       colors: {
         primary: {

@@ -1,6 +1,9 @@
 import SearchBar from "@/components/Navbar/SearchBar";
 import Image from "next/image";
 import { HiMenuAlt2 } from "react-icons/hi";
+import * as React from 'react';
+import Button from '@mui/joy/Button';
+
 export default function Navbar() {
   return (
     <nav className="fixed top-0 z-50 min-h-18 w-full border-b border-gray-200 bg-white dark:border-gray-700 dark:bg-gray-800">
@@ -15,6 +18,7 @@ export default function Navbar() {
           >
             <HiMenuAlt2 size={24} />
           </button>
+          <Button variant="solid">Hello world</Button>
           <a href="/" className="me-12 ms-2 flex">
             <Image
               src={"/MAP.png"}

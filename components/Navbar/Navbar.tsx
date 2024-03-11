@@ -21,7 +21,11 @@ export default function Navbar() {
             <Button variant="contained" color="primary" href="/#">
               サービス
             </Button>
-            <Button variant="contained" href="/#">
+            <Button
+              variant="contained"
+              href="https://forms.gle/osqdRqh1MxWhA51A8"
+              target="_blank"
+            >
               お問い合わせ
             </Button>
           </Stack>

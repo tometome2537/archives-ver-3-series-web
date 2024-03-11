@@ -1,16 +1,16 @@
 generator client {
   provider        = "prisma-client-js"
-  previewFeatures = ["referentialIntegrity", "fullTextSearch", "fullTextIndex"]
+  previewFeatures = ["referentialIntegrity"]
 }
 
 datasource db {
-  provider     = "mysql"
+  provider     = "postgresql"
   url          = env("DATABASE_URL")
   relationMode = "prisma"
 }
 
 model Person {
-  id                 String             @id @unique @default(uuid())
+  id                 String             @id @unique @default(uuid()) @db.Uuid
   status             Status
   birthday           DateTime?
   searchName         String
@@ -31,7 +31,7 @@ model Person {
 }
 
 model XTwitterAccount {
-  id             String        @id @unique @default(uuid())
+  id             String        @id @unique @default(uuid()) @db.Uuid
   active         Boolean
   userId         String?       @unique
   userName       String        @unique
@@ -45,7 +45,7 @@ model XTwitterAccount {
 }
 
 model InstagramAccount {
-  id             String        @id @unique @default(uuid())
+  id             String        @id @unique @default(uuid()) @db.Uuid
   active         Boolean
   userId         String?       @unique
   personId       String?
@@ -71,10 +71,10 @@ model YouTubeAccount {
   unsubscribedTrailerVideoId String?       @db.VarChar(11)
   hiddenSubscriberCount      Boolean
   subscriberCount            Int
-  viewCount                  BigInt        @db.UnsignedBigInt
+  viewCount                  BigInt
   lastUpdated                DateTime
   userName                   String
-  videoCountFromYTApi        Int           @db.UnsignedInt
+  videoCountFromYTApi        Int
   videos                     Video[]
   person                     Person?       @relation(fields: [personId], references: [id])
   organization               Organization? @relation(fields: [organizationId], references: [id])
@@ -108,7 +108,7 @@ model TikTokAccount {
 }
 
 model Name {
-  id             String       @id @default(uuid())
+  id             String       @id @default(uuid()) @db.Uuid
   personId       String
   displayName    String
   organizationId String
@@ -120,13 +120,13 @@ model Name {
 }
 
 model Organization {
-  id                   String               @id @unique @default(uuid())
+  id                   String               @id @unique @default(uuid()) @db.Uuid
   parentId             String?
   name                 String
   homePage             String
   active               Boolean
   prganizationCategory OrganizationCategory @default(undefined)
-  parent               Organization?        @relation("organization", fields: [parentId], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  parent               Organization?        @relation("organization", fields: [parentId], references: [id], onDelete: Restrict, onUpdate: Restrict)
   children             Organization[]       @relation("organization")
   memberNames          Name[]
   instagramAccounts    InstagramAccount[]
@@ -144,11 +144,11 @@ model Video {
   categoryChecked      Boolean
   title                String
   publishedAt          DateTime
-  viewCount            BigInt               @db.UnsignedBigInt
-  commentCount         Int                  @db.UnsignedInt
-  start                Int?                 @db.UnsignedInt
-  end                  Int?                 @db.UnsignedInt
-  description          String               @db.LongText
+  viewCount            BigInt
+  commentCount         Int
+  start                Int?
+  end                  Int?
+  description          String               @db.Text
   karaokeKey           Int?
   musicTitle           String
   musicArtist          String
@@ -162,8 +162,8 @@ model Video {
   privacyStatus        PrivacyStatus
   liveBroadcastContent LiveBroadcastContent @default(none)
   embeddable           Boolean              @default(true)
-  likeCount            Int?                 @db.UnsignedInt
-  duration             Int                  @db.UnsignedInt
+  likeCount            Int?
+  duration             Int
   singActors           SingActor[]
   mainActors           MainActor[]
   subActor             SubActor[]
@@ -173,8 +173,6 @@ model Video {
   person               Person[]
 
   @@index([channelId])
-  @@fulltext([title])
-  @@fulltext([description])
 }
 
 model SingActor {
@@ -233,7 +231,7 @@ model StaffActor {
 }
 
 model BelongHistory {
-  id             String       @id @unique @default(uuid())
+  id             String       @id @unique @default(uuid()) @db.Uuid
   joinDate       DateTime
   leaveDate      DateTime?
   personId       String

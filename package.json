@@ -13,7 +13,10 @@
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
-    "@mui/joy": "^5.0.0-beta.30",
+    "@mui/icons-material": "^5.15.10",
+    "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
+    "@mui/styled-engine-sc": "^6.0.0-alpha.16",
+    "@mui/material": "^5.15.12",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",

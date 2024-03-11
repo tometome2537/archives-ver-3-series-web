@@ -1,4 +1,6 @@
 import Thumbnail from "@/components/Thumbnail";
+import { Button, Stack, Typography } from "@mui/material";
+import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import { MouseEvent, useEffect, useRef, useState } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import YouTube, { YouTubeProps } from "react-youtube";
@@ -98,46 +100,32 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
   );
 
   const endMessage = (
-    <p className="flex items-center justify-center py-8 text-3xl">
+    <Typography
+      align="center"
+      sx={{ my: 2 }}
+      variant="h2"
+      color="text.secondary"
+    >
       {items.length > 0
         ? "これ以上動画はありません(´;ω;｀)"
         : "動画が見つかりませんでした(´;ω;｀)"}
-    </p>
+    </Typography>
   );
-
-  const playerSizeAsClassName = () => {
-    switch (playerSize) {
-      case 0:
-        return "xl:w-96";
-      case 1:
-        return "xl:w-128";
-      case 2:
-        return "xl:w-192";
-    }
-  };
 
   const sortRadio = useRef<HTMLDivElement>(null);
 
   const scrollContents = (
-    <div className="container mx-[48px]">
-      <div
-        className={`flex flex-col items-center justify-center gap-4 xl:flex-row
-        ${isLargePlayer ? "xl:items-start xl:justify-start" : ""}
-        `}
-      >
-        <div className={`mb-4 flex max-w-full flex-wrap justify-between`}>
-          {items.length > 0 &&
-            items.map((item, index) => (
-              <Thumbnail
-                key={index}
-                videoId={item.id}
-                title={item.title}
-                onClick={onClickVideo}
-              ></Thumbnail>
-            ))}
-        </div>
-      </div>
-    </div>
+    <Grid2 container spacing={2} mx={2} justifyContent="left">
+      {items.length > 0 &&
+        items.map((item, index) => (
+          <Thumbnail
+            key={index}
+            videoId={item.id}
+            title={item.title}
+            onClick={onClickVideo}
+          ></Thumbnail>
+        ))}
+    </Grid2>
   );
 
   const sort = (e: MouseEvent<HTMLButtonElement>) => {
@@ -165,48 +153,53 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
 
   return (
     <>
-      <div className="p-3">
-        <div className="mt-14 pt-2">
-          <div className="flex flex-row items-center justify-between pb-4">
-            <p className="text-xl">{hitVideos.toLocaleString()} 件</p>
-            <div
-              className="flex flex-row items-center justify-between gap-4"
-              ref={sortRadio}
-            >
-              <button
-                data-order="pop"
-                className="current current:bg-green-700 inline-flex items-center rounded-lg bg-stone-500 px-10 py-2 text-center text-white hover:bg-green-800 dark:bg-stone-500 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
-              >
-                人気順
-              </button>
-              <button
-                data-order="new"
-                className="current:bg-green-700 inline-flex items-center rounded-lg bg-stone-500 px-10 py-2 text-center text-white hover:bg-green-800 dark:bg-stone-500 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
-              >
-                新しい順
-              </button>
-              <button
-                data-order="old"
-                className="current:bg-green-700 inline-flex items-center rounded-lg bg-stone-500 px-10 py-2 text-center text-white hover:bg-green-800 dark:bg-stone-500 dark:hover:bg-green-700 dark:focus:ring-green-800"
-                onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
-              >
-                古い順
-              </button>
-            </div>
-          </div>
-          <InfiniteScroll
-            dataLength={items.length}
-            next={fetchMoreData}
-            hasMore={hasMore}
-            loader={loader}
-            endMessage={endMessage}
+      <Stack direction={"row"} sx={{ mx: 4 }} justifyContent={"space-between"}>
+        <Typography variant="h5" sx={{ my: 2 }} color="text.secondary">
+          {hitVideos.toLocaleString()} 件
+        </Typography>
+        <Stack
+          direction="row"
+          spacing={2}
+          justifyContent="flex-end"
+          alignItems="center"
+        >
+          <Button
+            variant="contained"
+            color="primary"
+            data-order="pop"
+            className="current"
+            onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
           >
-            {scrollContents}
-          </InfiniteScroll>
-        </div>
-      </div>
+            人気順
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            data-order="new"
+            className=""
+            onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
+          >
+            新しい順
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            data-order="old"
+            onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
+          >
+            古い順
+          </Button>
+        </Stack>
+      </Stack>
+      <InfiniteScroll
+        dataLength={items.length}
+        next={fetchMoreData}
+        hasMore={hasMore}
+        loader={loader}
+        endMessage={endMessage}
+      >
+        {scrollContents}
+      </InfiniteScroll>
     </>
   );
 }

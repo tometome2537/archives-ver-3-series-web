@@ -7,9 +7,10 @@ import {
   CardMedia,
   Typography,
 } from "@mui/material";
+
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Unstable_Grid2";
-import { MouseEventHandler } from "react";
+import { MouseEventHandler, useState } from "react";
 
 type Props = {
   videoId: string;
@@ -18,6 +19,8 @@ type Props = {
 };
 
 export default function Thumbnail({ videoId, title, onClick }: Props) {
+  const [raised, setRaised] = useState<boolean>();
+
   return (
     // <div className="w-80 rounded-lg bg-white dark:border-gray-700 dark:bg-gray-800">
     //   <button key={title} data-videoId={videoId} onClick={onClick}>
@@ -38,7 +41,12 @@ export default function Thumbnail({ videoId, title, onClick }: Props) {
     //   </button>
     // </div>
     <Grid xs={12} sm={6} md={3}>
-      <Card sx={{ maxWidth: 480 }}>
+      <Card
+        sx={{ maxWidth: 480 }}
+        onMouseOver={() => setRaised(true)}
+        onMouseOut={() => setRaised(false)}
+        raised={raised}
+      >
         <CardActionArea>
           <Box
             sx={{
@@ -57,18 +65,19 @@ export default function Thumbnail({ videoId, title, onClick }: Props) {
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
+                transition: `transform ${100}ms`,
+                transform: `scale(${raised ? 1.05 : 1})`,
               }}
               component="img"
               width={480}
               height={360}
               image={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
-              alt=""
+              alt={`Thumbnail of ${videoId}.`}
             />
           </Box>
           <CardContent>
             <Typography
               gutterBottom
-              variant="h6"
               sx={{
                 overflow: "hidden",
                 textOverflow: "ellipsis",
@@ -76,7 +85,6 @@ export default function Thumbnail({ videoId, title, onClick }: Props) {
                 WebkitLineClamp: "2",
                 WebkitBoxOrient: "vertical",
               }}
-              component="div"
             >
               {title}
             </Typography>

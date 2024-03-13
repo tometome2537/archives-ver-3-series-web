@@ -112,8 +112,6 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
     </Typography>
   );
 
-  const sortRadio = useRef<HTMLDivElement>(null);
-
   const scrollContents = (
     <Grid2 container spacing={2} mx={2} justifyContent="left">
       {items.length > 0 &&
@@ -129,23 +127,11 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
   );
 
   const sort = (e: MouseEvent<HTMLButtonElement>) => {
-    const current = sortRadio.current;
-    if (current == null) return;
-
     const newOrder = e.currentTarget.dataset.order;
     //変わってないなら変更処理しなくていい
     if (newOrder == sortOrder) return;
 
     //すべての子要素からcurrentを削除
-    const children = current?.children;
-    for (let i = 0; i < children.length; i++) {
-      const childElement = children[i];
-      if (childElement.classList.contains("current") == false) continue;
-
-      childElement.classList.remove("current");
-    }
-
-    e.currentTarget.classList.add("current");
     setSortOrder(e.currentTarget.dataset.order || "");
     setHasMore(true);
     setItems([]);
@@ -167,7 +153,6 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
             variant="contained"
             color="primary"
             data-order="pop"
-            className="current"
             onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
           >
             人気順
@@ -176,7 +161,6 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
             variant="contained"
             color="primary"
             data-order="new"
-            className=""
             onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
           >
             新しい順

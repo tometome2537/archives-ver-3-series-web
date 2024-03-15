@@ -1,7 +1,13 @@
 import Thumbnail from "@/components/Thumbnail";
 import { Button, Stack, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
-import { MouseEvent, useEffect, useRef, useState } from "react";
+import {
+  MouseEvent,
+  MouseEventHandler,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import YouTube, { YouTubeProps } from "react-youtube";
 import Loading from "./Loading";
@@ -15,6 +21,43 @@ type Props = {
   playerSize: number;
   isLargePlayer: boolean;
 };
+
+// const SortButton = (
+//   order: string,
+//   currentOrder: string,
+//   onClick: MouseEventHandler<HTMLButtonElement>
+// ) => (
+//   <Button
+//     variant={currentOrder == order ? "contained" : "outlined"}
+//     color="primary"
+//     data-order={order}
+//     onClick={onClick}
+//   >
+//     人気順
+//   </Button>
+// );
+
+type SortButtonProps = {
+  order: string;
+  currentOrder: string;
+  text: string;
+  onClick: MouseEventHandler<HTMLButtonElement>;
+};
+
+function SortButton(props: SortButtonProps) {
+  const { order, currentOrder, onClick, text } = props;
+
+  return (
+    <Button
+      variant={currentOrder == order ? "contained" : "outlined"}
+      color="primary"
+      data-order={order}
+      onClick={onClick}
+    >
+      {text}
+    </Button>
+  );
+}
 
 export default function VideoView({ playerSize, isLargePlayer }: Props) {
   const [items, setItems] = useState<Video[]>([]);
@@ -126,6 +169,8 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
     </Grid2>
   );
 
+  const sortRadio = useRef<HTMLDivElement>(null);
+
   const sort = (e: MouseEvent<HTMLButtonElement>) => {
     const newOrder = e.currentTarget.dataset.order;
     //変わってないなら変更処理しなくていい
@@ -148,31 +193,26 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
           spacing={2}
           justifyContent="flex-end"
           alignItems="center"
+          ref={sortRadio}
         >
-          <Button
-            variant="contained"
-            color="primary"
-            data-order="pop"
-            onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
-          >
-            人気順
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            data-order="new"
-            onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
-          >
-            新しい順
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            data-order="old"
-            onClick={(e: MouseEvent<HTMLButtonElement>) => sort(e)}
-          >
-            古い順
-          </Button>
+          <SortButton
+            order="pop"
+            currentOrder={sortOrder}
+            onClick={sort}
+            text="人気順"
+          ></SortButton>
+          <SortButton
+            order="new"
+            currentOrder={sortOrder}
+            onClick={sort}
+            text="新しい"
+          ></SortButton>
+          <SortButton
+            order="old"
+            currentOrder={sortOrder}
+            onClick={sort}
+            text="古い"
+          ></SortButton>
         </Stack>
       </Stack>
       <InfiniteScroll

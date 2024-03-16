@@ -4,11 +4,11 @@ import { NextRequest, NextResponse } from "next/server";
 export async function GET(request: NextRequest) {
   const err = NextResponse.json({ message: "error" }, { status: 400 });
 
-  const query = request.nextUrl.searchParams;
-  const qSearch = query.get("search");
-  const search = qSearch || null;
-
   try {
+    const { searchParams } = request.nextUrl;
+    const qSearch = searchParams.get("search");
+    const search = qSearch || null;
+
     const count = await prisma.video.count({
       where: search ? {
         OR: [

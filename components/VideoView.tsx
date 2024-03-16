@@ -59,7 +59,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
 
   fetchHitVideos();
   function fetchHitVideos() {
-    fetch(`/api/videos/count?${searchQuery ? "search=" + searchQuery : ""}`, {
+    fetch(`/api/videos/count${searchQuery ? "?search=" + searchQuery : ""}`, {
       cache: "no-store",
     })
       .then(async (x) => {
@@ -70,7 +70,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
         if (x.includes("error") == false) {
           setHitVideos(parseInt(x));
         }
-      });
+      }).catch();
   }
 
   useEffect(() => {

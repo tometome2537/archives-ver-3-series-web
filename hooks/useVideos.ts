@@ -1,6 +1,13 @@
+import fetcher from "@/libs/fetcher";
 import useSWR from "swr";
 
-import fetcher from "@/libs/fetcher";
+interface SWRVideos {
+    quests: Video[]
+    isLast: boolean
+    error: Error
+    fetcher: (key: string, pageIndex: number, limit: number, lastQuestDateTime: number) => Promise<Video[]>
+    loadMoreQuests: () => void //追加読み込み
+}
 
 interface Video {
     id: string;

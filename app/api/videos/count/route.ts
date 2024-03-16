@@ -6,11 +6,11 @@ export async function GET(request: NextRequest) {
 
   const query = request.nextUrl.searchParams;
   const qSearch = query.get("search");
-  const search = qSearch || "";
+  const search = qSearch || null;
 
   try {
     const count = await prisma.video.count({
-      where: {
+      where: search ? {
         OR: [
           {
             title: {
@@ -23,7 +23,7 @@ export async function GET(request: NextRequest) {
             }
           }
         ]
-      },
+      } : {},
     });
 
     return NextResponse.json(count, {

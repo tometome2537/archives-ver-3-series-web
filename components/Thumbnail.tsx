@@ -81,7 +81,7 @@ export default function Thumbnail({ videoId, title, onClick }: Props) {
         onMouseOut={() => setRaised(false)}
         raised={raised}
       >
-        <CardActionArea>
+        <CardActionArea onClick={onClick} data-id={videoId}>
           <Box
             sx={{
               position: "relative",

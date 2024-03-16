@@ -1,17 +1,19 @@
-import Thumbnail from "@/components/Thumbnail";
-import useVideos from "@/hooks/useVideos";
+import fetcher from "@/libs/fetcher";
 import { unescapeHtml } from "@/libs/unescapeHtml";
 import { Button, Stack, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import {
   MouseEvent,
   MouseEventHandler,
+  useEffect,
   useRef,
   useState,
 } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import YouTube, { YouTubeProps } from "react-youtube";
+import useSWRInfinite from "swr/infinite";
 import Loading from "./Loading";
+import Thumbnail from "./Thumbnail";
 
 interface Video {
   id: string;
@@ -47,8 +49,6 @@ function SortButton(props: SortButtonProps) {
 }
 
 export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Props) {
-  const [hasMore, setHasMore] = useState<boolean>(true);
-
   //見つかった動画の数
   const [hitVideos, setHitVideos] = useState<number>(0);
   const [sortOrder, setSortOrder] = useState<string>("pop");
@@ -56,6 +56,26 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
   const [youtubeId, setYoutubeId] = useState<string>("");
   const [visibleYoutubePlayer, setVisibleYoutubePlayer] =
     useState<boolean>(false);
+
+  fetchHitVideos();
+  function fetchHitVideos() {
+    fetch(`/api/videos/count?search=${searchQuery}`, {
+      cache: "no-store",
+    })
+      .then(async (x) => {
+        return x.text();
+      })
+      .then((x) => {
+        //エラーのときは処理しない
+        if (x.includes("error") == false) {
+          setHitVideos(parseInt(x));
+        }
+      });
+  }
+
+  useEffect(() => {
+    fetchHitVideos();
+  }, [searchQuery]);
 
   const youtubePlayer = useRef<YouTube>(null);
 
@@ -78,43 +98,24 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
     if (visibleYoutubePlayer == false) {
       setVisibleYoutubePlayer(true);
     }
+
+    window.open(`https://youtube.com/watch?v=${e.currentTarget.dataset.id}`);
   }
 
-  const { data: videos, error, mutate: mutatePosts } = useVideos(searchQuery, 0, 30, sortOrder);
+  const limit = 30; // 1ページあたり表示数
+  const getKey = (pageIndex: number, previousPageData: Video[][]) => {
+    if (previousPageData && !previousPageData.length) return null;// 最後に到達した
+    return `/api/videos?search=${searchQuery}&page=${pageIndex}&take=${limit}&sort=${sortOrder}` // SWR キー
+  }
 
-  // useEffect(() => {
-  //   getVideos(30).then((x) => {
-  //     setItems(x);
-  //   });
+  const { data, size, setSize } = useSWRInfinite(getKey, fetcher, {
+    revalidateIfStale: false, // キャッシュがあっても再検証しない
+    revalidateOnFocus: false, // windowをフォーカスすると再検証しない
+    revalidateFirstPage: false, // 2ページ目以降を読み込むとき毎回1ページ目を再検証しない
+  });
 
-  //   fetch(`/api/videos/count?search=${searchQuery}`, {
-  //     cache: "no-store",
-  //   })
-  //     .then((x) => {
-  //       return x.text();
-  //     })
-  //     .then((x) => {
-  //       //エラーのときは処理しない
-  //       if (x.includes("error") == false) {
-  //         setHitVideos(parseInt(x));
-  //       }
-  //     });
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [sortOrder]);
-
-  const fetchMoreData = async () => {
-    // setItems(videos.concat(result));
-
-    // if (result.length < 1) {
-    //   setHasMore(false);
-    //   return;
-    // }
-  };
-
-  //ロード中に表示する項目
-  const loader = (
-    <Loading />
-  );
+  const isEmpty = data?.[0]?.length === 0; // 1ページ目のデータが空
+  const isReachingEnd = isEmpty || (data && data?.[data?.length - 1]?.length < limit) || false; // 1ページ目のデータが空 or データの最後のデータが1ページあたりの表示数より少ないない
 
   const endMessage = (
     <Typography
@@ -123,7 +124,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
       variant="h2"
       color="text.secondary"
     >
-      {videos.length > 0
+      {size > 0
         ? "これ以上動画はありません(´;ω;｀)"
         : "動画が見つかりませんでした(´;ω;｀)"}
     </Typography>
@@ -131,15 +132,14 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
 
   const scrollContents = (
     <Grid2 container spacing={2} mx={2} justifyContent="left">
-      {videos.length > 0 &&
-        (videos as Video[]).map((item, index) => (
-          <Thumbnail
-            key={index}
-            videoId={item.id}
-            title={unescapeHtml(item.title)}
-            onClick={onClickVideo}
-          ></Thumbnail>
-        ))}
+      {data?.flat().map((item, index) => (
+        <Thumbnail
+          key={index}
+          videoId={item.id}
+          title={unescapeHtml(item.title)}
+          onClick={onClickVideo}
+        ></Thumbnail>
+      ))}
     </Grid2>
   );
 
@@ -152,8 +152,6 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
 
     //すべての子要素からcurrentを削除
     setSortOrder(e.currentTarget.dataset.order || "");
-    setHasMore(true);
-    // setItems([]);
   };
 
   return (
@@ -190,14 +188,15 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
         </Stack>
       </Stack>
       <InfiniteScroll
-        dataLength={10}
-        next={fetchMoreData}
-        hasMore={hasMore}
-        loader={loader}
+        dataLength={data?.flat().length || 0}
+        next={() => { setSize(size + 1) }}
+        hasMore={isReachingEnd == false}
+        loader={<Loading />}
         endMessage={endMessage}
       >
         {scrollContents}
       </InfiniteScroll>
+
     </>
   );
 }

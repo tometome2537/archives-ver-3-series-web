@@ -57,7 +57,8 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
   const [visibleYoutubePlayer, setVisibleYoutubePlayer] =
     useState<boolean>(false);
 
-  fetchHitVideos();
+  useEffect(() => fetchHitVideos())
+
   function fetchHitVideos() {
     fetch(`/api/videos/count${searchQuery ? "?search=" + searchQuery : ""}`, {
       cache: "no-store",

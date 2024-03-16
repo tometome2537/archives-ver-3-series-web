@@ -59,7 +59,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
 
   fetchHitVideos();
   function fetchHitVideos() {
-    fetch(`/api/videos/count?search=${searchQuery}`, {
+    fetch(`/api/videos/count?${searchQuery ? "search=" + searchQuery : ""}`, {
       cache: "no-store",
     })
       .then(async (x) => {
@@ -105,7 +105,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
   const limit = 30; // 1ページあたり表示数
   const getKey = (pageIndex: number, previousPageData: Video[][]) => {
     if (previousPageData && !previousPageData.length) return null;// 最後に到達した
-    return `/api/videos?search=${searchQuery}&page=${pageIndex}&take=${limit}&sort=${sortOrder}` // SWR キー
+    return `/api/videos?${searchQuery ? "search=" + searchQuery : ""}&page=${pageIndex}&take=${limit}&sort=${sortOrder}` // SWR キー
   }
 
   const { data, size, setSize } = useSWRInfinite(getKey, fetcher, {

@@ -5,16 +5,71 @@ import {
   CardActionArea,
   CardContent,
   CardMedia,
+  Link,
   Typography,
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Unstable_Grid2";
 import { MouseEventHandler, useState } from "react";
+import React from "react";
 
 type Props = {
   videoId: string;
   title: string;
   onClick: MouseEventHandler<HTMLButtonElement>;
+};
+
+
+export interface NoteContentProps {
+  content: string;
+}
+
+const NoteContent: React.FC<NoteContentProps> = ({ content }) => {
+  function findHashtags(searchText: string): [string[], string[]] {
+    const regexp = /#[^#\s]*/g;
+    const hashtags = searchText.match(regexp) || [];
+    const result = searchText.split(regexp);
+    if (result.length > 0 && result[result.length - 1] === "") {
+      result.pop();
+    }
+    return [result, hashtags];
+  }
+
+  const [results, hashtags] = findHashtags(content);
+
+  const hashtagLinks = hashtags.map((x, index) => (
+    <Link href="#" key={index} color="primary" sx={{ display: "inline", paddingRight: 1 }}>
+      {x}
+    </Link>
+  ));
+
+  if (results === null && hashtagLinks === null) {
+    return <div>{content}</div>;
+  }
+
+  if (results === null) {
+    return <>{hashtagLinks}</>;
+  }
+
+  if (hashtagLinks === null) {
+    return <div>{content}</div>;
+  }
+
+  const merged: React.ReactNode[] = [];
+  const maxLength = Math.max(results.length, hashtagLinks.length);
+
+  for (let i = 0; i < maxLength; i++) {
+    if (i < results.length) {
+      if (results[i] != null && results[i].trim() != "") {
+        merged.push(results[i]);
+      }
+    }
+    if (i < hashtagLinks.length) {
+      merged.push(hashtagLinks[i]);
+    }
+  }
+
+  return <div>{merged}</div>;
 };
 
 export default function Thumbnail({ videoId, title, onClick }: Props) {
@@ -67,7 +122,7 @@ export default function Thumbnail({ videoId, title, onClick }: Props) {
                 WebkitBoxOrient: "vertical",
               }}
             >
-              {title}
+              <NoteContent content={title} />
             </Typography>
           </CardContent>
         </CardActionArea>

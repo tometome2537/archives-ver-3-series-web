@@ -11,6 +11,7 @@ import {
 import InfiniteScroll from "react-infinite-scroll-component";
 import YouTube, { YouTubeProps } from "react-youtube";
 import Loading from "./Loading";
+import { unescapeHtml } from "@/libs/unescapeHtml";
 
 interface Video {
   id: string;
@@ -21,21 +22,6 @@ type Props = {
   playerSize: number;
   isLargePlayer: boolean;
 };
-
-// const SortButton = (
-//   order: string,
-//   currentOrder: string,
-//   onClick: MouseEventHandler<HTMLButtonElement>
-// ) => (
-//   <Button
-//     variant={currentOrder == order ? "contained" : "outlined"}
-//     color="primary"
-//     data-order={order}
-//     onClick={onClick}
-//   >
-//     人気順
-//   </Button>
-// );
 
 type SortButtonProps = {
   order: string;
@@ -162,7 +148,7 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
           <Thumbnail
             key={index}
             videoId={item.id}
-            title={item.title}
+            title={unescapeHtml(item.title)}
             onClick={onClickVideo}
           ></Thumbnail>
         ))}

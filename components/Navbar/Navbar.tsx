@@ -7,7 +7,7 @@ import Image from "next/image";
 export const NavButton = styled(Button)({
   color: "primary",
   fontWeight: "bold",
-});
+}) as typeof Button;
 
 // const Search = styled("div")(({ theme }) => ({
 //   position: "relative",

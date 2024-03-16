@@ -1,10 +1,8 @@
-import SearchIcon from "@mui/icons-material/Search";
 import { AppBar, Box, Button, Link, Toolbar } from "@mui/material";
-import InputBase from "@mui/material/InputBase";
-import { alpha, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import Image from "next/image";
+import { Dispatch, SetStateAction } from "react";
 import SearchBar from "./SearchBar";
-import { Dispatch, Ref, SetStateAction } from "react";
 
 export const NavButton = styled(Button)({
   color: "primary",

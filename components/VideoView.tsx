@@ -70,7 +70,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
         if (x.includes("error") == false) {
           setHitVideos(parseInt(x));
         }
-      }).catch();
+      });
   }
 
   useEffect(() => {

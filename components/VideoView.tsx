@@ -4,7 +4,6 @@ import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import {
   MouseEvent,
   MouseEventHandler,
-  useEffect,
   useRef,
   useState,
 } from "react";
@@ -12,6 +11,7 @@ import InfiniteScroll from "react-infinite-scroll-component";
 import YouTube, { YouTubeProps } from "react-youtube";
 import Loading from "./Loading";
 import { unescapeHtml } from "@/libs/unescapeHtml";
+import useVideos from "@/hooks/useVideos";
 
 interface Video {
   id: string;
@@ -21,6 +21,7 @@ interface Video {
 type Props = {
   playerSize: number;
   isLargePlayer: boolean;
+  searchQuery: string
 };
 
 type SortButtonProps = {
@@ -45,8 +46,7 @@ function SortButton(props: SortButtonProps) {
   );
 }
 
-export default function VideoView({ playerSize, isLargePlayer }: Props) {
-  const [items, setItems] = useState<Video[]>([]);
+export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Props) {
   const [hasMore, setHasMore] = useState<boolean>(true);
 
   //見つかった動画の数
@@ -80,52 +80,40 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
     }
   }
 
-  const getVideos = async (take: number): Promise<Video[]> => {
-    const result = await fetch(
-      `/api/videos?skip=${items.length}&take=${take}&sort=${sortOrder}`,
-      {
-        cache: "no-store",
-      }
-    );
-    const json: Video[] = await result.json();
-    return json;
-  };
+  const { data: videos, error, mutate: mutatePosts } = useVideos(searchQuery, 0, 30, sortOrder);
 
-  useEffect(() => {
-    getVideos(30).then((x) => {
-      setItems(x);
-    });
+  // useEffect(() => {
+  //   getVideos(30).then((x) => {
+  //     setItems(x);
+  //   });
 
-    fetch(`/api/videos/count`, {
-      cache: "no-store",
-    })
-      .then((x) => {
-        return x.text();
-      })
-      .then((x) => {
-        //エラーのときは処理しない
-        if (x.includes("error") == false) {
-          setHitVideos(parseInt(x));
-        }
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [sortOrder]);
+  //   fetch(`/api/videos/count?search=${searchQuery}`, {
+  //     cache: "no-store",
+  //   })
+  //     .then((x) => {
+  //       return x.text();
+  //     })
+  //     .then((x) => {
+  //       //エラーのときは処理しない
+  //       if (x.includes("error") == false) {
+  //         setHitVideos(parseInt(x));
+  //       }
+  //     });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [sortOrder]);
 
   const fetchMoreData = async () => {
-    const result = await getVideos(20);
-    setItems(items.concat(result));
+    // setItems(videos.concat(result));
 
-    if (result.length < 1) {
-      setHasMore(false);
-      return;
-    }
+    // if (result.length < 1) {
+    //   setHasMore(false);
+    //   return;
+    // }
   };
 
   //ロード中に表示する項目
   const loader = (
-    <div className="my-8 flex items-center justify-center">
-      <Loading />
-    </div>
+    <Loading />
   );
 
   const endMessage = (
@@ -135,7 +123,7 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
       variant="h2"
       color="text.secondary"
     >
-      {items.length > 0
+      {videos.length > 0
         ? "これ以上動画はありません(´;ω;｀)"
         : "動画が見つかりませんでした(´;ω;｀)"}
     </Typography>
@@ -143,8 +131,8 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
 
   const scrollContents = (
     <Grid2 container spacing={2} mx={2} justifyContent="left">
-      {items.length > 0 &&
-        items.map((item, index) => (
+      {videos.length > 0 &&
+        (videos as Video[]).map((item, index) => (
           <Thumbnail
             key={index}
             videoId={item.id}
@@ -165,7 +153,7 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
     //すべての子要素からcurrentを削除
     setSortOrder(e.currentTarget.dataset.order || "");
     setHasMore(true);
-    setItems([]);
+    // setItems([]);
   };
 
   return (
@@ -202,7 +190,7 @@ export default function VideoView({ playerSize, isLargePlayer }: Props) {
         </Stack>
       </Stack>
       <InfiniteScroll
-        dataLength={items.length}
+        dataLength={10}
         next={fetchMoreData}
         hasMore={hasMore}
         loader={loader}

@@ -1,6 +1,7 @@
 import SearchIcon from "@mui/icons-material/Search";
 import InputBase from "@mui/material/InputBase";
 import { alpha, styled } from "@mui/material/styles";
+import { Dispatch, Ref, SetStateAction } from "react";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -43,14 +44,26 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
       width: "50ch",
     },
   },
-}));
+})) as typeof InputBase;
 
-export default function SearchBar() {
+type SearchBarProps = {
+  setSearchQuery: Dispatch<SetStateAction<string>>;
+  search: () => void;
+};
+
+export default function SearchBar(props: SearchBarProps) {
   return (
     <Search>
       <StyledInputBase
         placeholder="Search…"
         inputProps={{ "aria-label": "search" }}
+        onChange={(e) => props.setSearchQuery(e.target.value)}
+        onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => {
+          if (e.key === "Enter") {
+            // エンターキー押下時の処理
+            props.search();
+          }
+        }}
       />
       <SearchIconWrapper>
         <SearchIcon />

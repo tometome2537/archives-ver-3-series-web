@@ -200,7 +200,6 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
       >
         {scrollContents}
       </InfiniteScroll>
-
     </>
   );
 }

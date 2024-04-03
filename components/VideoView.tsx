@@ -136,7 +136,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
 
   const scrollContents = (
     <Grid2 container spacing={2} mx={2} justifyContent="left">
-      {data?.flat().map((item, index) => (
+      {data?.flat()?.map((item, index) => (
         <Thumbnail
           key={index}
           videoId={item.id}

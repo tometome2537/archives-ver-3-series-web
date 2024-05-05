@@ -75,6 +75,7 @@ model YouTubeAccount {
   viewCount                  BigInt
   lastUpdated                DateTime
   userName                   String
+  relatedPlaylistsUploads    String
   videoCountFromYTApi        Int
   videos                     Video[]
   person                     Person?       @relation(fields: [personId], references: [id])

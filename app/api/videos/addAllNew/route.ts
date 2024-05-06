@@ -1,57 +1,47 @@
+import { getPlaylistItems } from "@/libs/YT/youtube.helper";
+import { formatDate } from "@/libs/supabase.date";
+import supabase from "@/libs/supabase.helper";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-    return NextResponse.json({ message: "error" }, { status: 400 });
-    // const err = (type: string) =>
-    //     NextResponse.json({ message: `error:${type}` }, { status: 400 });
+    const { data: channels, error } = await supabase.from("YouTubeAccount").select("id, relatedPlaylistsUploads");
+    const playlists = channels?.filter(x => x.id == "UCZx7esGXyW6JXn98byfKEIA");
 
-    // const youtubeAccount = await supabase.from("YouTubeAccount").select("")
+    if (playlists == undefined) return NextResponse.json(error);
 
-    // try {
-    //     const { searchParams } = request.nextUrl;
-    //     const qTake = searchParams.get("take");
-    //     const qPage = searchParams.get("page");
-    //     const qSort = searchParams.get("sort");
-    //     const qSearch = searchParams.get("search");
+    for (let i = 0; i < playlists.length; i++) {
+        const { relatedPlaylistsUploads } = playlists[i];
+        const { result: data, status, statusText } = await getPlaylistItems(relatedPlaylistsUploads);
 
-    //     //takeはstringのみ
-    //     if (qTake == null) return err("take is null");
-    //     if (qSort != null && isSortOrder(qSort) == false) return err("sort is not valid");
+        if (status != 200) continue;
 
-    //     const page = parseInt(qPage || "0", 10);
-    //     const take = parseInt(qTake, 10);
-    //     const search = qSearch || null;
-    //     //人気順、新しい順、古い順
-    //     //デフォルトは人気順
-    //     const sort: SortOrder | null = qSort || "pop";
+        for (let j = 0; j < data.length; j++) {
+            const item = data[j];
+            const videoData = {
+                "id": item.snippet?.resourceId?.videoId ?? "",
+                "categoryChecked": false,
+                "title": item.snippet?.title ?? "",
+                "publishedAt": formatDate(item.contentDetails?.videoPublishedAt ?? ""),
+                "viewCount": 0,
+                "commentCount": 0,
+                "description": item.snippet?.description ?? "",
+                "musicTitle": "",
+                "musicArtist": "",
+                "subscriptionUrl": "",
+                "channelId": item.snippet?.channelId ?? "",
+                "searchText": "",
+                "actorChecked": false,
+                "category": -1,
+                "privacyStatus": item.status?.privacyStatus ?? "undefined",
+                "duration": 0,
+            }
 
-    //     let videos: {
-    //         id: any;
-    //         title: any;
-    //     }[] | null
-    //         = [];
-    //     if (search) {
-    //         const { data, error, count } = await supabase
-    //             .from("Video")
-    //             .select("id, title")
-    //             .textSearch('video_title_description', search)
-    //             .range(page * take, (page + 1) * take - 1)
-    //             .order(order.colum, { ascending: order.ascending });
-    //         videos = data;
-    //         console.log(search)
-    //     } else {
-    //         const { data, error, count } = await supabase
-    //             .from("Video")
-    //             .select("id, title")
-    //             .range(page * take, (page + 1) * take - 1)
-    //             .order(order.colum, { ascending: order.ascending });
-    //         videos = data;
-    //     }
-    //     return NextResponse.json(videos, {
-    //         status: 200,
-    //     });
-    // } catch (error: any) {
-    //     console.log(error);
-    //     return err(error.toString());
-    // }
+            const { error } = await supabase.from("Video").insert(videoData);
+            if (error) {
+                return NextResponse.json(error);
+            }
+        }
+    }
+
+    return NextResponse.json({ status: "success" });
 }

@@ -1,3 +1,4 @@
+import buildUrlWithQuery from "@/libs/buildUrl";
 import fetcher from "@/libs/fetcher";
 import { unescapeHtml } from "@/libs/unescapeHtml";
 import { Button, Stack, Typography } from "@mui/material";
@@ -54,13 +55,14 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
   const [sortOrder, setSortOrder] = useState<string>("pop");
 
   const [youtubeId, setYoutubeId] = useState<string>("");
-  const [visibleYoutubePlayer, setVisibleYoutubePlayer] =
-    useState<boolean>(false);
+  const [visibleYoutubePlayer, setVisibleYoutubePlayer] = useState<boolean>(false);
 
   useEffect(() => fetchHitVideos())
 
   function fetchHitVideos() {
-    fetch(`/api/videos/count${searchQuery ? "?search=" + searchQuery : ""}`, {
+    const url = buildUrlWithQuery("/api/videos/count", { "search": searchQuery });
+
+    fetch(url, {
       cache: "no-store",
     })
       .then(async (x) => {
@@ -106,7 +108,8 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
   const limit = 30; // 1ページあたり表示数
   const getKey = (pageIndex: number, previousPageData: Video[][]) => {
     if (previousPageData && !previousPageData.length) return null;// 最後に到達した
-    return `/api/videos?${searchQuery ? "search=" + searchQuery : ""}&page=${pageIndex}&take=${limit}&sort=${sortOrder}` // SWR キー
+    const url = buildUrlWithQuery("/api/videos", { "search": searchQuery, "page": pageIndex, "take": limit, "sort": sortOrder });
+    return url;
   }
 
   const { data, size, setSize } = useSWRInfinite(getKey, fetcher, {
@@ -133,7 +136,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
 
   const scrollContents = (
     <Grid2 container spacing={2} mx={2} justifyContent="left">
-      {data?.flat().map((item, index) => (
+      {data?.flat()?.map((item, index) => (
         <Thumbnail
           key={index}
           videoId={item.id}
@@ -197,7 +200,6 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
       >
         {scrollContents}
       </InfiniteScroll>
-
     </>
   );
 }

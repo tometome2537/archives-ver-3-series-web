@@ -17,7 +17,9 @@
     "@mui/material": "^5.15.12",
     "@mui/styled-engine": "npm:@mui/styled-engine-sc@latest",
     "@mui/styled-engine-sc": "^6.0.0-alpha.16",
+    "@supabase/supabase-js": "^2.39.8",
     "axios": "^1.6.8",
+    "googleapis": "^136.0.0",
     "next": "14.0.4",
     "react": "^18",
     "react-dom": "^18",
@@ -28,7 +30,7 @@
     "swr": "^2.2.5"
   },
   "devDependencies": {
-    "@prisma/client": "^5.11.0",
+    "@prisma/client": "^5.13.0",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
@@ -38,6 +40,6 @@
     "eslint-config-next": "14.0.4",
     "next-themes": "^0.2.1",
     "postcss": "^8.4.33",
-    "prisma": "^5.11.0"
+    "prisma": "^5.13.0"
   }
 }

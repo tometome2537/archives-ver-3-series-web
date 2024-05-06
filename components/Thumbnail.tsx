@@ -42,15 +42,15 @@ const NoteContent: React.FC<NoteContentProps> = ({ content }) => {
   ));
 
   if (results === null && hashtagLinks === null) {
-    return <div>{content}</div>;
+    return <span>{content}</span>;
   }
 
   if (results === null) {
-    return <>{hashtagLinks}</>;
+    return <span>{hashtagLinks}</span>;
   }
 
   if (hashtagLinks === null) {
-    return <div>{content}</div>;
+    return <span> {content}</span>;
   }
 
   const merged: React.ReactNode[] = [];
@@ -67,7 +67,7 @@ const NoteContent: React.FC<NoteContentProps> = ({ content }) => {
     }
   }
 
-  return <div>{merged}</div>;
+  return <span>{merged}</span>;
 };
 
 export default function Thumbnail({ videoId, title, onClick }: Props) {

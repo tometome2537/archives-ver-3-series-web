@@ -4,19 +4,29 @@ import supabase from "@/libs/supabase.helper";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(request: NextRequest) {
-    const { data: channels, error } = await supabase.from("YouTubeAccount").select("id, relatedPlaylistsUploads");
+    const { data: channels, error: chError } = await supabase.from("YouTubeAccount").select("id, relatedPlaylistsUploads");
     const playlists = channels?.filter(x => x.id == "UCZx7esGXyW6JXn98byfKEIA");
 
-    if (playlists == undefined) return NextResponse.json(error);
+    if (playlists == undefined) return NextResponse.json(chError);
 
     for (let i = 0; i < playlists.length; i++) {
         const { relatedPlaylistsUploads } = playlists[i];
-        const { result: data, status, statusText } = await getPlaylistItems(relatedPlaylistsUploads);
+        const { result, status, statusText } = await getPlaylistItems(relatedPlaylistsUploads);
 
         if (status != 200) continue;
 
-        for (let j = 0; j < data.length; j++) {
-            const item = data[j];
+        for (let j = 0; j < result.length; j++) {
+            const item = result[j];
+
+            const { data, error: videoError, count } = await supabase
+                .from("Video")
+                .select('*', { count: 'exact', head: true })
+                .match({ id: item.snippet?.resourceId?.videoId })
+
+            // countがnullのときは0にする
+            // countが0より大きい→データが存在する場合は追加をスキップする
+            if (count ?? 0 > 0) continue;
+
             const videoData = {
                 "id": item.snippet?.resourceId?.videoId ?? "",
                 "categoryChecked": false,

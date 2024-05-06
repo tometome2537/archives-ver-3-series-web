@@ -3,8 +3,6 @@ import { formatDate } from "@/libs/supabase.date";
 import supabase from "@/libs/supabase.helper";
 import { NextRequest, NextResponse } from "next/server";
 
-export const maxDuration = 300;
-
 export async function GET(request: NextRequest) {
     const { data: channels, error: chError } = await supabase.from("YouTubeAccount").select("id, relatedPlaylistsUploads");
     const { searchParams } = request.nextUrl;

@@ -50,3 +50,32 @@ export const getPlaylistItems = async (playlistId: string): Promise<PlaylistItem
         }
     }
 };
+
+export const getChannelDetail = async (channelId: string): Promise<youtube_v3.Schema$Channel[]> => {
+    const part = [
+        "id",
+        "snippet",
+        "statistics",
+        "brandingSettings"
+    ];
+
+    const youtube = google.youtube({
+        version: "v3",
+        auth: process.env["GOOGLE_API_KEY"] ?? "",
+    });
+
+    const response: {
+        status: number,
+        statusText: string,
+        data: {
+            items?: youtube_v3.Schema$Channel[] | undefined
+        }
+    } = await youtube.channels.list({
+        part: part,
+        id: [channelId]
+    });
+
+    console.log(response.data?.items)
+
+    return response.data.items ?? [];
+}

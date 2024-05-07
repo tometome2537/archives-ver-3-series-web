@@ -7,6 +7,21 @@ interface PlaylistItemList {
     result: youtube_v3.Schema$PlaylistItem[]
 }
 
+interface VideoStatus {
+    id: string,
+    removedByTheUploader: "delete" | "undefined"
+}
+
+interface VideoShortStatus {
+    id: string,
+    short: boolean
+}
+
+interface ChannelStatus {
+    id: string,
+    officialArtistChannel: boolean
+}
+
 export const getPlaylistItems = async (playlistId: string): Promise<PlaylistItemList> => {
     const part = ["id", "snippet", "status", "contentDetails"]
     const maxResults = 50;
@@ -79,3 +94,52 @@ export const getChannelDetail = async (channelId: string): Promise<youtube_v3.Sc
 
     return response.data.items ?? [];
 }
+
+export const checkDeletedVideo = async (videoIds: string[]): Promise<VideoStatus[]> => {
+    const result: VideoStatus[] = [];
+    const response = await fetch(`https://yt.lemnoslife.com/videos?part=status&id=${videoIds.join(",")}`);
+    const data: {
+        items: { id: string, status: { removedByTheUploader: boolean } }[]
+    } = await response.json();
+
+    const items = data.items;
+    items.map(item => {
+        // 削除されてない場合はundefined
+        const status = item.status.removedByTheUploader ? "delete" : "undefined";
+        result.push({ "id": item.id, "removedByTheUploader": status });
+    });
+
+    return result;
+}
+
+export const checkShortVideo = async (videoIds: string[]): Promise<VideoShortStatus[]> => {
+    const result: VideoShortStatus[] = [];
+    const response = await fetch(`https://yt.lemnoslife.com/videos?part=short&id=${videoIds.join(",")}`);
+    const data: {
+        items: { id: string, short: { available: boolean } }[]
+    } = await response.json();
+
+    const items = data.items;
+    items.map(item => {
+        const status = item.short.available;
+        result.push({ "id": item.id, "short": status });
+    });
+
+    return result;
+}
+
+export const checkOfficialArtistChannel = async (channelIds: string[]): Promise<ChannelStatus[]> => {
+    const result: ChannelStatus[] = [];
+    const response = await fetch(`https://yt.lemnoslife.com/channels?part=approval&id=${channelIds.join(",")}`);
+    const data: {
+        items: { id: string, approval: string }[]
+    } = await response.json();
+
+    const items = data.items;
+    items.map(item => {
+        const status = item.approval === "Official Artist Channel";
+        result.push({ "id": item.id, "officialArtistChannel": status });
+    });
+
+    return result;
+} 

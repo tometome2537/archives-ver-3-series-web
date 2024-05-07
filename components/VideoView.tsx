@@ -60,19 +60,16 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
   useEffect(() => fetchHitVideos())
 
   function fetchHitVideos() {
-    const url = buildUrlWithQuery("/api/videos/count", { "search": searchQuery });
+    const url = buildUrlWithQuery(process.env.NEXT_PUBLIC_BASE_URL + "/videos/count", { "search": searchQuery });
 
     fetch(url, {
       cache: "no-store",
     })
       .then(async (x) => {
-        return x.text();
+        return await x.json()
       })
       .then((x) => {
-        //エラーのときは処理しない
-        if (x.includes("error") == false) {
-          setHitVideos(parseInt(x));
-        }
+        setHitVideos(parseInt(x.videoCount));
       });
   }
 
@@ -108,7 +105,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
   const limit = 30; // 1ページあたり表示数
   const getKey = (pageIndex: number, previousPageData: Video[][]) => {
     if (previousPageData && !previousPageData.length) return null;// 最後に到達した
-    const url = buildUrlWithQuery("/api/videos", { "search": searchQuery, "page": pageIndex, "take": limit, "sort": sortOrder });
+    const url = buildUrlWithQuery(process.env.NEXT_PUBLIC_BASE_URL + "/videos", { "search": searchQuery, "page": pageIndex, "take": limit, "sort": sortOrder });
     return url;
   }
 

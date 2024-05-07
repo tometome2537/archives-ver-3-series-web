@@ -15,7 +15,7 @@ interface Video {
 }
 
 const useVideos = (searchQuery: string, skip: number, take: number, sortOrder: string) => {
-    const url = `/api/videos?search=${searchQuery}&skip=${skip}&take=${take}&sort=${sortOrder}`;
+    const url = process.env.NEXT_PUBLIC_BASE_URL + `/videos?search=${searchQuery}&skip=${skip}&take=${take}&sort=${sortOrder}`;
     const { data, error, isLoading, mutate } = useSWR(url, fetcher);
 
     return {

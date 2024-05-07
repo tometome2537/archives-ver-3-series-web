@@ -90,8 +90,6 @@ export const getChannelDetail = async (channelId: string): Promise<youtube_v3.Sc
         id: [channelId]
     });
 
-    console.log(response.data?.items)
-
     return response.data.items ?? [];
 }
 
@@ -142,4 +140,101 @@ export const checkOfficialArtistChannel = async (channelIds: string[]): Promise<
     });
 
     return result;
-} 
+}
+
+export const getPlaylistList = async (channelIds: string[]): Promise<youtube_v3.Schema$Playlist[]> => {
+    const part = [
+        "id",
+        "snippet",
+        "status",
+        "contentDetails"
+    ];
+
+    const youtube = google.youtube({
+        version: "v3",
+        auth: process.env["GOOGLE_API_KEY"] ?? "",
+    });
+
+    const chunkedChannelIds = chunkArray(channelIds, 50);
+    const result: youtube_v3.Schema$Playlist[] = [];
+
+    chunkedChannelIds.forEach(async x => {
+        const response = await youtube.playlists.list({
+            part: part,
+            id: x
+        });
+
+        if (response.data.items != undefined) {
+            result.push(...response.data.items);
+        }
+    })
+
+    return result;
+}
+
+export const getVideoList = async (videoIds: string[]): Promise<youtube_v3.Schema$Video[]> => {
+    const part = [
+        "snippet",
+        "statistics",
+        "status",
+    ];
+
+    const youtube = google.youtube({
+        version: "v3",
+        auth: process.env["GOOGLE_API_KEY"] ?? "",
+    });
+
+    const chunkedvideoIds = chunkArray(videoIds, 50);
+    const result: youtube_v3.Schema$Video[] = [];
+
+    chunkedvideoIds.forEach(async x => {
+        const response = await youtube.videos.list({
+            part: part,
+            id: x
+        });
+
+        if (response.data.items != undefined) {
+            result.push(...response.data.items);
+        }
+    })
+
+    return result;
+}
+
+export const getChannelList = async (videoIds: string[]): Promise<youtube_v3.Schema$Channel[]> => {
+    const part = [
+        "snippet",
+        "contentDetails",
+        "statistics",
+        "brandingSettings",
+    ];
+
+    const youtube = google.youtube({
+        version: "v3",
+        auth: process.env["GOOGLE_API_KEY"] ?? "",
+    });
+
+    const chunkedvideoIds = chunkArray(videoIds, 50);
+    const result: youtube_v3.Schema$Channel[] = [];
+
+    chunkedvideoIds.forEach(async x => {
+        const response = await youtube.channels.list({
+            part: part,
+            id: x
+        });
+
+        if (response.data.items != undefined) {
+            result.push(...response.data.items);
+        }
+    })
+
+    return result;
+}
+
+function chunkArray(array: any[], chunkSize: number): any[] {
+    const result: any[] = [];
+    for (let i = 0; i < array.length; i += chunkSize) {
+        result.push(array.slice(i, i + chunkSize));
+    }
+    return result;
+}

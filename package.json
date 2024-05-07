@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "postinstall": "prisma generate",
-    "fix:lint": "next lint --fix"
+    "fix:lint": "next lint --fix",
+    "prisma:push": "dotenv -e .env.local -- npx prisma db push"
   },
   "dependencies": {
     "@emotion/react": "^11.11.4",
@@ -19,6 +20,7 @@
     "@mui/styled-engine-sc": "^6.0.0-alpha.16",
     "@supabase/supabase-js": "^2.39.8",
     "axios": "^1.6.8",
+    "dotenv-cli": "^7.4.1",
     "googleapis": "^136.0.0",
     "next": "14.0.4",
     "react": "^18",

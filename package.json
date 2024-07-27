@@ -9,15 +9,17 @@
     "lint": "next lint",
     "postinstall": "prisma generate",
     "fix:lint": "next lint --fix",
-    "prisma:push": "dotenv -e .env.local -- npx prisma db push"
+    "prisma:push": "dotenv -e .env.local -- npx prisma db push",
+    "gen-type": "npx -y supabase gen types typescript --project-id 'ybikwsfsconkahqyniis' --schema public > src/types/supabase.ts",
+    "update": "ncu -u && npm i"
   },
   "dependencies": {
     "@emotion/react": "^11.13.0",
     "@emotion/styled": "^11.13.0",
     "@eslint/config-array": "^0.17.1",
     "@eslint/object-schema": "^2.1.4",
-    "@mui/icons-material": "^5.16.4",
-    "@mui/material": "^5.16.4",
+    "@mui/icons-material": "^5.16.5",
+    "@mui/material": "^5.16.5",
     "@supabase/supabase-js": "^2.44.4",
     "axios": "^1.7.2",
     "dotenv-cli": "^7.4.2",
@@ -37,7 +39,7 @@
   "devDependencies": {
     "@prisma/client": "^5.17.0",
     "@types/react": "^18",
-    "eslint": "^8.57.0",
+    "eslint": "^9.8.0",
     "eslint-config-next": "14.2.5",
     "prisma": "^5.17.0"
   }

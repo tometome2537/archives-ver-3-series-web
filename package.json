@@ -18,10 +18,10 @@
     "@emotion/styled": "^11.13.0",
     "@eslint/config-array": "^0.17.1",
     "@eslint/object-schema": "^2.1.4",
-    "@mui/icons-material": "^5.16.5",
-    "@mui/material": "^5.16.5",
-    "@supabase/supabase-js": "^2.44.4",
-    "axios": "^1.7.2",
+    "@mui/icons-material": "^5.16.7",
+    "@mui/material": "^5.16.7",
+    "@supabase/supabase-js": "^2.45.1",
+    "axios": "^1.7.4",
     "dotenv-cli": "^7.4.2",
     "eslint": "^8.57.0",
     "eslint-config-next": "^14.2.5",
@@ -29,17 +29,17 @@
     "googleapis": "^140.0.1",
     "lru-cache": "^11.0.0",
     "next": "14.2.5",
-    "react": "^18",
-    "react-dom": "^18",
-    "react-icons": "^5.2.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-icons": "^5.3.0",
     "react-infinite-scroll-component": "^6.1.0",
     "react-youtube": "^10.1.0",
     "rimraf": "^6.0.1",
     "swr": "^2.2.5"
   },
   "devDependencies": {
-    "@prisma/client": "^5.17.0",
-    "@types/react": "^18",
-    "prisma": "^5.17.0"
+    "@prisma/client": "^5.18.0",
+    "@types/react": "^18.3.3",
+    "prisma": "^5.18.0"
   }
 }

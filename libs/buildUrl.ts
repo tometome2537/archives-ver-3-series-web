@@ -8,6 +8,10 @@ export default function buildUrlWithQuery(baseUrl: string, queryParams: Record<s
         }
     }
 
+    if (process.env.NEXT_PUBLIC_STAGE == "local") {
+        paramsObject.append("access_key", process.env.NEXT_PUBLIC_ACCESS_KEY ?? "");
+    }
+
     const queryString = paramsObject.toString();
     return queryString !== "" ? `${baseUrl}?${queryString}` : baseUrl;
 }

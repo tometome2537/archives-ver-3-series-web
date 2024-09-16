@@ -48,118 +48,134 @@ function SortButton(props: SortButtonProps) {
     </Button>
   );
 }
-
 export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Props) {
-  //見つかった動画の数
-  const [hitVideos, setHitVideos] = useState<number>(0);
+  // 見つかった動画の数を保持するステート
+  const [videoCount, setVideoCount] = useState<number>(0);
+  // ソート順を保持するステート（初期値は「人気順」）
   const [sortOrder, setSortOrder] = useState<string>("pop");
 
+  // 選択されたYouTube動画のIDを保持するステート
   const [youtubeId, setYoutubeId] = useState<string>("");
-  const [visibleYoutubePlayer, setVisibleYoutubePlayer] = useState<boolean>(false);
+  // YouTubeプレーヤーが表示されているかどうかのフラグ
+  const [isYoutubePlayerVisible, setIsYoutubePlayerVisible] = useState<boolean>(false);
 
-  useEffect(() => fetchHitVideos())
+  // コンポーネントの初回マウント時に動画数を取得
+  useEffect(() => fetchVideoCount(), []);
 
-  function fetchHitVideos() {
+  // APIから動画数を取得する関数
+  function fetchVideoCount() {
+    // クエリを含むURLを作成
     const url = buildUrlWithQuery(process.env.NEXT_PUBLIC_BASE_URL + "/videos/count", { "search": searchQuery });
 
-    fetch(url, {
-      cache: "no-store",
-    })
-      .then(async (x) => {
-        return await x.json()
-      })
-      .then((x) => {
-        setHitVideos(parseInt(x.videoCount));
+    // fetchを使用して動画数を取得
+    fetch(url, { cache: "no-store" })
+      .then(async (response) => await response.json())
+      .then((data) => {
+        setVideoCount(parseInt(data.videoCount)); // 取得した動画数をステートに設定
       });
   }
 
+  // 検索クエリが変更されるたびに動画数を再取得
   useEffect(() => {
-    fetchHitVideos();
+    fetchVideoCount();
   }, [searchQuery]);
 
+  // YouTubeプレーヤーの参照を保持
   const youtubePlayer = useRef<YouTube>(null);
 
+  // YouTubeプレーヤーの準備完了時に呼ばれるイベントハンドラ
   const onPlayerReady: YouTubeProps["onReady"] = (event) => {
-    // access to player in all event handlers via event.target
+    // プレーヤーの制御オブジェクトにアクセスし、一時停止させる
     event.target.pauseVideo();
   };
 
-  const opts: YouTubeProps["opts"] = {
+  // YouTubeプレーヤーのオプション設定
+  const playerOptions: YouTubeProps["opts"] = {
     playerVars: {
-      // https://developers.google.com/youtube/player_parameters
-      autoplay: 1,
+      autoplay: 1, // 自動再生を有効にする
     },
   };
 
-  function onClickVideo(e: React.MouseEvent<HTMLButtonElement>) {
+  // 動画サムネイルがクリックされたときに呼ばれる関数
+  function handleVideoClick(e: React.MouseEvent<HTMLButtonElement>) {
+    // クリックされた動画のIDを取得しステートに設定
     setYoutubeId(e.currentTarget.dataset.id ?? "");
 
-    //非表示になってるときだけ、表示のフラグを立てる
-    if (visibleYoutubePlayer == false) {
-      setVisibleYoutubePlayer(true);
+    // プレーヤーが非表示のときだけ表示させる
+    if (!isYoutubePlayerVisible) {
+      setIsYoutubePlayerVisible(true);
     }
 
-    window.open(`https://youtube.com/watch?v=${e.currentTarget.dataset.id}`);
+    // 新しいタブでYouTubeの動画を開く
+    // window.open(`https://youtube.com/watch?v=${e.currentTarget.dataset.id}`);
   }
 
-  const limit = 30; // 1ページあたり表示数
-  const getKey = (pageIndex: number, previousPageData: Video[][]) => {
-    if (previousPageData && !previousPageData.length) return null;// 最後に到達した
-    const url = buildUrlWithQuery(process.env.NEXT_PUBLIC_BASE_URL + "/videos", { "search": searchQuery, "page": pageIndex, "take": limit, "sort": sortOrder });
+  const itemsPerPage = 30; // 1ページあたりの表示数
+
+  // ページごとにURLを生成する関数（無限スクロール用）
+  const generateUrlForPage = (pageIndex: number, previousPageData: Video[][]) => {
+    if (previousPageData && !previousPageData.length) return null; // 最後のページに到達した場合
+    // クエリを含むURLを作成
+    const url = buildUrlWithQuery(process.env.NEXT_PUBLIC_BASE_URL + "/videos", {
+      "search": searchQuery,
+      "page": pageIndex,
+      "take": itemsPerPage,
+      "sort": sortOrder
+    });
     return url;
-  }
+  };
 
-  const { data, size, setSize } = useSWRInfinite(getKey, fetcher, {
+  // useSWRInfiniteでデータを取得し、ページごとに管理
+  const { data, size, setSize } = useSWRInfinite(generateUrlForPage, fetcher, {
     revalidateIfStale: false, // キャッシュがあっても再検証しない
-    revalidateOnFocus: false, // windowをフォーカスすると再検証しない
-    revalidateFirstPage: false, // 2ページ目以降を読み込むとき毎回1ページ目を再検証しない
+    revalidateOnFocus: false, // ウィンドウをフォーカスしても再検証しない
+    revalidateFirstPage: false, // 2ページ目以降を読み込むとき、1ページ目を再検証しない
   });
 
-  const isEmpty = data?.[0]?.length === 0; // 1ページ目のデータが空
-  const isReachingEnd = isEmpty || (data && data?.[data?.length - 1]?.length < limit) || false; // 1ページ目のデータが空 or データの最後のデータが1ページあたりの表示数より少ないない
+  // データが空かどうかのチェック
+  const isEmpty = data?.[0]?.length === 0;
+  // 最後のページかどうかのチェック
+  const isReachingEnd = isEmpty || (data && data?.[data?.length - 1]?.length < itemsPerPage) || false;
 
+  // 最後まで到達した場合のメッセージ
   const endMessage = (
-    <Typography
-      align="center"
-      sx={{ my: 2 }}
-      variant="h2"
-      color="text.secondary"
-    >
-      {size > 0
-        ? "これ以上動画はありません(´;ω;｀)"
-        : "動画が見つかりませんでした(´;ω;｀)"}
+    <Typography align="center" sx={{ my: 2 }} variant="h2" color="text.secondary">
+      {size > 0 ? "これ以上動画はありません(´;ω;｀)" : "動画が見つかりませんでした(´;ω;｀)"}
     </Typography>
   );
 
+  // 動画サムネイルリストのコンテンツ
   const scrollContents = (
     <Grid2 container spacing={2} mx={2} justifyContent="left">
       {data?.flat()?.map((item, index) => (
         <Thumbnail
           key={index}
+          thumbnailType="card"
           videoId={item.id}
           title={unescapeHtml(item.title)}
-          onClick={onClickVideo}
-        ></Thumbnail>
+          onClick={handleVideoClick}
+        />
       ))}
     </Grid2>
   );
 
+  // ソートボタンの参照
   const sortRadio = useRef<HTMLDivElement>(null);
 
-  const sort = (e: MouseEvent<HTMLButtonElement>) => {
+  // ソートボタンがクリックされたときの処理
+  const handleSortChange = (e: MouseEvent<HTMLButtonElement>) => {
     const newOrder = e.currentTarget.dataset.order;
-    //変わってないなら変更処理しなくていい
-    if (newOrder == sortOrder) return;
+    if (newOrder === sortOrder) return; // 変更がない場合は処理しない
 
-    //すべての子要素からcurrentを削除
-    setSortOrder(e.currentTarget.dataset.order || "");
+    setSortOrder(newOrder || ""); // ソート順を変更
   };
 
   return (
     <>
+      {/* ヒットした動画数とソートオプションの表示 */}
       <Stack direction={"row"} sx={{ mx: 4 }} justifyContent={"space-between"}>
         <Typography variant="h5" sx={{ my: 2 }} color="text.secondary">
-          {hitVideos.toLocaleString()} 件
+          {videoCount.toLocaleString()} 件
         </Typography>
         <Stack
           direction="row"
@@ -168,30 +184,17 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
           alignItems="center"
           ref={sortRadio}
         >
-          <SortButton
-            order="pop"
-            currentOrder={sortOrder}
-            onClick={sort}
-            text="人気順"
-          ></SortButton>
-          <SortButton
-            order="new"
-            currentOrder={sortOrder}
-            onClick={sort}
-            text="新しい"
-          ></SortButton>
-          <SortButton
-            order="old"
-            currentOrder={sortOrder}
-            onClick={sort}
-            text="古い"
-          ></SortButton>
+          <SortButton order="pop" currentOrder={sortOrder} onClick={handleSortChange} text="人気順" />
+          <SortButton order="new" currentOrder={sortOrder} onClick={handleSortChange} text="新しい" />
+          <SortButton order="old" currentOrder={sortOrder} onClick={handleSortChange} text="古い" />
         </Stack>
       </Stack>
+
+      {/* 無限スクロールの実装 */}
       <InfiniteScroll
         dataLength={data?.flat().length || 0}
-        next={() => { setSize(size + 1) }}
-        hasMore={isReachingEnd == false}
+        next={() => setSize(size + 1)}
+        hasMore={!isReachingEnd}
         loader={<Loading />}
         endMessage={endMessage}
       >

@@ -1,8 +1,10 @@
 import { AppBar, Box, Button, Link, Toolbar } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useRef, useEffect, useState } from "react";
 import SearchBar from "./SearchBar";
+import EntitySelector from "../EntitySelector";
+import { EntityObj } from "../EntitySelector";
 
 export const NavButton = styled(Button)({
   color: "primary",
@@ -12,34 +14,55 @@ export const NavButton = styled(Button)({
 type SearchBarProps = {
   setSearchQuery: Dispatch<SetStateAction<string>>;
   search: () => void;
+  setEntityId: Dispatch<SetStateAction<Array<EntityObj>>>;
+  setNavbarHeight: Dispatch<SetStateAction<number>>;
 };
 
 export default function Navbar(props: SearchBarProps) {
-  return (
-    <AppBar position="static" color="default">
-      <Toolbar>
-        <Link href="/" sx={{ marginTop: 1, marginBottom: 0.5 }}>
-          <Image
-            src="/MAP.png"
-            alt="Music Archives Project Logo"
-            width={160}
-            height={40}
-          />
-        </Link>
-        <Box sx={{ flexGrow: 1 }}></Box>
-        <SearchBar setSearchQuery={props.setSearchQuery} search={props.search} />
-        <Box sx={{ flexGrow: 1 }}></Box>
+  // NavbarのHTMLが保存される
+  const NavbarRef = useRef<HTMLDivElement | null>(null);
+  // BottomNavigationの高さの数値が入る。
+  const [navHeight, setNavHeight] = useState<number>(0);
 
-        <NavButton color="primary" href="/#">
-          トップ
-        </NavButton>
-        <NavButton color="primary" href="/#">
-          サービス
-        </NavButton>
-        <NavButton href="https://forms.gle/osqdRqh1MxWhA51A8" target="_blank">
-          お問い合わせ
-        </NavButton>
-      </Toolbar>
-    </AppBar>
+  // BottomNavigationの高さを調べる
+  useEffect(() => {
+    if (NavbarRef.current) {
+      const height = NavbarRef.current.clientHeight;
+      setNavHeight(height)
+      props.setNavbarHeight(height)
+    }
+  }, []);
+  return (
+    <>
+      <AppBar ref={NavbarRef} position="fixed" color="default">
+        <Toolbar>
+          <Link href="/" sx={{ marginTop: 1, marginBottom: 0.5 }}>
+            <Image
+              src="/MAP.png"
+              alt="Music Archives Project Logo"
+              width={160}
+              height={40}
+            />
+          </Link>
+          <Box sx={{ flexGrow: 1 }}></Box>
+          <SearchBar setSearchQuery={props.setSearchQuery} search={props.search} />
+          <Box sx={{ flexGrow: 1 }}></Box>
+          <EntitySelector setEntityId={props.setEntityId}></EntitySelector>
+          <Box sx={{ flexGrow: 1 }}></Box>
+          <NavButton color="primary" href="/#">
+            {navHeight}
+          </NavButton>
+          <NavButton color="primary" href="/#">
+            top
+          </NavButton>
+          <NavButton href="https://forms.gle/osqdRqh1MxWhA51A8" target="_blank">
+            contact
+          </NavButton>
+        </Toolbar>
+      </AppBar>
+
+      {/* ↓ AppBar分の高さを確保 */}
+      {/* <Toolbar /> */}
+    </>
   );
 }

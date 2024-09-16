@@ -26,6 +26,6 @@ export default function RootLayout({
 
 export async function generateMetadata(): Promise<Metadata> {
   return {
-    title: "タイトルですね",
+    title: "ミュージックアーカイブスプロジェクト",
   };
 }

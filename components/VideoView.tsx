@@ -50,7 +50,7 @@ function SortButton(props: SortButtonProps) {
 }
 export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Props) {
   // 見つかった動画の数を保持するステート
-  const [videoCount, setVideoCount] = useState<number>(0);
+  const [videoCount, setVideoCount] = useState<number>(NaN);
   // ソート順を保持するステート（初期値は「人気順」）
   const [sortOrder, setSortOrder] = useState<string>("pop");
 

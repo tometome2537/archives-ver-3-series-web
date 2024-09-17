@@ -80,7 +80,7 @@ export default function EntitySelector({ setEntityId }: EntitySelectorProps) {
   };
 
   // 選択されているentityId[人物]
-  const [selectEntityIdPerson, setSelectEntityIdPerson] = useState<Array<EntityObj>>([{ id: "美稀", name: "美稀", category: "person" }]);
+  const [selectEntityIdPerson, setSelectEntityIdPerson] = useState<Array<EntityObj>>([{ id: "椿佳宵", name: "椿佳宵", category: "person" }]);
   // 選択されているentityId[組織]
   const [selectEntityIdOrganisation, setSelectEntityIdOrganisation] = useState<Array<EntityObj>>([{ id: "ぷらそにか", name: "ぷらそにか", category: "organization" }]);
 

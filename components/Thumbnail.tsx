@@ -144,30 +144,36 @@ export default function Thumbnail({ thumbnailType, videoId, title, onClick }: Th
   }
 
   return (
-    <div onClick={onClick ? onClick : undefined} data-videoId={videoId}>
+    <div onClick={onClick ? onClick : undefined} data-videoId={videoId} data-title={title}>
       {/* Image を使用すると loading="lazy" が自動で使用される */}
-      <Image
-        src={`https://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
-        alt={title ? "Thumbnail of " + title : ""}
-        width={320}
-        height={180}
-        style={{ objectFit: "contain", borderRadius: "1.2em" }}
-      />
-      <div
-        style={{
-          /* 要素に幅を持たせるために必要 */
-          // display: "inline-block",
-          // 確保する文字数
-          width: "30ch",
-          // 改行を防ぐ
-          // whiteSpace: "nowrap",
-          /* 溢れた文字を隠す  */
-          /* overflow: hidden;      */
-          /* 長すぎる場合に "..." を付ける  */
-          textOverflow: "ellipsis",
-        }}
-      >
-        {title}
+      <div style={{
+        display:"flex",
+        flexDirection: "column",
+        alignItems: "center"
+      }}>
+        <Image
+          src={`https://img.youtube.com/vi/${videoId}/mqdefault.jpg`}
+          alt={title ? "Thumbnail of " + title : ""}
+          width={320}
+          height={180}
+          style={{ objectFit: "contain", borderRadius: "1.2em" }}
+        />
+        <div
+          style={{
+            /* 要素に幅を持たせるために必要 */
+            // display: "inline-block",
+            // 確保する文字数
+            width: "30ch",
+            // 改行を防ぐ
+            // whiteSpace: "nowrap",
+            /* 溢れた文字を隠す  */
+            /* overflow: hidden;      */
+            /* 長すぎる場合に "..." を付ける  */
+            textOverflow: "ellipsis",
+          }}
+        >
+          {title}
+        </div>
       </div>
     </div>
   );

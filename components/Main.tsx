@@ -3,11 +3,11 @@ import Navbar from "./Navbar/Navbar";
 import { Grid } from "@mui/material";
 import Sidebar from "./Navbar/Sidebar";
 import VideoView from "./VideoView";
-import VideoViewTemporary from "./VideoViewTemporary";
+import VideoTemporaryView from "./VideoTemporaryView";
 import Tabbar from "./Tabbar";
 import { EntityObj } from "./EntitySelector";
-import Player from "./Player";
-import { PlayerItem } from "./Player";
+import PlayerView from "./PlayerView";
+import { PlayerItem } from "./PlayerView";
 
 export default function Main() {
   // Navbarの高さを定義
@@ -15,17 +15,16 @@ export default function Main() {
   // Tabbarの高さを定義
   const [tabbarHeight, setTabbarHeight] = useState<number>(0);
   // 現在アクティブなタブ
-  const [activeTab, setActiveTab] = useState<string>("liveInformation");
+  const [activeTab, setActiveTab] = useState<string>("temporaryYouTube");
   // アクティブになったタブのリスト ※ 一度アクティブなったタブは破棄しない。
-  const activeTabList = useRef<Array<string>>(["liveInformation"]);
+  const activeTabList = useRef<Array<string>>(["temporaryYouTube"]);
 
   // Playerを拡大表示するかどうか
   const [isPlayerFullscreen, setIsPlayerFullscreen] = useState<boolean>(false);
   // Player
-  const [playerItem, setPlayerItem] = useState<PlayerItem>({
-    videoId: "HIYXEh893JM",
-    title: "オールドファッション",
-  });
+  const [playerItem, setPlayerItem] = useState<PlayerItem>({});
+  const [playerPlaylist, setPlayerPlaylist] = useState<Array<PlayerItem>>([])
+  const [playerSearchResult, setPlayerSearchResult] = useState<Array<PlayerItem>>([])
 
   // 選択されているEntity Id ※ EntitySelectorで使用。
   const [entityId, setEntityId] = useState<Array<EntityObj>>([]);
@@ -69,29 +68,38 @@ export default function Main() {
             }}
           >
             {/* ↓ header(Navbar)に被らないように */}
-            <div style={{ marginTop: navbarHeight }}></div>
-            {JSON.stringify(activeTabList)}
+            <div style={{ paddingTop: navbarHeight }}></div>
             <div>楽曲集</div>
             {/* ↓ Tabbarに被らないように底上げ */}
-            <div style={{ marginTop: tabbarHeight }}></div>
+            <div style={{ paddingTop: tabbarHeight }}></div>
           </div>
         )}
 
-        {activeTabList.current.includes("temporaryYouTube") && (
-          <>
-            <div
-              style={{
-                display: activeTab === "temporaryYouTube" ? "block" : "none", // アクティブかどうかで表示/非表示を切り替え
-              }}
-            >
-              {/* ↓ header(Navbar)に被らないように */}
-              <div style={{ marginTop: navbarHeight }}></div>
-              <VideoViewTemporary entityId={entityId} setPlayerItem={setPlayerItem} />
-              {/* ↓ Tabbarに被らないように底上げ */}
-              <div style={{ marginTop: tabbarHeight }}></div>
+        {activeTabList.current.includes("temporaryYouTube") ? (
+          <div
+            style={{
+              display: activeTab === "temporaryYouTube" ? "block" : "none", // アクティブかどうかで表示/非表示を切り替え
+
+            }}
+          >
+            <div style={{
+              // ↓ header(Navbar)に被らないように
+              paddingTop: navbarHeight,
+              // ↓ Tabbarに被らないように底上げ
+              paddingBottom: tabbarHeight,
+              // 拡大モードの時、縦スクロールを許可しない
+              overflowY: isPlayerFullscreen ? "hidden" : "auto",
+            }}>
+              <VideoTemporaryView
+                entityId={entityId}
+                setPlayerItem={setPlayerItem}
+                setPlayerPlaylist={setPlayerPlaylist}
+                setPlayerSearchResult={setPlayerSearchResult}
+              />
             </div>
-          </>
-        )}
+          </div>
+        ) : null}
+
 
         {activeTabList.current.includes("YouTube") && (
           <div
@@ -100,7 +108,7 @@ export default function Main() {
             }}
           >
             {/* ↓ header(Navbar)に被らないように */}
-            <div style={{ marginTop: navbarHeight }}></div>
+            <div style={{ paddingTop: navbarHeight }}></div>
             <Sidebar
               setPlayerSize={setPlayerSize}
               setIsLargePlayer={setIsLargePlayer}
@@ -128,16 +136,17 @@ export default function Main() {
             <div style={{ marginTop: tabbarHeight }}></div>
           </div>
         )}
-      </div>
+      </div >
 
       {/* 画面下に固定されたタブバー */}
-      <Grid
+      < Grid
         container
         direction="column"
         sx={{
           position: "fixed",
           bottom: 0,
-        }}
+        }
+        }
       >
         {/* 1段目 */}
         {/* Player */}
@@ -155,15 +164,20 @@ export default function Main() {
             right: 0,
           }}
         >
-          <Player
+          <PlayerView
             PlayerItem={playerItem}
+            Playlist={playerPlaylist}
+            searchResult={playerSearchResult}
             isPlayerFullscreen={isPlayerFullscreen}
             setIsPlayerFullscreen={setIsPlayerFullscreen}
             style={{
-              paddingTop: navbarHeight, // header(Navbar)に被らないように
+              // header(Navbar)に被らないように
+              paddingTop: isPlayerFullscreen ? navbarHeight : "",
               paddingBottom: tabbarHeight, // Tabbarに被らないように底上げ
+              // marginTop: navbarHeight, // header(Navbar)に被らないように
+              // marginBottom: tabbarHeight, // Tabbarに被らないように底上
             }}
-          ></Player>
+          ></PlayerView>
         </Grid>
 
         {/* 2段目 */}
@@ -183,7 +197,7 @@ export default function Main() {
             setTabbarHeight={setTabbarHeight}
           />
         </Grid>
-      </Grid>
+      </Grid >
     </>
   );
 }

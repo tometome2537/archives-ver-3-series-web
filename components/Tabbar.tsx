@@ -50,34 +50,34 @@ export default function Tabbar(props: TabbarProps) {
                     right: 0
                 }}
             >
-                <BottomNavigationAction
+                {/* <BottomNavigationAction
                     label={JSON.stringify(navHeight)}
                     value="linkCollection"
                     icon={<AccountBoxIcon />}
-                />
+                /> */}
 
                 <BottomNavigationAction
-                    label="リンク集(β版)"
+                    // label="リンク集(β版)"
                     value="linkCollection"
                     icon={<AccountBoxIcon />}
                 />
                 <BottomNavigationAction
-                    label="楽曲集(β版)"
+                    // label="楽曲集(β版)"
                     value="songs"
                     icon={<MusicNoteIcon />}
                 />
                 <BottomNavigationAction
-                    label="YouTube(β版)"
+                    // label="YouTube(スプシβ版)"
                     value="temporaryYouTube"
                     icon={<YouTubeIcon />}
                 />
                 <BottomNavigationAction
-                    label="YouTube(α版)"
+                    // label="YouTube(DBα版)"
                     value="YouTube"
                     icon={<YouTubeIcon />}
                 />
                 <BottomNavigationAction
-                    label="LIVE情報(β版)"
+                    // label="LIVE情報(β版)"
                     value="liveInformation"
                     icon={<LocationOnIcon />}
                 />

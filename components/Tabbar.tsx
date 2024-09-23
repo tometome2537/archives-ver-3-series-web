@@ -9,6 +9,7 @@ type TabbarProps = {
     activeTab: string;
     setActiveTab: Dispatch<SetStateAction<string>>;
     activeTabList: MutableRefObject<string[]>; // コロンではなく型を指定
+    setIsPlayerFullscreen: Dispatch<SetStateAction<boolean>>;
     setTabbarHeight: Dispatch<SetStateAction<number>>;
 };
 
@@ -20,6 +21,7 @@ const handleTabClick = (props: TabbarProps, value: string) => {
     if (!props.activeTabList.current.includes(value)) {
         props.activeTabList.current.push(value)
     }
+    props.setIsPlayerFullscreen(false)
 }
 
 export default function Tabbar(props: TabbarProps) {

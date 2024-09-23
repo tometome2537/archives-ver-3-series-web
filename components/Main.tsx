@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Navbar from "./Navbar/Navbar";
 import { Grid } from "@mui/material";
 import Sidebar from "./Navbar/Sidebar";
@@ -10,16 +10,18 @@ import PlayerView from "./PlayerView";
 import { PlayerItem } from "./PlayerView";
 
 export default function Main() {
+  // ディスプレイの横幅(px)
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
   // Navbarの高さを定義
   const [navbarHeight, setNavbarHeight] = useState<number>(0);
   // Tabbarの高さを定義
   const [tabbarHeight, setTabbarHeight] = useState<number>(0);
-  // 現在アクティブなタブ
+  // 現在アクティブなTab
   const [activeTab, setActiveTab] = useState<string>("temporaryYouTube");
   // アクティブになったタブのリスト ※ 一度アクティブなったタブは破棄しない。
   const activeTabList = useRef<Array<string>>(["temporaryYouTube"]);
 
-  // Playerを拡大表示するかどうか
+  // PlayerViewを拡大表示するかどうか
   const [isPlayerFullscreen, setIsPlayerFullscreen] = useState<boolean>(false);
   // Player
   const [playerItem, setPlayerItem] = useState<PlayerItem>({});
@@ -28,16 +30,36 @@ export default function Main() {
 
   // 選択されているEntity Id ※ EntitySelectorで使用。
   const [entityId, setEntityId] = useState<Array<EntityObj>>([]);
+  const entityIdString = useRef<Array<string>>([])
 
   const [playerSize, setPlayerSize] = useState(1);
   const [isLargePlayer, setIsLargePlayer] = useState(false);
   const [currentSearchQuery, setCurrentSearchQuery] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
+  // 画面の横幅の変化を監視
+  useEffect(() => {
+    const handleResize = () => {
+      setScreenWidth(window.innerWidth);
+    };
+
+    // 初回の幅を設定
+    handleResize();
+
+    // リサイズイベントリスナーを追加
+    window.addEventListener('resize', handleResize);
+
+    // クリーンアップ関数でリスナーを解除
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
   return (
     <>
       <Navbar
         setEntityId={setEntityId}
+        entityIdString={entityIdString}
         setSearchQuery={setCurrentSearchQuery}
         search={() => setSearchQuery(currentSearchQuery)}
         setNavbarHeight={setNavbarHeight}
@@ -70,6 +92,8 @@ export default function Main() {
             {/* ↓ header(Navbar)に被らないように */}
             <div style={{ paddingTop: navbarHeight }}></div>
             <div>楽曲集</div>
+            <div>{JSON.stringify(entityId)}</div>
+            <p>画面の横幅: {screenWidth}px</p>
             {/* ↓ Tabbarに被らないように底上げ */}
             <div style={{ paddingTop: tabbarHeight }}></div>
           </div>
@@ -165,11 +189,13 @@ export default function Main() {
           }}
         >
           <PlayerView
+            screenWidth={screenWidth}
             PlayerItem={playerItem}
             Playlist={playerPlaylist}
             searchResult={playerSearchResult}
             isPlayerFullscreen={isPlayerFullscreen}
             setIsPlayerFullscreen={setIsPlayerFullscreen}
+            entityIdString={entityIdString}
             style={{
               // header(Navbar)に被らないように
               paddingTop: isPlayerFullscreen ? navbarHeight : "",
@@ -194,6 +220,7 @@ export default function Main() {
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             activeTabList={activeTabList}
+            setIsPlayerFullscreen={setIsPlayerFullscreen}
             setTabbarHeight={setTabbarHeight}
           />
         </Grid>

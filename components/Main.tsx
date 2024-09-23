@@ -11,7 +11,7 @@ import { PlayerItem } from "./PlayerView";
 
 export default function Main() {
   // ディスプレイの横幅(px)
-  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+  const [screenWidth, setScreenWidth] = useState(1000);
   // Navbarの高さを定義
   const [navbarHeight, setNavbarHeight] = useState<number>(0);
   // Tabbarの高さを定義
@@ -39,20 +39,22 @@ export default function Main() {
 
   // 画面の横幅の変化を監視
   useEffect(() => {
-    const handleResize = () => {
-      setScreenWidth(window.innerWidth);
-    };
+    if (typeof window !== "undefined") {
+      const handleResize = () => {
+        setScreenWidth(window.innerWidth);
+      };
 
-    // 初回の幅を設定
-    handleResize();
+      // 初回の幅を設定
+      handleResize();
 
-    // リサイズイベントリスナーを追加
-    window.addEventListener('resize', handleResize);
+      // リサイズイベントリスナーを追加
+      window.addEventListener('resize', handleResize);
 
-    // クリーンアップ関数でリスナーを解除
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
+      // クリーンアップ関数でリスナーを解除
+      return () => {
+        window.removeEventListener('resize', handleResize);
+      };
+    }
   }, []);
 
   return (

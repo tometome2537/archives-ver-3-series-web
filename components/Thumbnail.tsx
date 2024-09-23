@@ -75,7 +75,7 @@ const NoteContent: React.FC<NoteContentProps> = ({ content }) => {
 type ThumbnailProps = {
   thumbnailType?: string;
   videoId: string;
-  title: string;
+  title?: string;
   // onClick?: MouseEventHandler<HTMLButtonElement>;
   onClick?: MouseEventHandler<HTMLElement>;
 };
@@ -134,7 +134,7 @@ export default function Thumbnail({ thumbnailType, videoId, title, onClick }: Th
                   WebkitBoxOrient: "vertical",
                 }}
               >
-                <NoteContent content={title} />
+                <NoteContent content={title ? title : ""} />
               </Typography>
             </CardContent>
           </CardActionArea>
@@ -144,10 +144,10 @@ export default function Thumbnail({ thumbnailType, videoId, title, onClick }: Th
   }
 
   return (
-    <div onClick={onClick ? onClick : undefined} data-videoId={videoId} data-title={title}>
+    <div onClick={onClick ? onClick : undefined} data-videoId={videoId}>
       {/* Image を使用すると loading="lazy" が自動で使用される */}
       <div style={{
-        display:"flex",
+        display: "flex",
         flexDirection: "column",
         alignItems: "center"
       }}>
@@ -172,7 +172,7 @@ export default function Thumbnail({ thumbnailType, videoId, title, onClick }: Th
             textOverflow: "ellipsis",
           }}
         >
-          {title}
+          {title ? title : ""}
         </div>
       </div>
     </div>

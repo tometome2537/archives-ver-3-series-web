@@ -175,7 +175,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
       {/* ヒットした動画数とソートオプションの表示 */}
       <Stack direction={"row"} sx={{ mx: 4 }} justifyContent={"space-between"}>
         <Typography variant="h5" sx={{ my: 2 }} color="text.secondary">
-          {videoCount.toLocaleString()} 件
+          {isNaN(videoCount) ? "？" : videoCount.toLocaleString()} 件
         </Typography>
         <Stack
           direction="row"

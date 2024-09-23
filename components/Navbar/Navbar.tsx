@@ -1,7 +1,7 @@
 import { AppBar, Box, Button, Link, Toolbar } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
-import { Dispatch, SetStateAction, useRef, useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useRef, useEffect, useState, MutableRefObject } from "react";
 import SearchBar from "./SearchBar";
 import EntitySelector from "../EntitySelector";
 import { EntityObj } from "../EntitySelector";
@@ -15,6 +15,7 @@ type SearchBarProps = {
   setSearchQuery: Dispatch<SetStateAction<string>>;
   search: () => void;
   setEntityId: Dispatch<SetStateAction<Array<EntityObj>>>;
+  entityIdString: MutableRefObject<string[]>;
   setNavbarHeight: Dispatch<SetStateAction<number>>;
 };
 
@@ -47,14 +48,11 @@ export default function Navbar(props: SearchBarProps) {
           <Box sx={{ flexGrow: 1 }}></Box>
           <SearchBar setSearchQuery={props.setSearchQuery} search={props.search} />
           <Box sx={{ flexGrow: 1 }}></Box>
-          <EntitySelector setEntityId={props.setEntityId}></EntitySelector>
+          <EntitySelector entityIdString={props.entityIdString} setEntityId={props.setEntityId}></EntitySelector>
           <Box sx={{ flexGrow: 1 }}></Box>
-          <NavButton color="primary" href="/#">
+          {/* <NavButton color="primary" href="/#">
             {navHeight}
-          </NavButton>
-          <NavButton color="primary" href="/#">
-            top
-          </NavButton>
+          </NavButton> */}
           <NavButton href="https://forms.gle/osqdRqh1MxWhA51A8" target="_blank">
             contact
           </NavButton>

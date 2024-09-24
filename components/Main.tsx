@@ -11,19 +11,26 @@ import { PlayerItem } from "./PlayerView";
 
 export default function Main() {
   // ディスプレイの横幅(px)
-  const [screenWidth, setScreenWidth] = useState(1000);
+  const [screenWidth, setScreenWidth] = useState(700);
+  // ディスプレイの縦幅(px)
+  const [screenHeight, setScreenHeight] = useState(600);
+  // スマホかどうかを判定する状態
+  const [isMobile, setIsMobile] = useState(true);
+
   // Navbarの高さを定義
   const [navbarHeight, setNavbarHeight] = useState<number>(0);
   // Tabbarの高さを定義
   const [tabbarHeight, setTabbarHeight] = useState<number>(0);
+  // デフォルトで開くタブ
+  const defaultTab = "temporaryYouTube"
   // 現在アクティブなTab
-  const [activeTab, setActiveTab] = useState<string>("temporaryYouTube");
+  const [activeTab, setActiveTab] = useState<string>(defaultTab);
   // アクティブになったタブのリスト ※ 一度アクティブなったタブは破棄しない。
-  const activeTabList = useRef<Array<string>>(["temporaryYouTube"]);
+  const activeTabList = useRef<Array<string>>([defaultTab]);
 
   // PlayerViewを拡大表示するかどうか
   const [isPlayerFullscreen, setIsPlayerFullscreen] = useState<boolean>(false);
-  // Player
+  // PlayerView
   const [playerItem, setPlayerItem] = useState<PlayerItem>({});
   const [playerPlaylist, setPlayerPlaylist] = useState<Array<PlayerItem>>([])
   const [playerSearchResult, setPlayerSearchResult] = useState<Array<PlayerItem>>([])
@@ -41,10 +48,15 @@ export default function Main() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const handleResize = () => {
+        // 画面の横幅と縦幅を取得
         setScreenWidth(window.innerWidth);
+        setScreenHeight(window.innerHeight);
+
+        // スクリーン幅が768px以下の場合はスマホと判定
+        setIsMobile(window.innerWidth <= 768);
       };
 
-      // 初回の幅を設定
+      // 初回の幅と高さを設定
       handleResize();
 
       // リサイズイベントリスナーを追加
@@ -55,7 +67,7 @@ export default function Main() {
         window.removeEventListener('resize', handleResize);
       };
     }
-  }, []);
+  }, []);  // 依存配列は空のままでOK
 
   return (
     <>
@@ -94,8 +106,6 @@ export default function Main() {
             {/* ↓ header(Navbar)に被らないように */}
             <div style={{ paddingTop: navbarHeight }}></div>
             <div>楽曲集</div>
-            <div>{JSON.stringify(entityId)}</div>
-            <p>画面の横幅: {screenWidth}px</p>
             {/* ↓ Tabbarに被らないように底上げ */}
             <div style={{ paddingTop: tabbarHeight }}></div>
           </div>
@@ -162,6 +172,26 @@ export default function Main() {
             <div style={{ marginTop: tabbarHeight }}></div>
           </div>
         )}
+
+        {activeTab === "debug" && (
+          <div>
+            {/* ↓ header(Navbar)に被らないように */}
+            <div style={{ paddingTop: navbarHeight }}></div>
+            <h3>デバッグ情報</h3>
+            <div>
+              <p>navbarの高さ: {JSON.stringify(navbarHeight)}px</p>
+              <p>Tabberの高さ: {JSON.stringify(tabbarHeight)}px</p>
+              <p>現在選択されているentityId: {JSON.stringify(entityId)}</p>
+              <p>アクティブなタブ: {JSON.stringify(activeTabList)}</p>
+              <p>Screen Width: {screenWidth}px</p>
+              <p>Screen Height: {screenHeight}px</p>
+              <p>Device Type: {isMobile ? 'Mobile' : 'Desktop'}</p>
+              <p>現在再生中の楽曲： {JSON.stringify(playerItem)}</p>
+            </div>
+            {/* ↓ Tabbarに被らないように底上げ */}
+            <div style={{ paddingTop: tabbarHeight }}></div>
+          </div>
+        )}
       </div >
 
       {/* 画面下に固定されたタブバー */}
@@ -192,6 +222,8 @@ export default function Main() {
         >
           <PlayerView
             screenWidth={screenWidth}
+            screenHeight={screenHeight}
+            isMobile={isMobile}
             PlayerItem={playerItem}
             Playlist={playerPlaylist}
             searchResult={playerSearchResult}
@@ -224,6 +256,8 @@ export default function Main() {
             activeTabList={activeTabList}
             setIsPlayerFullscreen={setIsPlayerFullscreen}
             setTabbarHeight={setTabbarHeight}
+            screenHeight={screenHeight}
+            isMobile={isMobile}
           />
         </Grid>
       </Grid >

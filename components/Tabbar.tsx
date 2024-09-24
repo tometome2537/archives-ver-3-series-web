@@ -4,6 +4,7 @@ import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import MusicNoteIcon from '@mui/icons-material/MusicNote';
+import AdbIcon from '@mui/icons-material/Adb';
 
 type TabbarProps = {
     activeTab: string;
@@ -11,6 +12,8 @@ type TabbarProps = {
     activeTabList: MutableRefObject<string[]>; // コロンではなく型を指定
     setIsPlayerFullscreen: Dispatch<SetStateAction<boolean>>;
     setTabbarHeight: Dispatch<SetStateAction<number>>;
+    screenHeight: number;
+    isMobile: boolean;
 };
 
 // タブがクリックされた時の処理
@@ -27,17 +30,32 @@ const handleTabClick = (props: TabbarProps, value: string) => {
 export default function Tabbar(props: TabbarProps) {
     // BottomNavigationのHTMLが保存される
     const bottomNavRef = useRef<HTMLDivElement | null>(null);
-    // BottomNavigationの高さの数値が入る。
-    const [navHeight, setNavHeight] = useState<number>(0);
 
-    // BottomNavigationの高さを調べる
+    // BottomNavigationの高さを監視、調べる。
+    // (To Do:画面縦幅が変動しても高さの値が更新されない問題)
     useEffect(() => {
-        if (bottomNavRef.current) {
-            const height = bottomNavRef.current.clientHeight;
-            setNavHeight(height)
-            props.setTabbarHeight(height)
+        if (typeof window !== "undefined") {
+            // タブバーの高さを再計算する関数
+            const updateNavHeight = () => {
+                if (bottomNavRef.current) {
+                    const height = bottomNavRef.current.clientHeight;
+                    props.setTabbarHeight(height);
+                }
+            };
+
+            // 初回の高さ計算
+            updateNavHeight();
+
+            // ウィンドウリサイズ時に高さを再計算
+            window.addEventListener('resize', updateNavHeight);
+
+            // クリーンアップ: コンポーネントがアンマウントされたときにイベントリスナーを削除
+            return () => {
+                window.removeEventListener('resize', updateNavHeight);
+            };
         }
     }, []);
+
     return (
         <>
             <BottomNavigation
@@ -49,40 +67,52 @@ export default function Tabbar(props: TabbarProps) {
                     position: "fixed",
                     bottom: 0,
                     left: 0,
-                    right: 0
+                    right: 0,
+                    height: `${props.screenHeight * 0.07}px`, // 画面の高さに応じてTabの高さを調整
+                    maxWidth: "100vw",
+                    display: "flex", // アイコンを均等に配置
+                    justifyContent: "space-around" // 等間隔に配置する
                 }}
             >
-                {/* <BottomNavigationAction
-                    label={JSON.stringify(navHeight)}
-                    value="linkCollection"
-                    icon={<AccountBoxIcon />}
-                /> */}
 
                 <BottomNavigationAction
-                    // label="リンク集(β版)"
+                    label={props.isMobile ? "" : "リンク集(β版)"}
                     value="linkCollection"
                     icon={<AccountBoxIcon />}
+                    sx={{ minWidth: 0, padding: 0 }} // アイコンの余白を最小化
                 />
                 <BottomNavigationAction
-                    // label="楽曲集(β版)"
+                    label={props.isMobile ? "" : "楽曲集(β版)"}
                     value="songs"
                     icon={<MusicNoteIcon />}
+                    sx={{ minWidth: 0, padding: 0 }} // アイコンの余白を最小化
                 />
                 <BottomNavigationAction
-                    // label="YouTube(スプシβ版)"
+                    label={props.isMobile ? "" : "YouTube(スプシβ版)"}
                     value="temporaryYouTube"
                     icon={<YouTubeIcon />}
+                    sx={{ minWidth: 0, padding: 0 }} // アイコンの余白を最小化
                 />
+                {process.env.NEXT_PUBLIC_STAGE === "local" &&
+                    <BottomNavigationAction
+                        label={props.isMobile ? "" : "YouTube(DBα版)"}
+                        value="YouTube"
+                        icon={<YouTubeIcon />}
+                        sx={{ minWidth: 0, padding: 0 }} // アイコンの余白を最小化
+                    />}
                 <BottomNavigationAction
-                    // label="YouTube(DBα版)"
-                    value="YouTube"
-                    icon={<YouTubeIcon />}
-                />
-                <BottomNavigationAction
-                    // label="LIVE情報(β版)"
+                    label={props.isMobile ? "" : "LIVE情報(β版)"}
                     value="liveInformation"
                     icon={<LocationOnIcon />}
+                    sx={{ minWidth: 0, padding: 0 }} // アイコンの余白を最小化
                 />
+                {process.env.NEXT_PUBLIC_STAGE === "local" &&
+                    <BottomNavigationAction
+                        label={props.isMobile ? "" : "デバック情報"}
+                        value="debug"
+                        icon={<AdbIcon />}
+                        sx={{ minWidth: 0, padding: 0 }} // アイコンの余白を最小化
+                    />}
             </BottomNavigation>
         </>
     )

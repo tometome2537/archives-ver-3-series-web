@@ -227,12 +227,32 @@ export default function EntitySelector({
   return (
     <div>
       {/* ダイアログを開くボタン */}
-      <Button variant="outlined" onClick={handleClickOpenOrganisation}>
+      <Button variant="outlined" onClick={handleClickOpenOrganisation} sx={{
+        /* 要素に幅を持たせるために必要 */
+        display: "block",
+        width: "auto",
+        /* 改行を防ぐ */
+        whiteSpace: "nowrap",
+        /* 溢れた文字を隠す  */
+        overflow: "hidden",
+        /* 長すぎる場合に "..." を付ける  */
+        textOverflow: "ellipsis",
+      }}>
         {selectEntityIdOrganisation.length !== 0
           ? selectEntityIdOrganisation[0]["name"]
           : "グループを選択"}
       </Button>
-      <Button variant="outlined" onClick={handleClickOpenPerson}>
+      <Button variant="outlined" onClick={handleClickOpenPerson} sx={{
+        /* 要素に幅を持たせるために必要 */
+        display: "block",
+        width: "auto",
+        /* 改行を防ぐ */
+        whiteSpace: "nowrap",
+        /* 溢れた文字を隠す  */
+        overflow: "hidden",
+        /* 長すぎる場合に "..." を付ける  */
+        textOverflow: "ellipsis",
+      }}>
         {selectEntityIdPerson.length !== 0
           ? selectEntityIdPerson[0]["name"]
           : "アーティストを選択"}

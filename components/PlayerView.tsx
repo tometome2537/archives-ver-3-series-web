@@ -1,14 +1,15 @@
-import YouTube, { YouTubeProps } from "react-youtube";
 import React, {
     Dispatch,
     SetStateAction,
     useEffect,
     useState,
     MutableRefObject,
+    // useRef
 } from "react";
 import Thumbnail from "./Thumbnail";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import PauseIcon from '@mui/icons-material/Pause';
+import YouTubePlayer from "./YouTubePlayer";
 
 export type PlayerItem = {
     videoId?: string; // 動画IDをプロパティとして受け取る
@@ -92,27 +93,10 @@ export default function PlayerView(props: PlayerProps) {
         }
     }, [props.Playlist, props.searchResult]);
 
-    // YouTube Playerのオプション
-    const YouTubeOpts: YouTubeProps["opts"] = {
-        // 動画の比率は、横：縦 = １６：９で
-        // widthは "％"の指定で良い。
-        // width: "100%",
-        width: props.isMobile
-            ? "100%"
-            : props.isPlayerFullscreen
-                ? `${((props.screenHeight * 0.4) / 9) * 16}px`
-                : `${((props.screenHeight * 0.1) / 9) * 16}px`, // 確定 100%で親要素に依存
-        // heightは "%"で指定しても反映されない。pxで指定するある必要がある説。
-        height: props.isPlayerFullscreen
-            ? `${props.screenHeight * 0.4}px`
-            : `${props.screenHeight * 0.1}px`, // 確定 100%で親要素に依存
 
-        playerVars: {
-            autoplay: 1, // 自動再生
-            loop: 1, // ループ再生
-            volume: 100, // デフォルト音量は100%
-            // playlist: playNow ? playNow.videoId : "", // ループ時にプレイリスト設定
-        },
+    // YouTube Playerの再生と停止を切り替える
+    const togglePlayPlayer = (event: React.MouseEvent<HTMLElement>) => {
+        console.log("a")
     };
 
     // 拡大モードの切り替えスイッチ
@@ -163,34 +147,41 @@ export default function PlayerView(props: PlayerProps) {
                     }}
                 >
                     {/* YouTubeプレイヤー */}
-                    <div
+                    <YouTubePlayer
+                        videoId={playNowVideoId ? playNowVideoId : ""}
                         style={{
-                            ...{
-                                display: "block", // アクティブかどうかで表示/非表示を切り替え
-                                width: props.isMobile ? "100%" : "",
-                                // height: "100%",
-                                maxHeight: "100%", // 高さに制限をつけることでパソコンのモニター等で無制限に大きくならないようにする。
-                                // backgroundColor: "#FFD700",
-                                textAlign: "center",
-                                padding: "0", // プレイヤーの上下にスペースを追加
-                                margin: "0",
-                                maxWidth: props.isPlayerFullscreen ? "100%" : "40%",
-                            },
+                            // padding: "0", // プレイヤーの上下にスペースを追加
+                            margin: "0 auto",
+                            // maxWidth: props.isPlayerFullscreen ? "100%" : "40%",
+                            // maxHeight: "100%", // 高さに制限をつけることでパソコンのモニター等で無制限に大きくならないようにする。
+
                         }}
-                    >
-                        {playNowVideoId && (
-                            <YouTube
-                                videoId={playNowVideoId ? playNowVideoId : ""}
-                                opts={YouTubeOpts}
-                            />
-                        )}
-                    </div>
+                        // 動画の比率は、横：縦 = １６：９で
+                        width={props.isMobile && props.isPlayerFullscreen
+                            ? "100%"
+                            : props.isPlayerFullscreen
+                                ? `${((props.screenHeight * 0.4) / 9) * 16}px`
+                                : `${((props.screenHeight * 0.1) / 9) * 16}px`}
+                        height={props.isMobile && props.isPlayerFullscreen
+                            ? `${props.screenWidth / 16 * 9}px`
+                            : props.isPlayerFullscreen
+                                ? `${props.screenHeight * 0.4}px`
+                                : `${props.screenHeight * 0.1}px`}
+                    />
+
+
+
+
+
+
                     {/* PlayerView縮小表示の時のHTML */}
                     <div
                         onClick={togglePlayerFullscreen}
                         style={{
                             display: props.isPlayerFullscreen ? "none" : "block",
                             maxWidth: props.isPlayerFullscreen ? "100%" : "40%",
+                            height: "auto",
+                            margin: "auto 0 ",
                         }}
                     >
                         <div
@@ -243,16 +234,19 @@ export default function PlayerView(props: PlayerProps) {
                         style={{
                             display: props.isPlayerFullscreen ? "none" : "block",
                             maxWidth: props.isPlayerFullscreen ? "100%" : "20%",
+                            margin: "auto",
                         }}
                     >
-                        <div style={{
-                            display: "flex",
-                            justifyContent: "center",  // 水平方向の中央配置
-                            alignItems: "center",      // 垂直方向の中央配置
-                            margin: "0 auto",
-                            width: "fit-content",
-                            height: "100%",            // 必要に応じて高さを指定
-                        }}>
+                        <div
+                            onClick={togglePlayPlayer}
+                            style={{
+                                display: "flex",
+                                justifyContent: "center",  // 水平方向の中央配置
+                                alignItems: "center",      // 垂直方向の中央配置
+                                margin: "0 auto",
+                                width: "fit-content",
+                                height: "100%",            // 必要に応じて高さを指定
+                            }}>
                             <PlayArrowIcon />
                             {/* <PauseIcon /> */}
                         </div>

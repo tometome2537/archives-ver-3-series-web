@@ -7,6 +7,8 @@ import MusicNoteIcon from '@mui/icons-material/MusicNote';
 import AdbIcon from '@mui/icons-material/Adb';
 
 type TabbarProps = {
+    debugMode: boolean;
+    setDebugMode: Dispatch<SetStateAction<boolean>>;
     activeTab: string;
     setActiveTab: Dispatch<SetStateAction<string>>;
     activeTabList: MutableRefObject<string[]>; // コロンではなく型を指定
@@ -54,7 +56,15 @@ export default function Tabbar(props: TabbarProps) {
                 window.removeEventListener('resize', updateNavHeight);
             };
         }
-    }, []);
+    }, [bottomNavRef, props.screenHeight]);
+
+    let count = 0
+    const toggleDebug = () => {
+        count += 1;
+        if (count === 5) {
+            props.setDebugMode(true);
+        }
+    };
 
     return (
         <>
@@ -68,7 +78,8 @@ export default function Tabbar(props: TabbarProps) {
                     bottom: 0,
                     left: 0,
                     right: 0,
-                    height: `${props.screenHeight * 0.07}px`, // 画面の高さに応じてTabの高さを調整
+                    // 画面の高さに応じてTabの高さを調整
+                    height: `${props.screenHeight * 0.07}px`,
                     maxWidth: "100vw",
                     display: "flex", // アイコンを均等に配置
                     justifyContent: "space-around" // 等間隔に配置する
@@ -80,6 +91,7 @@ export default function Tabbar(props: TabbarProps) {
                     value="linkCollection"
                     icon={<AccountBoxIcon />}
                     sx={{ minWidth: 0, padding: 0 }} // アイコンの余白を最小化
+                    onClick={toggleDebug}
                 />
                 <BottomNavigationAction
                     label={props.isMobile ? "" : "楽曲集(β版)"}
@@ -93,7 +105,7 @@ export default function Tabbar(props: TabbarProps) {
                     icon={<YouTubeIcon />}
                     sx={{ minWidth: 0, padding: 0 }} // アイコンの余白を最小化
                 />
-                {process.env.NEXT_PUBLIC_STAGE === "local" &&
+                {props.debugMode &&
                     <BottomNavigationAction
                         label={props.isMobile ? "" : "YouTube(DBα版)"}
                         value="YouTube"
@@ -106,7 +118,7 @@ export default function Tabbar(props: TabbarProps) {
                     icon={<LocationOnIcon />}
                     sx={{ minWidth: 0, padding: 0 }} // アイコンの余白を最小化
                 />
-                {process.env.NEXT_PUBLIC_STAGE === "local" &&
+                {props.debugMode &&
                     <BottomNavigationAction
                         label={props.isMobile ? "" : "デバック情報"}
                         value="debug"

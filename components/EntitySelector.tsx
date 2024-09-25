@@ -143,7 +143,8 @@ export default function EntitySelector({
       } else if (id && id.category === "organization") {
         setSelectEntityIdOrganisation([id]);
       } else {
-        throw "EntitySelector内でのエラー1";
+        throw new Error("EntitySelector内でのエラー1");
+        // throw "EntitySelector内でのエラー1";
       }
     }
   }, [entityIdString["current"]]);

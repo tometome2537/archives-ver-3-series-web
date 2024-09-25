@@ -12,6 +12,7 @@ export const NavButton = styled(Button)({
 }) as typeof Button;
 
 type SearchBarProps = {
+  screenHeight: number;
   setSearchQuery: Dispatch<SetStateAction<string>>;
   search: () => void;
   setEntityId: Dispatch<SetStateAction<Array<EntityObj>>>;
@@ -22,22 +23,39 @@ type SearchBarProps = {
 export default function Navbar(props: SearchBarProps) {
   // NavbarのHTMLが保存される
   const NavbarRef = useRef<HTMLDivElement | null>(null);
-  // BottomNavigationの高さの数値が入る。
-  const [navHeight, setNavHeight] = useState<number>(0);
 
   // BottomNavigationの高さを調べる
   useEffect(() => {
-    if (NavbarRef.current) {
-      const height = NavbarRef.current.clientHeight;
-      setNavHeight(height)
-      props.setNavbarHeight(height)
+    if (typeof window !== "undefined") {
+      // タブバーの高さを再計算する関数
+      const updateNavHeight = () => {
+        if (NavbarRef.current) {
+          const height = NavbarRef.current.clientHeight;
+          props.setNavbarHeight(height)
+        }
+      };
+
+      // 初回の高さ計算
+      updateNavHeight();
+
+      // ウィンドウリサイズ時に高さを再計算
+      window.addEventListener('resize', updateNavHeight);
+
+      // クリーンアップ: コンポーネントがアンマウントされたときにイベントリスナーを削除
+      return () => {
+        window.removeEventListener('resize', updateNavHeight);
+      };
     }
-  }, []);
+
+  }, [NavbarRef, props.screenHeight]);
   return (
     <>
-      <AppBar ref={NavbarRef} position="fixed" color="default">
+      <AppBar ref={NavbarRef} position="fixed" color="default" sx={{
+        // 画面の高さに応じてNavbarの高さを調整
+        height: `${props.screenHeight * 0.07}px`,
+      }}>
         <Toolbar>
-          <Link href="/" sx={{ marginTop: 1, marginBottom: 0.5 }}>
+          <Link href="/" sx={{ margin: "0.25 auto" }}>
             <Image
               src="/MAP.png"
               alt="Music Archives Project Logo"
@@ -58,9 +76,6 @@ export default function Navbar(props: SearchBarProps) {
           </NavButton>
         </Toolbar>
       </AppBar>
-
-      {/* ↓ AppBar分の高さを確保 */}
-      {/* <Toolbar /> */}
     </>
   );
 }

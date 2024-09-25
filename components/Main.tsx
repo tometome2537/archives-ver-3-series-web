@@ -10,17 +10,19 @@ import PlayerView from "./PlayerView";
 import { PlayerItem } from "./PlayerView";
 
 export default function Main() {
+  // デバッグ(ローカル開発環境)モード(Live情報を10回タップするとデバッグモードへ)
+  const [debugMode, setDebugMode] = useState(process.env.NEXT_PUBLIC_STAGE === "local")
   // ディスプレイの横幅(px)
-  const [screenWidth, setScreenWidth] = useState(700);
+  const [screenWidth, setScreenWidth] = useState(NaN);
   // ディスプレイの縦幅(px)
-  const [screenHeight, setScreenHeight] = useState(600);
-  // スマホかどうかを判定する状態
+  const [screenHeight, setScreenHeight] = useState(NaN);
+  // スマホかどうかを判定する
   const [isMobile, setIsMobile] = useState(true);
 
   // Navbarの高さを定義
-  const [navbarHeight, setNavbarHeight] = useState<number>(0);
+  const [navbarHeight, setNavbarHeight] = useState<number>(NaN);
   // Tabbarの高さを定義
-  const [tabbarHeight, setTabbarHeight] = useState<number>(0);
+  const [tabbarHeight, setTabbarHeight] = useState<number>(NaN);
   // デフォルトで開くタブ
   const defaultTab = "temporaryYouTube"
   // 現在アクティブなTab
@@ -44,7 +46,7 @@ export default function Main() {
   const [currentSearchQuery, setCurrentSearchQuery] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
 
-  // 画面の横幅の変化を監視
+  // 画面のサイズの変化を監視
   useEffect(() => {
     if (typeof window !== "undefined") {
       const handleResize = () => {
@@ -72,6 +74,7 @@ export default function Main() {
   return (
     <>
       <Navbar
+        screenHeight={screenHeight}
         setEntityId={setEntityId}
         entityIdString={entityIdString}
         setSearchQuery={setCurrentSearchQuery}
@@ -179,6 +182,7 @@ export default function Main() {
             <div style={{ paddingTop: navbarHeight }}></div>
             <h3>デバッグ情報</h3>
             <div>
+              <p>デバッグモード:{JSON.stringify(debugMode)}</p>
               <p>navbarの高さ: {JSON.stringify(navbarHeight)}px</p>
               <p>Tabberの高さ: {JSON.stringify(tabbarHeight)}px</p>
               <p>現在選択されているentityId: {JSON.stringify(entityId)}</p>
@@ -251,6 +255,8 @@ export default function Main() {
           }}
         >
           <Tabbar
+            debugMode={debugMode}
+            setDebugMode={setDebugMode}
             activeTab={activeTab}
             setActiveTab={setActiveTab}
             activeTabList={activeTabList}

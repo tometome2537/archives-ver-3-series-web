@@ -178,7 +178,7 @@ export default function EntitySelector({
     const fetchEvents = async () => {
       try {
         const url = buildUrlWithQuery(
-          process.env.NEXT_PUBLIC_BASE_URL + "/api/v0.0/belonghistery",
+          process.env.NEXT_PUBLIC_BASE_URL + "/api/v0.0/belonghistory",
           {}
         );
         const response = await fetch(url);

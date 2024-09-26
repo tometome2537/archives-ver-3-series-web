@@ -1,6 +1,15 @@
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
 import Navbar from "./Navbar/Navbar";
 import { Grid } from "@mui/material";
+import {
+  ThemeProvider,
+  createTheme,
+  PaletteMode,
+  Button,
+  CssBaseline,
+  Box,
+  Typography,
+} from "@mui/material";
 import Sidebar from "./Navbar/Sidebar";
 import VideoView from "./VideoView";
 import VideoTemporaryView from "./VideoTemporaryView";
@@ -8,23 +17,37 @@ import Tabbar from "./Tabbar";
 import { EntityObj } from "./EntitySelector";
 import PlayerView from "./PlayerView";
 import { PlayerItem } from "./PlayerView";
+import { useTheme } from "@mui/material/styles";
 
-export default function Main() {
-  // デバッグ(ローカル開発環境)モード(Live情報を10回タップするとデバッグモードへ)
-  const [debugMode, setDebugMode] = useState(process.env.NEXT_PUBLIC_STAGE === "local")
+type mainProps = {
+  // サイトテーマ
+  setSiteTheme?: Dispatch<SetStateAction<PaletteMode | undefined>>;
+};
+
+export default function Main(props: mainProps) {
+  // デバッグ(ローカル開発環境)モード(リンク集を10回タップするとデバッグモードへ)
+  const [debugMode, setDebugMode] = useState(
+    process.env.NEXT_PUBLIC_STAGE === "local"
+  );
   // ディスプレイの横幅(px)
-  const [screenWidth, setScreenWidth] = useState(NaN);
+  const [screenWidth, setScreenWidth] = useState<number>(NaN);
   // ディスプレイの縦幅(px)
-  const [screenHeight, setScreenHeight] = useState(NaN);
+  const [screenHeight, setScreenHeight] = useState<number>(NaN);
   // スマホかどうかを判定する
-  const [isMobile, setIsMobile] = useState(true);
+  const [isMobile, setIsMobile] = useState<boolean>(true);
+
+  // テーマ設定を取得
+  const theme = useTheme();
 
   // Navbarの高さを定義
   const [navbarHeight, setNavbarHeight] = useState<number>(NaN);
   // Tabbarの高さを定義
   const [tabbarHeight, setTabbarHeight] = useState<number>(NaN);
+  // PlayerViewの高さを定義
+  const [playerViewHeight, setPlayerViewHeight] = useState<number>(NaN);
+
   // デフォルトで開くタブ
-  const defaultTab = "temporaryYouTube"
+  const defaultTab = "temporaryYouTube";
   // 現在アクティブなTab
   const [activeTab, setActiveTab] = useState<string>(defaultTab);
   // アクティブになったタブのリスト ※ 一度アクティブなったタブは破棄しない。
@@ -34,12 +57,14 @@ export default function Main() {
   const [isPlayerFullscreen, setIsPlayerFullscreen] = useState<boolean>(false);
   // PlayerView
   const [playerItem, setPlayerItem] = useState<PlayerItem>({});
-  const [playerPlaylist, setPlayerPlaylist] = useState<Array<PlayerItem>>([])
-  const [playerSearchResult, setPlayerSearchResult] = useState<Array<PlayerItem>>([])
+  const [playerPlaylist, setPlayerPlaylist] = useState<Array<PlayerItem>>([]);
+  const [playerSearchResult, setPlayerSearchResult] = useState<
+    Array<PlayerItem>
+  >([]);
 
   // 選択されているEntity Id ※ EntitySelectorで使用。
   const [entityId, setEntityId] = useState<Array<EntityObj>>([]);
-  const entityIdString = useRef<Array<string>>([])
+  const entityIdString = useRef<Array<string>>([]);
 
   const [playerSize, setPlayerSize] = useState(1);
   const [isLargePlayer, setIsLargePlayer] = useState(false);
@@ -62,14 +87,23 @@ export default function Main() {
       handleResize();
 
       // リサイズイベントリスナーを追加
-      window.addEventListener('resize', handleResize);
+      window.addEventListener("resize", handleResize);
 
       // クリーンアップ関数でリスナーを解除
       return () => {
-        window.removeEventListener('resize', handleResize);
+        window.removeEventListener("resize", handleResize);
       };
     }
-  }, []);  // 依存配列は空のままでOK
+  }, []); // 依存配列は空のままでOK
+
+  // ダークモードとライトモードの切り替え関数
+  const toggleTheme = () => {
+    if (props.setSiteTheme) {
+      props.setSiteTheme((prevMode) =>
+        prevMode === "light" ? "dark" : "light"
+      );
+    }
+  };
 
   return (
     <>
@@ -91,12 +125,19 @@ export default function Main() {
                 display: activeTab === "linkCollection" ? "block" : "none", // アクティブかどうかで表示/非表示を切り替え
               }}
             >
-              {/* ↓ header(Navbar)に被らないように */}
-              <div style={{ marginTop: navbarHeight }}></div>
-              <div>それぞれのリンク集</div>
+              <div
+                style={{
+                  // ↓ header(Navbar)に被らないように
+                  paddingTop: navbarHeight,
+                  // ↓ Tabbarに被らないように底上げ
+                  paddingBottom: tabbarHeight + playerViewHeight,
+                  // 拡大モードの時、縦スクロールを許可しない
+                  overflowY: isPlayerFullscreen ? "hidden" : "auto",
+                }}
+              >
+                <div>それぞれのリンク集</div>
+              </div>
             </div>
-            {/* ↓ Tabbarに被らないように底上げ */}
-            <div style={{ marginTop: tabbarHeight }}></div>
           </>
         )}
 
@@ -106,11 +147,18 @@ export default function Main() {
               display: activeTab === "songs" ? "block" : "none", // アクティブかどうかで表示/非表示を切り替え
             }}
           >
-            {/* ↓ header(Navbar)に被らないように */}
-            <div style={{ paddingTop: navbarHeight }}></div>
-            <div>楽曲集</div>
-            {/* ↓ Tabbarに被らないように底上げ */}
-            <div style={{ paddingTop: tabbarHeight }}></div>
+            <div
+              style={{
+                // ↓ header(Navbar)に被らないように
+                paddingTop: navbarHeight,
+                // ↓ Tabbarに被らないように底上げ
+                paddingBottom: tabbarHeight + playerViewHeight,
+                // 拡大モードの時、縦スクロールを許可しない
+                overflowY: isPlayerFullscreen ? "hidden" : "auto",
+              }}
+            >
+              <div>楽曲集</div>
+            </div>
           </div>
         )}
 
@@ -118,18 +166,20 @@ export default function Main() {
           <div
             style={{
               display: activeTab === "temporaryYouTube" ? "block" : "none", // アクティブかどうかで表示/非表示を切り替え
-
             }}
           >
-            <div style={{
-              // ↓ header(Navbar)に被らないように
-              paddingTop: navbarHeight,
-              // ↓ Tabbarに被らないように底上げ
-              paddingBottom: tabbarHeight,
-              // 拡大モードの時、縦スクロールを許可しない
-              overflowY: isPlayerFullscreen ? "hidden" : "auto",
-            }}>
+            <div
+              style={{
+                // ↓ header(Navbar)に被らないように
+                paddingTop: navbarHeight,
+                // ↓ Tabbarに被らないように底上げ
+                paddingBottom: tabbarHeight + playerViewHeight,
+                // 拡大モードの時、縦スクロールを許可しない
+                overflowY: isPlayerFullscreen ? "hidden" : "auto",
+              }}
+            >
               <VideoTemporaryView
+                playerItem={playerItem}
                 entityId={entityId}
                 setPlayerItem={setPlayerItem}
                 setPlayerPlaylist={setPlayerPlaylist}
@@ -139,26 +189,35 @@ export default function Main() {
           </div>
         ) : null}
 
-
         {activeTabList.current.includes("YouTube") && (
           <div
             style={{
               display: activeTab === "YouTube" ? "block" : "none", // アクティブかどうかで表示/非表示を切り替え
             }}
           >
-            {/* ↓ header(Navbar)に被らないように */}
-            <div style={{ paddingTop: navbarHeight }}></div>
-            <Sidebar
-              setPlayerSize={setPlayerSize}
-              setIsLargePlayer={setIsLargePlayer}
-            />
-            <VideoView
-              playerSize={playerSize}
-              isLargePlayer={isLargePlayer}
-              searchQuery={searchQuery}
-            />
-            {/* ↓ Tabbarに被らないように底上げ */}
-            <div style={{ marginTop: tabbarHeight }}></div>
+            <div
+              style={{
+                // ↓ header(Navbar)に被らないように
+                paddingTop: navbarHeight,
+                // ↓ Tabbarに被らないように底上げ
+                paddingBottom: tabbarHeight + playerViewHeight,
+                // 拡大モードの時、縦スクロールを許可しない
+                overflowY: isPlayerFullscreen ? "hidden" : "auto",
+              }}
+            >
+              <Sidebar
+                setPlayerSize={setPlayerSize}
+                setIsLargePlayer={setIsLargePlayer}
+              />
+              <VideoView
+                playerItem={playerItem}
+                setPlayerItem={setPlayerItem}
+                setPlayerSearchResult={setPlayerSearchResult}
+                playerSize={playerSize}
+                isLargePlayer={isLargePlayer}
+                searchQuery={searchQuery}
+              />
+            </div>
           </div>
         )}
 
@@ -168,45 +227,167 @@ export default function Main() {
               display: activeTab === "liveInformation" ? "block" : "none", // アクティブかどうかで表示/非表示を切り替え
             }}
           >
-            {/* ↓ header(Navbar)に被らないように */}
-            <div style={{ marginTop: navbarHeight }}></div>
-            <div>LIVE情報</div>
-            {/* ↓ Tabbarに被らないように底上げ */}
-            <div style={{ marginTop: tabbarHeight }}></div>
+            <div
+              style={{
+                // ↓ header(Navbar)に被らないように
+                paddingTop: navbarHeight,
+                // ↓ Tabbarに被らないように底上げ
+                paddingBottom: tabbarHeight + playerViewHeight,
+                // 拡大モードの時、縦スクロールを許可しない
+                overflowY: isPlayerFullscreen ? "hidden" : "auto",
+              }}
+            >
+              <div>LIVE情報</div>
+              {/* ↓ Tabbarに被らないように底上げ */}
+            </div>
           </div>
         )}
 
         {activeTab === "debug" && (
           <div>
-            {/* ↓ header(Navbar)に被らないように */}
-            <div style={{ paddingTop: navbarHeight }}></div>
-            <h3>デバッグ情報</h3>
-            <div>
-              <p>デバッグモード:{JSON.stringify(debugMode)}</p>
-              <p>navbarの高さ: {JSON.stringify(navbarHeight)}px</p>
-              <p>Tabberの高さ: {JSON.stringify(tabbarHeight)}px</p>
-              <p>現在選択されているentityId: {JSON.stringify(entityId)}</p>
-              <p>アクティブなタブ: {JSON.stringify(activeTabList)}</p>
-              <p>Screen Width: {screenWidth}px</p>
-              <p>Screen Height: {screenHeight}px</p>
-              <p>Device Type: {isMobile ? 'Mobile' : 'Desktop'}</p>
-              <p>現在再生中の楽曲： {JSON.stringify(playerItem)}</p>
+            <div
+              style={{
+                // ↓ header(Navbar)に被らないように
+                paddingTop: navbarHeight,
+                // ↓ Tabbarに被らないように底上げ
+                paddingBottom: tabbarHeight + playerViewHeight,
+                // 拡大モードの時、縦スクロールを許可しない
+                overflowY: isPlayerFullscreen ? "hidden" : "auto",
+              }}
+            >
+              <h3>デバッグ情報</h3>
+              <div>
+                <Button variant="outlined" onClick={toggleTheme}>
+                  サイトテーマの切り替えボタン
+                </Button>
+                <Box sx={{ p: 2 }}>
+                  <Typography variant="h5">
+                    {theme.palette.mode} Theme Colors
+                  </Typography>
+                  <Box sx={{ mt: 2 }}>
+                    <Typography variant="h6">Primary Colors</Typography>
+                    <Box sx={{ display: "flex", gap: 2 }}>
+                      <Box
+                        sx={{
+                          bgcolor: theme.palette.primary.main,
+                          color: theme.palette.primary.contrastText,
+                          p: 2,
+                        }}
+                      >
+                        {theme.palette.primary.main}
+                      </Box>
+                      <Box
+                        sx={{
+                          bgcolor: theme.palette.primary.light,
+                          color: theme.palette.primary.contrastText,
+                          p: 2,
+                        }}
+                      >
+                        {theme.palette.primary.light}
+                      </Box>
+                      <Box
+                        sx={{
+                          bgcolor: theme.palette.primary.dark,
+                          color: theme.palette.primary.contrastText,
+                          p: 2,
+                        }}
+                      >
+                        {theme.palette.primary.dark}
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Box sx={{ mt: 2 }}>
+                    <Typography variant="h6">Secondary Colors</Typography>
+                    <Box sx={{ display: "flex", gap: 2 }}>
+                      <Box
+                        sx={{
+                          bgcolor: theme.palette.secondary.main,
+                          color: theme.palette.secondary.contrastText,
+                          p: 2,
+                        }}
+                      >
+                        {theme.palette.secondary.main}
+                      </Box>
+                      <Box
+                        sx={{
+                          bgcolor: theme.palette.secondary.light,
+                          color: theme.palette.secondary.contrastText,
+                          p: 2,
+                        }}
+                      >
+                        {theme.palette.secondary.light}
+                      </Box>
+                      <Box
+                        sx={{
+                          bgcolor: theme.palette.secondary.dark,
+                          color: theme.palette.secondary.contrastText,
+                          p: 2,
+                        }}
+                      >
+                        {theme.palette.secondary.dark}
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Box sx={{ mt: 2 }}>
+                    <Typography variant="h6">Background Colors</Typography>
+                    <Box sx={{ display: "flex", gap: 2 }}>
+                      <Box
+                        sx={{
+                          bgcolor: theme.palette.background.default,
+                          color: theme.palette.text.primary,
+                          p: 2,
+                        }}
+                      >
+                        {theme.palette.background.default}
+                      </Box>
+                      <Box
+                        sx={{
+                          bgcolor: theme.palette.background.paper,
+                          color: theme.palette.text.primary,
+                          p: 2,
+                        }}
+                      >
+                        {theme.palette.background.paper}
+                      </Box>
+                    </Box>
+                  </Box>
+                  <Box sx={{ mt: 2 }}>
+                    <Typography variant="h6">Text Colors</Typography>
+                    <Box sx={{ display: "flex", gap: 2 }}>
+                      <Box sx={{ color: theme.palette.text.primary, p: 2 }}>
+                        {theme.palette.text.primary}
+                      </Box>
+                      <Box sx={{ color: theme.palette.text.secondary, p: 2 }}>
+                        {theme.palette.text.secondary}
+                      </Box>
+                    </Box>
+                  </Box>
+                </Box>
+                <p>デバッグモード:{JSON.stringify(debugMode)}</p>
+                <p>navbarの高さ: {JSON.stringify(navbarHeight)}px</p>
+                <p>Tabberの高さ: {JSON.stringify(tabbarHeight)}px</p>
+                <p>playerViewの高さ: {JSON.stringify(playerViewHeight)}</p>
+                <p>現在選択されているentityId: {JSON.stringify(entityId)}</p>
+                <p>アクティブなタブ: {JSON.stringify(activeTabList)}</p>
+                <p>Screen Width: {screenWidth}px</p>
+                <p>Screen Height: {screenHeight}px</p>
+                <p>Device Type: {isMobile ? "Mobile" : "Desktop"}</p>
+                <p>現在再生中の楽曲： {JSON.stringify(playerItem)}</p>
+                <p>検索結果一覧: {JSON.stringify(playerSearchResult)}</p>
+              </div>
             </div>
-            {/* ↓ Tabbarに被らないように底上げ */}
-            <div style={{ paddingTop: tabbarHeight }}></div>
           </div>
         )}
-      </div >
+      </div>
 
       {/* 画面下に固定されたタブバー */}
-      < Grid
+      <Grid
         container
         direction="column"
         sx={{
           position: "fixed",
           bottom: 0,
-        }
-        }
+        }}
       >
         {/* 1段目 */}
         {/* Player */}
@@ -227,6 +408,7 @@ export default function Main() {
           <PlayerView
             screenWidth={screenWidth}
             screenHeight={screenHeight}
+            setPlayerViewHeight={setPlayerViewHeight}
             isMobile={isMobile}
             PlayerItem={playerItem}
             Playlist={playerPlaylist}
@@ -235,11 +417,12 @@ export default function Main() {
             setIsPlayerFullscreen={setIsPlayerFullscreen}
             entityIdString={entityIdString}
             style={{
-              // header(Navbar)に被らないように
-              paddingTop: isPlayerFullscreen ? navbarHeight : "",
-              paddingBottom: tabbarHeight, // Tabbarに被らないように底上げ
-              // marginTop: navbarHeight, // header(Navbar)に被らないように
-              // marginBottom: tabbarHeight, // Tabbarに被らないように底上
+              // ↓ header(Navbar)の分上に余白を作る。
+              marginTop: isPlayerFullscreen ? navbarHeight : "", // header(Navbar)に被らないように
+              // ↓ Tabberの高さ分浮かせる
+              marginBottom: tabbarHeight, // Tabbarに被らないように底上
+              // (モバイルの場合は Tabberとの間に少し隙間を作る。)
+              // marginBottom: isMobile ? tabbarHeight + (screenHeight * 0.005) : tabbarHeight, // Tabbarに被らないように底上
             }}
           ></PlayerView>
         </Grid>
@@ -266,7 +449,7 @@ export default function Main() {
             isMobile={isMobile}
           />
         </Grid>
-      </Grid >
+      </Grid>
     </>
   );
 }

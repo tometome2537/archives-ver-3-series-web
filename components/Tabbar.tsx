@@ -34,7 +34,6 @@ export default function Tabbar(props: TabbarProps) {
     const bottomNavRef = useRef<HTMLDivElement | null>(null);
 
     // BottomNavigationの高さを監視、調べる。
-    // (To Do:画面縦幅が変動しても高さの値が更新されない問題)
     useEffect(() => {
         if (typeof window !== "undefined") {
             // タブバーの高さを再計算する関数

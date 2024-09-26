@@ -128,7 +128,7 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
 
     // ローディング中
     if (loading) {
-        // return <div>VideoViewTemporary Loding...</div>;
+        // return <div>VideoViewTemporary Loading...</div>;
         return (
             <div style={{
                 paddingTop: "30vh"

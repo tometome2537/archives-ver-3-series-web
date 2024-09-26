@@ -21,7 +21,7 @@ export type EntityObj = {
   category: string;
 };
 
-type BelongHisteryObj = {
+type BelongHistoryObj = {
   entityId: string;
   entityOrganizationId: string;
   joinDate: Date;
@@ -53,16 +53,16 @@ export default function EntitySelector({
   // API[Entity]通信でエラーが出たかどうか
   const [errorEntity, setErrorEntity] = useState<string | null>(null);
 
-  // API[BelongHistery]で取得したデータを格納
-  const [apiDataBelongHistery, setApiDataBelongHistery] = useState<
-    Array<BelongHisteryObj>
+  // API[BelongHistory]で取得したデータを格納
+  const [apiDataBelongHistory, setApiDataBelongHistory] = useState<
+    Array<BelongHistoryObj>
   >([]);
-  // Entity Organisation Idと Entity Person IDで、そのパーソンが組織に所属しているかどうかを返す
+  // Entity Organization Idと Entity Person IDで、そのパーソンが組織に所属しているかどうかを返す
   const isPersonInOrganization = (
     entityPersonId: string,
     entityOrganizationId: string
-  ): BelongHisteryObj | undefined => {
-    return apiDataBelongHistery.find((item: BelongHisteryObj) => {
+  ): BelongHistoryObj | undefined => {
+    return apiDataBelongHistory.find((item: BelongHistoryObj) => {
       // 条件に一致するアイテムがある場合 true を返す
       return (
         item["entityId"] === entityPersonId &&
@@ -71,21 +71,21 @@ export default function EntitySelector({
     });
   };
 
-  // API[BelongHistery]通信中かどうか
-  const [loadingBelongHistery, setLoadingBelongHistery] = useState(true);
-  // API[BelongHistery]通信でエラーが出たかどうか
-  const [errorBelongHistery, setErrorBelongHistery] = useState<string | null>(
+  // API[BelongHistory]通信中かどうか
+  const [loadingBelongHistory, setLoadingBelongHistory] = useState(true);
+  // API[BelongHistory]通信でエラーが出たかどうか
+  const [errorBelongHistory, setErrorBelongHistory] = useState<string | null>(
     null
   );
 
   // モーダル[組織]を開いてるかどうか
-  const [openOrganisation, setOpenOrganisation] = useState(false);
+  const [openOrganization, setOpenOrganization] = useState(false);
   // モーダル[人物]を開いてるかどうか
   const [openPerson, setOpenPerson] = useState(false);
 
   // モーダル[組織]を開く時に実行
-  const handleClickOpenOrganisation = () => {
-    setOpenOrganisation(true);
+  const handleClickOpenOrganization = () => {
+    setOpenOrganization(true);
   };
   // モーダル[人物]を開く時に実行
   const handleClickOpenPerson = () => {
@@ -94,7 +94,7 @@ export default function EntitySelector({
 
   // モーダル[組織][人物]を閉じる時に実行
   const handleClose = () => {
-    setOpenOrganisation(false);
+    setOpenOrganization(false);
     setOpenPerson(false);
   };
 
@@ -103,7 +103,7 @@ export default function EntitySelector({
     Array<EntityObj>
   >([{ id: "椿佳宵", name: "椿佳宵", category: "person" }]);
   // 選択されているentityId[組織]
-  const [selectEntityIdOrganisation, setSelectEntityIdOrganisation] = useState<
+  const [selectEntityIdOrganization, setSelectEntityIdOrganization] = useState<
     Array<EntityObj>
   >([{ id: "ぷらそにか", name: "ぷらそにか", category: "organization" }]);
 
@@ -118,21 +118,21 @@ export default function EntitySelector({
     }
   };
   // HTMLでID[組織]を選択されたら実行
-  const onClickOrganisation = (event: React.ChangeEvent<HTMLSelectElement>) => {
+  const onClickOrganization = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const id = event.target.value;
     const r = getApiDataEntityFromId(id);
     if (r !== undefined) {
-      setSelectEntityIdOrganisation([r]);
+      setSelectEntityIdOrganization([r]);
     } else {
-      setSelectEntityIdOrganisation([]);
+      setSelectEntityIdOrganization([]);
     }
   };
 
   // selectEntityId[人物][組織]の変更を監視し、変化があったら引数のsetEntityIdに値を渡す。
   useEffect(() => {
-    const array = selectEntityIdPerson.concat(selectEntityIdOrganisation);
+    const array = selectEntityIdPerson.concat(selectEntityIdOrganization);
     setEntityId(array);
-  }, [selectEntityIdPerson, selectEntityIdOrganisation]);
+  }, [selectEntityIdPerson, selectEntityIdOrganization]);
 
   // entityIdStringが変更されたらそれを反映する。
   useEffect(() => {
@@ -141,7 +141,7 @@ export default function EntitySelector({
       if (id && id.category === "person") {
         setSelectEntityIdPerson([id]);
       } else if (id && id.category === "organization") {
-        setSelectEntityIdOrganisation([id]);
+        setSelectEntityIdOrganization([id]);
       } else {
         throw new Error("EntitySelector内でのエラー1");
         // throw "EntitySelector内でのエラー1";
@@ -173,12 +173,12 @@ export default function EntitySelector({
     fetchEvents();
   }, []);
 
-  // API[BelongHistery]を叩く
+  // API[BelongHistory]を叩く
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const url = buildUrlWithQuery(
-          process.env.NEXT_PUBLIC_BASE_URL + "/api/v0.0/belonghistery",
+          process.env.NEXT_PUBLIC_BASE_URL + "/api/v0.0/belonghistory",
           {}
         );
         const response = await fetch(url);
@@ -187,10 +187,10 @@ export default function EntitySelector({
         }
         const data = await response.json();
 
-        let result: Array<BelongHisteryObj> = [];
+        let result: Array<BelongHistoryObj> = [];
         for (const item of data["result"]) {
           // 初期化
-          let resultItem: BelongHisteryObj = {
+          let resultItem: BelongHistoryObj = {
             entityId: item["entityId"],
             entityOrganizationId: item["entityOrganizationId"],
             joinDate: new Date(item["joinDate"]),
@@ -198,11 +198,11 @@ export default function EntitySelector({
           };
           result.push(resultItem);
         }
-        setApiDataBelongHistery(result);
+        setApiDataBelongHistory(result);
       } catch (err) {
-        setErrorBelongHistery((err as Error).message); // 'err' を Error 型として扱う
+        setErrorBelongHistory((err as Error).message); // 'err' を Error 型として扱う
       } finally {
-        setLoadingBelongHistery(false);
+        setLoadingBelongHistory(false);
       }
     };
 
@@ -210,25 +210,25 @@ export default function EntitySelector({
   }, []);
 
   // API通信 ローディング中
-  if (loadingEntity && loadingBelongHistery) {
-    // return <div>EntitySelector Loding...</div>;
+  if (loadingEntity && loadingBelongHistory) {
+    // return <div>EntitySelector Loading...</div>;
     return <Loading />;
   }
   // API通信 エラーの場合
-  if (errorEntity && errorBelongHistery) {
+  if (errorEntity && errorBelongHistory) {
     if (errorEntity) {
       return <div>EntitySelector Entity Error: {errorEntity}</div>;
-    } else if (errorBelongHistery) {
-      return <div>EntitySelector Histery Error: {errorBelongHistery}</div>;
+    } else if (errorBelongHistory) {
+      return <div>EntitySelector History Error: {errorBelongHistory}</div>;
     } else {
-      return <div>EntitySelector unkown Error: {errorEntity}</div>;
+      return <div>EntitySelector unknown Error: {errorEntity}</div>;
     }
   }
 
   return (
     <div>
       {/* ダイアログを開くボタン */}
-      <Button variant="outlined" onClick={handleClickOpenOrganisation} sx={{
+      <Button variant="outlined" onClick={handleClickOpenOrganization} sx={{
         /* 要素に幅を持たせるために必要 */
         display: "block",
         width: "auto",
@@ -239,8 +239,8 @@ export default function EntitySelector({
         /* 長すぎる場合に "..." を付ける  */
         textOverflow: "ellipsis",
       }}>
-        {selectEntityIdOrganisation.length !== 0
-          ? selectEntityIdOrganisation[0]["name"]
+        {selectEntityIdOrganization.length !== 0
+          ? selectEntityIdOrganization[0]["name"]
           : "グループを選択"}
       </Button>
       <Button variant="outlined" onClick={handleClickOpenPerson} sx={{
@@ -260,11 +260,11 @@ export default function EntitySelector({
       </Button>
 
       {/* [組織]ダイアログコンポーネント */}
-      <Dialog open={openOrganisation} onClose={handleClose}>
+      <Dialog open={openOrganization} onClose={handleClose}>
         <DialogTitle>グループを選択</DialogTitle>
         <DialogContent>
           {/* ダイアログのコンテンツ */}
-          <select onChange={onClickOrganisation}>
+          <select onChange={onClickOrganization}>
             <option value="null">選択しない</option>
             {apiDataEntity
               ? apiDataEntity.map((item: EntityObj, index: number) => (
@@ -274,8 +274,8 @@ export default function EntitySelector({
                     <option
                       key={index}
                       selected={
-                        selectEntityIdOrganisation.length > 0
-                          ? item["id"] === selectEntityIdOrganisation[0]["id"]
+                        selectEntityIdOrganization.length > 0
+                          ? item["id"] === selectEntityIdOrganization[0]["id"]
                           : false
                       }
                       value={item["id"]}
@@ -308,10 +308,10 @@ export default function EntitySelector({
                   {/* ↓ 組織が選択されている場合 */}
                   {item["category"] === "person" &&
                     //  ↓ 現在選択されている組織を考慮する。
-                    selectEntityIdOrganisation.length > 0 &&
+                    selectEntityIdOrganization.length > 0 &&
                     isPersonInOrganization(
                       item["id"],
-                      selectEntityIdOrganisation[0]["id"]
+                      selectEntityIdOrganization[0]["id"]
                     ) && (
                       <option
                         key={index}
@@ -327,7 +327,7 @@ export default function EntitySelector({
                     )}
                   {/* ↓ 組織が選択されていない場合 */}
                   {item["category"] === "person" &&
-                    selectEntityIdOrganisation.length === 0 && (
+                    selectEntityIdOrganization.length === 0 && (
                       <option key={index} value={item["id"]}>
                         {item["name"]}
                       </option>

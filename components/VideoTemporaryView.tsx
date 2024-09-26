@@ -1,23 +1,15 @@
 import buildUrlWithQuery from "@/libs/buildUrl";
-import fetcher from "@/libs/fetcher";
-import { unescapeHtml } from "@/libs/unescapeHtml";
-import { Button, Stack, Typography } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import {
-    MouseEvent,
-    MouseEventHandler,
+    Fragment,
     useEffect,
-    useRef,
     useState,
 } from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import YouTube, { YouTubeProps } from "react-youtube";
-import useSWRInfinite from "swr/infinite";
+import type React from "react";
+import type { Dispatch, SetStateAction } from "react";
+import type { EntityObj } from "./EntitySelector";
 import Loading from "./Loading";
+import type { PlayerItem } from "./PlayerView";
 import Thumbnail from "./Thumbnail";
-import { EntityObj } from "./EntitySelector";
-import React, { Dispatch, SetStateAction } from "react";
-import { PlayerItem } from "./PlayerView";
 
 type VideoTemporaryObj = {
     videoId: string;
@@ -46,7 +38,9 @@ type VideoViewTemporaryProps = {
 
 export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
     // APIで取得したデータを格納
-    const [apiDataVideo, setApiDataVideo] = useState<Array<VideoTemporaryObj>>([]);
+    const [apiDataVideo, setApiDataVideo] = useState<Array<VideoTemporaryObj>>(
+        [],
+    );
     // API通信中かどうか
     const [loading, setLoading] = useState(true);
     // API通信でエラーが出たかどうか
@@ -60,9 +54,9 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
             //　channel ID (必須)
             const channelId: string = "UCZx7esGXyW6JXn98byfKEIA";
             // 組織 (必須)
-            let organization: string = "";
+            let organization = "";
             // 人物 (必須)
-            let person: string = "";
+            let person = "";
 
             for (const item of props.entityId) {
                 if (item["category"] === "organization") {
@@ -73,18 +67,20 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
             }
 
             const url = buildUrlWithQuery(
-                process.env.NEXT_PUBLIC_BASE_URL + "/api/v0.0/temporaryvideo",
+                `${process.env.NEXT_PUBLIC_BASE_URL}/api/v0.0/temporaryvideo`,
                 {
                     person: person,
                     channelId: channelId,
                     organization: organization,
-                }
+                },
             );
             const response = await fetch(url);
             if (!response.ok) {
+                console.log(response)
                 throw new Error("Network response was not ok");
             }
             const data = await response.json();
+            console.log(data["result"])
             setApiDataVideo(data["result"]);
         } catch (err) {
             setError((err as Error).message); // 'err' を Error 型として扱う
@@ -101,28 +97,32 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
         } else {
             fetchVideos();
         }
-    }, [props.entityId]);
+    }, [isInitialRender]);
 
     // 動画サムネイルがクリックされたときに呼ばれる関数
     const handleVideoClick = (event: React.MouseEvent<HTMLElement>) => {
         const videoId = event.currentTarget.getAttribute("data-videoId");
         props.setPlayerItem({
-            videoId: videoId ? videoId : ""
+            videoId: videoId ? videoId : "",
         });
         // APIから受け取った値の型を変換する。
-        const searchResult: Array<PlayerItem> = apiDataVideo.map((item: VideoTemporaryObj, index: number) => {
-            let result: PlayerItem = {
-                videoId: item.videoId,
-                title: item.title,
-                viewCount: Number(item.viewCount),
-                channelId: item.channelId,
-                channelTitle: item.channelTitle,
-                publishedAt: item.publishedAt ? new Date(item.publishedAt) : undefined,
-                actorId: item.person.split(/ , |,| ,|, /).filter(v => v),
-                organization: Object.keys(JSON.parse(item.organization))
-            };
-            return result;
-        });
+        const searchResult: Array<PlayerItem> = apiDataVideo.map(
+            (item: VideoTemporaryObj, index: number) => {
+                const result: PlayerItem = {
+                    videoId: item.videoId,
+                    title: item.title,
+                    viewCount: Number(item.viewCount),
+                    channelId: item.channelId,
+                    channelTitle: item.channelTitle,
+                    publishedAt: item.publishedAt
+                        ? new Date(item.publishedAt)
+                        : undefined,
+                    actorId: item.person.split(/ , |,| ,|, /).filter((v) => v),
+                    organization: Object.keys(JSON.parse(item.organization)),
+                };
+                return result;
+            },
+        );
         props.setPlayerSearchResult(searchResult);
     };
 
@@ -130,18 +130,23 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
     if (loading) {
         // return <div>VideoViewTemporary Loding...</div>;
         return (
-            <div style={{
-                paddingTop: "30vh"
-            }}>
+            <div
+                style={{
+                    paddingTop: "30vh",
+                }}
+            >
                 <Loading />
             </div>
         );
     }
     // エラーの場合
     if (error) {
-        return <div>VideoViewTemporary Error: {error}
-            <div onClick={fetchVideos}>再読み込み</div>
-        </div>;
+        return (
+            <div>
+                VideoViewTemporary Error: {error}
+                <div onClick={fetchVideos}>再読み込み</div>
+            </div>
+        );
     }
 
     return (
@@ -152,12 +157,14 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
                 justifyContent: "center", // 中央に配置
                 alignItems: "center", // 縦方向にも中央に配置
                 flexWrap: "wrap", // ラップさせて複数行に
-                gap: "10px" // アイテム間のスペースを追加
+                gap: "10px", // アイテム間のスペースを追加
             }}
         >
             {apiDataVideo.length !== 0 ? (
                 apiDataVideo.map((item: VideoTemporaryObj, index: number) => (
-                    <>
+                    <Fragment
+                        key={item.videoId}
+                    >
                         {/* 各アイテムを表示 */}
                         {
                             // <div
@@ -166,8 +173,11 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
                             //     }}
                             // >
                             <Thumbnail
-                                key={index}
-                                isPlayingOnHover={props.playerItem.videoId === "" || props.playerItem.videoId === undefined ? true : false}
+                                isPlayingOnHover={
+                                    props.playerItem.videoId === "" ||
+                                    props.playerItem.videoId === undefined
+
+                                }
                                 videoId={item.videoId}
                                 title={item.title}
                                 viewCount={Number(item.viewCount)}
@@ -177,10 +187,12 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
                             />
                             // </div>
                         }
-                    </>
+                    </Fragment>
                 ))
             ) : (
-                <><div>検索結果が0です。</div></>
+                <>
+                    <div>検索結果が0です。</div>
+                </>
             )}
         </div>
     );

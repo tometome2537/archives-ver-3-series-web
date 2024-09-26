@@ -11,8 +11,7 @@ import {
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Unstable_Grid2";
 import Image from "next/image";
-import type React from "react";
-import { type MouseEventHandler, useEffect, useState } from "react";
+import React, { MouseEventHandler, useState, useEffect } from "react";
 import YouTubePlayer from "./YouTubePlayer";
 
 export interface NoteContentProps {
@@ -115,6 +114,7 @@ type ThumbnailProps = {
 };
 
 export default function Thumbnail(props: ThumbnailProps) {
+
   // サムネイルの上にマウスポインターがあるかどうか。
   const [raised, setRaised] = useState<boolean>();
 
@@ -173,8 +173,7 @@ export default function Thumbnail(props: ThumbnailProps) {
                   height={360}
                   image={`https://img.youtube.com/vi/${props.videoId}/hqdefault.jpg`}
                   alt={props.title ? "Thumbnail of " + props.title : ""}
-                />
-              )}
+                />)}
             </Box>
             <CardContent>
               <Typography
@@ -192,9 +191,82 @@ export default function Thumbnail(props: ThumbnailProps) {
               </Typography>
             </CardContent>
           </CardActionArea>
+
         </Card>
       </Grid>
     );
   }
 
+  return (
+    <div
+      onClick={props.onClick ? props.onClick : undefined}
+      data-videoid={props.videoId}
+      style={{ cursor: props.onClick ? "pointer" : "default" }} // クリック可能かどうかでカーソルを変更
+    >
+      {/* サムネイルとタイトルを中央揃え */}
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          padding: 1,
+          borderRadius: "1.2em",
+          transition: "transform 0.3s ease-in-out",
+          transform: raised ? "scale(1.05)" : "scale(1)", // ホバー時の拡大効果
+        }}
+        onMouseEnter={() => setRaised(true)}
+        onMouseLeave={() => setRaised(false)}
+      >
+        {/* YouTubeサムネイル画像 */}
+        {raised && props.isPlayingOnHover ? (
+          <YouTubePlayer
+            videoId={props.videoId}
+            style={{
+              objectFit: "contain",
+              // iframe上のクリックを無効にする。 → 親要素のonClickが実行される。
+              pointerEvents: "none",
+            }}
+            // 動画の比率は、横：縦 = １６：９で
+            width={"320px"}
+            height={"180px"}
+          />
+        ) : (
+          <Image
+            src={`https://img.youtube.com/vi/${props.videoId}/mqdefault.jpg`}
+            alt={props.title ? `Thumbnail of ${props.title}` : "Video Thumbnail"}
+            width={320}
+            height={180}
+            style={{ objectFit: "contain", borderRadius: "1.2em" }}
+          />
+        )}
+
+        {/* タイトルをエリプシスで省略 */}
+        <Typography
+          variant="body2"
+          sx={{
+            maxWidth: "30ch",
+            textOverflow: "ellipsis",
+            overflow: "hidden",
+            whiteSpace: "nowrap",
+            marginTop: 1,
+            textAlign: "center",
+          }}
+        >
+          {props.title || ""}
+        </Typography>
+
+        {/* 投稿日を表示 */}
+        {props.publishedAt && (
+          <Typography
+            variant="caption"
+            color="textSecondary"
+            sx={{ marginTop: 0.5, textAlign: "center" }}
+          >
+            {props.channelTitle || ""} ・ {`${String(props.viewCount)}回` || ""} ・{" "}
+            {timeAgo(props.publishedAt)}
+          </Typography>
+        )}
+      </Box>
+    </div>
+  );
 }

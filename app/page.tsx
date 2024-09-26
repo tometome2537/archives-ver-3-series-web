@@ -1,9 +1,10 @@
 "use client";
 
 import Main from "@/components/Main";
-import { type PaletteMode, ThemeProvider, createTheme } from "@mui/material";
+import { ThemeProvider, createTheme, PaletteMode } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
-import { useEffect, useMemo, useState } from "react";
+import { useState, useMemo, useEffect } from "react";
+import { Button } from "@mui/material";
 
 export default function Home() {
   // テーマの状態を保持（初期はライトモード）
@@ -74,8 +75,9 @@ export default function Home() {
           },
         },
       }),
-    [mode], // `mode`が変わるたびにテーマを再生成
+    [mode] // `mode`が変わるたびにテーマを再生成
   );
+
 
   return (
     <>

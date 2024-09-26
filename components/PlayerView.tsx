@@ -4,16 +4,19 @@ import React, {
     useEffect,
     useState,
     MutableRefObject,
-    // useRef
+    useRef,
 } from "react";
 import Thumbnail from "./Thumbnail";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import PauseIcon from '@mui/icons-material/Pause';
+import PauseIcon from "@mui/icons-material/Pause";
 import YouTubePlayer from "./YouTubePlayer";
+import { useTheme } from "@mui/material/styles";
+import rgbToHex from "@/libs/colorConverter";
 
 export type PlayerItem = {
     videoId?: string; // 動画IDをプロパティとして受け取る
     title?: string;
+    viewCount?: number;
     channelId?: string;
     channelTitle?: string;
     publishedAt?: Date;
@@ -24,6 +27,7 @@ export type PlayerItem = {
 type PlayerProps = {
     screenWidth: number;
     screenHeight: number;
+    setPlayerViewHeight: Dispatch<SetStateAction<number>>;
     isMobile: boolean;
     // フルスクリーンで表示するかどうか
     isPlayerFullscreen: boolean;
@@ -36,6 +40,12 @@ type PlayerProps = {
 };
 
 export default function PlayerView(props: PlayerProps) {
+    // テーマ設定を取得
+    const theme = useTheme();
+
+    // PlayerViewのHTMLが保存される
+    const playerViewRef = useRef<HTMLDivElement | null>(null);
+
     // 現在再生されているvideoId
     const [playNowVideoId, setPlayNowVideoId] = useState<string>();
     // 現在再生されている動画の詳細情報
@@ -66,6 +76,30 @@ export default function PlayerView(props: PlayerProps) {
         setPlayNowDetail(result);
     }, [playNowVideoId, props.Playlist, props.searchResult]);
 
+    // playerViewRefの高さを監視、調べる。
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            // タブバーの高さを再計算する関数
+            const updateNavHeight = () => {
+                if (playerViewRef.current) {
+                    const height = playerViewRef.current.clientHeight;
+                    props.setPlayerViewHeight(height);
+                }
+            };
+
+            // 初回の高さ計算
+            updateNavHeight();
+
+            // ウィンドウリサイズ時に高さを再計算
+            window.addEventListener("resize", updateNavHeight);
+
+            // クリーンアップ: コンポーネントがアンマウントされたときにイベントリスナーを削除
+            return () => {
+                window.removeEventListener("resize", updateNavHeight);
+            };
+        }
+    }, [props]);
+
     // サムネイルがクリックされた時
     const handleVideoClick = (event: React.MouseEvent<HTMLElement>) => {
         const videoId = event.currentTarget.getAttribute("data-videoId");
@@ -93,10 +127,9 @@ export default function PlayerView(props: PlayerProps) {
         }
     }, [props.Playlist, props.searchResult]);
 
-
     // YouTube Playerの再生と停止を切り替える
     const togglePlayPlayer = (event: React.MouseEvent<HTMLElement>) => {
-        console.log("a")
+        console.log("a");
     };
 
     // 拡大モードの切り替えスイッチ
@@ -110,6 +143,7 @@ export default function PlayerView(props: PlayerProps) {
 
     return (
         <div
+            ref={playerViewRef}
             style={{
                 // videoIdがセットされていない時はPlayerを非表示
                 display: playNowVideoId ? "block" : "none",
@@ -122,21 +156,50 @@ export default function PlayerView(props: PlayerProps) {
             <div
                 style={{
                     ...{
+                        // ここから拡大表示の時にPlayerを固定する(スマホのブラウザ対策)
+                        position: props.isPlayerFullscreen ? "fixed" : "relative",
+                        top: "0",
+                        // ここまで拡大表示の時にPlayerを固定する
+                        // ↓ PCの時は横に並べる
                         display: props.isMobile ? "" : "flex",
                         width: "100%",
                         height: "100%",
-                        maxWidth: "100vw", // 確定
-                        maxHeight: "100%", // 確定
-                        // backgroundColor: "white",
-                        backgroundColor: "yellow",
+                        maxWidth: "100vw",
+                        maxHeight: "100%",
+                        // ↓ 背景色の指定と背景の透過
+                        backgroundColor: !props.isPlayerFullscreen
+                            ? `rgba(
+                        ${rgbToHex(theme.palette.background.paper).r},
+                        ${rgbToHex(theme.palette.background.paper).g},
+                        ${rgbToHex(theme.palette.background.paper).b},
+                        0.75
+                        )`
+                            // : `${theme.palette.background.default}`,
+                            : `rgba(
+                        ${rgbToHex(theme.palette.background.paper).r},
+                        ${rgbToHex(theme.palette.background.paper).g},
+                        ${rgbToHex(theme.palette.background.paper).b},
+                        0.90
+                        )`,
+                        // 背景をぼかす
+                        backdropFilter: props.isPlayerFullscreen ? "blur(20px)" : "blur(15px)",
+                        // 背景をぼかす{Safari(WebKit)対応}
+                        WebkitBackdropFilter: props.isPlayerFullscreen ? "blur(20px)" : "blur(15px)",
+                        overflow: "hidden", // クリッピングを防ぐ
+                        padding: "0", // paddingの初期化
+                        margin: "0", // margin の初期化
+                        // ↓ 両サイドに余白を開ける To Do
+                        // marginLeft: props.isMobile && !props.isPlayerFullscreen ? `${props.screenWidth * 0.01}px` : "0",
+                        // marginRight: props.isMobile && !props.isPlayerFullscreen ? `${props.screenWidth * 0.01}px` : "0",
+                        // 角を丸く
+                        borderRadius:
+                            props.isMobile && !props.isPlayerFullscreen ? "1em" : "",
                         textAlign: "center",
-                        padding: "0", // プレイヤーの上下にスペースを追加
-                        margin: "0",
                     },
                     ...props.style,
                 }}
             >
-                {/* 左カラム */}
+                {/* 左カラム(拡大表示falseの時はミニプレイヤー) */}
                 <div
                     style={{
                         position: "relative",
@@ -154,25 +217,23 @@ export default function PlayerView(props: PlayerProps) {
                             margin: "0 auto",
                             // maxWidth: props.isPlayerFullscreen ? "100%" : "40%",
                             // maxHeight: "100%", // 高さに制限をつけることでパソコンのモニター等で無制限に大きくならないようにする。
-
                         }}
                         // 動画の比率は、横：縦 = １６：９で
-                        width={props.isMobile && props.isPlayerFullscreen
-                            ? "100%"
-                            : props.isPlayerFullscreen
-                                ? `${((props.screenHeight * 0.4) / 9) * 16}px`
-                                : `${((props.screenHeight * 0.1) / 9) * 16}px`}
-                        height={props.isMobile && props.isPlayerFullscreen
-                            ? `${props.screenWidth / 16 * 9}px`
-                            : props.isPlayerFullscreen
-                                ? `${props.screenHeight * 0.4}px`
-                                : `${props.screenHeight * 0.1}px`}
+                        width={
+                            props.isMobile && props.isPlayerFullscreen
+                                ? "100%"
+                                : props.isPlayerFullscreen
+                                    ? `${((props.screenHeight * 0.48) / 9) * 16}px`
+                                    : `${((props.screenHeight * 0.1) / 9) * 16}px`
+                        }
+                        height={
+                            props.isMobile && props.isPlayerFullscreen
+                                ? `${(props.screenWidth / 16) * 9}px`
+                                : props.isPlayerFullscreen
+                                    ? `${props.screenHeight * 0.48}px`
+                                    : `${props.screenHeight * 0.1}px`
+                        }
                     />
-
-
-
-
-
 
                     {/* PlayerView縮小表示の時のHTML */}
                     <div
@@ -203,8 +264,8 @@ export default function PlayerView(props: PlayerProps) {
                             {playNowDetail
                                 ? playNowDetail.title
                                     ? playNowDetail.title
-                                    : ""
-                                : ""}
+                                    : "タイトル不明"
+                                : "タイトル不明"}
                         </div>
                         <div
                             style={{
@@ -231,36 +292,32 @@ export default function PlayerView(props: PlayerProps) {
                         </div>
                     </div>
                     <div
+                        onClick={togglePlayPlayer}
                         style={{
                             display: props.isPlayerFullscreen ? "none" : "block",
                             maxWidth: props.isPlayerFullscreen ? "100%" : "20%",
                             margin: "auto",
                         }}
                     >
-                        <div
-                            onClick={togglePlayPlayer}
+                        <PlayArrowIcon
                             style={{
-                                display: "flex",
-                                justifyContent: "center",  // 水平方向の中央配置
-                                alignItems: "center",      // 垂直方向の中央配置
-                                margin: "0 auto",
-                                width: "fit-content",
-                                height: "100%",            // 必要に応じて高さを指定
-                            }}>
-                            <PlayArrowIcon />
-                            {/* <PauseIcon /> */}
-                        </div>
+                                height: "100%",
+                                margin: "auto",
+                            }}
+                        />
+                        {/* <PauseIcon /> */}
                     </div>
                     {/* YouTube Playerの下の概要欄 */}
                     <div
                         style={{
                             display: props.isPlayerFullscreen ? "block" : "none",
                             overflowY: "auto",
-                            maxHeight: "70vh",
+                            maxHeight: "50vh",
                             paddingBottom: "25vh",
                             // width: props.isPlayerFullscreen ? "" : "60%",
                         }}
                     >
+                        {/* 動画タイトル */}
                         <p
                             style={{
                                 /* 要素に幅を持たせるために必要 */
@@ -282,8 +339,29 @@ export default function PlayerView(props: PlayerProps) {
                                     : ""
                                 : ""}
                         </p>
-                        <p>ぷらそにか</p>
-                        {/* <p>{JSON.stringify(props.entityIdString)}</p> */}
+                        {/* チャンネル名 */}
+                        <p
+                            style={{
+                                /* 要素に幅を持たせるために必要 */
+                                display: "block",
+                                /* 29文字分確保 */
+                                // width: "29ch",
+                                // width: "60%",
+                                /* 改行を防ぐ */
+                                whiteSpace: "nowrap",
+                                /* 溢れた文字を隠す  */
+                                overflow: "hidden",
+                                /* 長すぎる場合に "..." を付ける  */
+                                textOverflow: "ellipsis",
+                            }}
+                        >
+                            {playNowDetail
+                                ? playNowDetail.channelTitle
+                                    ? playNowDetail.channelTitle
+                                    : ""
+                                : ""}
+                        </p>
+                        {/* 動画投稿日 */}
                         <p
                             style={{
                                 fontSize: "14px", // フォントサイズ
@@ -309,7 +387,7 @@ export default function PlayerView(props: PlayerProps) {
                                     }
                                 )}
                         </p>
-
+                        {/* 出演者一覧 */}
                         <div
                             style={{
                                 display: "flex",
@@ -348,7 +426,7 @@ export default function PlayerView(props: PlayerProps) {
                                 ))
                                 : null}
                         </div>
-
+                        {/* 組織名一覧 */}
                         {props.isPlayerFullscreen &&
                             playNowDetail &&
                             playNowDetail.organization &&
@@ -360,6 +438,7 @@ export default function PlayerView(props: PlayerProps) {
                                 </div>
                             ))
                             : null}
+                        {/* ミニプレイヤー切り替えボタン */}
                         <div onClick={togglePlayerFullscreen}>
                             {props.isPlayerFullscreen && "ミニプレイヤー切り替えボタン(仮)"}
                         </div>
@@ -387,7 +466,10 @@ export default function PlayerView(props: PlayerProps) {
                                 <Thumbnail
                                     key={index}
                                     videoId={item.videoId ? item.videoId : ""}
-                                    title={item.title ? item.title : ""}
+                                    title={item.title}
+                                    viewCount={item.viewCount}
+                                    channelTitle={item.channelTitle}
+                                    publishedAt={item.publishedAt}
                                     onClick={handleVideoClick}
                                 />
                             ))
@@ -395,6 +477,6 @@ export default function PlayerView(props: PlayerProps) {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 }

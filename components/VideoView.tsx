@@ -9,12 +9,15 @@ import {
   useEffect,
   useRef,
   useState,
+  Dispatch,
+  SetStateAction
 } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
 import YouTube, { YouTubeProps } from "react-youtube";
 import useSWRInfinite from "swr/infinite";
 import Loading from "./Loading";
 import Thumbnail from "./Thumbnail";
+import { PlayerItem } from "./PlayerView";
 
 interface Video {
   id: string;
@@ -24,9 +27,11 @@ interface Video {
 type Props = {
   playerSize: number;
   isLargePlayer: boolean;
-  searchQuery: string
-};
-
+  searchQuery: string;
+  playerItem: PlayerItem;
+  setPlayerItem: Dispatch<SetStateAction<PlayerItem>>;
+  setPlayerSearchResult: Dispatch<SetStateAction<Array<PlayerItem>>>;
+}
 type SortButtonProps = {
   order: string;
   currentOrder: string;
@@ -48,7 +53,7 @@ function SortButton(props: SortButtonProps) {
     </Button>
   );
 }
-export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Props) {
+export default function VideoView(props: Props) {
   // 見つかった動画の数を保持するステート
   const [videoCount, setVideoCount] = useState<number>(NaN);
   // ソート順を保持するステート（初期値は「人気順」）
@@ -65,7 +70,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
   // APIから動画数を取得する関数
   function fetchVideoCount() {
     // クエリを含むURLを作成
-    const url = buildUrlWithQuery(process.env.NEXT_PUBLIC_BASE_URL + "/videos/count", { "search": searchQuery });
+    const url = buildUrlWithQuery(process.env.NEXT_PUBLIC_BASE_URL + "/videos/count", { "search": props.searchQuery });
 
     // fetchを使用して動画数を取得
     fetch(url, { cache: "no-store" })
@@ -78,7 +83,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
   // 検索クエリが変更されるたびに動画数を再取得
   useEffect(() => {
     fetchVideoCount();
-  }, [searchQuery]);
+  }, [props.searchQuery]);
 
   // YouTubeプレーヤーの参照を保持
   const youtubePlayer = useRef<YouTube>(null);
@@ -97,9 +102,9 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
   };
 
   // 動画サムネイルがクリックされたときに呼ばれる関数
-  function handleVideoClick(e: React.MouseEvent<HTMLButtonElement>) {
+  function handleVideoClick(event: React.MouseEvent<HTMLButtonElement>) {
     // クリックされた動画のIDを取得しステートに設定
-    setYoutubeId(e.currentTarget.dataset.id ?? "");
+    setYoutubeId(event.currentTarget.dataset.videoId ?? "");
 
     // プレーヤーが非表示のときだけ表示させる
     if (!isYoutubePlayerVisible) {
@@ -108,6 +113,29 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
 
     // 新しいタブでYouTubeの動画を開く
     // window.open(`https://youtube.com/watch?v=${e.currentTarget.dataset.id}`);
+
+    // ここからとめとめ追記 2024/09/26
+    const videoId = event.currentTarget.getAttribute("data-videoId");
+    props.setPlayerItem({
+      videoId: videoId ?? ""
+    });
+    // APIから受け取った値の型を変換する。
+    const searchResult: Array<PlayerItem> = [{ videoId: videoId ?? "" }]
+    // const searchResult: Array<PlayerItem> = apiDataVideo.map((item: VideoTemporaryObj, index: number) => {
+    //   let result: PlayerItem = {
+    //     videoId: item.videoId,
+    //     title: item.title,
+    //     viewCount: Number(item.viewCount),
+    //     channelId: item.channelId,
+    //     channelTitle: item.channelTitle,
+    //     publishedAt: item.publishedAt ? new Date(item.publishedAt) : undefined,
+    //     actorId: item.person.split(/ , |,| ,|, /).filter(v => v),
+    //     organization: Object.keys(JSON.parse(item.organization))
+    //   };
+    //   return result;
+    // });
+    props.setPlayerSearchResult(searchResult);
+    // ここまでとめとめ追記
   }
 
   const itemsPerPage = 30; // 1ページあたりの表示数
@@ -117,7 +145,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
     if (previousPageData && !previousPageData.length) return null; // 最後のページに到達した場合
     // クエリを含むURLを作成
     const url = buildUrlWithQuery(process.env.NEXT_PUBLIC_BASE_URL + "/videos", {
-      "search": searchQuery,
+      "search": props.searchQuery,
       "page": pageIndex,
       "take": itemsPerPage,
       "sort": sortOrder
@@ -150,6 +178,7 @@ export default function VideoView({ playerSize, isLargePlayer, searchQuery }: Pr
       {data?.flat()?.map((item, index) => (
         <Thumbnail
           key={index}
+          isPlayingOnHover={props.playerItem.videoId === "" || props.playerItem.videoId === undefined ? true : false}
           thumbnailType="card"
           videoId={item.id}
           title={unescapeHtml(item.title)}

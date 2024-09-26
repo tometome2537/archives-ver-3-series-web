@@ -3,6 +3,7 @@ import InputBase from "@mui/material/InputBase";
 import { alpha, styled } from "@mui/material/styles";
 import { Dispatch, SetStateAction } from "react";
 
+
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
   borderRadius: theme.shape.borderRadius,

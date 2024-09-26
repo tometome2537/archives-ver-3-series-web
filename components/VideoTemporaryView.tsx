@@ -37,6 +37,7 @@ type VideoTemporaryObj = {
 };
 
 type VideoViewTemporaryProps = {
+    playerItem: PlayerItem;
     entityId: Array<EntityObj>;
     setPlayerItem: Dispatch<SetStateAction<PlayerItem>>;
     setPlayerPlaylist: Dispatch<SetStateAction<Array<PlayerItem>>>;
@@ -113,6 +114,7 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
             let result: PlayerItem = {
                 videoId: item.videoId,
                 title: item.title,
+                viewCount: Number(item.viewCount),
                 channelId: item.channelId,
                 channelTitle: item.channelTitle,
                 publishedAt: item.publishedAt ? new Date(item.publishedAt) : undefined,
@@ -128,7 +130,9 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
     if (loading) {
         // return <div>VideoViewTemporary Loding...</div>;
         return (
-            <div style={{ padding: "auto" }}>
+            <div style={{
+                paddingTop: "30vh"
+            }}>
                 <Loading />
             </div>
         );
@@ -156,18 +160,22 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
                     <>
                         {/* 各アイテムを表示 */}
                         {
-                            <div
-                                style={{
-                                    padding: "10px",
-                                }}
-                            >
-                                <Thumbnail
-                                    key={index}
-                                    videoId={item.videoId}
-                                    title={item.title}
-                                    onClick={handleVideoClick}
-                                />
-                            </div>
+                            // <div
+                            //     style={{
+                            //         padding: "10px",
+                            //     }}
+                            // >
+                            <Thumbnail
+                                key={index}
+                                isPlayingOnHover={props.playerItem.videoId === "" || props.playerItem.videoId === undefined ? true : false}
+                                videoId={item.videoId}
+                                title={item.title}
+                                viewCount={Number(item.viewCount)}
+                                channelTitle={item.channelTitle}
+                                publishedAt={new Date(item.publishedAt)}
+                                onClick={handleVideoClick}
+                            />
+                            // </div>
                         }
                     </>
                 ))

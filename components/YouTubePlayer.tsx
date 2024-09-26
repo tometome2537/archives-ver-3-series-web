@@ -1,5 +1,6 @@
-import YouTube, { YouTubeProps } from "react-youtube";
-import React, { useState, useEffect } from "react";
+import type React from "react";
+import { useEffect, useState } from "react";
+import YouTube, { type YouTubeProps } from "react-youtube";
 
 type YouTubePlayerProps = {
     videoId?: string;
@@ -7,10 +8,9 @@ type YouTubePlayerProps = {
     height?: string;
     style?: React.CSSProperties; // 外部からスタイルを受け取る（オプション）
     loop?: boolean; // ループ再生を制御するオプションを追加
-}
+};
 
 export default function YouTubePlayer(props: YouTubePlayerProps) {
-
     const [playerState, setPlayerState] = useState<string>("不明"); // プレイヤーの状態を管理する状態変数
     const [player, setPlayer] = useState<any>(null); // YouTubeプレイヤーのインスタンス
 
@@ -29,37 +29,37 @@ export default function YouTubePlayer(props: YouTubePlayerProps) {
     };
 
     // YouTube Playerの再生の状態を取得
-    const onStateChange: YouTubeProps['onStateChange'] = (event) => {
+    const onStateChange: YouTubeProps["onStateChange"] = (event) => {
         if (event && event.data !== undefined) {
-            let state = event.data;
+            const state = event.data;
             switch (state) {
                 case -1:
-                    setPlayerState('未開始');
+                    setPlayerState("未開始");
                     break;
                 case 0:
-                    setPlayerState('終了');
+                    setPlayerState("終了");
                     break;
                 case 1:
-                    setPlayerState('再生中');
+                    setPlayerState("再生中");
                     break;
                 case 2:
-                    setPlayerState('一時停止');
+                    setPlayerState("一時停止");
                     break;
                 case 3:
-                    setPlayerState('バッファリング');
+                    setPlayerState("バッファリング");
                     break;
                 case 5:
-                    setPlayerState('頭出し（準備完了）');
+                    setPlayerState("頭出し（準備完了）");
                     break;
                 default:
-                    setPlayerState('不明');
+                    setPlayerState("不明");
                     break;
             }
         }
     };
 
     // YouTube Playerの読み込みが完了した時
-    const onReady: YouTubeProps['onReady'] = (event) => {
+    const onReady: YouTubeProps["onReady"] = (event) => {
         setPlayer(event.target); // プレイヤーのインスタンスを保存
     };
 
@@ -78,23 +78,28 @@ export default function YouTubePlayer(props: YouTubePlayerProps) {
     };
 
     return (
-        <div style={{
-            ...{
-                width: props.width || "100%",
-                // ↓ この色がついてるところをどうにかする To Do
-                backgroundColor: "orange",
-            },
-            ...props.style
-        }}>
+        <div
+            style={{
+                ...{
+                    width: props.width || "100%",
+                    // ↓ この色がついてるところをどうにかする To Do
+                    backgroundColor: "orange",
+                    maxHeight: 0
+                },
+                ...props.style,
+            }}
+        >
             <YouTube
                 videoId={props.videoId || ""}
                 opts={YouTubeOpts}
                 onStateChange={onStateChange}
                 onReady={onReady}
             />
-            <div style={{
-                display: "none"
-            }}>
+            <div
+                style={{
+                    display: "none",
+                }}
+            >
                 {/* 再生状態表示 */}
                 <p>再生状態: {playerState}</p>
 

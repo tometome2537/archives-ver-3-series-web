@@ -84,7 +84,8 @@ export default function YouTubePlayer(props: YouTubePlayerProps) {
                     width: props.width || "100%",
                     height: props.height,
                     // ↓ この色がついてるところをどうにかする To Do
-                    backgroundColor: "orange",
+                    // 修正完了 2024/09/26
+                    // backgroundColor: "orange",
                 },
                 ...props.style,
             }}

@@ -200,7 +200,7 @@ export default function Thumbnail(props: ThumbnailProps) {
   return (
     <div
       onClick={props.onClick ? props.onClick : undefined}
-      data-videoid={props.videoId}
+      data-videoId={props.videoId}
       style={{ cursor: props.onClick ? "pointer" : "default" }} // クリック可能かどうかでカーソルを変更
     >
       {/* サムネイルとタイトルを中央揃え */}

@@ -4,20 +4,21 @@ import { unescapeHtml } from "@/libs/unescapeHtml";
 import { Button, Stack, Typography } from "@mui/material";
 import Grid2 from "@mui/material/Unstable_Grid2/Grid2";
 import {
-  MouseEvent,
-  MouseEventHandler,
+  type Dispatch,
+  type MouseEvent,
+  type MouseEventHandler,
+  type SetStateAction,
   useEffect,
   useRef,
   useState,
-  Dispatch,
-  SetStateAction
 } from "react";
 import InfiniteScroll from "react-infinite-scroll-component";
-import YouTube, { YouTubeProps } from "react-youtube";
+import type YouTube from "react-youtube";
+import type { YouTubeProps } from "react-youtube";
 import useSWRInfinite from "swr/infinite";
 import Loading from "./Loading";
+import type { PlayerItem } from "./PlayerView";
 import Thumbnail from "./Thumbnail";
-import { PlayerItem } from "./PlayerView";
 
 interface Video {
   id: string;
@@ -31,7 +32,7 @@ type Props = {
   playerItem: PlayerItem;
   setPlayerItem: Dispatch<SetStateAction<PlayerItem>>;
   setPlayerSearchResult: Dispatch<SetStateAction<Array<PlayerItem>>>;
-}
+};
 type SortButtonProps = {
   order: string;
   currentOrder: string;
@@ -55,14 +56,15 @@ function SortButton(props: SortButtonProps) {
 }
 export default function VideoView(props: Props) {
   // 見つかった動画の数を保持するステート
-  const [videoCount, setVideoCount] = useState<number>(NaN);
+  const [videoCount, setVideoCount] = useState<number>(Number.NaN);
   // ソート順を保持するステート（初期値は「人気順」）
   const [sortOrder, setSortOrder] = useState<string>("pop");
 
   // 選択されたYouTube動画のIDを保持するステート
   const [youtubeId, setYoutubeId] = useState<string>("");
   // YouTubeプレーヤーが表示されているかどうかのフラグ
-  const [isYoutubePlayerVisible, setIsYoutubePlayerVisible] = useState<boolean>(false);
+  const [isYoutubePlayerVisible, setIsYoutubePlayerVisible] =
+    useState<boolean>(false);
 
   // コンポーネントの初回マウント時に動画数を取得
   useEffect(() => fetchVideoCount(), []);
@@ -70,13 +72,16 @@ export default function VideoView(props: Props) {
   // APIから動画数を取得する関数
   function fetchVideoCount() {
     // クエリを含むURLを作成
-    const url = buildUrlWithQuery(process.env.NEXT_PUBLIC_BASE_URL + "/videos/count", { "search": props.searchQuery });
+    const url = buildUrlWithQuery(
+      process.env.NEXT_PUBLIC_BASE_URL ?? "" + "/videos/count",
+      { search: props.searchQuery },
+    );
 
     // fetchを使用して動画数を取得
     fetch(url, { cache: "no-store" })
       .then(async (response) => await response.json())
       .then((data) => {
-        setVideoCount(parseInt(data.videoCount)); // 取得した動画数をステートに設定
+        setVideoCount(Number.parseInt(data.videoCount)); // 取得した動画数をステートに設定
       });
   }
 
@@ -117,10 +122,10 @@ export default function VideoView(props: Props) {
     // ここからとめとめ追記 2024/09/26
     const videoId = event.currentTarget.getAttribute("data-videoId");
     props.setPlayerItem({
-      videoId: videoId ?? ""
+      videoId: videoId ?? "",
     });
     // APIから受け取った値の型を変換する。
-    const searchResult: Array<PlayerItem> = [{ videoId: videoId ?? "" }]
+    const searchResult: Array<PlayerItem> = [{ videoId: videoId ?? "" }];
     // const searchResult: Array<PlayerItem> = apiDataVideo.map((item: VideoTemporaryObj, index: number) => {
     //   let result: PlayerItem = {
     //     videoId: item.videoId,
@@ -141,15 +146,21 @@ export default function VideoView(props: Props) {
   const itemsPerPage = 30; // 1ページあたりの表示数
 
   // ページごとにURLを生成する関数（無限スクロール用）
-  const generateUrlForPage = (pageIndex: number, previousPageData: Video[][]) => {
+  const generateUrlForPage = (
+    pageIndex: number,
+    previousPageData: Video[][],
+  ) => {
     if (previousPageData && !previousPageData.length) return null; // 最後のページに到達した場合
     // クエリを含むURLを作成
-    const url = buildUrlWithQuery(process.env.NEXT_PUBLIC_BASE_URL + "/videos", {
-      "search": props.searchQuery,
-      "page": pageIndex,
-      "take": itemsPerPage,
-      "sort": sortOrder
-    });
+    const url = buildUrlWithQuery(
+      process.env.NEXT_PUBLIC_BASE_URL + "/videos",
+      {
+        search: props.searchQuery,
+        page: pageIndex,
+        take: itemsPerPage,
+        sort: sortOrder,
+      },
+    );
     return url;
   };
 
@@ -163,12 +174,22 @@ export default function VideoView(props: Props) {
   // データが空かどうかのチェック
   const isEmpty = data?.[0]?.length === 0;
   // 最後のページかどうかのチェック
-  const isReachingEnd = isEmpty || (data && data?.[data?.length - 1]?.length < itemsPerPage) || false;
+  const isReachingEnd =
+    isEmpty ||
+    (data && data?.[data?.length - 1]?.length < itemsPerPage) ||
+    false;
 
   // 最後まで到達した場合のメッセージ
   const endMessage = (
-    <Typography align="center" sx={{ my: 2 }} variant="h2" color="text.secondary">
-      {size > 0 ? "これ以上動画はありません(´;ω;｀)" : "動画が見つかりませんでした(´;ω;｀)"}
+    <Typography
+      align="center"
+      sx={{ my: 2 }}
+      variant="h2"
+      color="text.secondary"
+    >
+      {size > 0
+        ? "これ以上動画はありません(´;ω;｀)"
+        : "動画が見つかりませんでした(´;ω;｀)"}
     </Typography>
   );
 
@@ -178,7 +199,12 @@ export default function VideoView(props: Props) {
       {data?.flat()?.map((item, index) => (
         <Thumbnail
           key={index}
-          isPlayingOnHover={props.playerItem.videoId === "" || props.playerItem.videoId === undefined ? true : false}
+          isPlayingOnHover={
+            props.playerItem.videoId === "" ||
+              props.playerItem.videoId === undefined
+              ? true
+              : false
+          }
           thumbnailType="card"
           videoId={item.id}
           title={unescapeHtml(item.title)}
@@ -213,9 +239,24 @@ export default function VideoView(props: Props) {
           alignItems="center"
           ref={sortRadio}
         >
-          <SortButton order="pop" currentOrder={sortOrder} onClick={handleSortChange} text="人気順" />
-          <SortButton order="new" currentOrder={sortOrder} onClick={handleSortChange} text="新しい" />
-          <SortButton order="old" currentOrder={sortOrder} onClick={handleSortChange} text="古い" />
+          <SortButton
+            order="pop"
+            currentOrder={sortOrder}
+            onClick={handleSortChange}
+            text="人気順"
+          />
+          <SortButton
+            order="new"
+            currentOrder={sortOrder}
+            onClick={handleSortChange}
+            text="新しい"
+          />
+          <SortButton
+            order="old"
+            currentOrder={sortOrder}
+            onClick={handleSortChange}
+            text="古い"
+          />
         </Stack>
       </Stack>
 

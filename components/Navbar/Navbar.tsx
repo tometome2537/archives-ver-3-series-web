@@ -14,6 +14,7 @@ import EntitySelector from "../EntitySelector";
 import { EntityObj } from "../EntitySelector";
 import { useTheme } from "@mui/material/styles";
 import rgbToHex from "@/libs/colorConverter";
+import SuperSearchBar from "./SuperSearchBar";
 
 export const NavButton = styled(Button)({
   color: "primary",
@@ -97,6 +98,7 @@ export default function Navbar(props: SearchBarProps) {
             setSearchQuery={props.setSearchQuery}
             search={props.search}
           />
+          {/* <SuperSearchBar /> */}
           <Box sx={{ flexGrow: 1 }}></Box>
           <EntitySelector
             entityIdString={props.entityIdString}

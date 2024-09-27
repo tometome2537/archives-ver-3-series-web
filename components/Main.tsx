@@ -18,13 +18,8 @@ import { EntityObj } from "./EntitySelector";
 import PlayerView from "./PlayerView";
 import { PlayerItem } from "./PlayerView";
 import { useTheme } from "@mui/material/styles";
-
-
-type a = {
-  id?: string;
-  name: string;
-  category: string;
-}
+import SuperSearchBar from "./Navbar/SuperSearchBar";
+import TestSearchBar from "./Navbar/TestSearchBar";
 
 
 type mainProps = {
@@ -55,7 +50,7 @@ export default function Main(props: mainProps) {
   const [playerViewHeight, setPlayerViewHeight] = useState<number>(NaN);
 
   // デフォルトで開くタブ
-  const defaultTab = "temporaryYouTube";
+  const defaultTab = debugMode ? "debug" : "temporaryYouTube";
   // 現在アクティブなTab
   const [activeTab, setActiveTab] = useState<string>(defaultTab);
   // アクティブになったタブのリスト ※ 一度アクティブなったタブは破棄しない。
@@ -263,6 +258,9 @@ export default function Main(props: mainProps) {
                 overflowY: isPlayerFullscreen ? "hidden" : "auto",
               }}
             >
+              <h3>テストUI</h3>
+              <SuperSearchBar />
+              <TestSearchBar />
               <h3>デバッグ情報</h3>
               <div>
                 <Button variant="outlined" onClick={toggleTheme}>

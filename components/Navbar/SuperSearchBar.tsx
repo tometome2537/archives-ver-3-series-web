@@ -14,12 +14,22 @@ import { Autocomplete, TextField, Chip } from '@mui/material';
 import { styled, lighten, darken } from '@mui/system';
 
 
-interface searchSuggestions {
-    id: string;
+interface searchSuggestion {
+    // 並び替え
+    sort?: number;
+    // ラベル(表示に使用)
     label: string;
+    // 値
     value: string;
+    // カテゴリーのID
     categoryId: string;
+    // カテゴリーのラベル(表示に使用)
     categoryLabel: string;
+}
+
+interface inputValueSearchSuggestion extends searchSuggestion {
+    // 入力された値はsortの数値が大きい順に並び替えられる。
+    sort: number;
 }
 
 const GroupHeader = styled('div')(({ theme }) => ({
@@ -44,24 +54,28 @@ export default function SuperSearchBar() {
 
 
     // 入力された値を管理するstate
-    const [inputValues, setInputValues] = useState<Array<searchSuggestions>>([]);
+    const [inputValues, setInputValues] = useState<Array<inputValueSearchSuggestion>>([]);
 
     // 検索候補
-    const searchSuggestions: Array<searchSuggestions> = [
-        { id: "1", label: "幾田りら", value: "幾田りら", categoryId: "actor", categoryLabel: "出演者" },
-        { id: "2", label: "小玉ひかり", value: "小玉ひかり", categoryId: "actor", categoryLabel: "出演者" },
-        { id: "3", label: "HALDONA", value: "遥河", categoryId: "actor", categoryLabel: "出演者" },
-        { id: "6", label: "ぷらそにか", value: "ぷらそにか", categoryId: "organization", categoryLabel: "組織" },
-        { id: "7", label: "ぷらそにか", value: "UCZx7esGXyW6JXn98byfKEIA", categoryId: "YouTubeChannel", categoryLabel: "YouTubeチャンネル" },
-        { id: "8", label: "ぷらそにか東京", value: "ぷらそにか東京", categoryId: "organization", categoryLabel: "組織" },
-        { id: "9", label: "ながーーーーーーーーーーーい文字列", value: "長いテキスト", categoryId: "text", categoryLabel: "テキスト" },
+    const searchSuggestions: Array<searchSuggestion> = [
+        { sort: 99, label: "幾田りら", value: "幾田りら", categoryId: "actor", categoryLabel: "出演者" },
+        { sort: 99, label: "小玉ひかり", value: "小玉ひかり", categoryId: "actor", categoryLabel: "出演者" },
+        { sort: 99, label: "HALDONA", value: "遥河", categoryId: "actor", categoryLabel: "出演者" },
+        { sort: 100, label: "ぷらそにか", value: "ぷらそにか", categoryId: "organization", categoryLabel: "組織" },
+        { label: "ぷらそにか", value: "UCZx7esGXyW6JXn98byfKEIA", categoryId: "YouTubeChannel", categoryLabel: "YouTubeチャンネル" },
+        { sort: 100, label: "ぷらそにか東京", value: "ぷらそにか東京", categoryId: "organization", categoryLabel: "組織" },
+        { label: "ながー４５６７８９１２３４５６い文字列", value: "長いテキスト", categoryId: "text", categoryLabel: "テキスト" },
+        { label: "ながいカテゴリラベル", value: "長いカテゴリラベル", categoryId: "text", categoryLabel: "ながー４５６７８９１２３４５６いカテゴリラベル" },
     ];
     // 検索候補(searchSuggestions)を加工してAutocompleteに渡す。
-    const options = searchSuggestions.map((option) => {
-        return option
-    }).sort((a, b) => {
-        return -b.categoryLabel.localeCompare(a.categoryLabel)
-    });
+    const options: Array<inputValueSearchSuggestion> = searchSuggestions
+        .map((option) => ({
+            // sortが未定義の場合は0をデフォルトで設定
+            sort: option.sort !== undefined ? option.sort : 0,
+            ...option,
+        }))
+        .sort((a, b) => -b.categoryLabel.localeCompare(a.categoryLabel));
+
 
 
     // バリデーション用のダミーデータ
@@ -70,17 +84,17 @@ export default function SuperSearchBar() {
         message: '', // エラーメッセージを管理
     };
     // 入力値変更時に呼び出される関数
-    const handleInputChange = (event: any, newValues: Array<searchSuggestions | string>): void => {
-        let result: Array<searchSuggestions> = []
+    const handleInputChange = (event: any, newValues: Array<inputValueSearchSuggestion | string>): void => {
+        let result: Array<inputValueSearchSuggestion> = []
         for (const value of newValues) {
             // optionから選択されず直接入力されたのはstring型として出力されるため、
             // 必要に応じて型変換をする必要がある。
             if (typeof value === "string") {
-                const item: searchSuggestions = {
-                    id: String(options.length + 1),
+                const item: inputValueSearchSuggestion = {
+                    sort: 0,
                     label: value,
-                    categoryId: "text",
                     value: value,
+                    categoryId: "text",
                     categoryLabel: "テキスト"
                 }
                 result.push(item)
@@ -88,6 +102,8 @@ export default function SuperSearchBar() {
                 result.push(value)
             }
         }
+        // 並び替え
+        result = result.sort((a, b) => b.sort - a.sort)
         setInputValues(result); // 入力値をstateに保存
     };
 
@@ -112,7 +128,6 @@ export default function SuperSearchBar() {
             //     option === timeSlots[0] || option === timeSlots[2]
             // }
             // 現在の入力値
-            // value={inputValues.map(option => option.title)}
             value={inputValues}
             // 入力値変更時に呼び出される関数
             onChange={handleInputChange}
@@ -142,8 +157,8 @@ export default function SuperSearchBar() {
                 </li>
             )}
             // 入力された値をタグ🏷️の見た目で表示する
-            renderTags={(value: Array<searchSuggestions>, getTagProps) =>
-                value.map((option: searchSuggestions, index: number) => (
+            renderTags={(value: Array<searchSuggestion>, getTagProps) =>
+                value.map((option: searchSuggestion, index: number) => (
                     <Chip
                         variant="outlined"
                         style={{

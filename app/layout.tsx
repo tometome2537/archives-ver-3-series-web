@@ -1,5 +1,7 @@
+import { type ColorModeChoice, ThemeRegistry } from "@/contexts/ThemeContext";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
+import { cookies } from "next/headers";
 const inter = Inter({ subsets: ["latin"] });
 
 export default function RootLayout({
@@ -7,6 +9,12 @@ export default function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
+    const preColorMode = cookies().get("colorMode")?.value;
+    const initColorMode: ColorModeChoice =
+        preColorMode === "light" || preColorMode === "dark"
+            ? preColorMode
+            : "device";
+
     return (
         <html lang="ja">
             <head>
@@ -17,11 +25,9 @@ export default function RootLayout({
                 />
             </head>
             <body className={inter.className}>
-                <script
-                    src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"
-                    defer
-                />
-                {children}
+                <ThemeRegistry initColorMode={initColorMode}>
+                    {children}
+                </ThemeRegistry>
             </body>
         </html>
     );

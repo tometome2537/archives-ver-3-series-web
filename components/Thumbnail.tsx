@@ -114,7 +114,6 @@ type ThumbnailProps = {
 };
 
 export default function Thumbnail(props: ThumbnailProps) {
-
   // サムネイルの上にマウスポインターがあるかどうか。
   const [raised, setRaised] = useState<boolean>();
 
@@ -173,7 +172,8 @@ export default function Thumbnail(props: ThumbnailProps) {
                   height={360}
                   image={`https://img.youtube.com/vi/${props.videoId}/hqdefault.jpg`}
                   alt={props.title ? "Thumbnail of " + props.title : ""}
-                />)}
+                />
+              )}
             </Box>
             <CardContent>
               <Typography
@@ -191,7 +191,6 @@ export default function Thumbnail(props: ThumbnailProps) {
               </Typography>
             </CardContent>
           </CardActionArea>
-
         </Card>
       </Grid>
     );
@@ -233,7 +232,9 @@ export default function Thumbnail(props: ThumbnailProps) {
         ) : (
           <Image
             src={`https://img.youtube.com/vi/${props.videoId}/mqdefault.jpg`}
-            alt={props.title ? `Thumbnail of ${props.title}` : "Video Thumbnail"}
+            alt={
+              props.title ? `Thumbnail of ${props.title}` : "Video Thumbnail"
+            }
             width={320}
             height={180}
             style={{ objectFit: "contain", borderRadius: "1.2em" }}
@@ -262,8 +263,8 @@ export default function Thumbnail(props: ThumbnailProps) {
             color="textSecondary"
             sx={{ marginTop: 0.5, textAlign: "center" }}
           >
-            {props.channelTitle || ""} ・ {`${String(props.viewCount)}回` || ""} ・{" "}
-            {timeAgo(props.publishedAt)}
+            {props.channelTitle || ""} ・ {`${String(props.viewCount)}回` || ""}{" "}
+            ・ {timeAgo(props.publishedAt)}
           </Typography>
         )}
       </Box>

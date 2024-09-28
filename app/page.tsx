@@ -75,9 +75,8 @@ export default function Home() {
           },
         },
       }),
-    [mode] // `mode`が変わるたびにテーマを再生成
+    [mode], // `mode`が変わるたびにテーマを再生成
   );
-
 
   return (
     <>

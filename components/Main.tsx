@@ -17,9 +17,7 @@ import { useColorModeContext } from "@/contexts/ThemeContext";
 import { useTheme } from "@mui/material/styles";
 import SuperSearchBar from "./Navbar/SuperSearchBar";
 
-type mainProps = {};
-
-export default function Main(props: mainProps) {
+export default function Main() {
     // デバッグ(ローカル開発環境)モード(リンク集を10回タップするとデバッグモードへ)
     const [debugMode, setDebugMode] = useState(
         process.env.NEXT_PUBLIC_STAGE === "local",
@@ -498,6 +496,7 @@ export default function Main(props: mainProps) {
                         setPlayerViewHeight={setPlayerViewHeight}
                         isMobile={isMobile}
                         PlayerItem={playerItem}
+                        setPlayerItem={setPlayerItem}
                         Playlist={playerPlaylist}
                         searchResult={playerSearchResult}
                         isPlayerFullscreen={isPlayerFullscreen}

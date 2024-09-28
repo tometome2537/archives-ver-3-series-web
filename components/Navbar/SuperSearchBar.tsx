@@ -60,7 +60,7 @@ export default function SuperSearchBar({
             sort: option.sort ?? -9999999,
             ...option,
         }))
-        .sort((a, b) => a.categoryLabel.localeCompare(b.categoryLabel));
+        .sort((a, b) => -b.categoryLabel.localeCompare(a.categoryLabel));
 
     // バリデーション用のダミーデータ
     const validation = {

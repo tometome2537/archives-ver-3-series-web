@@ -16,15 +16,17 @@ interface ColorModeContextType {
     /**選択中のカラーモード */
     selectedMode: ColorModeChoice;
     /**カラーモードを設定する関数 */
-    toggleColorMode: (colorMode: ColorModeChoice) => void;
+    setColorMode: (colorMode: ColorModeChoice) => void;
+    toggleColorMode: () => void;
 }
 
 /**カラーモードのコンテキスト */
 const ColorModeContext = React.createContext<ColorModeContextType>({
     selectedMode: "light", // 仮の設定
-    toggleColorMode: (colorMode: ColorModeChoice) => {
+    setColorMode: (colorMode: ColorModeChoice) => {
         colorMode; // 仮の設定
     },
+    toggleColorMode: () => {},
 });
 
 /**MUIの設定プロバイダ */
@@ -51,9 +53,14 @@ export const ThemeRegistry = (props: {
     const colorMode = React.useMemo(
         () => ({
             selectedMode,
-            toggleColorMode: (colorMode: ColorModeChoice) => {
+            setColorMode: (colorMode: ColorModeChoice) => {
                 Cookies.set("colorMode", colorMode);
                 setSelectedMode(colorMode);
+            },
+            toggleColorMode: () => {
+                const setMode = selectedMode === "light" ? "dark" : "light";
+                Cookies.set("colorMode", setMode);
+                setSelectedMode(setMode);
             },
         }),
         [selectedMode],

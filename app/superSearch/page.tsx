@@ -5,10 +5,13 @@ import SuperSearchBar, {
     type InputValueSearchSuggestion,
     type CategoryId,
 } from "@/components/Navbar/SuperSearchBar";
-import { Stack, Typography } from "@mui/material";
+import ExpandLess from "@mui/icons-material/ExpandLess";
+import ExpandMore from "@mui/icons-material/ExpandMore";
+import { Box, ButtonBase, Collapse, Stack, Typography } from "@mui/material";
 import { type Dispatch, type SetStateAction, useState } from "react";
 
 interface LimitedSuperSearchProps {
+    label: string;
     suggestions: SearchSuggestion[];
     inputValue: InputValueSearchSuggestion[];
     setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
@@ -65,6 +68,7 @@ const OrganizationSuggestions: SearchSuggestion[] = [
 ];
 
 const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
+    label,
     suggestions,
     inputValue,
     setInputValue,
@@ -81,15 +85,31 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
             ...values,
         ]);
     };
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <SuperSearchBar
-            label="検索ワードを入力"
-            inputValues={filteredInputValues}
-            setInputValues={handleSetInputValues}
-            searchSuggestions={suggestions}
-            onChange={onChange}
-        />
+        <Box>
+            <ButtonBase
+                sx={{ py: 1, mb: 1 }}
+                onClick={() => setIsOpen(isOpen === false)}
+            >
+                <Typography variant="h6">{label}</Typography>
+                {isOpen ? (
+                    <ExpandLess sx={{ ml: 6 }} />
+                ) : (
+                    <ExpandMore sx={{ ml: 6 }} />
+                )}
+            </ButtonBase>
+            <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                <SuperSearchBar
+                    label="検索ワードを入力"
+                    inputValues={filteredInputValues}
+                    setInputValues={handleSetInputValues}
+                    searchSuggestions={suggestions}
+                    onChange={onChange}
+                />
+            </Collapse>
+        </Box>
     );
 };
 
@@ -112,8 +132,8 @@ export default function Home() {
                 // 全ての予測を入れるのを忘れないように
                 searchSuggestions={getAllSuggestion}
             />
-            <Typography>出演者</Typography>
             <LimitedSuperSearch
+                label="出演者"
                 suggestions={ActorSuggestions}
                 inputValue={inputValue}
                 setInputValue={setInputValue}
@@ -124,8 +144,8 @@ export default function Home() {
                     )
                 }
             />
-            <Typography>組織</Typography>
             <LimitedSuperSearch
+                label="組織"
                 suggestions={OrganizationSuggestions}
                 inputValue={inputValue}
                 setInputValue={setInputValue}

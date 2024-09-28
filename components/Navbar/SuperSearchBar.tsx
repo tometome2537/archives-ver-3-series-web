@@ -1,20 +1,8 @@
-import { useState, useRef, useEffect, Dispatch, SetStateAction } from "react";
-import { Grid } from "@mui/material";
-import {
-    ThemeProvider,
-    createTheme,
-    PaletteMode,
-    Button,
-    CssBaseline,
-    Box,
-    Typography,
-} from "@mui/material";
-import { useTheme } from "@mui/material/styles";
-import { Autocomplete, TextField, Chip } from "@mui/material";
-import { styled, lighten, darken } from "@mui/system";
-import type { SyntheticEvent } from "react";
+import { Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
+import { darken, lighten, styled } from "@mui/system";
+import type { Dispatch, SetStateAction, SyntheticEvent } from "react";
 
-interface searchSuggestion {
+export interface SearchSuggestion {
     // 並び替え
     sort?: number;
     // ラベル(表示に使用)
@@ -27,12 +15,20 @@ interface searchSuggestion {
     categoryLabel: string;
 }
 
-interface inputValueSearchSuggestion extends searchSuggestion {
+export interface InputValueSearchSuggestion extends SearchSuggestion {
     // 入力された値はsortの数値が大きい順に並び替えられる。
     sort: number;
 }
 
-const GroupHeader = styled("div")(({ theme }) => ({
+type SuperSearchBarProps = {
+    label: string;
+    inputValues: InputValueSearchSuggestion[];
+    setInputValues: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
+    // 検索候補
+    searchSuggestions: SearchSuggestion[];
+};
+
+const GroupHeader = styled(Box)(({ theme }) => ({
     position: "sticky",
     top: "-8px",
     padding: "4px 10px",
@@ -47,73 +43,17 @@ const GroupItems = styled("ul")({
     padding: 0,
 });
 
-export default function SuperSearchBar() {
+export default function SuperSearchBar({
+    label,
+    inputValues,
+    setInputValues,
+    searchSuggestions,
+}: SuperSearchBarProps) {
     // 参考
     // https://mui.com/material-ui/react-autocomplete/
 
-    // 入力された値を管理するstate
-    const [inputValues, setInputValues] = useState<
-        Array<inputValueSearchSuggestion>
-    >([]);
-
-    // 検索候補
-    const searchSuggestions: Array<searchSuggestion> = [
-        {
-            sort: 99,
-            label: "幾田りら",
-            value: "幾田りら",
-            categoryId: "actor",
-            categoryLabel: "出演者",
-        },
-        {
-            sort: 99,
-            label: "小玉ひかり",
-            value: "小玉ひかり",
-            categoryId: "actor",
-            categoryLabel: "出演者",
-        },
-        {
-            sort: 99,
-            label: "HALDONA",
-            value: "遥河",
-            categoryId: "actor",
-            categoryLabel: "出演者",
-        },
-        {
-            sort: 100,
-            label: "ぷらそにか",
-            value: "ぷらそにか",
-            categoryId: "organization",
-            categoryLabel: "組織",
-        },
-        {
-            label: "ぷらそにか",
-            value: "UCZx7esGXyW6JXn98byfKEIA",
-            categoryId: "YouTubeChannel",
-            categoryLabel: "YouTubeチャンネル",
-        },
-        {
-            sort: 100,
-            label: "ぷらそにか東京",
-            value: "ぷらそにか東京",
-            categoryId: "organization",
-            categoryLabel: "組織",
-        },
-        {
-            label: "ながー４５６７８９１２３４５６い文字列",
-            value: "長いテキスト",
-            categoryId: "text",
-            categoryLabel: "テキスト",
-        },
-        {
-            label: "ながいカテゴリラベル",
-            value: "長いカテゴリラベル",
-            categoryId: "text",
-            categoryLabel: "ながー４５６７８９１２３４５６いカテゴリラベル",
-        },
-    ];
-    // 検索候補(searchSuggestions)を加工してAutocompleteに渡す。
-    const options: Array<inputValueSearchSuggestion> = searchSuggestions
+    // 検索候補(SearchSuggestions)を加工してAutocompleteに渡す。
+    const options: InputValueSearchSuggestion[] = searchSuggestions
         .map((option) => ({
             // sortが未定義の場合はデフォルトの数値を設定
             sort: option.sort !== undefined ? option.sort : -9999999,
@@ -129,14 +69,14 @@ export default function SuperSearchBar() {
     // 入力値変更時に呼び出される関数
     const handleInputChange = (
         event: SyntheticEvent<Element, Event>,
-        newValues: Array<inputValueSearchSuggestion | string>,
+        newValues: (InputValueSearchSuggestion | string)[],
     ): void => {
-        let result: Array<inputValueSearchSuggestion> = [];
+        let result: Array<InputValueSearchSuggestion> = [];
         for (const value of newValues) {
             // optionから選択されず直接入力されたのはstring型として出力されるため、
             // 必要に応じて型変換をする必要がある。
             if (typeof value === "string") {
-                const item: inputValueSearchSuggestion = {
+                const item: InputValueSearchSuggestion = {
                     sort: 0,
                     label: value,
                     value: value,
@@ -155,8 +95,6 @@ export default function SuperSearchBar() {
 
     return (
         <>
-            <p>入力された値: {JSON.stringify(inputValues)}</p>
-            {/* <p>入力された値Obj: {JSON.stringify(inputValuesObj)}</p> */}
             <Autocomplete
                 // 複数選択可能にする。
                 multiple
@@ -196,7 +134,7 @@ export default function SuperSearchBar() {
                     <TextField
                         {...params}
                         variant="standard"
-                        label="検索ワードを入力" // ラベル
+                        label={label} // ラベル
                         placeholder="キーワードを選択か、入力後に「Enter」でタグが表示。" // プレースホルダー
                         error={validation.error} // エラー時の見た目変更
                         helperText={validation.message} // エラーメッセージ
@@ -211,22 +149,22 @@ export default function SuperSearchBar() {
                 )}
                 // 入力された値をタグ🏷️の見た目で表示する
                 renderTags={(
-                    value: Array<inputValueSearchSuggestion>,
+                    value: Array<InputValueSearchSuggestion>,
                     getTagProps,
                 ) =>
                     value.map(
-                        (option: inputValueSearchSuggestion, index: number) => (
-                            <div
+                        (option: InputValueSearchSuggestion, index: number) => (
+                            <Box
                                 key={`${option.label}-${option.categoryLabel}`} // 一意なキーを設定
                             >
                                 <Chip
                                     variant="outlined"
-                                    style={{
+                                    sx={{
                                         height: "6ch",
                                     }}
                                     label={
-                                        <div
-                                            style={{
+                                        <Box
+                                            sx={{
                                                 textAlign: "center", // テキストを中央揃え
                                                 maxWidth: "150px", // テキストの最大幅を指定
                                                 whiteSpace: "nowrap", // 改行させない
@@ -234,14 +172,18 @@ export default function SuperSearchBar() {
                                                 textOverflow: "ellipsis", // 長いテキストを省略して表示
                                             }}
                                         >
-                                            <div>{option.label}</div>
-                                            <div>{option.categoryLabel}</div>
-                                        </div>
+                                            <Typography>
+                                                {option.label}
+                                            </Typography>
+                                            <Typography>
+                                                {option.categoryLabel}
+                                            </Typography>
+                                        </Box>
                                     }
                                     color="info"
                                     {...getTagProps({ index })}
                                 />
-                            </div>
+                            </Box>
                         ),
                     )
                 }

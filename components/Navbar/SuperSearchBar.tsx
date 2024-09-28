@@ -2,6 +2,8 @@ import { Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
 import { darken, lighten, styled } from "@mui/system";
 import type { Dispatch, SetStateAction, SyntheticEvent } from "react";
 
+export type CategoryId = "actor" | "organization" | "YouTubeChannel" | "text";
+
 export interface SearchSuggestion {
     // 並び替え
     sort?: number;
@@ -10,7 +12,7 @@ export interface SearchSuggestion {
     // 値
     value: string;
     // カテゴリーのID
-    categoryId: string;
+    categoryId: CategoryId;
     // カテゴリーのラベル(表示に使用)
     categoryLabel: string;
 }
@@ -23,7 +25,7 @@ export interface InputValueSearchSuggestion extends SearchSuggestion {
 type SuperSearchBarProps = {
     label: string;
     inputValues: InputValueSearchSuggestion[];
-    setInputValues: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
+    setInputValues: (values: InputValueSearchSuggestion[]) => void;
     // 検索候補
     searchSuggestions: SearchSuggestion[];
 };
@@ -55,11 +57,10 @@ export default function SuperSearchBar({
     // 検索候補(SearchSuggestions)を加工してAutocompleteに渡す。
     const options: InputValueSearchSuggestion[] = searchSuggestions
         .map((option) => ({
-            // sortが未定義の場合はデフォルトの数値を設定
-            sort: option.sort !== undefined ? option.sort : -9999999,
+            sort: option.sort ?? -9999999,
             ...option,
         }))
-        .sort((a, b) => -b.categoryLabel.localeCompare(a.categoryLabel));
+        .sort((a, b) => a.categoryLabel.localeCompare(b.categoryLabel));
 
     // バリデーション用のダミーデータ
     const validation = {
@@ -68,10 +69,10 @@ export default function SuperSearchBar({
     };
     // 入力値変更時に呼び出される関数
     const handleInputChange = (
-        event: SyntheticEvent<Element, Event>,
+        _event: SyntheticEvent<Element, Event>,
         newValues: (InputValueSearchSuggestion | string)[],
     ): void => {
-        let result: Array<InputValueSearchSuggestion> = [];
+        const result: InputValueSearchSuggestion[] = [];
         for (const value of newValues) {
             // optionから選択されず直接入力されたのはstring型として出力されるため、
             // 必要に応じて型変換をする必要がある。
@@ -89,14 +90,14 @@ export default function SuperSearchBar({
             }
         }
         // 並び替え
-        result = result.sort((a, b) => b.sort - a.sort);
-        setInputValues(result); // 入力値をstateに保存
+        const sortedResult = result.sort((a, b) => b.sort - a.sort);
+        // 入力値をstateに保存
+        setInputValues(sortedResult);
     };
 
     return (
         <>
             <Autocomplete
-                // 複数選択可能にする。
                 multiple
                 // 任意の値を入力可能。(入力された値はstring型になる。)
                 freeSolo
@@ -112,23 +113,11 @@ export default function SuperSearchBar({
                         ? "この文字列が出力されるのはおかしいよ"
                         : option.label
                 }
-                // 選択不可のオプションを定義できる。
-                // getOptionDisabled={(option) =>
-                //     option === timeSlots[0] || option === timeSlots[2]
-                // }
-                // 現在の入力値
+                isOptionEqualToValue={(option, v) => option.value === v.value}
                 value={inputValues}
-                // 入力値変更時に呼び出される関数
                 onChange={handleInputChange}
-                // CSS
-                sx={
-                    {
-                        // width: 600,
-                        // display: 'inline-block',
-                    }
-                }
                 // タグの表示に個数制限をかける。
-                limitTags={3}
+                // limitTags={3}
                 // テキスト入力フィールドを定義
                 renderInput={(params) => (
                     <TextField
@@ -140,7 +129,6 @@ export default function SuperSearchBar({
                         helperText={validation.message} // エラーメッセージ
                     />
                 )}
-                // 何これ？
                 renderGroup={(params) => (
                     <li key={params.key}>
                         <GroupHeader>{params.group}</GroupHeader>

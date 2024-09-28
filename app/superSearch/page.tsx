@@ -3,11 +3,20 @@
 import SuperSearchBar, {
     type SearchSuggestion,
     type InputValueSearchSuggestion,
+    type CategoryId,
 } from "@/components/Navbar/SuperSearchBar";
-import { Stack } from "@mui/material";
-import { useState } from "react";
+import { Stack, Typography } from "@mui/material";
+import { type Dispatch, type SetStateAction, useState } from "react";
 
-const PeopleSuggestions: SearchSuggestion[] = [
+interface LimitedSuperSearchProps {
+    suggestions: SearchSuggestion[];
+    inputValue: InputValueSearchSuggestion[];
+    setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
+    categoryId: CategoryId;
+}
+
+// 検索候補
+const ActorSuggestions: SearchSuggestion[] = [
     {
         sort: 99,
         label: "幾田りら",
@@ -39,12 +48,12 @@ const OrganizationSuggestions: SearchSuggestion[] = [
         categoryId: "organization",
         categoryLabel: "組織",
     },
-    {
-        label: "ぷらそにか",
-        value: "UCZx7esGXyW6JXn98byfKEIA",
-        categoryId: "YouTubeChannel",
-        categoryLabel: "YouTubeチャンネル",
-    },
+    // {
+    //     label: "ぷらそにか",
+    //     value: "UCZx7esGXyW6JXn98byfKEIA",
+    //     categoryId: "YouTubeChannel",
+    //     categoryLabel: "YouTubeチャンネル",
+    // },
     {
         sort: 100,
         label: "ぷらそにか東京",
@@ -54,63 +63,66 @@ const OrganizationSuggestions: SearchSuggestion[] = [
     },
 ];
 
+const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
+    suggestions,
+    inputValue,
+    setInputValue,
+    categoryId,
+}) => {
+    const filteredInputValues = inputValue.filter(
+        (x) => x.categoryId === categoryId,
+    );
+
+    const handleSetInputValues = (values: InputValueSearchSuggestion[]) => {
+        setInputValue([
+            ...inputValue.filter((x) => x.categoryId !== categoryId),
+            ...values,
+        ]);
+    };
+
+    return (
+        <SuperSearchBar
+            label="検索ワードを入力"
+            inputValues={filteredInputValues}
+            setInputValues={handleSetInputValues}
+            searchSuggestions={suggestions}
+        />
+    );
+};
+
 export default function Home() {
-    // 検索候補
-    /*,
-        {
-            sort: 100,
-            label: "ぷらそにか",
-            value: "ぷらそにか",
-            categoryId: "organization",
-            categoryLabel: "組織",
-        },
-        {
-            label: "ぷらそにか",
-            value: "UCZx7esGXyW6JXn98byfKEIA",
-            categoryId: "YouTubeChannel",
-            categoryLabel: "YouTubeチャンネル",
-        },
-        {
-            sort: 100,
-            label: "ぷらそにか東京",
-            value: "ぷらそにか東京",
-            categoryId: "organization",
-            categoryLabel: "組織",
-        },
-        {
-            label: "ながー４５６７８９１２３４５６い文字列",
-            value: "長いテキスト",
-            categoryId: "text",
-            categoryLabel: "テキスト",
-        },
-        {
-            label: "ながいカテゴリラベル",
-            value: "長いカテゴリラベル",
-            categoryId: "text",
-            categoryLabel: "ながー４５６７８９１２３４５６いカテゴリラベル",
-        }, */
     const [inputValue, setInputValue] = useState<InputValueSearchSuggestion[]>(
         [],
     );
+
     return (
         <Stack gap={2}>
+            <Typography>全部</Typography>
             <SuperSearchBar
                 label="検索ワードを入力"
                 inputValues={inputValue}
-                setInputValues={setInputValue}
-                searchSuggestions={SearchSuggestions}
+                setInputValues={(values) => {
+                    setInputValue([...values]);
+                }}
+                // 全ての予測を入れるのを忘れないように
+                searchSuggestions={[
+                    ...ActorSuggestions,
+                    ...OrganizationSuggestions,
+                ]}
             />
-            <SuperSearchBar
-                label="検索ワードを入力"
-                inputValues={inputValue}
-                setInputValues={setInputValue}
-                searchSuggestions={SearchSuggestions}
+            <Typography>出演者</Typography>
+            <LimitedSuperSearch
+                suggestions={ActorSuggestions}
+                inputValue={inputValue}
+                setInputValue={setInputValue}
+                categoryId="actor"
             />
-            <SuperSearchBar
-                label="検索ワードを入力"
-                inputValues={inputValue}
-                setInputValues={setInputValue}
-                searchSuggestions={SearchSuggestions}
+            <Typography>組織</Typography>
+            <LimitedSuperSearch
+                suggestions={OrganizationSuggestions}
+                inputValue={inputValue}
+                setInputValue={setInputValue}
+                categoryId="organization"
             />
         </Stack>
     );

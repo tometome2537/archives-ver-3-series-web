@@ -60,7 +60,7 @@ export default function EntitySelector({
   // Entity Organization Idと Entity Person IDで、そのパーソンが組織に所属しているかどうかを返す
   const isPersonInOrganization = (
     entityPersonId: string,
-    entityOrganizationId: string
+    entityOrganizationId: string,
   ): BelongHistoryObj | undefined => {
     return apiDataBelongHistory.find((item: BelongHistoryObj) => {
       // 条件に一致するアイテムがある場合 true を返す
@@ -75,7 +75,7 @@ export default function EntitySelector({
   const [loadingBelongHistory, setLoadingBelongHistory] = useState(true);
   // API[BelongHistory]通信でエラーが出たかどうか
   const [errorBelongHistory, setErrorBelongHistory] = useState<string | null>(
-    null
+    null,
   );
 
   // モーダル[組織]を開いてるかどうか
@@ -155,7 +155,7 @@ export default function EntitySelector({
       try {
         const url = buildUrlWithQuery(
           process.env.NEXT_PUBLIC_BASE_URL + "/api/v0.0/entity",
-          {}
+          {},
         );
         const response = await fetch(url);
         if (!response.ok) {
@@ -179,7 +179,7 @@ export default function EntitySelector({
       try {
         const url = buildUrlWithQuery(
           process.env.NEXT_PUBLIC_BASE_URL + "/api/v0.0/belonghistory",
-          {}
+          {},
         );
         const response = await fetch(url);
         if (!response.ok) {
@@ -228,32 +228,40 @@ export default function EntitySelector({
   return (
     <div>
       {/* ダイアログを開くボタン */}
-      <Button variant="outlined" onClick={handleClickOpenOrganization} sx={{
-        /* 要素に幅を持たせるために必要 */
-        display: "block",
-        width: "auto",
-        /* 改行を防ぐ */
-        whiteSpace: "nowrap",
-        /* 溢れた文字を隠す  */
-        overflow: "hidden",
-        /* 長すぎる場合に "..." を付ける  */
-        textOverflow: "ellipsis",
-      }}>
+      <Button
+        variant="outlined"
+        onClick={handleClickOpenOrganization}
+        sx={{
+          /* 要素に幅を持たせるために必要 */
+          display: "block",
+          width: "auto",
+          /* 改行を防ぐ */
+          whiteSpace: "nowrap",
+          /* 溢れた文字を隠す  */
+          overflow: "hidden",
+          /* 長すぎる場合に "..." を付ける  */
+          textOverflow: "ellipsis",
+        }}
+      >
         {selectEntityIdOrganization.length !== 0
           ? selectEntityIdOrganization[0]["name"]
           : "グループを選択"}
       </Button>
-      <Button variant="outlined" onClick={handleClickOpenPerson} sx={{
-        /* 要素に幅を持たせるために必要 */
-        display: "block",
-        width: "auto",
-        /* 改行を防ぐ */
-        whiteSpace: "nowrap",
-        /* 溢れた文字を隠す  */
-        overflow: "hidden",
-        /* 長すぎる場合に "..." を付ける  */
-        textOverflow: "ellipsis",
-      }}>
+      <Button
+        variant="outlined"
+        onClick={handleClickOpenPerson}
+        sx={{
+          /* 要素に幅を持たせるために必要 */
+          display: "block",
+          width: "auto",
+          /* 改行を防ぐ */
+          whiteSpace: "nowrap",
+          /* 溢れた文字を隠す  */
+          overflow: "hidden",
+          /* 長すぎる場合に "..." を付ける  */
+          textOverflow: "ellipsis",
+        }}
+      >
         {selectEntityIdPerson.length !== 0
           ? selectEntityIdPerson[0]["name"]
           : "アーティストを選択"}
@@ -268,23 +276,23 @@ export default function EntitySelector({
             <option value="null">選択しない</option>
             {apiDataEntity
               ? apiDataEntity.map((item: EntityObj, index: number) => (
-                <>
-                  {/* 各アイテムを表示 */}
-                  {item["category"] === "organization" && (
-                    <option
-                      key={index}
-                      selected={
-                        selectEntityIdOrganization.length > 0
-                          ? item["id"] === selectEntityIdOrganization[0]["id"]
-                          : false
-                      }
-                      value={item["id"]}
-                    >
-                      {item["name"]}
-                    </option>
-                  )}
-                </>
-              ))
+                  <>
+                    {/* 各アイテムを表示 */}
+                    {item["category"] === "organization" && (
+                      <option
+                        key={index}
+                        selected={
+                          selectEntityIdOrganization.length > 0
+                            ? item["id"] === selectEntityIdOrganization[0]["id"]
+                            : false
+                        }
+                        value={item["id"]}
+                      >
+                        {item["name"]}
+                      </option>
+                    )}
+                  </>
+                ))
               : null}
           </select>
         </DialogContent>
@@ -311,7 +319,7 @@ export default function EntitySelector({
                     selectEntityIdOrganization.length > 0 &&
                     isPersonInOrganization(
                       item["id"],
-                      selectEntityIdOrganization[0]["id"]
+                      selectEntityIdOrganization[0]["id"],
                     ) && (
                       <option
                         key={index}

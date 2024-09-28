@@ -61,7 +61,6 @@ export default function Navbar(props: SearchBarProps) {
     }
   }, [NavbarRef, props.screenHeight]);
 
-
   return (
     <>
       <AppBar

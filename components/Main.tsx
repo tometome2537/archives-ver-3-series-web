@@ -1,28 +1,22 @@
-import { useState, useRef, useEffect } from "react";
-import type { Dispatch, SetStateAction } from "react"; // 型としてのインポート
+import { useEffect, useRef, useState } from "react";
 
-import Navbar from "./Navbar/Navbar";
 import { Grid } from "@mui/material";
-import { Button, Box, Typography } from "@mui/material";
-import type { PaletteMode } from "@mui/material"; // 型としてのインポート
+import { Box, Button, Typography } from "@mui/material";
+import Navbar from "./Navbar/Navbar";
 
-import Sidebar from "./Navbar/Sidebar";
-import VideoView from "./VideoView";
-import VideoTemporaryView from "./VideoTemporaryView";
-import Tabbar from "./Tabbar";
 import type { EntityObj } from "./EntitySelector"; // 型としてのインポート
+import Sidebar from "./Navbar/Sidebar";
+import Tabbar from "./Tabbar";
+import VideoTemporaryView from "./VideoTemporaryView";
+import VideoView from "./VideoView";
 
 import PlayerView from "./PlayerView";
 import type { PlayerItem } from "./PlayerView"; // 型としてのインポート
 
 import { useTheme } from "@mui/material/styles";
 import SuperSearchBar from "./Navbar/SuperSearchBar";
-import TestSearchBar from "./Navbar/TestSearchBar";
 
-type mainProps = {
-    // サイトテーマ
-    setSiteTheme?: Dispatch<SetStateAction<PaletteMode | undefined>>;
-};
+type mainProps = {};
 
 export default function Main(props: mainProps) {
     // デバッグ(ローカル開発環境)モード(リンク集を10回タップするとデバッグモードへ)
@@ -96,15 +90,6 @@ export default function Main(props: mainProps) {
             };
         }
     }, []); // 依存配列は空のままでOK
-
-    // ダークモードとライトモードの切り替え関数
-    const toggleTheme = () => {
-        if (props.setSiteTheme) {
-            props.setSiteTheme((prevMode) =>
-                prevMode === "light" ? "dark" : "light",
-            );
-        }
-    };
 
     return (
         <>
@@ -282,7 +267,7 @@ export default function Main(props: mainProps) {
                             <div>
                                 <Button
                                     variant="outlined"
-                                    onClick={toggleTheme}
+                                    onClick={() => alert("ato de yaru")}
                                 >
                                     サイトテーマの切り替えボタン
                                 </Button>

@@ -1,12 +1,16 @@
-const replacer = (key: string, value: any) =>
+// 型をより具体的に定義するために、anyをunknownに置き換え
+const replacer = (key: string, value: unknown) =>
   typeof value === "bigint" ? value.toString() : value;
 
-export class JSONBI {
-  private static stringify(data: any): string {
+// JSONBIとしての機能を持つ関数群
+export const JSONBI = {
+  // dataの型をunknownに変更
+  stringify(data: unknown): string {
     return JSON.stringify(data, replacer);
-  }
+  },
 
-  public static serializable(data: any): string {
-    return JSON.parse(JSONBI.stringify(data));
-  }
-}
+  // データをシリアライズするメソッド
+  serializable(data: unknown): string {
+    return JSONBI.stringify(data);
+  },
+};

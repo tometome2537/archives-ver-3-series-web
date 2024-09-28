@@ -1,21 +1,17 @@
-import { useEffect, useRef, useState } from "react";
-
+import { useColorModeContext } from "@/contexts/ThemeContext";
 import { Grid } from "@mui/material";
 import { Box, Button, Typography } from "@mui/material";
-import Navbar from "./Navbar/Navbar";
-
+import { useTheme } from "@mui/material/styles";
+import { useEffect, useRef, useState } from "react";
 import type { EntityObj } from "./EntitySelector"; // 型としてのインポート
+import Navbar from "./Navbar/Navbar";
 import Sidebar from "./Navbar/Sidebar";
+import SuperSearchBar from "./Navbar/SuperSearchBar";
+import PlayerView from "./PlayerView";
+import type { PlayerItem } from "./PlayerView"; // 型としてのインポート
 import Tabbar from "./Tabbar";
 import VideoTemporaryView from "./VideoTemporaryView";
 import VideoView from "./VideoView";
-
-import PlayerView from "./PlayerView";
-import type { PlayerItem } from "./PlayerView"; // 型としてのインポート
-
-import { useColorModeContext } from "@/contexts/ThemeContext";
-import { useTheme } from "@mui/material/styles";
-import SuperSearchBar from "./Navbar/SuperSearchBar";
 
 export default function Main() {
     // デバッグ(ローカル開発環境)モード(リンク集を10回タップするとデバッグモードへ)

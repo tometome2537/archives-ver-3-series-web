@@ -13,6 +13,7 @@ import VideoView from "./VideoView";
 import PlayerView from "./PlayerView";
 import type { PlayerItem } from "./PlayerView"; // 型としてのインポート
 
+import { useColorModeContext } from "@/contexts/ThemeContext";
 import { useTheme } from "@mui/material/styles";
 import SuperSearchBar from "./Navbar/SuperSearchBar";
 
@@ -65,6 +66,8 @@ export default function Main(props: mainProps) {
     const [isLargePlayer, setIsLargePlayer] = useState(false);
     const [currentSearchQuery, setCurrentSearchQuery] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
+
+    const { toggleColorMode } = useColorModeContext();
 
     // 画面のサイズの変化を監視
     useEffect(() => {
@@ -267,7 +270,7 @@ export default function Main(props: mainProps) {
                             <div>
                                 <Button
                                     variant="outlined"
-                                    onClick={() => alert("ato de yaru")}
+                                    onClick={() => toggleColorMode()}
                                 >
                                     サイトテーマの切り替えボタン
                                 </Button>

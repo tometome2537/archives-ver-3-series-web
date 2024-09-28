@@ -11,7 +11,6 @@ import { Box, ButtonBase, Collapse, Stack, Typography } from "@mui/material";
 import { type Dispatch, type SetStateAction, useState } from "react";
 
 interface LimitedSuperSearchProps {
-    label: string;
     suggestions: SearchSuggestion[];
     inputValue: InputValueSearchSuggestion[];
     setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
@@ -85,31 +84,15 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
             ...values,
         ]);
     };
-    const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <Box>
-            <ButtonBase
-                sx={{ py: 1, mb: 1 }}
-                onClick={() => setIsOpen(isOpen === false)}
-            >
-                <Typography variant="h6">{label}</Typography>
-                {isOpen ? (
-                    <ExpandLess sx={{ ml: 6 }} />
-                ) : (
-                    <ExpandMore sx={{ ml: 6 }} />
-                )}
-            </ButtonBase>
-            <Collapse in={isOpen} timeout="auto" unmountOnExit>
-                <SuperSearchBar
-                    label="検索ワードを入力"
-                    inputValues={filteredInputValues}
-                    setInputValues={handleSetInputValues}
-                    searchSuggestions={suggestions}
-                    onChange={onChange}
-                />
-            </Collapse>
-        </Box>
+        <SuperSearchBar
+            label="検索ワードを入力"
+            inputValues={filteredInputValues}
+            setInputValues={handleSetInputValues}
+            searchSuggestions={suggestions}
+            onChange={onChange}
+        />
     );
 };
 
@@ -119,9 +102,10 @@ export default function Home() {
     );
 
     const getAllSuggestion = [...ActorSuggestions, ...OrganizationSuggestions];
+    const [isOpen, setIsOpen] = useState(false);
 
     return (
-        <Stack gap={2}>
+        <Box>
             <Typography>全部</Typography>
             <SuperSearchBar
                 label="検索ワードを入力"
@@ -132,30 +116,52 @@ export default function Home() {
                 // 全ての予測を入れるのを忘れないように
                 searchSuggestions={getAllSuggestion}
             />
-            <LimitedSuperSearch
-                label="出演者"
-                suggestions={ActorSuggestions}
-                inputValue={inputValue}
-                setInputValue={setInputValue}
-                categoryId="actor"
-                onChange={() =>
-                    setInputValue((prev) =>
-                        prev.sort((a, b) => b.sort - a.sort),
-                    )
-                }
-            />
-            <LimitedSuperSearch
-                label="組織"
-                suggestions={OrganizationSuggestions}
-                inputValue={inputValue}
-                setInputValue={setInputValue}
-                categoryId="organization"
-                onChange={() =>
-                    setInputValue((prev) =>
-                        prev.sort((a, b) => b.sort - a.sort),
-                    )
-                }
-            />
-        </Stack>
+
+            <ButtonBase
+                sx={{ py: 1, mb: 1 }}
+                onClick={() => setIsOpen(isOpen === false)}
+            >
+                <Typography>閉じれるよ</Typography>
+                {isOpen ? (
+                    <ExpandLess sx={{ ml: 6 }} />
+                ) : (
+                    <ExpandMore sx={{ ml: 6 }} />
+                )}
+            </ButtonBase>
+            <Collapse in={isOpen} timeout="auto" unmountOnExit>
+                <Stack gap={1}>
+                    <Box>
+                        <Typography>出演者</Typography>
+                        <LimitedSuperSearch
+                            suggestions={ActorSuggestions}
+                            inputValue={inputValue}
+                            setInputValue={setInputValue}
+                            categoryId="actor"
+                            onChange={() =>
+                                setInputValue((prev) =>
+                                    prev.sort((a, b) => b.sort - a.sort),
+                                )
+                            }
+                        />
+                    </Box>
+
+                    <Box>
+                        <Typography>組織</Typography>
+
+                        <LimitedSuperSearch
+                            suggestions={OrganizationSuggestions}
+                            inputValue={inputValue}
+                            setInputValue={setInputValue}
+                            categoryId="organization"
+                            onChange={() =>
+                                setInputValue((prev) =>
+                                    prev.sort((a, b) => b.sort - a.sort),
+                                )
+                            }
+                        />
+                    </Box>
+                </Stack>
+            </Collapse>
+        </Box>
     );
 }

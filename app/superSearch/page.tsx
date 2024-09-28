@@ -13,6 +13,7 @@ interface LimitedSuperSearchProps {
     inputValue: InputValueSearchSuggestion[];
     setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
     categoryId: CategoryId;
+    onChange?: () => void;
 }
 
 // 検索候補
@@ -68,6 +69,7 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
     inputValue,
     setInputValue,
     categoryId,
+    onChange,
 }) => {
     const filteredInputValues = inputValue.filter(
         (x) => x.categoryId === categoryId,
@@ -86,6 +88,7 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
             inputValues={filteredInputValues}
             setInputValues={handleSetInputValues}
             searchSuggestions={suggestions}
+            onChange={onChange}
         />
     );
 };
@@ -94,6 +97,8 @@ export default function Home() {
     const [inputValue, setInputValue] = useState<InputValueSearchSuggestion[]>(
         [],
     );
+
+    const getAllSuggestion = [...ActorSuggestions, ...OrganizationSuggestions];
 
     return (
         <Stack gap={2}>
@@ -105,10 +110,7 @@ export default function Home() {
                     setInputValue([...values]);
                 }}
                 // 全ての予測を入れるのを忘れないように
-                searchSuggestions={[
-                    ...ActorSuggestions,
-                    ...OrganizationSuggestions,
-                ]}
+                searchSuggestions={getAllSuggestion}
             />
             <Typography>出演者</Typography>
             <LimitedSuperSearch
@@ -116,6 +118,11 @@ export default function Home() {
                 inputValue={inputValue}
                 setInputValue={setInputValue}
                 categoryId="actor"
+                onChange={() =>
+                    setInputValue((prev) =>
+                        prev.sort((a, b) => b.sort - a.sort),
+                    )
+                }
             />
             <Typography>組織</Typography>
             <LimitedSuperSearch
@@ -123,6 +130,11 @@ export default function Home() {
                 inputValue={inputValue}
                 setInputValue={setInputValue}
                 categoryId="organization"
+                onChange={() =>
+                    setInputValue((prev) =>
+                        prev.sort((a, b) => b.sort - a.sort),
+                    )
+                }
             />
         </Stack>
     );

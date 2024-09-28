@@ -28,6 +28,7 @@ type SuperSearchBarProps = {
     setInputValues: (values: InputValueSearchSuggestion[]) => void;
     // 検索候補
     searchSuggestions: SearchSuggestion[];
+    onChange?: () => void;
 };
 
 const GroupHeader = styled(Box)(({ theme }) => ({
@@ -50,6 +51,7 @@ export default function SuperSearchBar({
     inputValues,
     setInputValues,
     searchSuggestions,
+    onChange,
 }: SuperSearchBarProps) {
     // 参考
     // https://mui.com/material-ui/react-autocomplete/
@@ -60,7 +62,7 @@ export default function SuperSearchBar({
             sort: option.sort ?? -9999999,
             ...option,
         }))
-        .sort((a, b) => -b.categoryLabel.localeCompare(a.categoryLabel));
+        .sort((a, b) => a.categoryLabel.localeCompare(b.categoryLabel));
 
     // バリデーション用のダミーデータ
     const validation = {
@@ -90,9 +92,11 @@ export default function SuperSearchBar({
             }
         }
         // 並び替え
-        const sortedResult = result.sort((a, b) => b.sort - a.sort);
         // 入力値をstateに保存
-        setInputValues(sortedResult);
+        setInputValues(result.sort((a, b) => b.sort - a.sort));
+        if (onChange) {
+            onChange();
+        }
     };
 
     return (

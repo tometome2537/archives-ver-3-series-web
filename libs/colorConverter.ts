@@ -2,10 +2,10 @@
 
 export default function hexToRgb(hex: string) {
   // 先頭の#を除去
-  hex = hex.replace(/^#/, "");
+  const hex2 = hex.replace(/^#/, "");
 
   // 16進数を3つの成分に分割
-  const bigint = parseInt(hex, 16);
+  const bigint = Number.parseInt(hex2, 16);
   const r = (bigint >> 16) & 255; // 赤成分
   const g = (bigint >> 8) & 255; // 緑成分
   const b = bigint & 255; // 青成分

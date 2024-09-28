@@ -22,7 +22,7 @@ interface ColorModeContextType {
 
 /**カラーモードのコンテキスト */
 const ColorModeContext = React.createContext<ColorModeContextType>({
-    selectedMode: "light", // 仮の設定
+    selectedMode: "device", // 仮の設定
     setColorMode: (colorMode: ColorModeChoice) => {
         colorMode; // 仮の設定
     },

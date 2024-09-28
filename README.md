@@ -22,9 +22,10 @@
 - VSCode がインストールされている。
   https://code.visualstudio.com
 
-- コードの整形には Biome を使用しています。
+- コードのフォーマットには 拡張機能のBiome を使用しています。
+([参考](https://tometome.notion.site/Biome-10f0553833378065a3b7cc7298b4d2fd?pvs=4))
 
-インストールコマンド
+Biomeインストールコマンド
 
 ```bash
 code --install-extension biomejs.biome

@@ -29,6 +29,7 @@ type PlayerProps = {
     isPlayerFullscreen: boolean;
     setIsPlayerFullscreen: Dispatch<SetStateAction<boolean>>;
     PlayerItem: PlayerItem;
+    setPlayerItem: Dispatch<SetStateAction<PlayerItem>>;
     Playlist?: Array<PlayerItem>; // プレイリスト
     searchResult?: Array<PlayerItem>; // 検索結果のリスト
     style?: React.CSSProperties; // 外部からスタイルを受け取る（オプション）
@@ -105,6 +106,7 @@ export default function PlayerView(props: PlayerProps) {
     const handleVideoClick = (event: React.MouseEvent<HTMLElement>) => {
         const videoId = event.currentTarget.getAttribute("data-videoId");
         setPlayNowVideoId(videoId ? videoId : undefined);
+        props.setPlayerItem({ videoId: videoId ? videoId : "" });
     };
 
     // actorId、entityIdがクリックされた時

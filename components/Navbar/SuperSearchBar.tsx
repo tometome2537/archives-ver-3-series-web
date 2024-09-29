@@ -195,50 +195,47 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 // 入力途中の文字列を取得
                 onInputChange={(event, newInputValue: string) => {
                     // 日付を入力するよう設定されている場合。
-                    if (props.dateSuggestionCategory) {
-                        // 全角の数値を半角に変更 文字列はそのまま 半角と全角スペースを削除
-                        const convertToHalfWidth = (str: string): string => {
-                            // 全角数字のUnicode範囲
-                            const fullWidthNumbers = /[\uFF10-\uFF19]/g;
-                            // 全角スペースと半角スペースの正規表現
-                            const spaces = /[　\s]/g; // 　は全角スペース、\sは半角スペースを表す
-
-                            // 全角数字を半角に変換し、スペースを削除
-                            return str
-                                .replace(fullWidthNumbers, (char) => {
-                                    // 全角数字を半角に変換するため、0xFEE0を引く
-                                    return String.fromCharCode(
-                                        char.charCodeAt(0) - 0xfee0,
-                                    );
-                                })
-                                .replace(spaces, ""); // スペースを削除
-                        };
-                        // 全角数字を半角に変換
-                        const halfWidthString =
-                            convertToHalfWidth(newInputValue);
-                        const date = new Date(halfWidthString);
-                        if (!Number.isNaN(date.getTime())) {
-                            const year = date.getFullYear(); // 年を取得
-                            const month = date.getMonth() + 1; // 月を取得（0から始まるため +1）
-                            const day = date.getDate(); // 日を取得
-                            const hours = date.getHours(); // 時を取得
-                            const minutes = date.getMinutes(); // 分を取得
-
-                            // フォーマットして表示
-                            const formattedDate = `${year}年${month}月${day}日 ${hours}時${minutes}分`;
-
-                            for (const i of props.dateSuggestionCategory) {
-                                // 検索候補に追加
-                                options.unshift({
-                                    sort: 999999999999,
-                                    label: formattedDate,
-                                    value: formattedDate,
-                                    categoryId: i.categoryId,
-                                    categoryLabel: i.categoryLabel, //`${i.categoryLabel}を入力するにはここをタップ`,
-                                });
-                            }
-                        }
-                    }
+                    // if (props.dateSuggestionCategory) {
+                    //     // 全角の数値を半角に変更 文字列はそのまま 半角と全角スペースを削除
+                    //     const convertToHalfWidth = (str: string): string => {
+                    //         // 全角数字のUnicode範囲
+                    //         const fullWidthNumbers = /[\uFF10-\uFF19]/g;
+                    //         // 全角スペースと半角スペースの正規表現
+                    //         const spaces = /[　\s]/g; // 　は全角スペース、\sは半角スペースを表す
+                    //         // 全角数字を半角に変換し、スペースを削除
+                    //         return str
+                    //             .replace(fullWidthNumbers, (char) => {
+                    //                 // 全角数字を半角に変換するため、0xFEE0を引く
+                    //                 return String.fromCharCode(
+                    //                     char.charCodeAt(0) - 0xfee0,
+                    //                 );
+                    //             })
+                    //             .replace(spaces, ""); // スペースを削除
+                    //     };
+                    //     // 全角数字を半角に変換
+                    //     const halfWidthString =
+                    //         convertToHalfWidth(newInputValue);
+                    //     const date = new Date(halfWidthString);
+                    //     if (!Number.isNaN(date.getTime())) {
+                    //         const year = date.getFullYear(); // 年を取得
+                    //         const month = date.getMonth() + 1; // 月を取得（0から始まるため +1）
+                    //         const day = date.getDate(); // 日を取得
+                    //         const hours = date.getHours(); // 時を取得
+                    //         const minutes = date.getMinutes(); // 分を取得
+                    //         // フォーマットして表示
+                    //         const formattedDate = `${year}年${month}月${day}日 ${hours}時${minutes}分`;
+                    //         for (const i of props.dateSuggestionCategory) {
+                    //             // 検索候補に追加
+                    //             options.unshift({
+                    //                 sort: 999999999999,
+                    //                 label: formattedDate,
+                    //                 value: formattedDate,
+                    //                 categoryId: i.categoryId,
+                    //                 categoryLabel: i.categoryLabel, //`${i.categoryLabel}を入力するにはここをタップ`,
+                    //             });
+                    //         }
+                    //     }
+                    // }
                 }}
                 // 検索候補のフィルタリングをする。
                 filterOptions={(options, params) => {
@@ -281,7 +278,8 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
 
                             // フォーマットして表示
                             const formattedDate = `${year}年${month}月${day}日 ${hours}時${minutes}分`;
-                            // for (const i of props.dateSuggestionCategory) {
+
+                            // 日付ダイアログを開く場合
                             filtered.unshift({
                                 sort: 0,
                                 label: "日付を入力する場合ここをタップ", //`Add "${formattedDate}"`,
@@ -289,7 +287,16 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                 categoryId: "_DatePickerDialog",
                                 categoryLabel: "日付", //`${i.categoryLabel}を入力するにはここをタップ`,
                             });
-                            // }
+                            // 候補から直接確定する場合
+                            for (const i of props.dateSuggestionCategory) {
+                                filtered.unshift({
+                                    sort: 0,
+                                    label: formattedDate, //`Add "${formattedDate}"`,
+                                    value: formattedDate,
+                                    categoryId: i.categoryId,
+                                    categoryLabel: i.categoryLabel, //`${i.categoryLabel}を入力するにはここをタップ`,
+                                });
+                            }
                         }
                     }
                     return filtered;

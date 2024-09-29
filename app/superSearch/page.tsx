@@ -1,5 +1,6 @@
 "use client";
 
+import { DatePicker } from "@/components/Form/DatePicker";
 import SuperSearchBar, {
     type SearchSuggestion,
     type InputValueSearchSuggestion,
@@ -7,8 +8,16 @@ import SuperSearchBar, {
 } from "@/components/Navbar/SuperSearchBar";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import { Box, ButtonBase, Collapse, Stack, Typography } from "@mui/material";
-import { type Dispatch, type SetStateAction, useState } from "react";
+import {
+    Box,
+    ButtonBase,
+    Checkbox,
+    Collapse,
+    Stack,
+    Typography,
+} from "@mui/material";
+import dayjs from "dayjs";
+import { type Dispatch, type SetStateAction, use, useState } from "react";
 
 interface LimitedSuperSearchProps {
     suggestions: SearchSuggestion[];
@@ -17,6 +26,40 @@ interface LimitedSuperSearchProps {
     categoryId: CategoryId;
     onChange?: () => void;
 }
+
+interface LimitDateProps {
+    id: string;
+    label: string;
+    value: dayjs.Dayjs | null;
+    setValue: (newValue: dayjs.Dayjs | null) => void;
+    isEnable: boolean;
+    setIsEnable: (newValue: boolean) => void;
+}
+
+const LimitDatePicker: React.FC<LimitDateProps> = ({
+    id,
+    label,
+    value,
+    setValue,
+    isEnable,
+    setIsEnable,
+}) => {
+    return (
+        <Stack direction="row" alignItems="center" spacing={1}>
+            <Checkbox
+                sx={{ flexShrink: 0 }}
+                onChange={(x) => setIsEnable(x.target.checked)}
+            />
+            <DatePicker
+                id={id}
+                label={label}
+                value={value}
+                setValue={setValue}
+                disabled={!isEnable}
+            />
+        </Stack>
+    );
+};
 
 // 検索候補
 const ActorSuggestions: SearchSuggestion[] = [
@@ -51,12 +94,6 @@ const OrganizationSuggestions: SearchSuggestion[] = [
         categoryId: "organization",
         categoryLabel: "組織",
     },
-    // {
-    //     label: "ぷらそにか",
-    //     value: "UCZx7esGXyW6JXn98byfKEIA",
-    //     categoryId: "YouTubeChannel",
-    //     categoryLabel: "YouTubeチャンネル",
-    // },
     {
         sort: 100,
         label: "ぷらそにか東京",
@@ -64,10 +101,15 @@ const OrganizationSuggestions: SearchSuggestion[] = [
         categoryId: "organization",
         categoryLabel: "組織",
     },
+    // {
+    //     label: "ぷらそにか",
+    //     value: "UCZx7esGXyW6JXn98byfKEIA",
+    //     categoryId: "YouTubeChannel",
+    //     categoryLabel: "YouTubeチャンネル",
+    // },
 ];
 
 const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
-    label,
     suggestions,
     inputValue,
     setInputValue,
@@ -103,6 +145,11 @@ export default function Home() {
 
     const getAllSuggestion = [...ActorSuggestions, ...OrganizationSuggestions];
     const [isOpen, setIsOpen] = useState(false);
+
+    const [startDate, setStartDate] = useState<dayjs.Dayjs | null>(dayjs());
+    const [endDate, setEndDate] = useState<dayjs.Dayjs | null>(dayjs());
+    const [isStartDateEnable, setIsStartDateEnable] = useState(false);
+    const [isEndDateEnable, setIsEndDateEnable] = useState(false);
 
     return (
         <Box>
@@ -162,6 +209,29 @@ export default function Home() {
                     </Box>
                 </Stack>
             </Collapse>
+            <Stack direction="row">
+                <LimitDatePicker
+                    id="start"
+                    label="開始日"
+                    value={startDate}
+                    setValue={setStartDate}
+                    isEnable={isStartDateEnable}
+                    setIsEnable={setIsStartDateEnable}
+                />
+                <LimitDatePicker
+                    id="start"
+                    label="開始日"
+                    value={startDate}
+                    setValue={setEndDate}
+                    isEnable={isEndDateEnable}
+                    setIsEnable={setIsEndDateEnable}
+                />
+            </Stack>
+            <p>
+                {isStartDateEnable && startDate?.format("YYYY年MM月DD日")}
+                {isStartDateEnable || isEndDateEnable ? "〜" : "日付指定ナシ"}
+                {isEndDateEnable && endDate?.format("YYYY年MM月DD日")}
+            </p>
         </Box>
     );
 }

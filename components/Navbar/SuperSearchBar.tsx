@@ -1,4 +1,11 @@
-import { Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
+import {
+    Autocomplete,
+    Box,
+    Chip,
+    TextField,
+    Typography,
+    Stack,
+} from "@mui/material";
 import { darken, lighten, styled } from "@mui/system";
 import type { SyntheticEvent } from "react";
 import { useState } from "react";
@@ -100,11 +107,11 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
         props.setInputValues(
             props.inputValues.concat([
                 {
-                    label: dialogDatePickerValue.value,
+                    label: formatDate(dialogDatePickerValue.value),
                     value: dialogDatePickerValue.value,
                     sort: 0,
-                    categoryId: dialogDatePickerValue.label,
-                    categoryLabel: dialogDatePickerValue.label,
+                    categoryId: dialogDatePickerValue.categoryId,
+                    categoryLabel: dialogDatePickerValue.categoryLabel,
                 },
             ]),
         );
@@ -126,7 +133,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
     }
 
     // 入力値変更時に呼び出される関数
-    const handleInputChange = (
+    const handleOnChange = (
         _event: SyntheticEvent<Element, Event>,
         newValues: (InputValueSearchSuggestion | string)[],
     ): void => {
@@ -144,6 +151,13 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 };
                 result.push(item);
             } else if (value.categoryId === "_DatePickerDialog") {
+                setDialogDatePickerValue({
+                    sort: 0,
+                    label: value.label,
+                    value: value.value,
+                    categoryId: "",
+                    categoryLabel: "",
+                });
                 // 日付ダイアログを開く
                 setOpenDatePicker(true);
             } else {
@@ -156,6 +170,35 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
         if (props.onChange) {
             props.onChange();
         }
+    };
+    // 全角の数値を半角に変更 文字列はそのまま 半角と全角スペースを削除
+    const convertStringToDate = (str: string): Date => {
+        // 全角数字のUnicode範囲
+        const fullWidthNumbers = /[\uFF10-\uFF19]/g;
+
+        // 全角数字を半角に変換し、スペースを削除
+        const dateString = str
+            .replace(fullWidthNumbers, (char) => {
+                // 全角数字を半角に変換するため、0xFEE0を引く
+                return String.fromCharCode(char.charCodeAt(0) - 0xfee0);
+            })
+            .replace(/\u3000/g, " ") // 全角スペースを半角スペースに
+            .trim(); // 文字列の前後の空白等を取り除く
+
+        return new Date(dateString);
+    };
+    // 日付を人が読みやすい形にフォーマット
+    const formatDate = (value: string | Date) => {
+        const date = new Date(value);
+        const year = date.getFullYear(); // 年を取得
+        const month = date.getMonth() + 1; // 月を取得（0から始まるため +1）
+        const day = date.getDate(); // 日を取得
+        const hours = date.getHours(); // 時を取得
+        const minutes = date.getMinutes(); // 分を取得
+        const seconds = date.getSeconds();
+
+        // フォーマットして表示
+        return `${year}年${month}月${day}日 ${hours}時${minutes}分${seconds}秒`;
     };
     // 検索候補のHTML
     const GroupHeader = styled(Box)(({ theme }) => ({
@@ -191,50 +234,35 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 }
                 isOptionEqualToValue={(option, v) => option.value === v.value}
                 value={props.inputValues}
-                onChange={handleInputChange}
+                onChange={handleOnChange}
                 // 入力途中の文字列を取得
                 onInputChange={(event, newInputValue: string) => {
+                    // ↓ 消さないで。
                     // 日付を入力するよう設定されている場合。
-                    // if (props.dateSuggestionCategory) {
-                    //     // 全角の数値を半角に変更 文字列はそのまま 半角と全角スペースを削除
-                    //     const convertToHalfWidth = (str: string): string => {
-                    //         // 全角数字のUnicode範囲
-                    //         const fullWidthNumbers = /[\uFF10-\uFF19]/g;
-                    //         // 全角スペースと半角スペースの正規表現
-                    //         const spaces = /[　\s]/g; // 　は全角スペース、\sは半角スペースを表す
-                    //         // 全角数字を半角に変換し、スペースを削除
-                    //         return str
-                    //             .replace(fullWidthNumbers, (char) => {
-                    //                 // 全角数字を半角に変換するため、0xFEE0を引く
-                    //                 return String.fromCharCode(
-                    //                     char.charCodeAt(0) - 0xfee0,
-                    //                 );
-                    //             })
-                    //             .replace(spaces, ""); // スペースを削除
-                    //     };
-                    //     // 全角数字を半角に変換
-                    //     const halfWidthString =
-                    //         convertToHalfWidth(newInputValue);
-                    //     const date = new Date(halfWidthString);
-                    //     if (!Number.isNaN(date.getTime())) {
-                    //         const year = date.getFullYear(); // 年を取得
-                    //         const month = date.getMonth() + 1; // 月を取得（0から始まるため +1）
-                    //         const day = date.getDate(); // 日を取得
-                    //         const hours = date.getHours(); // 時を取得
-                    //         const minutes = date.getMinutes(); // 分を取得
-                    //         // フォーマットして表示
-                    //         const formattedDate = `${year}年${month}月${day}日 ${hours}時${minutes}分`;
-                    //         for (const i of props.dateSuggestionCategory) {
-                    //             // 検索候補に追加
-                    //             options.unshift({
-                    //                 sort: 999999999999,
-                    //                 label: formattedDate,
-                    //                 value: formattedDate,
-                    //                 categoryId: i.categoryId,
-                    //                 categoryLabel: i.categoryLabel, //`${i.categoryLabel}を入力するにはここをタップ`,
-                    //             });
-                    //         }
+                    // if (
+                    //     props.dateSuggestionCategory &&
+                    //     props.dateSuggestionCategory.length !== 0
+                    // ) {
+                    // const date: Date = convertStringToDate(newInputValue);
+                    // if (!Number.isNaN(date.getTime())) {
+                    //     const year = date.getFullYear(); // 年を取得
+                    //     const month = date.getMonth() + 1; // 月を取得（0から始まるため +1）
+                    //     const day = date.getDate(); // 日を取得
+                    //     const hours = date.getHours(); // 時を取得
+                    //     const minutes = date.getMinutes(); // 分を取得
+                    //     // フォーマットして表示
+                    //     const formattedDate = `${year}年${month}月${day}日 ${hours}時${minutes}分`;
+                    //     for (const i of props.dateSuggestionCategory) {
+                    //         // 検索候補に追加
+                    //         options.unshift({
+                    //             sort: 999999999999,
+                    //             label: formattedDate,
+                    //             value: formattedDate,
+                    //             categoryId: i.categoryId,
+                    //             categoryLabel: i.categoryLabel, //`${i.categoryLabel}を入力するにはここをタップ`,
+                    //         });
                     //     }
+                    // }
                     // }
                 }}
                 // 検索候補のフィルタリングをする。
@@ -247,42 +275,16 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                         props.dateSuggestionCategory.length !== 0 &&
                         params.inputValue !== ""
                     ) {
-                        // 全角の数値を半角に変更 文字列はそのまま 半角と全角スペースを削除
-                        const convertToHalfWidth = (str: string): string => {
-                            // 全角数字のUnicode範囲
-                            const fullWidthNumbers = /[\uFF10-\uFF19]/g;
-                            // 全角スペースと半角スペースの正規表現
-                            const spaces = /[　\s]/g; // 　は全角スペース、\sは半角スペースを表す
-
-                            // 全角数字を半角に変換し、スペースを削除
-                            return str
-                                .replace(fullWidthNumbers, (char) => {
-                                    // 全角数字を半角に変換するため、0xFEE0を引く
-                                    return String.fromCharCode(
-                                        char.charCodeAt(0) - 0xfee0,
-                                    );
-                                })
-                                .replace(spaces, ""); // スペースを削除
-                        };
-                        // 全角数字を半角に変換
-                        const halfWidthString = convertToHalfWidth(
-                            params.inputValue,
-                        );
-                        const date = new Date(halfWidthString);
+                        const date = convertStringToDate(params.inputValue);
+                        console.log(`変換後の日付${date.toString()}`);
                         if (!Number.isNaN(date.getTime())) {
-                            const year = date.getFullYear(); // 年を取得
-                            const month = date.getMonth() + 1; // 月を取得（0から始まるため +1）
-                            const day = date.getDate(); // 日を取得
-                            const hours = date.getHours(); // 時を取得
-                            const minutes = date.getMinutes(); // 分を取得
-
                             // フォーマットして表示
-                            const formattedDate = `${year}年${month}月${day}日 ${hours}時${minutes}分`;
+                            const formattedDate = formatDate(date);
 
                             // 日付ダイアログを開く場合
                             filtered.unshift({
                                 sort: 0,
-                                label: "日付を入力する場合ここをタップ", //`Add "${formattedDate}"`,
+                                label: "日付を簡単に入力する場合ここをタップ", //`Add "${formattedDate}"`,
                                 value: formattedDate,
                                 categoryId: "_DatePickerDialog",
                                 categoryLabel: "日付", //`${i.categoryLabel}を入力するにはここをタップ`,
@@ -292,11 +294,19 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                 filtered.unshift({
                                     sort: 0,
                                     label: formattedDate, //`Add "${formattedDate}"`,
-                                    value: formattedDate,
+                                    value: date.toString(),
                                     categoryId: i.categoryId,
                                     categoryLabel: i.categoryLabel, //`${i.categoryLabel}を入力するにはここをタップ`,
                                 });
                             }
+                            // 日付の入力形式をお知らせ
+                            filtered.unshift({
+                                sort: 0,
+                                label: "YYYY/MM/DD hh:mm:ss",
+                                value: date.toString(),
+                                categoryId: "_DatePickerDialog",
+                                categoryLabel: "日付の入力形式のお知らせ",
+                            });
                         }
                     }
                     return filtered;
@@ -373,40 +383,103 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 <form onSubmit={handleDialogDateSubmit}>
                     <DialogTitle>日付を入力</DialogTitle>
                     <DialogContent>
-                        <DialogContentText>
-                            日付を選んで....泣
-                        </DialogContentText>
-                        <p>{JSON.stringify(props.dateSuggestionCategory)}</p>
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="label"
-                            value={dialogDatePickerValue.label}
-                            onChange={(event) =>
-                                setDialogDatePickerValue({
-                                    ...dialogDatePickerValue,
-                                    label: event.target.value,
-                                })
-                            }
-                            label="Label"
-                            type="text"
-                            variant="standard"
-                        />
-                        <TextField
-                            autoFocus
-                            margin="dense"
-                            id="value"
-                            value={dialogDatePickerValue.value}
-                            onChange={(event) =>
-                                setDialogDatePickerValue({
-                                    ...dialogDatePickerValue,
-                                    value: event.target.value,
-                                })
-                            }
-                            label="value"
-                            type="text"
-                            variant="standard"
-                        />
+                        <DialogContentText>↓ どちらかを選択</DialogContentText>
+                        {props.dateSuggestionCategory &&
+                            props.dateSuggestionCategory.length !== 0 &&
+                            props.dateSuggestionCategory.map((item) => (
+                                <Button
+                                    key={item.categoryId}
+                                    variant="outlined"
+                                    onClick={() => {
+                                        // 引数を省略してアロー関数を使用
+                                        setDialogDatePickerValue({
+                                            label: formatDate(
+                                                dialogDatePickerValue.value,
+                                            ),
+                                            value: dialogDatePickerValue.value,
+                                            sort: 0,
+                                            categoryId: item.categoryId,
+                                            categoryLabel: item.categoryLabel,
+                                        });
+                                    }}
+                                >
+                                    {item.categoryLabel}
+                                </Button> // keyプロパティを追加
+                            ))}
+
+                        <Stack>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="label"
+                                defaultValue={formatDate(
+                                    dialogDatePickerValue.value,
+                                )}
+                                onChange={(event) =>
+                                    setDialogDatePickerValue({
+                                        ...dialogDatePickerValue,
+                                        label: event.target.value,
+                                    })
+                                }
+                                label="Label"
+                                type="text"
+                                inputProps={{ readOnly: true }}
+                            />
+                        </Stack>
+                        <Stack>
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="value"
+                                defaultValue={convertStringToDate(
+                                    dialogDatePickerValue.value,
+                                )}
+                                onChange={(event) =>
+                                    setDialogDatePickerValue({
+                                        ...dialogDatePickerValue,
+                                        value: new Date(
+                                            event.target.value,
+                                        ).toString(),
+                                    })
+                                }
+                                label="value"
+                                type="datetime-local"
+                            />
+                        </Stack>
+                        <Stack direction="row">
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="categoryId"
+                                defaultValue={dialogDatePickerValue.categoryId}
+                                onChange={(event) =>
+                                    setDialogDatePickerValue({
+                                        ...dialogDatePickerValue,
+                                        categoryId: event.target.value,
+                                    })
+                                }
+                                label="categoryId"
+                                type="text"
+                                inputProps={{ readOnly: true }}
+                            />
+                            <TextField
+                                autoFocus
+                                margin="dense"
+                                id="categoryLabel"
+                                defaultValue={
+                                    dialogDatePickerValue.categoryLabel
+                                }
+                                onChange={(event) =>
+                                    setDialogDatePickerValue({
+                                        ...dialogDatePickerValue,
+                                        categoryLabel: event.target.value,
+                                    })
+                                }
+                                label="categoryLabel"
+                                type="text"
+                                inputProps={{ readOnly: true }}
+                            />
+                        </Stack>
                         {/* <DatePicker
                             label="Select Date"
                             value={dayjs("2019-01-25")}

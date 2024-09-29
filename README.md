@@ -7,7 +7,7 @@
 
 ## 技術仕様
 
-- GitHub 内にある web サイト表示に必要なデータを Vercel（https://vercel.com）というサービスを利用して公開している。
+- GitHub 内にある web サイト表示に必要なデータを Vercel（<https://vercel.com）というサービスを利用して公開している。>
 - 使用言語は TypeScript
 
 ### 動画一覧を古い順に表示する機能の廃止
@@ -20,7 +20,7 @@
 ### 前提条件
 
 - VSCode がインストールされている。
-  https://code.visualstudio.com
+  <https://code.visualstudio.com>
 
 - コードのフォーマットには 拡張機能のBiome を使用しています。
 ([参考](https://tometome.notion.site/Biome-10f0553833378065a3b7cc7298b4d2fd?pvs=4))
@@ -33,12 +33,12 @@ code --install-extension biomejs.biome
 
 ### ①node.js のインストール
 
-https://nodejs.org/ja/
+<https://nodejs.org/ja/>
 
 .nvmrc のファイルで定義されているバージョンを使用。不定期にアップデートしてます。
 
 1 台の PC に複数バージョンの Node.Js を共存させる場合はこちらを参考にどうぞ。
-https://tometome.notion.site/nvm-53d391fa3afb430e89e2bafbff852a1c
+<https://tometome.notion.site/nvm-53d391fa3afb430e89e2bafbff852a1c>
 
 ### ② サイトの起動
 
@@ -67,6 +67,78 @@ npm run dev -- -H 0.0.0.0
 ```bash
 ctrl c
 ```
+
+## Supabaseの型作成
+
+```shell
+supabase gen types typescript --project-id "bgpcxtuhebgsioevmtfa" --schema public > src/types/supabase.ts
+```
+
+or
+
+```shell
+npm run gen-type-local
+```
+
+## Supabaseをローカルで実行する
+
+[CLI参考](https://qiita.com/masakinihirota/items/e8e83cb10b56047d4bae)
+
+[参考](https://supabase.com/docs/guides/cli/local-development)
+
+```shell
+supabase start
+```
+
+[http://localhost:54323](http://localhost:54323)を開くとSupabaseのダッシュボードが表示されます。
+
+停止する場合は
+
+```shell
+supabase stop
+```
+
+## Supabaseのリモートの変更を取得する
+
+それぞれを保存する
+
+```shell
+supabase db diff --use-migra -f name
+```
+
+## Supabaseのローカルで作成したデータを保存する
+
+```shell
+supabase db dump --local --data-only --file supabase/seed.sql
+```
+
+リセットして再読み込み
+
+```shell
+supabase db reset
+```
+
+## Supabaseをローカルで実行できないとき
+
+Dockerがインストールされてるか確認してください。
+
+## Supabaseをアップデートする
+
+Mac
+
+```shell
+brew upgrade supabase
+```
+
+Windows
+
+```shell
+scoop update supabase
+```
+
+## Supabaseの認証メールを確認する
+
+[このリンク](http://localhost:54324/)からメールを確認できる
 
 ## 今後追記予定のコード
 

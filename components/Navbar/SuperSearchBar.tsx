@@ -1,6 +1,6 @@
 import { Autocomplete, Box, Chip, TextField, Typography } from "@mui/material";
 import { darken, lighten, styled } from "@mui/system";
-import type { Dispatch, SetStateAction, SyntheticEvent } from "react";
+import type { SyntheticEvent } from "react";
 
 export type CategoryId = "actor" | "organization" | "YouTubeChannel" | "text";
 
@@ -127,7 +127,7 @@ export default function SuperSearchBar({
                     <TextField
                         {...params}
                         variant="standard"
-                        label={label} // ラベル
+                        label={label}
                         placeholder="キーワードを選択か、入力後に「Enter」でタグが表示。" // プレースホルダー
                         error={validation.error} // エラー時の見た目変更
                         helperText={validation.message} // エラーメッセージ
@@ -157,8 +157,8 @@ export default function SuperSearchBar({
                                     label={
                                         <Box
                                             sx={{
-                                                textAlign: "center", // テキストを中央揃え
-                                                maxWidth: "150px", // テキストの最大幅を指定
+                                                textAlign: "center",
+                                                maxWidth: "150px",
                                                 whiteSpace: "nowrap", // 改行させない
                                                 overflow: "hidden", // オーバーフロー時に隠す
                                                 textOverflow: "ellipsis", // 長いテキストを省略して表示

@@ -7,31 +7,8 @@ export default function tabScrollView() {
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
     // 左からどのくらいスクロールされているか(px)
     const [scrollLeftPosition, setScrollLeftPosition] = useState<number>(0);
-
-    // HTMLを監視するコードを追加
-    useEffect(() => {
-        const scrollContainer = scrollContainerRef.current;
-        let scrollTimeout: NodeJS.Timeout;
-
-        if (scrollContainer) {
-            const handleScroll = () => {
-                setScrollLeftPosition(scrollContainer.scrollLeft);
-
-                // スクロールが終了した後にhandleScrollEndを実行
-                clearTimeout(scrollTimeout);
-                scrollTimeout = setTimeout(() => {
-                    handleScrollEnd();
-                }, 150); // 150ミリ秒後にスクロールが終了したとみなす
-            };
-
-            scrollContainer.addEventListener("scroll", handleScroll);
-
-            return () => {
-                clearTimeout(scrollTimeout);
-                scrollContainer.removeEventListener("scroll", handleScroll);
-            };
-        }
-    }, []);
+    // ユーザーが操作中かどうか
+    // const [isScrolling, setIsScrolling] = useState<boolean>(false);
 
     const positions: { [key: string]: number } = {
         section1: 0,
@@ -58,7 +35,32 @@ export default function tabScrollView() {
             });
         }
     };
+    // HTMLを監視するコードを追加
+    useEffect(() => {
+        const scrollContainer = scrollContainerRef.current;
+        let scrollTimeout: NodeJS.Timeout;
 
+        if (scrollContainer) {
+            const handleScroll = () => {
+                setScrollLeftPosition(scrollContainer.scrollLeft);
+                // setIsScrolling(true);
+
+                // スクロールが終了した後にhandleScrollEndを実行
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    // setIsScrolling(false);
+                    handleScrollEnd();
+                }, 150); // 150ミリ秒後にスクロールが終了したとみなす
+            };
+
+            scrollContainer.addEventListener("scroll", handleScroll);
+
+            return () => {
+                clearTimeout(scrollTimeout);
+                scrollContainer.removeEventListener("scroll", handleScroll);
+            };
+        }
+    }, []);
     // スクロールされた位置が不適切な場合に、適切な位置を計算してスクロールさせる。
     const handleScrollEnd = (): void => {
         const scrollContainer = scrollContainerRef.current;

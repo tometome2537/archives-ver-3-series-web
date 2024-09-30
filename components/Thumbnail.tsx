@@ -12,7 +12,7 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Unstable_Grid2";
 import Image from "next/image";
 import type { MouseEventHandler } from "react";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import YouTubePlayer from "./YouTubePlayer";
 
 export interface NoteContentProps {
@@ -212,11 +212,10 @@ export default function Thumbnail(props: ThumbnailProps) {
     }
 
     return (
-        <div
+        <Box
             onClick={props.onClick ? props.onClick : undefined}
-            onKeyPress={undefined}
             data-videoId={props.videoId}
-            style={{ cursor: props.onClick ? "pointer" : "default" }} // クリック可能かどうかでカーソルを変更
+            sx={{ cursor: props.onClick ? "pointer" : "default" }} // クリック可能かどうかでカーソルを変更
         >
             {/* サムネイルとタイトルを中央揃え */}
             <Box
@@ -287,6 +286,6 @@ export default function Thumbnail(props: ThumbnailProps) {
                     </Typography>
                 )}
             </Box>
-        </div>
+        </Box>
     );
 }

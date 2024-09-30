@@ -1,6 +1,7 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { Box } from "@mui/material";
+import { useEffect, useRef, useState } from "react";
 
 export default function tabScrollView() {
     // スクロール対象のHTMLが入る
@@ -100,9 +101,9 @@ export default function tabScrollView() {
                 スクロール位置：{JSON.stringify(scrollLeftPosition)}
             </button>
 
-            <div
+            <Box
                 ref={scrollContainerRef}
-                style={{
+                sx={{
                     width: "100vw",
                     height: "100vh",
                     overflowX: "scroll",
@@ -142,7 +143,7 @@ export default function tabScrollView() {
                         Section 3
                     </div>
                 </div>
-            </div>
+            </Box>
         </div>
     );
 }

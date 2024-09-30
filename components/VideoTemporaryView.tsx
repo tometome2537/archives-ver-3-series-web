@@ -1,24 +1,11 @@
 import buildUrlWithQuery from "@/libs/buildUrl";
-import fetcher from "@/libs/fetcher";
-import { unescapeHtml } from "@/libs/unescapeHtml";
-import { Button, Stack, Typography } from "@mui/material";
-import Grid from "@mui/material/Unstable_Grid2/Grid2";
-import {
-    MouseEvent,
-    MouseEventHandler,
-    useEffect,
-    useRef,
-    useState,
-    useCallback,
-} from "react";
-import InfiniteScroll from "react-infinite-scroll-component";
-import YouTube, { YouTubeProps } from "react-youtube";
-import useSWRInfinite from "swr/infinite";
-import Loading from "./Loading";
-import Thumbnail from "./Thumbnail";
-import type { EntityObj } from "./EntitySelector";
+import { Box } from "@mui/material";
+import { useCallback, useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
+import type { EntityObj } from "./EntitySelector";
+import Loading from "./Loading";
 import type { PlayerItem } from "./PlayerView";
+import Thumbnail from "./Thumbnail";
 
 type VideoTemporaryObj = {
     videoId: string;
@@ -39,13 +26,20 @@ type VideoTemporaryObj = {
 
 type VideoViewTemporaryProps = {
     playerItem: PlayerItem;
-    entityId: Array<EntityObj>;
+    entityIds: Array<EntityObj>;
     setPlayerItem: Dispatch<SetStateAction<PlayerItem>>;
     setPlayerPlaylist: Dispatch<SetStateAction<Array<PlayerItem>>>;
     setPlayerSearchResult: Dispatch<SetStateAction<Array<PlayerItem>>>;
 };
 
 export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
+    const {
+        playerItem,
+        entityIds,
+        setPlayerItem,
+        setPlayerPlaylist,
+        setPlayerSearchResult,
+    } = props;
     // APIで取得したデータを格納
     const [apiDataVideo, setApiDataVideo] = useState<Array<VideoTemporaryObj>>(
         [],
@@ -71,7 +65,7 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
             let person: string;
             person = "";
 
-            for (const item of props.entityId) {
+            for (const item of entityIds) {
                 if (item.category === "organization") {
                     organization = item.id;
                 } else if (item.category === "person") {
@@ -102,7 +96,7 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
         } finally {
             setLoading(false); // ローディングを解除
         }
-    }, [props.entityId]); // entityIdを依存関係に追加
+    }, [entityIds]); // entityIdを依存関係に追加
 
     // APIを叩く（初回生成時は実行しない。entityID更新時のみ実行する。）
     useEffect(() => {
@@ -116,7 +110,7 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
     // 動画サムネイルがクリックされたときに呼ばれる関数
     const handleVideoClick = (event: React.MouseEvent<HTMLElement>) => {
         const videoId = event.currentTarget.getAttribute("data-videoId");
-        props.setPlayerItem({
+        setPlayerItem({
             videoId: videoId ? videoId : "",
         });
         // APIから受け取った値の型を変換する。
@@ -137,7 +131,7 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
                 return result;
             },
         );
-        props.setPlayerSearchResult(searchResult);
+        setPlayerSearchResult(searchResult);
     };
 
     // ローディング中
@@ -169,8 +163,8 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
     }
 
     return (
-        <div
-            style={{
+        <Box
+            sx={{
                 display: "flex",
                 padding: "0 auto",
                 justifyContent: "center", // 中央に配置
@@ -187,8 +181,8 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
                         <Thumbnail
                             key={item.videoId}
                             isPlayingOnHover={
-                                props.playerItem.videoId === "" ||
-                                props.playerItem.videoId === undefined
+                                playerItem.videoId === "" ||
+                                playerItem.videoId === undefined
                             }
                             videoId={item.videoId}
                             title={item.title}
@@ -204,6 +198,6 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
                     <div>検索結果が0です。</div>
                 </>
             )}
-        </div>
+        </Box>
     );
 }

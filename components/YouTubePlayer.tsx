@@ -88,6 +88,12 @@ export default function YouTubePlayer(props: YouTubePlayerProps) {
                     // backgroundColor: "orange",
                 },
                 ...props.style,
+                ...{
+                    overflow: "hidden",
+                    // ↑ overflow: "hidden",はプレイヤーの角を丸める
+                    // ↓ のコードを機能させるのに必要。
+                    borderRadius: "1em",
+                },
             }}
         >
             <YouTube

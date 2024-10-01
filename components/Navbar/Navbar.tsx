@@ -4,7 +4,7 @@ import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
-import { Fragment } from "react";
+import { Fragment, useEffect, useRef } from "react";
 import EntitySelector from "../EntitySelector";
 import type { EntityObj } from "../EntitySelector";
 import SearchBar from "./SearchBar";
@@ -14,20 +14,49 @@ export const NavButton = styled(Button)({
     fontWeight: "bold",
 }) as typeof Button;
 
-type SearchBarProps = {
+type NavbarProps = {
+    screenHeight: number;
     setSearchQuery: Dispatch<SetStateAction<string>>;
     search: () => void;
     setEntityId: Dispatch<SetStateAction<Array<EntityObj>>>;
     entityIdString: Array<string>;
+    setNavbarHeight: Dispatch<SetStateAction<number>>;
 };
 
-export default function Navbar(props: SearchBarProps) {
+export default function Navbar(props: NavbarProps) {
     // テーマ設定を取得
     const theme = useTheme();
+    // NavbarのHTMLが保存される
+    const NavbarRef = useRef<HTMLDivElement | null>(null);
+
+    // BottomNavigationの高さを調べる
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            // タブバーの高さを再計算する関数
+            const updateNavHeight = () => {
+                if (NavbarRef.current) {
+                    const height = NavbarRef.current.clientHeight;
+                    props.setNavbarHeight(height);
+                }
+            };
+
+            // 初回の高さ計算
+            updateNavHeight();
+
+            // ウィンドウリサイズ時に高さを再計算
+            window.addEventListener("resize", updateNavHeight);
+
+            // クリーンアップ: コンポーネントがアンマウントされたときにイベントリスナーを削除
+            return () => {
+                window.removeEventListener("resize", updateNavHeight);
+            };
+        }
+    }, [props]);
 
     return (
         <Fragment>
             <AppBar
+                ref={NavbarRef}
                 position="fixed"
                 color="default"
                 sx={{

@@ -21,7 +21,6 @@ export type PlayerItem = {
 type PlayerProps = {
     screenWidth: number;
     screenHeight: number;
-    setPlayerViewHeight: Dispatch<SetStateAction<number>>;
     isMobile: boolean;
     // フルスクリーンで表示するかどうか
     isPlayerFullscreen: boolean;
@@ -75,30 +74,6 @@ export default function PlayerView(props: PlayerProps) {
 
         setPlayNowDetail(result);
     }, [props, playNowVideoId, props.Playlist, props.searchResult]);
-
-    // playerViewRefの高さを監視、調べる。
-    useEffect(() => {
-        if (typeof window !== "undefined") {
-            // タブバーの高さを再計算する関数
-            const updateNavHeight = () => {
-                if (playerViewRef.current) {
-                    const height = playerViewRef.current.clientHeight;
-                    props.setPlayerViewHeight(height);
-                }
-            };
-
-            // 初回の高さ計算
-            updateNavHeight();
-
-            // ウィンドウリサイズ時に高さを再計算
-            window.addEventListener("resize", updateNavHeight);
-
-            // クリーンアップ: コンポーネントがアンマウントされたときにイベントリスナーを削除
-            return () => {
-                window.removeEventListener("resize", updateNavHeight);
-            };
-        }
-    }, [props]);
 
     // サムネイルがクリックされた時
     const handleVideoClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -179,8 +154,8 @@ export default function PlayerView(props: PlayerProps) {
                 // videoIdがセットされていない時はPlayerを非表示
                 display: playNowVideoId ? "block" : "none",
                 // 拡大モードの時、Playerを画面上下いっぱいまで広げる。
-                height: props.isPlayerFullscreen ? "100vh" : "100%",
-                // 拡大モードの時、縦スクロールを許可しない。
+                // height: props.isPlayerFullscreen ? "100vh" : "100%",
+                // 拡大モードの時、縦スクロールを許可しない。(YouTubePlayerが固定される。)
                 overflowY: props.isPlayerFullscreen ? "hidden" : "auto",
             }}
         >
@@ -190,35 +165,35 @@ export default function PlayerView(props: PlayerProps) {
                     position: props.isPlayerFullscreen ? "fixed" : "relative",
                     top: "0",
                     // ここまで拡大表示の時にPlayerを固定する
-                    // ↓ PCの時は横に並べる
+                    // ↓ PCの時は右カラムを左カラムの下に。
                     display: props.isMobile ? "" : "flex",
                     width: "100%",
                     height: "100%",
                     maxWidth: "100vw",
                     maxHeight: "100%",
                     // ↓ 背景色の指定と背景の透過
-                    backgroundColor: !props.isPlayerFullscreen
-                        ? `rgba(
-                        ${rgbToHex(theme.palette.background.paper).r},
-                        ${rgbToHex(theme.palette.background.paper).g},
-                        ${rgbToHex(theme.palette.background.paper).b},
-                        0.75
-                        )`
-                        : // : `${theme.palette.background.default}`,
+                    backgroundColor: props.isPlayerFullscreen
+                        ? // : `${theme.palette.background.default}`,
                           `rgba(
                         ${rgbToHex(theme.palette.background.paper).r},
                         ${rgbToHex(theme.palette.background.paper).g},
                         ${rgbToHex(theme.palette.background.paper).b},
                         0.90
+                        )`
+                        : `rgba(
+                        ${rgbToHex(theme.palette.background.paper).r},
+                        ${rgbToHex(theme.palette.background.paper).g},
+                        ${rgbToHex(theme.palette.background.paper).b},
+                        0.75
                         )`,
                     // 背景をぼかす
                     backdropFilter: props.isPlayerFullscreen
-                        ? "blur(20px)"
-                        : "blur(15px)",
+                        ? "blur(15px)"
+                        : "blur(20px)",
                     // 背景をぼかす{Safari(WebKit)対応}
                     WebkitBackdropFilter: props.isPlayerFullscreen
-                        ? "blur(20px)"
-                        : "blur(15px)",
+                        ? "blur(15px)"
+                        : "blur(20px)",
                     overflow: "hidden", // クリッピングを防ぐ
                     padding: "0", // paddingの初期化
                     margin: "0", // margin の初期化
@@ -229,7 +204,7 @@ export default function PlayerView(props: PlayerProps) {
                     borderRadius:
                         props.isMobile && !props.isPlayerFullscreen
                             ? "1em"
-                            : "",
+                            : "1em", // (仮)
                     textAlign: "center",
                     ...props.style,
                 }}
@@ -237,7 +212,7 @@ export default function PlayerView(props: PlayerProps) {
                 {/* 左カラム(拡大表示falseの時はミニプレイヤー) */}
                 <Box
                     sx={{
-                        position: "relative",
+                        // position: "relative",
                         display: props.isPlayerFullscreen ? "block" : "flex",
                         width:
                             props.isPlayerFullscreen && !props.isMobile
@@ -253,23 +228,25 @@ export default function PlayerView(props: PlayerProps) {
                         style={{
                             // padding: "0", // プレイヤーの上下にスペースを追加
                             margin: "0 auto",
-                            // maxWidth: props.isPlayerFullscreen ? "100%" : "40%",
+                            maxWidth: "100%",
+                            maxHeight: "100%",
                             // maxHeight: "100%", // 高さに制限をつけることでパソコンのモニター等で無制限に大きくならないようにする。
                         }}
                         // 動画の比率は、横：縦 = １６：９で
                         width={
                             props.isMobile && props.isPlayerFullscreen
-                                ? "100%"
+                                ? `${props.screenWidth}px`
                                 : props.isPlayerFullscreen
-                                  ? `${((props.screenHeight * 0.48) / 9) * 16}px`
+                                  ? `${((props.screenHeight * 0.55) / 9) * 16}px`
                                   : `${((props.screenHeight * 0.1) / 9) * 16}px`
                         }
                         height={
                             props.isMobile && props.isPlayerFullscreen
                                 ? `${(props.screenWidth / 16) * 9}px`
                                 : props.isPlayerFullscreen
-                                  ? `${props.screenHeight * 0.48}px`
+                                  ? `${props.screenHeight * 0.55}px`
                                   : `${props.screenHeight * 0.1}px`
+                            //   props.screenHeight / 9 < props.screenWidth / 16,
                         }
                     />
 
@@ -359,7 +336,7 @@ export default function PlayerView(props: PlayerProps) {
                                 : "none",
                             overflowY: "auto",
                             maxHeight: "50vh",
-                            paddingBottom: "25vh",
+                            paddingBottom: "40vh",
                             // width: props.isPlayerFullscreen ? "" : "60%",
                         }}
                     >
@@ -433,7 +410,7 @@ export default function PlayerView(props: PlayerProps) {
                                 })}
                         </p>
                         {/* 出演者一覧 */}
-                        <div
+                        <Box
                             style={{
                                 display: "flex",
                                 padding: "0 auto",
@@ -449,7 +426,7 @@ export default function PlayerView(props: PlayerProps) {
                             playNowDetail.actorId.length !== 0
                                 ? playNowDetail.actorId.map(
                                       (actorId, index) => (
-                                          <div
+                                          <Box
                                               key={actorId}
                                               style={{
                                                   padding: "10px",
@@ -472,11 +449,11 @@ export default function PlayerView(props: PlayerProps) {
 											 */
                                           >
                                               {actorId}
-                                          </div>
+                                          </Box>
                                       ),
                                   )
                                 : null}
-                        </div>
+                        </Box>
                         {/* 組織名一覧 */}
                         {props.isPlayerFullscreen &&
                         playNowDetail &&
@@ -484,25 +461,25 @@ export default function PlayerView(props: PlayerProps) {
                         playNowDetail.organization.length !== 0
                             ? playNowDetail.organization.map(
                                   (organization, index) => (
-                                      <div key={organization}>
+                                      <Box key={organization}>
                                           {/* ここに organization の詳細情報を表示する処理を記述 */}
                                           <p>{organization}</p>
-                                      </div>
+                                      </Box>
                                   ),
                               )
                             : null}
                         {/* ミニプレイヤー切り替えボタン */}
-                        <div
+                        <Box
                             onClick={togglePlayerFullscreen}
                             onKeyPress={togglePlayerFullscreen}
                         >
                             {props.isPlayerFullscreen &&
                                 "ミニプレイヤー切り替えボタン(仮)"}
-                        </div>
+                        </Box>
                     </Box>
                 </Box>
                 {/* 右カラム */}
-                <div
+                <Box
                     style={{
                         // 拡大モードかつPCの横幅で右カラムを表示
                         display:
@@ -513,11 +490,12 @@ export default function PlayerView(props: PlayerProps) {
                         width: "30%",
                     }}
                 >
-                    <div
+                    <Box
                         style={{
                             overflowY: "auto",
                             maxHeight: "100vh",
                             paddingBottom: "25vh",
+                            margin: "0 auto",
                         }}
                     >
                         {props.searchResult
@@ -537,8 +515,8 @@ export default function PlayerView(props: PlayerProps) {
                                   ),
                               )
                             : null}
-                    </div>
-                </div>
+                    </Box>
+                </Box>
             </Box>
         </Box>
     );

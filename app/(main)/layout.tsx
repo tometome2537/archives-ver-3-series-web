@@ -30,6 +30,7 @@ import {
 import type { SxProps, Theme } from "@mui/material/styles";
 import { notFound, usePathname } from "next/navigation";
 import { type ReactElement, useEffect, useState } from "react";
+import { useTheme } from "@mui/material/styles";
 
 const tabMaps: TabMap[] = [
     {
@@ -97,12 +98,10 @@ function TabWithLink({
 }: TabWithLinkProps) {
     return (
         <Link href={href} onClick={onClick} sx={sx}>
-            {!isCompact && (
-                <Tab
-                    icon={icon}
-                    label={<Typography variant="h6">{label}</Typography>}
-                    iconPosition="start"
-                />
+            {isCompact ? (
+                <Tab icon={icon} />
+            ) : (
+                <Tab icon={icon} label={label} iconPosition="top" />
             )}
         </Link>
     );
@@ -113,6 +112,8 @@ export default function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
+    // テーマ設定を取得
+    const theme = useTheme();
     // デバッグ(ローカル開発環境)モード(リンク集を10回タップするとデバッグモードへ)
     const [debugMode, setDebugMode] = useState(
         process.env.NEXT_PUBLIC_STAGE === "local",
@@ -124,8 +125,8 @@ export default function RootLayout({
     // スマホかどうかを判定する
     const [isMobile, setIsMobile] = useState<boolean>(true);
 
-    // PlayerViewの高さを定義
-    const [playerViewHeight, setPlayerViewHeight] = useState<number>(0);
+    // Navbarの高さを定義
+    const [navbarHeight, setNavbarHeight] = useState<number>(0);
 
     // PlayerViewを拡大表示するかどうか
     const [isPlayerFullscreen, setIsPlayerFullscreen] =
@@ -206,10 +207,12 @@ export default function RootLayout({
     return (
         <>
             <Navbar
+                screenHeight={screenHeight}
                 setEntityId={setEntityIds}
                 entityIdString={entityIdString}
                 setSearchQuery={setCurrentSearchQuery}
                 search={() => setSearchQuery(currentSearchQuery)}
+                setNavbarHeight={setNavbarHeight}
             />
 
             <Container component="main">
@@ -254,11 +257,22 @@ export default function RootLayout({
                         <DebugTab />
                     </CustomTabPanel>
                 </Box>
+            </Container>
+
+            {/* 画面下に固定されたタブバー */}
+            <AppBar
+                position="fixed"
+                color="default"
+                component="footer"
+                sx={{
+                    bottom: 0,
+                    top: "auto",
+                }}
+            >
                 {/* Player */}
                 <PlayerView
                     screenWidth={screenWidth}
                     screenHeight={screenHeight}
-                    setPlayerViewHeight={setPlayerViewHeight}
                     isMobile={isMobile}
                     PlayerItem={playerItem}
                     setPlayerItem={setPlayerItem}
@@ -267,17 +281,12 @@ export default function RootLayout({
                     isPlayerFullscreen={isPlayerFullscreen}
                     setIsPlayerFullscreen={setIsPlayerFullscreen}
                     setEntityIdString={setEntityIdString}
+                    style={{
+                        // ↓ header(Navbar)の分上に余白を作る。
+                        top: isPlayerFullscreen ? `${navbarHeight}px` : "auto",
+                    }}
                 />
-            </Container>
-
-            {/* 画面下に固定されたタブバー */}
-            <AppBar
-                position="fixed"
-                color="default"
-                component="footer"
-                sx={{ bottom: 0, top: "auto" }}
-            >
-                <Container maxWidth="xl">
+                <Container maxWidth={false} sx={{ width: "100vw" }}>
                     <Tabs
                         value={currentTabValue}
                         variant="fullWidth"
@@ -285,6 +294,7 @@ export default function RootLayout({
                             "& .MuiTabs-flexContainer": {
                                 justifyContent: "space-between",
                             },
+                            backgroundColor: theme.palette.background.paper,
                         }}
                     >
                         {tabMaps.map((x) => {
@@ -300,6 +310,9 @@ export default function RootLayout({
                                         sx={{
                                             minWidth: 0,
                                             padding: 0,
+                                        }}
+                                        onClick={() => {
+                                            setIsPlayerFullscreen(false);
                                         }}
                                     />
                                 )

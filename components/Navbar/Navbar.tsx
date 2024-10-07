@@ -4,10 +4,15 @@ import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
-import { Fragment, useEffect, useRef } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import EntitySelector from "../EntitySelector";
 import type { EntityObj } from "../EntitySelector";
 import SearchBar from "./SearchBar";
+import UltraSuperSearchBar from "@/components/Navbar/UltraSuperSearchBar";
+import SuperSearchBar, {
+    type InputValueSearchSuggestion,
+} from "@/components/Navbar/SuperSearchBar";
+import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
 
 export const NavButton = styled(Button)({
     color: "primary",
@@ -15,6 +20,11 @@ export const NavButton = styled(Button)({
 }) as typeof Button;
 
 type NavbarProps = {
+    // ウルトラスーパーサーチバー
+    inputValue: InputValueSearchSuggestion[];
+    setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
+    searchSuggestion: ultraSuperSearchBarSearchSuggestion[];
+
     screenHeight: number;
     setSearchQuery: Dispatch<SetStateAction<string>>;
     search: () => void;
@@ -29,6 +39,8 @@ export default function Navbar(props: NavbarProps) {
     // NavbarのHTMLが保存される
     const NavbarRef = useRef<HTMLDivElement | null>(null);
 
+    const [navbarHeight, setNavbarHeight] = useState<number>(0);
+
     // BottomNavigationの高さを調べる
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -37,6 +49,7 @@ export default function Navbar(props: NavbarProps) {
                 if (NavbarRef.current) {
                     const height = NavbarRef.current.clientHeight;
                     props.setNavbarHeight(height);
+                    setNavbarHeight(height);
                 }
             };
 
@@ -83,16 +96,53 @@ export default function Navbar(props: NavbarProps) {
                             />
                         </Link>
                         <Box sx={{ flexGrow: 1 }} />
-                        <SearchBar
+                        {/* <SearchBar
                             setSearchQuery={props.setSearchQuery}
                             search={props.search}
-                        />
-                        {/* <SuperSearchBar /> */}
-                        <Box sx={{ flexGrow: 1 }} />
-                        <EntitySelector
+                        /> */}
+                        <Box
+                            sx={{
+                                width: "70%",
+                            }}
+                        >
+                            <UltraSuperSearchBar
+                                inputValue={props.inputValue}
+                                setInputValue={props.setInputValue}
+                                searchSuggestion={props.searchSuggestion}
+                                dateSuggestionCategory={[
+                                    {
+                                        // カテゴリーのID
+                                        categoryId: "since",
+                                        // カテゴリーのラベル(表示に使用)
+                                        categoryLabel: "開始日",
+                                    },
+                                    {
+                                        categoryId: "until",
+                                        categoryLabel: "終了日",
+                                    },
+                                ]}
+                                limitSuperSearchCategory={[
+                                    {
+                                        categoryId: "actor",
+                                        categoryLabel: "出演者",
+                                    },
+                                    {
+                                        categoryId: "organization",
+                                        categoryLabel: "組織",
+                                    },
+                                    {
+                                        categoryId: "YouTubeChannel",
+                                        categoryLabel: "YouTubeチャンネル",
+                                    },
+                                ]}
+                            />
+                        </Box>
+
+                        {/* <Box sx={{ flexGrow: 1 }} /> */}
+                        {/* <EntitySelector
                             entityIdString={props.entityIdString}
                             setEntityId={props.setEntityId}
-                        />
+                        /> */}
                         <Box sx={{ flexGrow: 1 }} />
                         <NavButton
                             href="https://forms.gle/osqdRqh1MxWhA51A8"
@@ -103,7 +153,11 @@ export default function Navbar(props: NavbarProps) {
                     </Toolbar>
                 </Container>
             </AppBar>
-            <Toolbar />
+            <Toolbar
+                sx={{
+                    height: navbarHeight,
+                }}
+            />
         </Fragment>
     );
 }

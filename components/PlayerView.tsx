@@ -6,6 +6,10 @@ import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import Thumbnail from "./Thumbnail";
 import YouTubePlayer from "./YouTubePlayer";
+import SuperSearchBar, {
+    type InputValueSearchSuggestion,
+} from "@/components/Navbar/SuperSearchBar";
+import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
 
 export type PlayerItem = {
     videoId?: string; // 動画IDをプロパティとして受け取る
@@ -19,6 +23,11 @@ export type PlayerItem = {
 };
 
 type PlayerProps = {
+    // ウルトラスーパーサーチバー
+    inputValue: InputValueSearchSuggestion[];
+    setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
+    searchSuggestion: ultraSuperSearchBarSearchSuggestion[];
+
     screenWidth: number;
     screenHeight: number;
     isMobile: boolean;
@@ -87,6 +96,28 @@ export default function PlayerView(props: PlayerProps) {
         event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
     ) => {
         const actorId = event.currentTarget.getAttribute("data-actorId");
+
+        const actorSearchSuggestion = props.searchSuggestion.find(
+            (item) => item.value === actorId || item.label === actorId,
+        );
+
+        const result: InputValueSearchSuggestion[] = props.inputValue.filter(
+            (item) => item.categoryId !== "actor",
+        );
+
+        if (actorSearchSuggestion) {
+            const r: InputValueSearchSuggestion = {
+                sort: actorSearchSuggestion.sort || 99,
+                label: actorSearchSuggestion.label,
+                value: actorSearchSuggestion.value,
+                categoryId: actorSearchSuggestion.categoryId,
+                categoryLabel: actorSearchSuggestion.categoryLabel,
+            };
+            result.push(r);
+        }
+
+        props.setInputValue(result);
+
         props.setEntityIdString(actorId ? [actorId] : [""]);
         props.setIsPlayerFullscreen(false);
     };
@@ -413,7 +444,7 @@ export default function PlayerView(props: PlayerProps) {
                         <Box
                             style={{
                                 display: "flex",
-                                padding: "0 auto",
+                                padding: "8 auto",
                                 justifyContent: "center", // 中央に配置
                                 alignItems: "center", // 縦方向にも中央に配置
                                 flexWrap: "wrap", // ラップさせて複数行に
@@ -455,19 +486,50 @@ export default function PlayerView(props: PlayerProps) {
                                 : null}
                         </Box>
                         {/* 組織名一覧 */}
-                        {props.isPlayerFullscreen &&
-                        playNowDetail &&
-                        playNowDetail.organization &&
-                        playNowDetail.organization.length !== 0
-                            ? playNowDetail.organization.map(
-                                  (organization, index) => (
-                                      <Box key={organization}>
-                                          {/* ここに organization の詳細情報を表示する処理を記述 */}
-                                          <p>{organization}</p>
-                                      </Box>
-                                  ),
-                              )
-                            : null}
+                        <Box
+                            style={{
+                                display: "flex",
+                                padding: "8 auto",
+                                justifyContent: "center", // 中央に配置
+                                alignItems: "center", // 縦方向にも中央に配置
+                                flexWrap: "wrap", // ラップさせて複数行に
+                                gap: "10px", // アイテム間のスペースを追加
+                            }}
+                        >
+                            {props.isPlayerFullscreen &&
+                            playNowDetail &&
+                            playNowDetail.organization &&
+                            playNowDetail.organization.length !== 0
+                                ? playNowDetail.organization.map(
+                                      (actorId, index) => (
+                                          <Box
+                                              key={actorId}
+                                              style={{
+                                                  padding: "10px",
+                                                  border: "1px solid #ccc", // 境界線を追加
+                                                  borderRadius: "5px", // 角を丸める
+                                                  cursor: "pointer", // マウスカーソルをポインターに変更
+                                                  transition:
+                                                      "background-color 0.3s", // 背景色のトランジション
+                                              }}
+                                              onClick={ClickHandleActor}
+                                              onKeyPress={KeyDownHandleActor}
+                                              data-actorId={actorId}
+                                              /*
+                                  onMouseEnter={(e) =>
+                                      (e.currentTarget.style.backgroundColor = "#f0f0f0")
+                                  } // ホバー時の背景色
+                                  onMouseLeave={(e) =>
+                                      (e.currentTarget.style.backgroundColor = "transparent")
+                                  } // ホバー外したとき
+                                   */
+                                          >
+                                              {actorId}
+                                          </Box>
+                                      ),
+                                  )
+                                : null}
+                        </Box>
                         {/* ミニプレイヤー切り替えボタン */}
                         <Box
                             onClick={togglePlayerFullscreen}

@@ -31,6 +31,10 @@ import type { SxProps, Theme } from "@mui/material/styles";
 import { notFound, usePathname } from "next/navigation";
 import { type ReactElement, useEffect, useState } from "react";
 import { useTheme } from "@mui/material/styles";
+import SuperSearchBar, {
+    type InputValueSearchSuggestion,
+} from "@/components/Navbar/SuperSearchBar";
+import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
 
 const tabMaps: TabMap[] = [
     {
@@ -125,6 +129,20 @@ export default function RootLayout({
     // スマホかどうかを判定する
     const [isMobile, setIsMobile] = useState<boolean>(true);
 
+    // ウルトラスーパーサーチバー
+    const [inputValue, setInputValue] = useState<InputValueSearchSuggestion[]>([
+        {
+            sort: 101,
+            label: "ぷらそにか",
+            value: "UCZx7esGXyW6JXn98byfKEIA",
+            categoryId: "YouTubeChannel",
+            categoryLabel: "YouTubeチャンネル",
+        },
+    ]);
+    const [searchSuggestion, setSearchSuggestion] = useState<
+        ultraSuperSearchBarSearchSuggestion[]
+    >([]);
+
     // Navbarの高さを定義
     const [navbarHeight, setNavbarHeight] = useState<number>(0);
 
@@ -172,6 +190,44 @@ export default function RootLayout({
         }
     }, []); // 依存配列は空のままでOK
 
+    // 初回実行(APIを叩く)検索候補を定義
+    useEffect(() => {
+        // APIからイベントデータを取得
+        const fetchEvents = async () => {
+            try {
+                // Entityを取得
+                const url = "https://api.sssapi.app/ZJUpXwYIh9lpfn3DQuyzS";
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                }
+                const data = await response.json();
+                const result: ultraSuperSearchBarSearchSuggestion[] = [];
+                for (const item of data) {
+                    const resultItem: ultraSuperSearchBarSearchSuggestion = {
+                        sort: item.category === "person" ? 99 : 100,
+                        label: item.name,
+                        value: item.id,
+                        categoryId:
+                            item.category === "person"
+                                ? "actor"
+                                : "organization",
+                        categoryLabel:
+                            item.category === "person" ? "出演者" : "組織",
+                        // categoryLabelSecond: "",
+                    };
+                    result.push(resultItem);
+                }
+                // const finalResult = searchSuggestion.concat(result);
+                setSearchSuggestion(result);
+            } catch (err) {
+            } finally {
+            }
+        };
+
+        fetchEvents();
+    }, []);
+
     let count = 0;
     const enableDebugModeOnClick = () => {
         count += 1;
@@ -207,6 +263,9 @@ export default function RootLayout({
     return (
         <>
             <Navbar
+                inputValue={inputValue}
+                searchSuggestion={searchSuggestion}
+                setInputValue={setInputValue}
                 screenHeight={screenHeight}
                 setEntityId={setEntityIds}
                 entityIdString={entityIdString}
@@ -231,6 +290,7 @@ export default function RootLayout({
                     </CustomTabPanel>
                     <CustomTabPanel value={currentTabValue} index={2}>
                         <TemporaryYouTubeTab
+                            inputValue={inputValue}
                             playerItem={playerItem}
                             setPlayerItem={setPlayerItem}
                             entityIds={entityIds}
@@ -271,6 +331,9 @@ export default function RootLayout({
             >
                 {/* Player */}
                 <PlayerView
+                    inputValue={inputValue}
+                    setInputValue={setInputValue}
+                    searchSuggestion={searchSuggestion}
                     screenWidth={screenWidth}
                     screenHeight={screenHeight}
                     isMobile={isMobile}

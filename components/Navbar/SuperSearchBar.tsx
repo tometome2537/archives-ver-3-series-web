@@ -18,6 +18,9 @@ import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { DatePicker } from "@/components/Form/DatePicker";
 import dayjs, { type Dayjs } from "dayjs";
+import { useTheme } from "@mui/material/styles";
+import Avatar from "@mui/material/Avatar";
+import CloseIcon from "@mui/icons-material/Close";
 
 export interface SearchSuggestion {
     // 入力された値はsortの数値が大きい順に並び替えられる。
@@ -27,6 +30,10 @@ export interface SearchSuggestion {
     label: string;
     // 値
     value: string;
+    // アイコン画像
+    imgSrc?: string;
+    // アイコン
+    icon?: React.ReactElement;
     // カテゴリーのID
     categoryId: string;
     // カテゴリーのラベル(表示に使用)
@@ -37,7 +44,8 @@ export interface InputValueSearchSuggestion extends SearchSuggestion {
     sort: number;
 }
 
-export type dateSuggestion = {
+// 追加の検索候補のカテゴリー
+export type additionalSearchSuggestions = {
     // カテゴリーのID
     categoryId: string;
     // カテゴリーのラベル(表示に使用)
@@ -47,10 +55,17 @@ export type dateSuggestion = {
 type SuperSearchBarProps = {
     textFieldLabel?: string;
     textFieldPlaceholder?: string;
-    // 日付の入力を許可する場合
-    dateSuggestionCategory?: dateSuggestion[];
+
+    // 有効化されているカテゴリーIDのリスト
+    availableCategoryIds?: string[];
+    // テキストに付与するカテゴリー
+    textSuggestionCategory?: additionalSearchSuggestions[];
+    // 日付の入力を許可するカテゴリー
+    dateSuggestionCategory?: additionalSearchSuggestions[];
+
     inputValues: InputValueSearchSuggestion[];
     setInputValues: (values: InputValueSearchSuggestion[]) => void;
+
     // 検索候補
     searchSuggestions?: SearchSuggestion[];
     // 入力された値が変更された時に実行したい処理を追加できる。
@@ -60,6 +75,9 @@ type SuperSearchBarProps = {
 export default function SuperSearchBar(props: SuperSearchBarProps) {
     // 参考
     // https://mui.com/material-ui/react-autocomplete/
+
+    // テーマ設定を取得
+    const theme = useTheme();
 
     // 検索候補(SearchSuggestions)を加工してAutocompleteに渡す。
     const options: InputValueSearchSuggestion[] = props.searchSuggestions
@@ -171,7 +189,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
             props.onChange();
         }
     };
-    // 全角の数値を半角に変更 文字列はそのまま 半角と全角スペースを削除
+    // 全角の数値を半角に変更 文字列はそのまま 全角スペースを半角スペースに
     const convertStringToDate = (str: string): Date => {
         // 全角数字のUnicode範囲
         const fullWidthNumbers = /[\uFF10-\uFF19]/g;
@@ -230,7 +248,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 groupBy={(option) => option.categoryLabel}
                 // groupByでグループ化した際に表示するoptionのラベル。
                 getOptionLabel={(option) =>
-                    typeof option === "string" ? "エラーテキスト" : option.label
+                    typeof option === "string" ? "？？？" : option.label
                 }
                 isOptionEqualToValue={(option, v) => option.value === v.value}
                 value={props.inputValues}
@@ -268,6 +286,24 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 // 検索候補のフィルタリングをする。
                 filterOptions={(options, params) => {
                     const filtered = filter(options, params);
+
+                    // 追加カテゴリーのテキストを入力しようとしている場合に日付を入力する選択肢を検索候補に表示
+                    if (
+                        props.textSuggestionCategory &&
+                        props.textSuggestionCategory.length !== 0 &&
+                        params.inputValue !== ""
+                    ) {
+                        // 候補から直接確定する場合
+                        for (const i of props.textSuggestionCategory) {
+                            filtered.unshift({
+                                sort: 0,
+                                label: params.inputValue, //`Add "${formattedDate}"`,
+                                value: params.inputValue,
+                                categoryId: i.categoryId,
+                                categoryLabel: i.categoryLabel, //`${i.categoryLabel}を入力するにはここをタップ`,
+                            });
+                        }
+                    }
 
                     // 日付を入力しようとしている場合に日付を入力する選択肢を検索候補に表示
                     if (
@@ -309,6 +345,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                             });
                         }
                     }
+
                     return filtered;
                 }}
                 // タグの表示に個数制限をかける。
@@ -332,10 +369,34 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                         helperText={validation.message} // エラーメッセージ
                     />
                 )}
+                // 検索候補の表示デザイン
                 renderGroup={(params) => (
                     <li key={params.key}>
                         <GroupHeader>{params.group}</GroupHeader>
+                        {/* params.childrenはReact.ReactNode(文字列、数値、React要素、配列、null、undefined 等の)webで表示できるすべての型。 */}
                         <GroupItems>{params.children}</GroupItems>
+                        {/* ↓ 開発中のGroupItems */}
+                        <GroupItems>
+                            {React.Children.map(
+                                params.children,
+                                (child, index) => (
+                                    <Box
+                                        sx={{
+                                            display: "none",
+                                            // display: "flex", // Flexboxを使用してアバターと内容を横に並べる
+                                            height: "110%",
+                                            borderRadius: "4px",
+                                            marginBottom: "4px",
+                                            border: "1px solid #ddd",
+                                            alignItems: "center", // 垂直方向に中央揃え
+                                            padding: "8px", // 余白を追加
+                                        }}
+                                    >
+                                        {child} {/* 子要素 */}
+                                    </Box>
+                                ),
+                            )}
+                        </GroupItems>
                     </li>
                 )}
                 // 入力された値をタグ🏷️の見た目で表示する
@@ -346,34 +407,61 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                     value.map(
                         (option: InputValueSearchSuggestion, index: number) => (
                             <Box
-                                key={`${option.label}-${option.categoryLabel}`} // 一意なキーを設定
+                                key={`${option.value}-${option.categoryId}`} // 一意なキーを設定
+                                sx={{
+                                    position: "relative", // アイコンの位置を指定するために relative を設定
+                                }}
                             >
                                 <Chip
                                     variant="outlined"
                                     sx={{
-                                        height: "6ch",
+                                        height: "auto",
+                                        "& .MuiChip-label": {
+                                            // textAlign: "center",
+                                            maxWidth: "100%",
+                                            lineHeight: "1.5", // 文字の上下間隔
+                                            whiteSpace: "nowrap", // 改行させない
+                                            overflow: "hidden", // オーバーフロー時に隠す
+                                            textOverflow: "ellipsis", // 長いテキストを省略して表示
+                                        },
                                     }}
-                                    label={
-                                        <Box
-                                            sx={{
-                                                textAlign: "center",
-                                                maxWidth: "150px",
-                                                whiteSpace: "nowrap", // 改行させない
-                                                overflow: "hidden", // オーバーフロー時に隠す
-                                                textOverflow: "ellipsis", // 長いテキストを省略して表示
-                                            }}
-                                        >
-                                            <Typography>
-                                                {option.label}
-                                            </Typography>
-                                            <Typography>
-                                                {option.categoryLabel}
-                                            </Typography>
-                                        </Box>
+                                    icon={option.icon}
+                                    avatar={
+                                        option.imgSrc ? (
+                                            <Avatar
+                                                alt={option.label}
+                                                src={option.imgSrc}
+                                            />
+                                        ) : option.icon ? undefined : (
+                                            <Avatar>{option.label[0]}</Avatar>
+                                        )
                                     }
-                                    color="info"
+                                    label={
+                                        <>
+                                            {option.label}
+                                            <br />
+                                            {option.categoryLabel}
+                                        </>
+                                    }
+                                    color="success"
                                     {...getTagProps({ index })}
                                 />
+                                {/* 有効化されていないcategoryIdのタグに❌を表示する。 */}
+                                {props.availableCategoryIds ? (
+                                    props.availableCategoryIds.includes(
+                                        option.categoryId,
+                                    ) ? null : ( // availableCategoryIdsが存在する場合のみincludesを呼び出す
+                                        <CloseIcon
+                                            sx={{
+                                                position: "absolute", // Box内の絶対位置に表示
+                                                top: "10%", // 上から20%の位置に配置
+                                                left: "40%", // 左から40%の位置に配置
+                                                color: "orange", // アイコンの色をオレンジに設定
+                                                fontSize: "2.5rem", // アイコンのサイズを調整
+                                            }}
+                                        />
+                                    )
+                                ) : null}
                             </Box>
                         ),
                     )

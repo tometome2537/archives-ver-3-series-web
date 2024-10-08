@@ -6,7 +6,7 @@ import { type Dispatch, type SetStateAction, use, useState } from "react";
 import SuperSearchBar, {
     type SearchSuggestion,
     type InputValueSearchSuggestion,
-    type dateSuggestion,
+    type additionalSearchSuggestions,
 } from "@/components/Navbar/SuperSearchBar";
 
 type CategoryId = "actor" | "organization" | "YouTubeChannel" | "text";
@@ -76,6 +76,7 @@ const searchSuggestion: ultraSuperSearchBarSearchSuggestion[] = [
     {
         label: "ぷらそにか",
         value: "UCZx7esGXyW6JXn98byfKEIA",
+        imgSrc: "https://yt3.ggpht.com/ytc/AIdro_lB6NxMtujj7oK0See-TGPL5eq-TjowmK6DFSjgLyCj0g=s88-c-k-c0x00ffffff-no-rj",
         categoryId: "YouTubeChannel",
         categoryLabel: "YouTubeチャンネル",
     },
@@ -95,8 +96,21 @@ const searchSuggestion: ultraSuperSearchBarSearchSuggestion[] = [
         categoryLabelSecond: "日付の一族",
     },
 ];
+// テキストの追加カテゴリー
+const textSuggestionCategory: additionalSearchSuggestions[] = [
+    {
+        // カテゴリーのID
+        categoryId: "title",
+        // カテゴリーのラベル(表示に使用)
+        categoryLabel: "タイトル",
+    },
+    {
+        categoryId: "description",
+        categoryLabel: "概要欄",
+    },
+];
 // 日付入力を許可する。
-const dateSuggestionCategory: dateSuggestion[] = [
+const dateSuggestionCategory: additionalSearchSuggestions[] = [
     {
         // カテゴリーのID
         categoryId: "since",
@@ -132,6 +146,7 @@ export default function Home() {
             inputValue={inputValue}
             setInputValue={setInputValue}
             searchSuggestion={searchSuggestion}
+            textSuggestionCategory={textSuggestionCategory}
             dateSuggestionCategory={dateSuggestionCategory}
             limitSuperSearchCategory={limitSuperSearchCategory}
         />

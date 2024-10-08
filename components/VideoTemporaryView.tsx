@@ -80,7 +80,7 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
         fetchEvents();
     }, [fetchEvents]);
 
-    // APIを叩く（初回生成時は実行しない。entityID更新時のみ実行する。）
+    // サーチバーの値を取得し結果を表示。
     useEffect(() => {
         const result = apiDataVideo.filter((item) => {
             let match = true;
@@ -102,7 +102,7 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
                     if (!item.organization?.match(inputValue.value)) {
                         match = false;
                     }
-                } else if (inputValue.categoryId === "text") {
+                } else if (inputValue.categoryId === "title") {
                     // 出演者の条件を満たさなければfalse
                     if (!item.title?.match(inputValue.value)) {
                         match = false;

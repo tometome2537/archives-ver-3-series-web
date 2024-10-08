@@ -1,6 +1,6 @@
 import rgbToHex from "@/libs/colorConverter";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { Box } from "@mui/material";
+import { Box, Chip } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
@@ -10,6 +10,7 @@ import SuperSearchBar, {
     type InputValueSearchSuggestion,
 } from "@/components/Navbar/SuperSearchBar";
 import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
+import Avatar from "@mui/material/Avatar";
 
 export type PlayerItem = {
     videoId?: string; // 動画IDをプロパティとして受け取る
@@ -457,30 +458,25 @@ export default function PlayerView(props: PlayerProps) {
                             playNowDetail.actorId.length !== 0
                                 ? playNowDetail.actorId.map(
                                       (actorId, index) => (
-                                          <Box
+                                          <Chip
                                               key={actorId}
-                                              style={{
-                                                  padding: "10px",
-                                                  border: "1px solid #ccc", // 境界線を追加
-                                                  borderRadius: "5px", // 角を丸める
-                                                  cursor: "pointer", // マウスカーソルをポインターに変更
-                                                  transition:
-                                                      "background-color 0.3s", // 背景色のトランジション
+                                              variant="outlined"
+                                              sx={{
+                                                  "& .MuiChip-label": {
+                                                      maxWidth: "100%",
+                                                      whiteSpace: "nowrap", // 改行させない
+                                                      textOverflow: "ellipsis", // 長いテキストを省略して表示
+                                                  },
                                               }}
+                                              avatar={
+                                                  <Avatar>{actorId[0]}</Avatar>
+                                              }
+                                              label={actorId}
+                                              color="success"
                                               onClick={ClickHandleActor}
                                               onKeyPress={KeyDownHandleActor}
                                               data-actorId={actorId}
-                                              /*
-											onMouseEnter={(e) =>
-												(e.currentTarget.style.backgroundColor = "#f0f0f0")
-											} // ホバー時の背景色
-											onMouseLeave={(e) =>
-												(e.currentTarget.style.backgroundColor = "transparent")
-											} // ホバー外したとき
-											 */
-                                          >
-                                              {actorId}
-                                          </Box>
+                                          />
                                       ),
                                   )
                                 : null}
@@ -501,31 +497,28 @@ export default function PlayerView(props: PlayerProps) {
                             playNowDetail.organization &&
                             playNowDetail.organization.length !== 0
                                 ? playNowDetail.organization.map(
-                                      (actorId, index) => (
-                                          <Box
-                                              key={actorId}
-                                              style={{
-                                                  padding: "10px",
-                                                  border: "1px solid #ccc", // 境界線を追加
-                                                  borderRadius: "5px", // 角を丸める
-                                                  cursor: "pointer", // マウスカーソルをポインターに変更
-                                                  transition:
-                                                      "background-color 0.3s", // 背景色のトランジション
+                                      (organizationId, index) => (
+                                          <Chip
+                                              key={organizationId}
+                                              variant="outlined"
+                                              sx={{
+                                                  "& .MuiChip-label": {
+                                                      maxWidth: "100%",
+                                                      whiteSpace: "nowrap", // 改行させない
+                                                      textOverflow: "ellipsis", // 長いテキストを省略して表示
+                                                  },
                                               }}
+                                              avatar={
+                                                  <Avatar>
+                                                      {organizationId[0]}
+                                                  </Avatar>
+                                              }
+                                              label={organizationId}
+                                              color="success"
                                               onClick={ClickHandleActor}
                                               onKeyPress={KeyDownHandleActor}
-                                              data-actorId={actorId}
-                                              /*
-                                  onMouseEnter={(e) =>
-                                      (e.currentTarget.style.backgroundColor = "#f0f0f0")
-                                  } // ホバー時の背景色
-                                  onMouseLeave={(e) =>
-                                      (e.currentTarget.style.backgroundColor = "transparent")
-                                  } // ホバー外したとき
-                                   */
-                                          >
-                                              {actorId}
-                                          </Box>
+                                              data-actorId={organizationId}
+                                          />
                                       ),
                                   )
                                 : null}

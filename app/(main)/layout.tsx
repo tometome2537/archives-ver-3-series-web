@@ -35,6 +35,8 @@ import SuperSearchBar, {
     type InputValueSearchSuggestion,
 } from "@/components/Navbar/SuperSearchBar";
 import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
+import PersonIcon from "@mui/icons-material/Person";
+import GroupsIcon from "@mui/icons-material/Groups";
 
 const tabMaps: TabMap[] = [
     {
@@ -135,6 +137,7 @@ export default function RootLayout({
             sort: 101,
             label: "ぷらそにか",
             value: "UCZx7esGXyW6JXn98byfKEIA",
+            imgSrc: "https://yt3.ggpht.com/ytc/AIdro_lB6NxMtujj7oK0See-TGPL5eq-TjowmK6DFSjgLyCj0g=s88-c-k-c0x00ffffff-no-rj",
             categoryId: "YouTubeChannel",
             categoryLabel: "YouTubeチャンネル",
         },
@@ -208,6 +211,11 @@ export default function RootLayout({
                         sort: item.category === "person" ? 99 : 100,
                         label: item.name,
                         value: item.id,
+                        icon:
+                            item.category === "person" ? // <PersonIcon />
+                            undefined : (
+                                <GroupsIcon />
+                            ),
                         categoryId:
                             item.category === "person"
                                 ? "actor"

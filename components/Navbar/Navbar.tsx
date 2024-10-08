@@ -109,6 +109,29 @@ export default function Navbar(props: NavbarProps) {
                                 inputValue={props.inputValue}
                                 setInputValue={props.setInputValue}
                                 searchSuggestion={props.searchSuggestion}
+                                availableCategoryIds={[
+                                    "actor",
+                                    "organization",
+                                    "YouTubeChannel",
+                                    "title",
+                                ]}
+                                // テキストの追加カテゴリー
+                                textSuggestionCategory={[
+                                    {
+                                        categoryId: "title",
+                                        categoryLabel: "タイトルに含む文字列",
+                                    },
+                                    {
+                                        categoryId: "description",
+                                        categoryLabel: "概要欄に含む文字列",
+                                    },
+                                    {
+                                        categoryId: "subTitle",
+                                        categoryLabel:
+                                            "サブタイトルに含む文字列",
+                                    },
+                                ]}
+                                // 日付の追加カテゴリー
                                 dateSuggestionCategory={[
                                     {
                                         // カテゴリーのID

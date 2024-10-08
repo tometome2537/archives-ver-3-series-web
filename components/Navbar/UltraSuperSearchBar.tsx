@@ -4,7 +4,7 @@ import { DatePicker } from "@/components/Form/DatePicker";
 import SuperSearchBar, {
     type SearchSuggestion,
     type InputValueSearchSuggestion,
-    type dateSuggestion,
+    type additionalSearchSuggestions,
 } from "@/components/Navbar/SuperSearchBar";
 import { Category } from "@mui/icons-material";
 import ExpandLess from "@mui/icons-material/ExpandLess";
@@ -22,7 +22,9 @@ import { type Dispatch, type SetStateAction, use, useState } from "react";
 
 export interface LimitedSuperSearchProps {
     searchSuggestions?: ultraSuperSearchBarSearchSuggestion[];
-    dateSuggestionCategory?: dateSuggestion[];
+    availableCategoryIds?: string[];
+    textSuggestionCategory?: additionalSearchSuggestions[];
+    dateSuggestionCategory?: additionalSearchSuggestions[];
     inputValue: InputValueSearchSuggestion[];
     setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
     textFieldLabel?: string;
@@ -33,6 +35,8 @@ export interface LimitedSuperSearchProps {
 // スーパーサーチバーの範囲を制限するためのスーパーサーチバー
 const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
     searchSuggestions,
+    availableCategoryIds,
+    textSuggestionCategory,
     dateSuggestionCategory,
     inputValue,
     setInputValue,
@@ -73,6 +77,8 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
             textFieldPlaceholder={
                 "キーワードを入力し、候補の中から該当する選択肢をタップ"
             }
+            availableCategoryIds={availableCategoryIds}
+            textSuggestionCategory={textSuggestionCategory}
             dateSuggestionCategory={dateSuggestionCategory}
             inputValues={filteredInputValues}
             setInputValues={handleSetInputValues}
@@ -80,11 +86,6 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
             onChange={onChange}
         />
     );
-};
-
-type LimitSuperSearchCategory = {
-    categoryId: string;
-    categoryLabel: string;
 };
 
 // ウルトラスーパーサーチバーの検索候補の型
@@ -98,10 +99,14 @@ type UltraSuperSearchBarSearchBarProps = {
     setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
     // 検索候補
     searchSuggestion?: ultraSuperSearchBarSearchSuggestion[];
+
+    availableCategoryIds?: string[];
+    // 入力するテキストのカテゴリー
+    textSuggestionCategory?: additionalSearchSuggestions[];
     // 入力する日付のカテゴリー
-    dateSuggestionCategory?: dateSuggestion[];
+    dateSuggestionCategory?: additionalSearchSuggestions[];
     // 表示するリミットスーパーサーチバーの定義
-    limitSuperSearchCategory?: LimitSuperSearchCategory[];
+    limitSuperSearchCategory?: additionalSearchSuggestions[];
 };
 
 export default function UltraSuperSearchBar(
@@ -117,6 +122,8 @@ export default function UltraSuperSearchBar(
             {/* <Typography>全部</Typography> */}
             <SuperSearchBar
                 inputValues={props.inputValue}
+                availableCategoryIds={props.availableCategoryIds}
+                textSuggestionCategory={props.textSuggestionCategory}
                 dateSuggestionCategory={
                     props.dateSuggestionCategory || undefined
                 }

@@ -9,13 +9,19 @@ import { SongTab } from "@/components/MainTabs/SongTab";
 import { TemporaryYouTubeTab } from "@/components/MainTabs/TemporaryYouTubeTab";
 import { YouTubeTab } from "@/components/MainTabs/YouTubeTab";
 import Navbar from "@/components/Navbar/Navbar";
+import SuperSearchBar, {
+    type InputValueSearchSuggestion,
+} from "@/components/Navbar/SuperSearchBar";
+import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
 import PlayerView from "@/components/PlayerView";
 import type { PlayerItem } from "@/components/PlayerView"; // 型としてのインポート
 import { CustomTabPanel } from "@/components/TabPanel";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import AdbIcon from "@mui/icons-material/Adb";
+import GroupsIcon from "@mui/icons-material/Groups";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
+import PersonIcon from "@mui/icons-material/Person";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import {
     AppBar,
@@ -28,15 +34,9 @@ import {
     Typography,
 } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
+import { useTheme } from "@mui/material/styles";
 import { notFound, usePathname } from "next/navigation";
 import { type ReactElement, useEffect, useState } from "react";
-import { useTheme } from "@mui/material/styles";
-import SuperSearchBar, {
-    type InputValueSearchSuggestion,
-} from "@/components/Navbar/SuperSearchBar";
-import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
-import PersonIcon from "@mui/icons-material/Person";
-import GroupsIcon from "@mui/icons-material/Groups";
 
 const tabMaps: TabMap[] = [
     {
@@ -357,7 +357,7 @@ export default function RootLayout({
                         top: isPlayerFullscreen ? `${navbarHeight}px` : "auto",
                     }}
                 />
-                <Container maxWidth={false} sx={{ width: "100vw" }}>
+                <Container disableGutters sx={{ width: "100vw" }}>
                     <Tabs
                         value={currentTabValue}
                         variant="fullWidth"

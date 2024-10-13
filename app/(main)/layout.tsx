@@ -335,6 +335,8 @@ export default function RootLayout({
                 sx={{
                     bottom: 0,
                     top: "auto",
+                    background: "transparent",
+                    boxShadow: "none",
                 }}
             >
                 {/* Player */}
@@ -357,13 +359,13 @@ export default function RootLayout({
                         top: isPlayerFullscreen ? `${navbarHeight}px` : "auto",
                     }}
                 />
-                <Container disableGutters sx={{ width: "100vw" }}>
+                <Container disableGutters sx={{ minWidth: "100vw" }}>
                     <Tabs
                         value={currentTabValue}
                         variant="fullWidth"
                         sx={{
                             "& .MuiTabs-flexContainer": {
-                                justifyContent: "space-between",
+                                justifyContent: "space-around",
                             },
                             backgroundColor: theme.palette.background.paper,
                         }}

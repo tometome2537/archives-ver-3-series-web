@@ -1,16 +1,16 @@
+import SuperSearchBar, {
+    type InputValueSearchSuggestion,
+} from "@/components/Navbar/SuperSearchBar";
+import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
 import rgbToHex from "@/libs/colorConverter";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box, Chip } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
 import { useTheme } from "@mui/material/styles";
 import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import Thumbnail from "./Thumbnail";
 import YouTubePlayer from "./YouTubePlayer";
-import SuperSearchBar, {
-    type InputValueSearchSuggestion,
-} from "@/components/Navbar/SuperSearchBar";
-import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
-import Avatar from "@mui/material/Avatar";
 
 export type PlayerItem = {
     videoId?: string; // 動画IDをプロパティとして受け取る
@@ -218,6 +218,7 @@ export default function PlayerView(props: PlayerProps) {
                         ${rgbToHex(theme.palette.background.paper).b},
                         0.75
                         )`,
+
                     // 背景をぼかす
                     backdropFilter: props.isPlayerFullscreen
                         ? "blur(15px)"
@@ -233,10 +234,14 @@ export default function PlayerView(props: PlayerProps) {
                     // marginLeft: props.isMobile && !props.isPlayerFullscreen ? `${props.screenWidth * 0.01}px` : "0",
                     // marginRight: props.isMobile && !props.isPlayerFullscreen ? `${props.screenWidth * 0.01}px` : "0",
                     // 角を丸く
-                    borderRadius:
+                    borderTopLeftRadius:
                         props.isMobile && !props.isPlayerFullscreen
                             ? "1em"
                             : "1em", // (仮)
+                    borderTopRightRadius:
+                        props.isMobile && !props.isPlayerFullscreen
+                            ? "1em"
+                            : "2em", // (仮)
                     textAlign: "center",
                     ...props.style,
                 }}

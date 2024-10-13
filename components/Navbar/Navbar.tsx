@@ -1,3 +1,8 @@
+import SuperSearchBar, {
+    type InputValueSearchSuggestion,
+} from "@/components/Navbar/SuperSearchBar";
+import UltraSuperSearchBar from "@/components/Navbar/UltraSuperSearchBar";
+import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
 import rgbToHex from "@/libs/colorConverter";
 import { AppBar, Box, Button, Container, Link, Toolbar } from "@mui/material";
 import { styled } from "@mui/material/styles";
@@ -8,11 +13,6 @@ import { Fragment, useEffect, useRef, useState } from "react";
 import EntitySelector from "../EntitySelector";
 import type { EntityObj } from "../EntitySelector";
 import SearchBar from "./SearchBar";
-import UltraSuperSearchBar from "@/components/Navbar/UltraSuperSearchBar";
-import SuperSearchBar, {
-    type InputValueSearchSuggestion,
-} from "@/components/Navbar/SuperSearchBar";
-import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
 
 export const NavButton = styled(Button)({
     color: "primary",

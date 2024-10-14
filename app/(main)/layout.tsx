@@ -9,80 +9,36 @@ import { SongTab } from "@/components/MainTabs/SongTab";
 import { TemporaryYouTubeTab } from "@/components/MainTabs/TemporaryYouTubeTab";
 import { YouTubeTab } from "@/components/MainTabs/YouTubeTab";
 import Navbar from "@/components/Navbar/Navbar";
-import SuperSearchBar, {
-    type InputValueSearchSuggestion,
-} from "@/components/Navbar/SuperSearchBar";
+import type { InputValueSearchSuggestion } from "@/components/Navbar/SuperSearchBar";
 import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
 import PlayerView from "@/components/PlayerView";
 import type { PlayerItem } from "@/components/PlayerView"; // 型としてのインポート
-import { CustomTabPanel } from "@/components/TabPanel";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import AdbIcon from "@mui/icons-material/Adb";
 import GroupsIcon from "@mui/icons-material/Groups";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
-import PersonIcon from "@mui/icons-material/Person";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import {
-    AppBar,
-    Box,
-    Container,
-    Grid,
-    Tab,
-    Tabs,
-    Toolbar,
-    Typography,
-} from "@mui/material";
+import { AppBar, Box, Container, Tab, Tabs } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import { notFound, usePathname } from "next/navigation";
-import { type ReactElement, useEffect, useState } from "react";
-
-const tabMaps: TabMap[] = [
-    {
-        value: "linkCollection",
-        icon: <AccountBoxIcon />,
-        label: "リンク集",
-        isDebugModeOnly: false,
-    },
-
-    {
-        value: "songs",
-        icon: <MusicNoteIcon />,
-        label: "楽曲集(β版)",
-        isDebugModeOnly: false,
-    },
-    {
-        value: "temporaryYouTube",
-        icon: <YouTubeIcon />,
-        label: "YouTube(スプシβ版)",
-        isDebugModeOnly: false,
-    },
-    {
-        value: "youTube",
-        icon: <YouTubeIcon />,
-        label: "YouTube(DBα版)",
-        isDebugModeOnly: true,
-    },
-    {
-        value: "liveInformation",
-        icon: <LocationOnIcon />,
-        label: "LIVE情報(β版)",
-        isDebugModeOnly: false,
-    },
-    {
-        value: "debug",
-        icon: <AdbIcon />,
-        label: "デバック情報",
-        isDebugModeOnly: true,
-    },
-];
+import {
+    Fragment,
+    type ReactElement,
+    type ReactNode,
+    useCallback,
+    useEffect,
+    useRef,
+    useState,
+} from "react";
 
 interface TabMap {
     value: string;
     icon: ReactElement;
     label: string;
     isDebugModeOnly: boolean;
+    children: ReactNode;
 }
 
 interface TabWithLinkProps {
@@ -159,7 +115,7 @@ export default function RootLayout({
         [],
     );
 
-    // // 選択されているEntity Id ※ EntitySelectorで使用。
+    // 選択されているEntity Id ※ EntitySelectorで使用。
     const [entityIds, setEntityIds] = useState<EntityObj[]>([]);
     const [entityIdString, setEntityIdString] = useState<string[]>([]);
 
@@ -167,6 +123,117 @@ export default function RootLayout({
     const [isLargePlayer, setIsLargePlayer] = useState(false);
     const [currentSearchQuery, setCurrentSearchQuery] = useState("");
     const [searchQuery, setSearchQuery] = useState("");
+    const scrollContainerRef = useRef<HTMLDivElement | null>(null);
+    const [currentTabValue, setCurrentTabValue] = useState(0);
+
+    const tabMaps: TabMap[] = [
+        {
+            value: "linkCollection",
+            icon: <AccountBoxIcon />,
+            label: "リンク集",
+            isDebugModeOnly: false,
+            children: <LinkTab />,
+        },
+
+        {
+            value: "songs",
+            icon: <MusicNoteIcon />,
+            label: "楽曲集(β版)",
+            isDebugModeOnly: false,
+            children: <SongTab key="song" />,
+        },
+        {
+            value: "temporaryYouTube",
+            icon: <YouTubeIcon />,
+            label: "YouTube(スプシβ版)",
+            isDebugModeOnly: false,
+            children: (
+                <TemporaryYouTubeTab
+                    key="tempYoutube"
+                    inputValue={inputValue}
+                    playerItem={playerItem}
+                    setPlayerItem={setPlayerItem}
+                    entityIds={entityIds}
+                    setPlayerPlaylist={setPlayerPlaylist}
+                    setPlayerSearchResult={setPlayerSearchResult}
+                />
+            ),
+        },
+        {
+            value: "youTube",
+            icon: <YouTubeIcon />,
+            label: "YouTube(DBα版)",
+            isDebugModeOnly: true,
+            children: (
+                <YouTubeTab
+                    key="youtube"
+                    setPlayerSize={setPlayerSize}
+                    setIsLargePlayer={setIsLargePlayer}
+                    playerItem={playerItem}
+                    setPlayerItem={setPlayerItem}
+                    setPlayerSearchResult={setPlayerSearchResult}
+                    playerSize={playerSize}
+                    isLargePlayer={isLargePlayer}
+                    searchQuery={searchQuery}
+                />
+            ),
+        },
+        {
+            value: "liveInformation",
+            icon: <LocationOnIcon />,
+            label: "LIVE情報(β版)",
+            isDebugModeOnly: false,
+            children: <LiveInformationTab key="liveInformation" />,
+        },
+        {
+            value: "debug",
+            icon: <AdbIcon />,
+            label: "デバック情報",
+            isDebugModeOnly: true,
+            children: <DebugTab key="debug" />,
+        },
+    ];
+
+    const scroll = useCallback(() => {
+        scrollContainerRef.current?.scrollTo({
+            left: currentTabValue * screenWidth,
+            top: 0,
+            behavior: "smooth",
+        });
+    }, [currentTabValue, screenWidth]);
+
+    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    useEffect(() => {
+        scroll();
+    }, [currentTabValue]);
+
+    //     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+    // useEffect(() => {
+    //     scroll();
+    // }, [currentView]);
+
+    // useEffect(() => {
+    //     const scrollContainer = scrollContainerRef.current;
+
+    //     if (scrollContainer) {
+    //         const handleScrollEnd = (event: Event) => {
+    //             // setCurrentView(event.snapTargetBlock);
+    //             console.log(event);
+    //         };
+
+    //         scrollContainer.addEventListener(
+    //             "scrollsnapchange",
+    //             handleScrollEnd,
+    //         );
+
+    //         return () => {
+    //             scrollContainer.removeEventListener(
+    //                 "scrollsnapchange",
+    //                 handleScrollEnd,
+    //             );
+    //         };
+    //     }
+    // }, []);
 
     // 画面のサイズの変化を監視
     useEffect(() => {
@@ -244,8 +311,6 @@ export default function RootLayout({
         }
     };
 
-    const [currentTabValue, setCurrentTabValue] = useState(0);
-
     // URLの更新を監視する
     const pathname = usePathname();
     useEffect(() => {
@@ -269,7 +334,7 @@ export default function RootLayout({
     }, [pathname, debugMode]);
 
     return (
-        <>
+        <Fragment>
             <Navbar
                 inputValue={inputValue}
                 searchSuggestion={searchSuggestion}
@@ -281,51 +346,40 @@ export default function RootLayout({
                 search={() => setSearchQuery(currentSearchQuery)}
                 setNavbarHeight={setNavbarHeight}
             />
-
-            <Container component="main">
-                {/* メインコンテンツ */}
-                <Box
-                    sx={{
-                        // 拡大モードの時、縦スクロールを許可しない
-                        overflowY: isPlayerFullscreen ? "hidden" : "auto",
-                    }}
-                >
-                    <CustomTabPanel value={currentTabValue} index={0}>
-                        <LinkTab />
-                    </CustomTabPanel>
-                    <CustomTabPanel value={currentTabValue} index={1}>
-                        <SongTab />
-                    </CustomTabPanel>
-                    <CustomTabPanel value={currentTabValue} index={2}>
-                        <TemporaryYouTubeTab
-                            inputValue={inputValue}
-                            playerItem={playerItem}
-                            setPlayerItem={setPlayerItem}
-                            entityIds={entityIds}
-                            setPlayerPlaylist={setPlayerPlaylist}
-                            setPlayerSearchResult={setPlayerSearchResult}
-                        />
-                    </CustomTabPanel>
-                    <CustomTabPanel value={currentTabValue} index={3}>
-                        <YouTubeTab
-                            setPlayerSize={setPlayerSize}
-                            setIsLargePlayer={setIsLargePlayer}
-                            playerItem={playerItem}
-                            setPlayerItem={setPlayerItem}
-                            setPlayerSearchResult={setPlayerSearchResult}
-                            playerSize={playerSize}
-                            isLargePlayer={isLargePlayer}
-                            searchQuery={searchQuery}
-                        />
-                    </CustomTabPanel>
-                    <CustomTabPanel value={currentTabValue} index={4}>
-                        <LiveInformationTab />
-                    </CustomTabPanel>
-                    <CustomTabPanel value={currentTabValue} index={5}>
-                        <DebugTab />
-                    </CustomTabPanel>
-                </Box>
-            </Container>
+            {/* メインコンテンツ */}
+            <Box
+                ref={scrollContainerRef}
+                sx={{
+                    display: "flex",
+                    alignItems: "start",
+                    overflowX: "scroll",
+                    scrollSnapType: "x mandatory",
+                }}
+            >
+                {/* TODO: 一番でかい要素にスクロールが影響される */}
+                {tabMaps.map((x) => (
+                    <Box
+                        key={x.value}
+                        sx={{
+                            flexShrink: 0,
+                            width: "100vw",
+                            height: "100vh",
+                            scrollSnapAlign: "start",
+                        }}
+                    >
+                        <Container
+                            component="main"
+                            sx={{
+                                overflowY: isPlayerFullscreen
+                                    ? "hidden"
+                                    : "auto",
+                            }}
+                        >
+                            {x.children}
+                        </Container>
+                    </Box>
+                ))}
+            </Box>
 
             {/* 画面下に固定されたタブバー */}
             <AppBar
@@ -370,7 +424,7 @@ export default function RootLayout({
                             backgroundColor: theme.palette.background.paper,
                         }}
                     >
-                        {tabMaps.map((x) => {
+                        {tabMaps.map((x, index) => {
                             return (
                                 (x.isDebugModeOnly === false ||
                                     (x.isDebugModeOnly && debugMode)) && (
@@ -385,6 +439,7 @@ export default function RootLayout({
                                             padding: 0,
                                         }}
                                         onClick={() => {
+                                            setCurrentTabValue(index);
                                             setIsPlayerFullscreen(false);
                                         }}
                                     />
@@ -394,6 +449,6 @@ export default function RootLayout({
                     </Tabs>
                 </Container>
             </AppBar>
-        </>
+        </Fragment>
     );
 }

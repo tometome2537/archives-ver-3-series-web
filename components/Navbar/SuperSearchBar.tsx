@@ -1,26 +1,26 @@
+import { DatePicker } from "@/components/Form/DatePicker";
+import CloseIcon from "@mui/icons-material/Close";
 import {
     Autocomplete,
     Box,
     Chip,
+    Stack,
     TextField,
     Typography,
-    Stack,
 } from "@mui/material";
+import Avatar from "@mui/material/Avatar";
+import Button from "@mui/material/Button";
+import Dialog from "@mui/material/Dialog";
+import DialogActions from "@mui/material/DialogActions";
+import DialogContent from "@mui/material/DialogContent";
+import DialogContentText from "@mui/material/DialogContentText";
+import DialogTitle from "@mui/material/DialogTitle";
+import { useTheme } from "@mui/material/styles";
 import { darken, lighten, styled } from "@mui/system";
+import dayjs, { type Dayjs } from "dayjs";
 import type { SyntheticEvent } from "react";
 import { useState } from "react";
 import * as React from "react";
-import Dialog from "@mui/material/Dialog";
-import DialogTitle from "@mui/material/DialogTitle";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogActions from "@mui/material/DialogActions";
-import Button from "@mui/material/Button";
-import { DatePicker } from "@/components/Form/DatePicker";
-import dayjs, { type Dayjs } from "dayjs";
-import { useTheme } from "@mui/material/styles";
-import Avatar from "@mui/material/Avatar";
-import CloseIcon from "@mui/icons-material/Close";
 
 export interface SearchSuggestion {
     // 入力された値はsortの数値が大きい順に並び替えられる。
@@ -295,7 +295,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                     ) {
                         // 候補から直接確定する場合
                         for (const i of props.textSuggestionCategory) {
-                            filtered.unshift({
+                            filtered.push({
                                 sort: 0,
                                 label: params.inputValue, //`Add "${formattedDate}"`,
                                 value: params.inputValue,

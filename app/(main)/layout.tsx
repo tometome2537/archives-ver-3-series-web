@@ -22,7 +22,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import { AppBar, Box, Container, Tab, Tabs } from "@mui/material";
 import type { SxProps, Theme } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
-import { notFound, usePathname } from "next/navigation";
+import { notFound, usePathname, useRouter } from "next/navigation";
 import {
     Fragment,
     type ReactElement,
@@ -125,6 +125,8 @@ export default function RootLayout({
     const [searchQuery, setSearchQuery] = useState("");
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
     const [currentTabValue, setCurrentTabValue] = useState(0);
+    let prevChangingTabIndex = 0;
+    let changingTabIndex = 0;
 
     const tabMaps: TabMap[] = [
         {
@@ -207,33 +209,39 @@ export default function RootLayout({
         scroll();
     }, [currentTabValue]);
 
-    //     // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    // useEffect(() => {
-    //     scroll();
-    // }, [currentView]);
+    const router = useRouter();
 
-    // useEffect(() => {
-    //     const scrollContainer = scrollContainerRef.current;
+    useEffect(() => {
+        const scrollContainer = scrollContainerRef.current;
 
-    //     if (scrollContainer) {
-    //         const handleScrollEnd = (event: Event) => {
-    //             // setCurrentView(event.snapTargetBlock);
-    //             console.log(event);
-    //         };
+        if (scrollContainer) {
+            const handleScroll = (event: Event) => {
+                const threshold = 0.1;
+                const tabRatio = scrollContainer?.scrollLeft / screenWidth;
+                const tabRatioFloat =
+                    (scrollContainer?.scrollLeft / screenWidth) % 1;
 
-    //         scrollContainer.addEventListener(
-    //             "scrollsnapchange",
-    //             handleScrollEnd,
-    //         );
+                if (
+                    tabRatioFloat < threshold ||
+                    tabRatioFloat > 1 - threshold
+                ) {
+                    prevChangingTabIndex = Math.round(tabRatio);
+                }
 
-    //         return () => {
-    //             scrollContainer.removeEventListener(
-    //                 "scrollsnapchange",
-    //                 handleScrollEnd,
-    //             );
-    //         };
-    //     }
-    // }, []);
+                if (prevChangingTabIndex !== changingTabIndex) {
+                    changingTabIndex = prevChangingTabIndex;
+                    setCurrentTabValue(changingTabIndex);
+                    router.push(`/${tabMaps[changingTabIndex].value}`);
+                }
+            };
+
+            scrollContainer.addEventListener("scroll", handleScroll);
+
+            return () => {
+                scrollContainer.removeEventListener("scroll", handleScroll);
+            };
+        }
+    }, [screenWidth, changingTabIndex, prevChangingTabIndex, router]);
 
     // 画面のサイズの変化を監視
     useEffect(() => {

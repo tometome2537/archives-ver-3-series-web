@@ -216,6 +216,8 @@ export default function RootLayout({
 
         if (scrollContainer) {
             const handleScroll = (event: Event) => {
+                setIsChanging(true);
+
                 const threshold = 0.1;
                 const tabRatio = scrollContainer?.scrollLeft / screenWidth;
                 const tabRatioFloat =
@@ -232,6 +234,7 @@ export default function RootLayout({
                     changingTabIndex = prevChangingTabIndex;
                     setCurrentTabValue(changingTabIndex);
                     router.push(`/${tabMaps[changingTabIndex].value}`);
+                    setIsChanging(false);
                 }
             };
 
@@ -319,6 +322,8 @@ export default function RootLayout({
         }
     };
 
+    const [isChanging, setIsChanging] = useState(false);
+
     // URLの更新を監視する
     const pathname = usePathname();
     useEffect(() => {
@@ -373,6 +378,7 @@ export default function RootLayout({
                             width: "100vw",
                             height: "100vh",
                             scrollSnapAlign: "start",
+                            borderRight: isChanging ? 1 : 0,
                         }}
                     >
                         <Container

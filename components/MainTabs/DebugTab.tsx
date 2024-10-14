@@ -129,7 +129,7 @@ export function DebugTab() {
                         </Box>
                     </Box>
                 </Box>
-                <p>デバッグモード:{JSON.stringify(debugMode)}</p>
+                {/* <p>デバッグモード:{JSON.stringify(debugMode)}</p>
                 <p>
                     navbarの高さ: {JSON.stringify(navbarHeight)}
                     px
@@ -145,7 +145,7 @@ export function DebugTab() {
                 <p>Screen Height: {screenHeight}px</p>
                 <p>Device Type: {isMobile ? "Mobile" : "Desktop"}</p>
                 <p>現在再生中の楽曲： {JSON.stringify(playerItem)}</p>
-                <p>検索結果一覧: {JSON.stringify(playerSearchResult)}</p>
+                <p>検索結果一覧: {JSON.stringify(playerSearchResult)}</p> */}
             </div>
         </div>
     );

@@ -208,10 +208,10 @@ export default function VideoView(props: Props) {
             {data?.flat()?.map((item, index) => (
                 <Thumbnail
                     key={item}
-                    isPlayingOnHover={
-                        props.playerItem.videoId === "" ||
-                        props.playerItem.videoId === undefined
-                    }
+                    // isPlayingOnHover={
+                    //     props.playerItem.videoId === "" ||
+                    //     props.playerItem.videoId === undefined
+                    // }
                     thumbnailType="card"
                     videoId={item.id}
                     title={unescapeHtml(item.title)}

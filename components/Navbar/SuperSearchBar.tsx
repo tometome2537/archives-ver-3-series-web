@@ -68,6 +68,8 @@ type SuperSearchBarProps = {
 
     // 検索候補
     searchSuggestions?: SearchSuggestion[];
+    // 外せない入力値を定義
+    fixedOptionValues?: string[];
     // 入力された値が変更された時に実行したい処理を追加できる。
     onChange?: () => void;
 };
@@ -354,7 +356,9 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 renderInput={(params) => (
                     <TextField
                         {...params}
-                        variant="standard"
+                        fullWidth // 横幅いっぱいまで広げる
+                        // variant="standard"
+                        variant="filled"
                         label={
                             props.textFieldLabel
                                 ? props.textFieldLabel
@@ -445,6 +449,14 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                     }
                                     color="success"
                                     {...getTagProps({ index })}
+                                    // 外せない検索ワード
+                                    disabled={
+                                        props.fixedOptionValues
+                                            ? props.fixedOptionValues.includes(
+                                                  option.value,
+                                              )
+                                            : undefined
+                                    }
                                 />
                                 {/* 有効化されていないcategoryIdのタグに❌を表示する。 */}
                                 {props.availableCategoryIds ? (
@@ -456,7 +468,8 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                                 position: "absolute", // Box内の絶対位置に表示
                                                 top: "10%", // 上から20%の位置に配置
                                                 left: "40%", // 左から40%の位置に配置
-                                                color: "orange", // アイコンの色をオレンジに設定
+                                                color: theme.palette.warning
+                                                    .main,
                                                 fontSize: "2.5rem", // アイコンのサイズを調整
                                             }}
                                         />

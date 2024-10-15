@@ -22,6 +22,8 @@ import { type Dispatch, type SetStateAction, use, useState } from "react";
 
 export interface LimitedSuperSearchProps {
     searchSuggestions?: ultraSuperSearchBarSearchSuggestion[];
+    // 外せない入力値を定義
+    fixedOptionValues?: string[];
     availableCategoryIds?: string[];
     textSuggestionCategory?: additionalSearchSuggestions[];
     dateSuggestionCategory?: additionalSearchSuggestions[];
@@ -35,6 +37,7 @@ export interface LimitedSuperSearchProps {
 // スーパーサーチバーの範囲を制限するためのスーパーサーチバー
 const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
     searchSuggestions,
+    fixedOptionValues,
     availableCategoryIds,
     textSuggestionCategory,
     dateSuggestionCategory,
@@ -83,6 +86,7 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
             inputValues={filteredInputValues}
             setInputValues={handleSetInputValues}
             searchSuggestions={limitSearchSuggestion}
+            fixedOptionValues={fixedOptionValues}
             onChange={onChange}
         />
     );
@@ -99,6 +103,8 @@ type UltraSuperSearchBarSearchBarProps = {
     setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
     // 検索候補
     searchSuggestion?: ultraSuperSearchBarSearchSuggestion[];
+    // 外せない入力値を定義
+    fixedOptionValues?: string[];
 
     availableCategoryIds?: string[];
     // 入力するテキストのカテゴリー
@@ -124,14 +130,13 @@ export default function UltraSuperSearchBar(
                 inputValues={props.inputValue}
                 availableCategoryIds={props.availableCategoryIds}
                 textSuggestionCategory={props.textSuggestionCategory}
-                dateSuggestionCategory={
-                    props.dateSuggestionCategory || undefined
-                }
+                dateSuggestionCategory={props.dateSuggestionCategory}
                 // setInputValues={(values) => {
                 //     setInputValue([...values]);
                 // }}
                 setInputValues={props.setInputValue}
                 searchSuggestions={props.searchSuggestion}
+                fixedOptionValues={props.fixedOptionValues}
             />
             {props.limitSuperSearchCategory &&
                 props.limitSuperSearchCategory.length !== 0 && (
@@ -165,6 +170,7 @@ export default function UltraSuperSearchBar(
                                 <LimitedSuperSearch
                                     textFieldLabel={v.categoryLabel}
                                     searchSuggestions={props.searchSuggestion}
+                                    fixedOptionValues={props.fixedOptionValues}
                                     inputValue={props.inputValue}
                                     setInputValue={props.setInputValue}
                                     categoryId={v.categoryId}

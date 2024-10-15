@@ -82,7 +82,11 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
 
     // サーチバーの値を取得し結果を表示。
     useEffect(() => {
-        const result = apiDataVideo.filter((item) => {
+        const result = apiDataVideo.filter((item, index) => {
+            // 検索結果を100件に制限(開発中の一時的処置)
+            if (index > 100) {
+                return false;
+            }
             let match = true;
 
             // 各inputValueに対してすべての条件を確認
@@ -193,10 +197,10 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
 
                         <Thumbnail
                             key={item.videoId}
-                            isPlayingOnHover={
-                                props.playerItem.videoId === "" ||
-                                props.playerItem.videoId === undefined
-                            }
+                            // isPlayingOnHover={
+                            //     props.playerItem.videoId === "" ||
+                            //     props.playerItem.videoId === undefined
+                            // }
                             videoId={item.videoId}
                             title={item.title}
                             viewCount={Number(item.viewCount)}

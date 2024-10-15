@@ -21,9 +21,9 @@ export default function YouTubePlayer(props: YouTubePlayerProps) {
         // heightは "%"で指定しても反映されない。pxで指定するある必要がある(説)。
         height: props.height || "390",
         playerVars: {
+            // https://developers.google.com/youtube/player_parameters
             autoplay: 1, // 自動再生
             loop: props.loop ? 1 : 0, // ループ再生の制御
-            volume: 100, // デフォルト音量は100%
             playlist: props.loop && props.videoId ? props.videoId : undefined, // ループ時にプレイリストを設定
         },
     };

@@ -1,5 +1,6 @@
 import SuperSearchBar, {
     type InputValueSearchSuggestion,
+    type additionalSearchSuggestions,
 } from "@/components/Navbar/SuperSearchBar";
 import UltraSuperSearchBar from "@/components/Navbar/UltraSuperSearchBar";
 import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
@@ -24,6 +25,15 @@ type NavbarProps = {
     inputValue: InputValueSearchSuggestion[];
     setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
     searchSuggestion: ultraSuperSearchBarSearchSuggestion[];
+    availableCategoryIds?: string[];
+    // 外せない入力値を定義
+    fixedOptionValues?: string[];
+    // 入力するテキストのカテゴリー
+    textSuggestionCategory?: additionalSearchSuggestions[];
+    // 入力する日付のカテゴリー
+    dateSuggestionCategory?: additionalSearchSuggestions[];
+    // 表示するリミットスーパーサーチバーの定義
+    limitSuperSearchCategory?: additionalSearchSuggestions[];
 
     screenHeight: number;
     setSearchQuery: Dispatch<SetStateAction<string>>;
@@ -109,12 +119,10 @@ export default function Navbar(props: NavbarProps) {
                                 inputValue={props.inputValue}
                                 setInputValue={props.setInputValue}
                                 searchSuggestion={props.searchSuggestion}
-                                availableCategoryIds={[
-                                    "actor",
-                                    "organization",
-                                    "YouTubeChannel",
-                                    "title",
-                                ]}
+                                fixedOptionValues={props.fixedOptionValues}
+                                availableCategoryIds={
+                                    props.availableCategoryIds
+                                }
                                 // テキストの追加カテゴリー
                                 textSuggestionCategory={[
                                     {
@@ -144,20 +152,9 @@ export default function Navbar(props: NavbarProps) {
                                         categoryLabel: "終了日",
                                     },
                                 ]}
-                                limitSuperSearchCategory={[
-                                    {
-                                        categoryId: "actor",
-                                        categoryLabel: "出演者",
-                                    },
-                                    {
-                                        categoryId: "organization",
-                                        categoryLabel: "組織",
-                                    },
-                                    {
-                                        categoryId: "YouTubeChannel",
-                                        categoryLabel: "YouTubeチャンネル",
-                                    },
-                                ]}
+                                limitSuperSearchCategory={
+                                    props.limitSuperSearchCategory
+                                }
                             />
                         </Box>
 

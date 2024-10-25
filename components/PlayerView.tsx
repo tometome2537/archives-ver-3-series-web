@@ -109,6 +109,7 @@ export default function PlayerView(props: PlayerProps) {
         if (actorSearchSuggestion) {
             const r: InputValueSearchSuggestion = {
                 sort: actorSearchSuggestion.sort || 99,
+                createdAt: new Date(),
                 label: actorSearchSuggestion.label,
                 value: actorSearchSuggestion.value,
                 categoryId: actorSearchSuggestion.categoryId,
@@ -178,6 +179,21 @@ export default function PlayerView(props: PlayerProps) {
             togglePlayerFullscreen();
         }
     };
+    // idから検索候補を返す
+    const getSearchSuggestionFromId = (
+        id: string,
+    ): ultraSuperSearchBarSearchSuggestion => {
+        const r = props.searchSuggestion.find((item) => item.value === id);
+        if (r) {
+            return r;
+        }
+        return {
+            label: id,
+            value: id,
+            categoryId: id,
+            categoryLabel: id,
+        };
+    };
 
     return (
         <Box
@@ -234,14 +250,11 @@ export default function PlayerView(props: PlayerProps) {
                     // marginLeft: props.isMobile && !props.isPlayerFullscreen ? `${props.screenWidth * 0.01}px` : "0",
                     // marginRight: props.isMobile && !props.isPlayerFullscreen ? `${props.screenWidth * 0.01}px` : "0",
                     // 角を丸く
-                    borderTopLeftRadius:
-                        props.isMobile && !props.isPlayerFullscreen
-                            ? "1em"
-                            : "1em", // (仮)
-                    borderTopRightRadius:
-                        props.isMobile && !props.isPlayerFullscreen
-                            ? "1em"
-                            : "2em", // (仮)
+                    borderTopLeftRadius: props.isPlayerFullscreen ? "0" : "1em",
+
+                    borderTopRightRadius: props.isPlayerFullscreen
+                        ? "0"
+                        : "1em",
                     textAlign: "center",
                     ...props.style,
                 }}
@@ -284,6 +297,9 @@ export default function PlayerView(props: PlayerProps) {
                                   ? `${props.screenHeight * 0.55}px`
                                   : `${props.screenHeight * 0.1}px`
                             //   props.screenHeight / 9 < props.screenWidth / 16,
+                        }
+                        playerRadius={
+                            !(props.isMobile && props.isPlayerFullscreen)
                         }
                     />
 
@@ -447,6 +463,7 @@ export default function PlayerView(props: PlayerProps) {
                                 })}
                         </p>
                         {/* 出演者一覧 */}
+                        <p>出演者</p>
                         <Box
                             style={{
                                 display: "flex",
@@ -474,9 +491,19 @@ export default function PlayerView(props: PlayerProps) {
                                                   },
                                               }}
                                               avatar={
-                                                  <Avatar>{actorId[0]}</Avatar>
+                                                  <Avatar>
+                                                      {
+                                                          getSearchSuggestionFromId(
+                                                              actorId,
+                                                          ).label[0]
+                                                      }
+                                                  </Avatar>
                                               }
-                                              label={actorId}
+                                              label={
+                                                  getSearchSuggestionFromId(
+                                                      actorId,
+                                                  ).label
+                                              }
                                               color="success"
                                               onClick={ClickHandleActor}
                                               onKeyPress={KeyDownHandleActor}
@@ -487,6 +514,7 @@ export default function PlayerView(props: PlayerProps) {
                                 : null}
                         </Box>
                         {/* 組織名一覧 */}
+                        <p>出演組織</p>
                         <Box
                             style={{
                                 display: "flex",
@@ -515,10 +543,18 @@ export default function PlayerView(props: PlayerProps) {
                                               }}
                                               avatar={
                                                   <Avatar>
-                                                      {organizationId[0]}
+                                                      {
+                                                          getSearchSuggestionFromId(
+                                                              organizationId,
+                                                          ).label[0]
+                                                      }
                                                   </Avatar>
                                               }
-                                              label={organizationId}
+                                              label={
+                                                  getSearchSuggestionFromId(
+                                                      organizationId,
+                                                  ).label
+                                              }
                                               color="success"
                                               onClick={ClickHandleActor}
                                               onKeyPress={KeyDownHandleActor}

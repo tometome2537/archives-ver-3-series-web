@@ -19,6 +19,7 @@ import {
 } from "@mui/material";
 import dayjs from "dayjs";
 import { type Dispatch, type SetStateAction, use, useState } from "react";
+import HistoryIcon from "@mui/icons-material/History";
 
 export interface LimitedSuperSearchProps {
     searchSuggestions?: ultraSuperSearchBarSearchSuggestion[];
@@ -27,6 +28,8 @@ export interface LimitedSuperSearchProps {
     availableCategoryIds?: string[];
     textSuggestionCategory?: additionalSearchSuggestions[];
     dateSuggestionCategory?: additionalSearchSuggestions[];
+    showTagIcon?: boolean;
+    showTagCount?: number;
     inputValue: InputValueSearchSuggestion[];
     setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
     textFieldLabel?: string;
@@ -41,6 +44,8 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
     availableCategoryIds,
     textSuggestionCategory,
     dateSuggestionCategory,
+    showTagIcon,
+    showTagCount,
     inputValue,
     setInputValue,
     textFieldLabel,
@@ -80,6 +85,8 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
             textFieldPlaceholder={
                 "キーワードを入力し、候補の中から該当する選択肢をタップ"
             }
+            showTagIcon={showTagIcon}
+            showTagCount={showTagCount}
             availableCategoryIds={availableCategoryIds}
             textSuggestionCategory={textSuggestionCategory}
             dateSuggestionCategory={dateSuggestionCategory}
@@ -113,13 +120,19 @@ type UltraSuperSearchBarSearchBarProps = {
     dateSuggestionCategory?: additionalSearchSuggestions[];
     // 表示するリミットスーパーサーチバーの定義
     limitSuperSearchCategory?: additionalSearchSuggestions[];
+
+    showTagIcon?: boolean;
+    showTagCount?: number;
 };
 
 export default function UltraSuperSearchBar(
     props: UltraSuperSearchBarSearchBarProps,
 ) {
-    // 開いてるかどうか
-    const [isOpen, setIsOpen] = useState(false);
+    // リミットスーパーサーチバーが開いてるかどうか
+    const [isOpen, setIsOpen] = useState<boolean>(false);
+
+    // 入力履歴を保存(To DO)
+    const [inputValueHistory, setInputValueHistory] = useState<InputValueSearchSuggestion[]>([]);
 
     return (
         <Box>
@@ -131,6 +144,8 @@ export default function UltraSuperSearchBar(
                 availableCategoryIds={props.availableCategoryIds}
                 textSuggestionCategory={props.textSuggestionCategory}
                 dateSuggestionCategory={props.dateSuggestionCategory}
+                showTagIcon={props.showTagIcon}
+                showTagCount={props.showTagCount}
                 // setInputValues={(values) => {
                 //     setInputValue([...values]);
                 // }}
@@ -138,22 +153,30 @@ export default function UltraSuperSearchBar(
                 searchSuggestions={props.searchSuggestion}
                 fixedOptionValues={props.fixedOptionValues}
             />
-            {props.limitSuperSearchCategory &&
-                props.limitSuperSearchCategory.length !== 0 && (
-                    <ButtonBase
-                        sx={{ py: 0.5, mb: 0.5 }} // パディングとマージンを小さく
-                        onClick={() => setIsOpen(isOpen === false)}
-                    >
-                        <Typography variant="body2">
-                            {isOpen ? "閉じる" : "開く"}
-                        </Typography>
-                        {isOpen ? (
-                            <ExpandLess sx={{ ml: 4, fontSize: "small" }} />
-                        ) : (
-                            <ExpandMore sx={{ ml: 4, fontSize: "small" }} />
-                        )}
-                    </ButtonBase>
-                )}
+            <Box
+                sx={{
+                    display: "flex",
+                }}
+            >
+                {props.limitSuperSearchCategory &&
+                    props.limitSuperSearchCategory.length !== 0 && (
+                        <ButtonBase
+                            sx={{ py: 0.5, mb: 0.5 }} // パディングとマージンを小さく
+                            onClick={() => setIsOpen(isOpen === false)}
+                        >
+                            <Typography variant="body2">
+                                {isOpen ? "閉じる" : "開く"}
+                            </Typography>
+                            {isOpen ? (
+                                <ExpandLess sx={{ ml: 4, fontSize: "small" }} />
+                            ) : (
+                                <ExpandMore sx={{ ml: 4, fontSize: "small" }} />
+                            )}
+                        </ButtonBase>
+                    )}
+                <Box sx={{ flexGrow: 1 }} />
+                <HistoryIcon />
+            </Box>
 
             {props.limitSuperSearchCategory &&
                 props.limitSuperSearchCategory.length !== 0 &&
@@ -171,6 +194,8 @@ export default function UltraSuperSearchBar(
                                     textFieldLabel={v.categoryLabel}
                                     searchSuggestions={props.searchSuggestion}
                                     fixedOptionValues={props.fixedOptionValues}
+                                    showTagIcon={props.showTagIcon}
+                                    showTagCount={props.showTagCount}
                                     inputValue={props.inputValue}
                                     setInputValue={props.setInputValue}
                                     categoryId={v.categoryId}

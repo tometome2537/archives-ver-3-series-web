@@ -45,13 +45,11 @@ type VideoViewTemporaryProps = {
 
 export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
     // APIで取得したデータを格納
-    const [apiDataVideo, setApiDataVideo] = useState<Array<VideoTemporaryObj>>(
-        [],
-    );
+    const [apiDataVideo, setApiDataVideo] = useState<VideoTemporaryObj[]>([]);
     // 検索結果の動画一覧
-    const [resultVideo, setResultVideo] = useState<Array<VideoTemporaryObj>>(
-        [],
-    );
+    const [resultVideo, setResultVideo] = useState<
+        VideoTemporaryObj[] | undefined
+    >(undefined);
     // API通信中かどうか
     const [loading, setLoading] = useState(true);
     // API通信でエラーが出たかどうか
@@ -84,9 +82,9 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
     useEffect(() => {
         const result = apiDataVideo.filter((item, index) => {
             // 検索結果を100件に制限(開発中の一時的処置)
-            if (index > 100) {
-                return false;
-            }
+            // if (index > 100) {
+            //     return false;
+            // }
             let match = true;
 
             // 各inputValueに対してすべての条件を確認
@@ -127,27 +125,27 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
             videoId: videoId ? videoId : "",
         });
         // APIから受け取った値の型を変換する。
-        const searchResult: Array<PlayerItem> = resultVideo.map(
-            (item: VideoTemporaryObj, index: number) => {
-                const result: PlayerItem = {
-                    videoId: item.videoId,
-                    title: item.title,
-                    viewCount: Number(item.viewCount),
-                    channelId: item.channelId,
-                    channelTitle: item.channelTitle,
-                    publishedAt: item.publishedAt
-                        ? new Date(item.publishedAt)
-                        : undefined,
-                    actorId: item.person
-                        ? item.person.split(/ , |,| ,|, /).filter((v) => v)
-                        : [],
-                    organization: Object.keys(
-                        JSON.parse(item.organization || "{}"),
-                    ),
-                };
-                return result;
-            },
-        );
+        const searchResult: Array<PlayerItem> = resultVideo
+            ? resultVideo.map((item: VideoTemporaryObj, index: number) => {
+                  const result: PlayerItem = {
+                      videoId: item.videoId,
+                      title: item.title,
+                      viewCount: Number(item.viewCount),
+                      channelId: item.channelId,
+                      channelTitle: item.channelTitle,
+                      publishedAt: item.publishedAt
+                          ? new Date(item.publishedAt)
+                          : undefined,
+                      actorId: item.person
+                          ? item.person.split(/ , |,| ,|, /).filter((v) => v)
+                          : [],
+                      organization: Object.keys(
+                          JSON.parse(item.organization || "{}"),
+                      ),
+                  };
+                  return result;
+              })
+            : [];
         props.setPlayerSearchResult(searchResult);
     };
 
@@ -190,31 +188,37 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
                 gap: "10px", // アイテム間のスペースを追加
             }}
         >
-            {resultVideo.length !== 0 ? (
-                resultVideo.map((item: VideoTemporaryObj, index: number) => (
-                    <>
-                        {/* 各アイテムを表示 */}
+            {resultVideo ? (
+                resultVideo.length !== 0 ? (
+                    resultVideo.map(
+                        (item: VideoTemporaryObj, index: number) => (
+                            <>
+                                {/* 各アイテムを表示 */}
 
-                        <Thumbnail
-                            key={item.videoId}
-                            // isPlayingOnHover={
-                            //     props.playerItem.videoId === "" ||
-                            //     props.playerItem.videoId === undefined
-                            // }
-                            videoId={item.videoId}
-                            title={item.title}
-                            viewCount={Number(item.viewCount)}
-                            channelTitle={item.channelTitle}
-                            publishedAt={new Date(item.publishedAt || 0)}
-                            onClick={handleVideoClick}
-                        />
+                                <Thumbnail
+                                    key={item.videoId}
+                                    // isPlayingOnHover={
+                                    //     props.playerItem.videoId === "" ||
+                                    //     props.playerItem.videoId === undefined
+                                    // }
+                                    videoId={item.videoId}
+                                    title={item.title}
+                                    viewCount={Number(item.viewCount)}
+                                    channelTitle={item.channelTitle}
+                                    publishedAt={
+                                        new Date(item.publishedAt || 0)
+                                    }
+                                    onClick={handleVideoClick}
+                                />
+                            </>
+                        ),
+                    )
+                ) : (
+                    <>
+                        <div>検索結果が0です。</div>
                     </>
-                ))
-            ) : (
-                <>
-                    <div>検索結果が0です。</div>
-                </>
-            )}
+                )
+            ) : null}
         </Box>
     );
 }

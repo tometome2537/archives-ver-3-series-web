@@ -8,6 +8,7 @@ type YouTubePlayerProps = {
     height?: string;
     style?: React.CSSProperties; // 外部からスタイルを受け取る（オプション）
     loop?: boolean; // ループ再生を制御するオプションを追加
+    playerRadius?: boolean;
 };
 
 export default function YouTubePlayer(props: YouTubePlayerProps) {
@@ -82,18 +83,17 @@ export default function YouTubePlayer(props: YouTubePlayerProps) {
             style={{
                 ...{
                     width: props.width || "100%",
-                    height: props.height,
                     // ↓ この色がついてるところをどうにかする To Do
-                    // 修正完了 2024/09/26
                     // backgroundColor: "orange",
-                },
-                ...props.style,
-                ...{
+                    // ↓ 修正完了 2024/09/26
+                    height: props.height,
+
                     overflow: "hidden",
                     // ↑ overflow: "hidden",はプレイヤーの角を丸める
                     // ↓ のコードを機能させるのに必要。
-                    borderRadius: "1em",
+                    borderRadius: props.playerRadius ? "1em" : 0,
                 },
+                ...props.style,
             }}
         >
             <YouTube

@@ -157,7 +157,7 @@ export default function RootLayout({
                     value: "linkCollection",
                     icon: <AccountBoxIcon />,
                     label: "リンク集",
-                    isDebugModeOnly: false,
+                    isDebugModeOnly: true,
                     children: <LinkTab />,
                     onClick: () => {
                         setAvailableCategoryIds([]);
@@ -169,7 +169,7 @@ export default function RootLayout({
                     value: "songs",
                     icon: <MusicNoteIcon />,
                     label: "楽曲集(β版)",
-                    isDebugModeOnly: false,
+                    isDebugModeOnly: true,
                     children: <SongTab key="song" />,
                     onClick: () => {
                         setAvailableCategoryIds([]);
@@ -217,11 +217,12 @@ export default function RootLayout({
                         setInputValue([
                             {
                                 sort: 101,
+                                createdAt: new Date(),
                                 label: "ぷらそにか",
                                 value: "UCZx7esGXyW6JXn98byfKEIA",
                                 imgSrc: "https://yt3.ggpht.com/ytc/AIdro_lB6NxMtujj7oK0See-TGPL5eq-TjowmK6DFSjgLyCj0g=s88-c-k-c0x00ffffff-no-rj",
                                 categoryId: "YouTubeChannel",
-                                categoryLabel: "YouTubeチャンネル",
+                                categoryLabel: "YouTube",
                             },
                             ...inputValue.filter(
                                 (item) => item.categoryId !== "YouTubeChannel",
@@ -271,7 +272,7 @@ export default function RootLayout({
                     value: "liveInformation",
                     icon: <LocationOnIcon />,
                     label: "LIVE情報(β版)",
-                    isDebugModeOnly: false,
+                    isDebugModeOnly: true,
                     children: <LiveInformationTab key="liveInformation" />,
                     onClick: () => {
                         setAvailableCategoryIds([]);
@@ -491,6 +492,7 @@ export default function RootLayout({
                 setSearchQuery={setCurrentSearchQuery}
                 search={() => setSearchQuery(currentSearchQuery)}
                 setNavbarHeight={setNavbarHeight}
+                isMobile={isMobile}
             />
             {/* メインコンテンツ */}
             <Box
@@ -539,6 +541,11 @@ export default function RootLayout({
                     background: "transparent",
                     boxShadow: "none",
                 }}
+                style={{
+                    // ↓ ブラウザの動作に応じて位置を調節するために必要(?)
+                    top: "auto",
+                    bottom: 0,
+                }}
             >
                 {/* Player */}
                 <PlayerView
@@ -560,38 +567,40 @@ export default function RootLayout({
                         top: isPlayerFullscreen ? `${navbarHeight}px` : "auto",
                     }}
                 />
-                <Container disableGutters sx={{ minWidth: "100vw" }}>
-                    <Tabs
-                        value={currentTabValue}
-                        variant="fullWidth"
-                        sx={{
-                            "& .MuiTabs-flexContainer": {
-                                justifyContent: "space-around",
-                            },
-                            backgroundColor: theme.palette.background.paper,
-                        }}
-                    >
-                        {tabMaps.map((x, index) => {
-                            return (
-                                <TabWithLink
-                                    key={x.value}
-                                    href={`/${x.value}`}
-                                    icon={x.icon}
-                                    label={x.label}
-                                    isCompact={isMobile}
-                                    sx={{
-                                        minWidth: 0,
-                                        padding: 0,
-                                    }}
-                                    onClick={() => {
-                                        setCurrentTabValue(index);
-                                        setIsPlayerFullscreen(false);
-                                    }}
-                                />
-                            );
-                        })}
-                    </Tabs>
-                </Container>
+                {tabMaps.length >= 2 && (
+                    <Container disableGutters sx={{ minWidth: "100vw" }}>
+                        <Tabs
+                            value={currentTabValue}
+                            variant="fullWidth"
+                            sx={{
+                                "& .MuiTabs-flexContainer": {
+                                    justifyContent: "space-around",
+                                },
+                                backgroundColor: theme.palette.background.paper,
+                            }}
+                        >
+                            {tabMaps.map((x, index) => {
+                                return (
+                                    <TabWithLink
+                                        key={x.value}
+                                        href={`/${x.value}`}
+                                        icon={x.icon}
+                                        label={x.label}
+                                        isCompact={isMobile}
+                                        sx={{
+                                            minWidth: 0,
+                                            padding: 0,
+                                        }}
+                                        onClick={() => {
+                                            setCurrentTabValue(index);
+                                            setIsPlayerFullscreen(false);
+                                        }}
+                                    />
+                                );
+                            })}
+                        </Tabs>
+                    </Container>
+                )}
             </AppBar>
         </Fragment>
     );

@@ -42,14 +42,25 @@ export interface SearchSuggestion {
 
 export interface InputValueSearchSuggestion extends SearchSuggestion {
     sort: number;
+    // 値が作成された時刻を定義。
+    createdAt: Date;
 }
 
 // 追加の検索候補のカテゴリー
 export type additionalSearchSuggestions = {
+    // 並び替え
+    sort?: number;
     // カテゴリーのID
     categoryId: string;
     // カテゴリーのラベル(表示に使用)
     categoryLabel: string;
+};
+// 各カテゴリーの入力値の上限個数を定義。
+export type limitInputValueCategoryCount = {
+    // 制限個数
+    limit: number;
+    // カテゴリーのID
+    categoryId: string;
 };
 
 type SuperSearchBarProps = {
@@ -65,6 +76,11 @@ type SuperSearchBarProps = {
 
     inputValues: InputValueSearchSuggestion[];
     setInputValues: (values: InputValueSearchSuggestion[]) => void;
+
+    // タグにアイコンを表示するかどうか
+    showTagIcon?: boolean;
+    // 表示するタグの個数
+    showTagCount?: number;
 
     // 検索候補
     searchSuggestions?: SearchSuggestion[];
@@ -86,6 +102,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
         ? props.searchSuggestions
               .map((option) => ({
                   sort: option.sort ?? -9999999,
+                  createdAt: new Date(0),
                   ...option,
               }))
               .sort((a, b) => a.categoryLabel.localeCompare(b.categoryLabel))
@@ -103,6 +120,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
     const [dialogDatePickerValue, setDialogDatePickerValue] =
         React.useState<InputValueSearchSuggestion>({
             sort: 0,
+            createdAt: new Date(),
             label: "",
             value: "",
             categoryId: "",
@@ -112,6 +130,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
     const handleDialogDateClose = () => {
         setDialogDatePickerValue({
             sort: 0,
+            createdAt: new Date(),
             label: "",
             value: "",
             categoryId: "",
@@ -129,13 +148,15 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 {
                     label: formatDate(dialogDatePickerValue.value),
                     value: dialogDatePickerValue.value,
-                    sort: 0,
+                    sort: dialogDatePickerValue.sort,
+                    createdAt: new Date(),
                     categoryId: dialogDatePickerValue.categoryId,
                     categoryLabel: dialogDatePickerValue.categoryLabel,
                 },
             ]),
         );
         handleDialogDateClose();
+        handleOnChange(event, props.inputValues);
     };
 
     // 検索候補のフィルタリング関数
@@ -164,6 +185,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
             if (typeof value === "string") {
                 const item: InputValueSearchSuggestion = {
                     sort: 0,
+                    createdAt: new Date(),
                     label: value,
                     value: value,
                     categoryId: "text",
@@ -172,7 +194,8 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 result.push(item);
             } else if (value.categoryId === "_DatePickerDialog") {
                 setDialogDatePickerValue({
-                    sort: 0,
+                    sort: value.sort,
+                    createdAt: new Date(),
                     label: value.label,
                     value: value.value,
                     categoryId: "",
@@ -181,7 +204,15 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 // 日付ダイアログを開く
                 setOpenDatePicker(true);
             } else {
-                result.push(value);
+                const item: InputValueSearchSuggestion = {
+                    sort: value.sort,
+                    createdAt: new Date(),
+                    label: value.label,
+                    value: value.value,
+                    categoryId: value.categoryId,
+                    categoryLabel: value.categoryLabel,
+                };
+                result.push(item);
             }
         }
         // 並び替え
@@ -298,7 +329,8 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                         // 候補から直接確定する場合
                         for (const i of props.textSuggestionCategory) {
                             filtered.push({
-                                sort: 0,
+                                sort: i.sort ? i.sort : 0,
+                                createdAt: new Date(),
                                 label: params.inputValue, //`Add "${formattedDate}"`,
                                 value: params.inputValue,
                                 categoryId: i.categoryId,
@@ -322,6 +354,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                             // 日付ダイアログを開く場合
                             filtered.unshift({
                                 sort: 0,
+                                createdAt: new Date(),
                                 label: "日付を簡単に入力する場合ここをタップ", //`Add "${formattedDate}"`,
                                 value: formattedDate,
                                 categoryId: "_DatePickerDialog",
@@ -330,7 +363,8 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                             // 候補から直接確定する場合
                             for (const i of props.dateSuggestionCategory) {
                                 filtered.unshift({
-                                    sort: 0,
+                                    sort: i.sort ? i.sort : 0,
+                                    createdAt: new Date(),
                                     label: formattedDate, //`Add "${formattedDate}"`,
                                     value: date.toString(),
                                     categoryId: i.categoryId,
@@ -340,6 +374,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                             // 日付の入力形式をお知らせ
                             filtered.unshift({
                                 sort: 0,
+                                createdAt: new Date(),
                                 label: "YYYY/MM/DD hh:mm:ss",
                                 value: date.toString(),
                                 categoryId: "_DatePickerDialog",
@@ -351,7 +386,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                     return filtered;
                 }}
                 // タグの表示に個数制限をかける。
-                // limitTags={3}
+                limitTags={props.showTagCount}
                 // テキスト入力フィールドを定義
                 renderInput={(params) => (
                     <TextField
@@ -360,14 +395,14 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                         // variant="standard"
                         variant="filled"
                         label={
-                            props.textFieldLabel
-                                ? props.textFieldLabel
-                                : "検索ワードを入力"
+                            props.textFieldLabel === undefined
+                                ? "検索ワードを入力"
+                                : props.textFieldLabel
                         }
                         placeholder={
-                            props.textFieldPlaceholder
-                                ? props.textFieldPlaceholder
-                                : "キーワードを選択か、入力後に「Enter」でタグが表示。"
+                            props.textFieldPlaceholder === undefined
+                                ? "キーワードを選択か、入力後に「Enter」でタグが表示。"
+                                : props.textFieldPlaceholder
                         }
                         error={validation.error} // エラー時の見た目変更
                         helperText={validation.message} // エラーメッセージ
@@ -429,9 +464,14 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                             textOverflow: "ellipsis", // 長いテキストを省略して表示
                                         },
                                     }}
-                                    icon={option.icon}
+                                    icon={
+                                        props.showTagIcon === false
+                                            ? undefined
+                                            : option.icon
+                                    }
                                     avatar={
-                                        option.imgSrc ? (
+                                        props.showTagIcon ===
+                                        false ? undefined : option.imgSrc ? (
                                             <Avatar
                                                 alt={option.label}
                                                 src={option.imgSrc}
@@ -449,7 +489,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                     }
                                     color="success"
                                     {...getTagProps({ index })}
-                                    // 外せない検索ワード
+                                    // 外せない検索ワードのタグの色を薄く。
                                     disabled={
                                         props.fixedOptionValues
                                             ? props.fixedOptionValues.includes(
@@ -457,8 +497,19 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                               )
                                             : undefined
                                     }
+                                    // 外せない検索ワードはタグ右側の❌のアイコンを非表示
+                                    onDelete={
+                                        props.fixedOptionValues
+                                            ? props.fixedOptionValues.includes(
+                                                  option.value,
+                                              )
+                                                ? undefined
+                                                : getTagProps({ index })
+                                                      .onDelete
+                                            : getTagProps({ index }).onDelete
+                                    }
                                 />
-                                {/* 有効化されていないcategoryIdのタグに❌を表示する。 */}
+                                {/* 有効化されていないcategoryIdのタグの上に❌を表示する。 */}
                                 {props.availableCategoryIds ? (
                                     props.availableCategoryIds.includes(
                                         option.categoryId,
@@ -498,7 +549,8 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                                 dialogDatePickerValue.value,
                                             ),
                                             value: dialogDatePickerValue.value,
-                                            sort: 0,
+                                            sort: dialogDatePickerValue.sort,
+                                            createdAt: new Date(),
                                             categoryId: item.categoryId,
                                             categoryLabel: item.categoryLabel,
                                         });

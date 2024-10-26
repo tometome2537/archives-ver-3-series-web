@@ -38,44 +38,6 @@ import {
 } from "react";
 import PersonIcon from "@mui/icons-material/Person";
 
-interface TabMap {
-    value: string;
-    icon: ReactElement;
-    label: string;
-    isDebugModeOnly: boolean;
-    children: ReactNode;
-    // タブが切り替わった時に実行する処理
-    onClick: () => void;
-}
-
-interface TabWithLinkProps {
-    href: string;
-    icon?: ReactElement;
-    label: string;
-    isCompact: boolean;
-    onClick?: () => void;
-    sx?: SxProps<Theme>;
-}
-
-function TabWithLink({
-    href,
-    icon,
-    label,
-    isCompact,
-    onClick,
-    sx,
-}: TabWithLinkProps) {
-    return (
-        <Link href={href} onClick={onClick} sx={sx}>
-            {isCompact ? (
-                <Tab icon={icon} />
-            ) : (
-                <Tab icon={icon} label={label} iconPosition="top" />
-            )}
-        </Link>
-    );
-}
-
 export default function RootLayout({
     children,
 }: {
@@ -138,18 +100,23 @@ export default function RootLayout({
     // scrollContainerRef: スクロールコンテナの要素を参照するための useRef を定義
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
-    // currentTabValue: 現在表示されているタブのインデックスを管理するための状態
-    const [currentTabValue, setCurrentTabValue] = useState(0);
-
-    // prevChangingTabIndex: 直前に変更されたタブのインデックスを一時的に保存する変数
-    let prevChangingTabIndex = 0;
-
-    // changingTabIndex: 現在変更中のタブのインデックスを保存する変数
-    let changingTabIndex = 0;
+    // 現在選択されているタブ
+    const [activeTab, setActiveTab] = useState<string>("temporaryYouTube");
 
     // タブ切り替えのスクロール中かどうか
     const [isChanging, setIsChanging] = useState(false);
 
+    type TabMap = {
+        value: string;
+        icon: ReactElement;
+        label: string;
+        isDebugModeOnly: boolean;
+        scrollTo: number;
+        children: ReactNode;
+        // タブが切り替わった時に実行する処理
+        onClick: () => void;
+    };
+    // useMemoでタブ設定を作成
     const tabMaps: TabMap[] = useMemo(
         () =>
             [
@@ -159,6 +126,7 @@ export default function RootLayout({
                     label: "リンク集",
                     isDebugModeOnly: true,
                     children: <LinkTab />,
+                    scrollTo: 0,
                     onClick: () => {
                         setAvailableCategoryIds([]);
                         setLimitSuperSearchCategory([]);
@@ -171,6 +139,7 @@ export default function RootLayout({
                     label: "楽曲集(β版)",
                     isDebugModeOnly: true,
                     children: <SongTab key="song" />,
+                    scrollTo: 0,
                     onClick: () => {
                         setAvailableCategoryIds([]);
                         setLimitSuperSearchCategory([]);
@@ -182,6 +151,7 @@ export default function RootLayout({
                     icon: <YouTubeIcon />,
                     label: "ぷらそにかβ版",
                     isDebugModeOnly: false,
+                    scrollTo: 0,
                     children: (
                         <TemporaryYouTubeTab
                             key="tempYoutube"
@@ -193,7 +163,6 @@ export default function RootLayout({
                             setPlayerSearchResult={setPlayerSearchResult}
                         />
                     ),
-                    // タブが切り替わった時に実行する処理
                     onClick: () => {
                         setAvailableCategoryIds([
                             "actor",
@@ -202,33 +171,34 @@ export default function RootLayout({
                             "title",
                         ]);
                         setLimitSuperSearchCategory([
-                            {
-                                categoryId: "actor",
-                                categoryLabel: "出演者",
-                            },
+                            { categoryId: "actor", categoryLabel: "出演者" },
                             {
                                 categoryId: "organization",
                                 categoryLabel: "組織",
                             },
                         ]);
-                        // ⭐️ここから ウルトラサーチにぷらそにかYouTubeチャンネルの選択を強制する処理。
-                        setFixedOptionValues(["UCZx7esGXyW6JXn98byfKEIA"]); // この値を外せないように
+                        setFixedOptionValues(["UCZx7esGXyW6JXn98byfKEIA"]);
 
-                        setInputValue([
-                            {
-                                sort: 101,
-                                createdAt: new Date(),
-                                label: "ぷらそにか",
-                                value: "UCZx7esGXyW6JXn98byfKEIA",
-                                imgSrc: "https://yt3.ggpht.com/ytc/AIdro_lB6NxMtujj7oK0See-TGPL5eq-TjowmK6DFSjgLyCj0g=s88-c-k-c0x00ffffff-no-rj",
-                                categoryId: "YouTubeChannel",
-                                categoryLabel: "YouTube",
-                            },
-                            ...inputValue.filter(
-                                (item) => item.categoryId !== "YouTubeChannel",
-                            ),
-                        ]);
-                        // ⭐️ここまで ぷらそにかYouTubeチャンネルの選択を強制する処理。
+                        const i = inputValue.find(
+                            (item) => item.value === "UCZx7esGXyW6JXn98byfKEIA",
+                        );
+                        if (!i) {
+                            setInputValue([
+                                {
+                                    sort: 101,
+                                    createdAt: new Date(),
+                                    label: "ぷらそにか",
+                                    value: "UCZx7esGXyW6JXn98byfKEIA",
+                                    imgSrc: "https://yt3.ggpht.com/ytc/AIdro_lB6NxMtujj7oK0See-TGPL5eq-TjowmK6DFSjgLyCj0g=s88-c-k-c0x00ffffff-no-rj",
+                                    categoryId: "YouTubeChannel",
+                                    categoryLabel: "YouTube",
+                                },
+                                ...inputValue.filter(
+                                    (item) =>
+                                        item.categoryId !== "YouTubeChannel",
+                                ),
+                            ]);
+                        }
                     },
                 },
                 {
@@ -236,6 +206,7 @@ export default function RootLayout({
                     icon: <YouTubeIcon />,
                     label: "YouTube(DBα版)",
                     isDebugModeOnly: true,
+                    scrollTo: 0,
                     children: (
                         <YouTubeTab
                             key="youtube"
@@ -252,10 +223,7 @@ export default function RootLayout({
                     onClick: () => {
                         setAvailableCategoryIds([]);
                         setLimitSuperSearchCategory([
-                            {
-                                categoryId: "actor",
-                                categoryLabel: "出演者",
-                            },
+                            { categoryId: "actor", categoryLabel: "出演者" },
                             {
                                 categoryId: "organization",
                                 categoryLabel: "組織",
@@ -273,6 +241,7 @@ export default function RootLayout({
                     icon: <LocationOnIcon />,
                     label: "LIVE情報(β版)",
                     isDebugModeOnly: true,
+                    scrollTo: 0,
                     children: <LiveInformationTab key="liveInformation" />,
                     onClick: () => {
                         setAvailableCategoryIds([]);
@@ -285,6 +254,7 @@ export default function RootLayout({
                     icon: <AdbIcon />,
                     label: "デバック情報",
                     isDebugModeOnly: true,
+                    scrollTo: 0,
                     children: <DebugTab key="debug" />,
                     onClick: () => {
                         setAvailableCategoryIds([]);
@@ -292,12 +262,18 @@ export default function RootLayout({
                         setFixedOptionValues([]);
                     },
                 },
-                // デバッグモード時の配列を考慮する。
-            ].filter(
-                (tab) =>
-                    tab.isDebugModeOnly === false ||
-                    (debugMode && tab.isDebugModeOnly),
-            ),
+            ]
+                .filter(
+                    (tab) =>
+                        tab.isDebugModeOnly === false ||
+                        (debugMode && tab.isDebugModeOnly),
+                )
+                .map((item, index) => {
+                    if (typeof window !== "undefined") {
+                        item.scrollTo = window.innerWidth * index;
+                    }
+                    return item;
+                }),
         [
             debugMode,
             inputValue,
@@ -309,80 +285,65 @@ export default function RootLayout({
         ],
     );
 
-    const scroll = useCallback(() => {
-        scrollContainerRef.current?.scrollTo({
-            left: currentTabValue * screenWidth,
-            top: 0,
-            behavior: "smooth",
-        });
-    }, [currentTabValue, screenWidth]);
+    // 指定された位置(px)にスクロールする関数
+    const scrollToPosition = useCallback((number: number) => {
+        const scrollContainer = scrollContainerRef.current; // 現在のスクロールコンテナを取得
+        if (scrollContainer) {
+            scrollContainer.scrollTo({
+                left: number, // 左に指定された位置までスクロール
+                behavior: "smooth", // スムーズにスクロール
+            });
+        }
+    }, []); // 依存関係がないため再生成されない
 
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
-    useEffect(() => {
-        scroll();
-        // タブが切り替わった時の処理を実行
-        const onClick = tabMaps.find((item, index) => {
-            return currentTabValue === index;
-        });
-        onClick ? onClick.onClick() : null;
-    }, [currentTabValue]);
+    const pathname = usePathname();
+
+    // 指定されたactiveTagに移動する。
+    const activateTag = useCallback(
+        (tagName: string) => {
+            const pathnames = pathname.split("/");
+            if (pathnames[1] !== tagName) {
+                window.history.pushState(null, "", `/${tagName}`); // URLを更新
+            }
+            const i = tabMaps.find((item) => item.value === tagName);
+            if (i) {
+                scrollToPosition(i.scrollTo);
+                i.onClick();
+            }
+        },
+        [pathname, tabMaps, scrollToPosition],
+    );
 
     const router = useRouter();
 
+    // URLの更新を監視する
     useEffect(() => {
-        // scrollContainerRef から現在のスクロールコンテナ要素を取得
-        const scrollContainer = scrollContainerRef.current;
+        const pathnames = pathname.split("/");
+        // 現在のタブの名前をパスを元に取得
+        const tabName = pathnames[1] ?? "";
+        const tab = tabMaps.find((x) => x.value === tabName);
 
-        if (scrollContainer) {
-            // スクロールコンテナが存在するかを確認
-            // スクロールイベントのハンドラを定義
-            const handleScroll = (event: Event) => {
-                // スクロールが始まったので、フラグを true に設定
-                setIsChanging(true);
-
-                // スクロール位置の閾値（しきい値）を設定
-                const threshold = 0.1;
-                // スクロール量から現在のタブの位置を算出 (左方向のスクロール量を画面の幅で割る)
-                const tabRatio = scrollContainer?.scrollLeft / screenWidth;
-                // タブの位置の小数点部分 (整数部分を除いたスクロール比率)
-                const tabRatioFloat =
-                    (scrollContainer?.scrollLeft / screenWidth) % 1;
-
-                // 小数部分が閾値以内の場合、または1から閾値を引いた範囲であれば、
-                // 現在のタブのインデックスを前のインデックスとして保存
-                if (
-                    tabRatioFloat < threshold ||
-                    tabRatioFloat > 1 - threshold
-                ) {
-                    prevChangingTabIndex = Math.round(tabRatio); // インデックスを四捨五入
-                }
-
-                // 前回のタブインデックスと現在のタブインデックスが異なる場合のみタブを変更
-                if (prevChangingTabIndex !== changingTabIndex) {
-                    changingTabIndex = prevChangingTabIndex; // 現在のタブインデックスを更新
-                    setCurrentTabValue(changingTabIndex); // タブの値を更新
-                    // ルーターを使用して新しいタブのURLに遷移
-                    router.push(`/${tabMaps[changingTabIndex].value}`);
-                    // タブ変更が完了したため、フラグを false に設定
-                    setIsChanging(false);
-                }
-            };
-
-            // スクロールイベントリスナーを追加
-            scrollContainer.addEventListener("scroll", handleScroll);
-
-            // コンポーネントがアンマウントされる際にクリーンアップとして
-            // スクロールイベントリスナーを削除
-            return () => {
-                scrollContainer.removeEventListener("scroll", handleScroll);
-            };
+        if (tab) {
+            setActiveTab(tab.value);
+            return;
         }
-    }, [screenWidth, changingTabIndex, prevChangingTabIndex, router, tabMaps]); // スクリーンの幅やタブインデックスが変更された場合にのみこの effect が実行される
+
+        // if (!tab && !(1 <= tabName.length)) {
+        //     notFound();
+        // }
+        setActiveTab("temporaryYouTube");
+    }, [pathname, tabMaps]);
+
+    // activeTabの変更を検知する。
+    useEffect(() => {
+        activateTag(activeTab);
+    }, [activeTab, activateTag]);
 
     // 画面のサイズの変化を監視
     useEffect(() => {
         if (typeof window !== "undefined") {
             const handleResize = () => {
+                // console.log("bbb");
                 // 画面の横幅と縦幅を取得
                 setScreenWidth(window.innerWidth);
                 setScreenHeight(window.innerHeight);
@@ -394,15 +355,77 @@ export default function RootLayout({
             // 初回の幅と高さを設定
             handleResize();
 
+            // ここからスクロールの位置を監視する。
+            const scrollContainer = scrollContainerRef.current;
+            let scrollTimeout: NodeJS.Timeout;
+
+            // 適切な位置にスクロール
+            const handleScroll = () => {
+                // console.log("aaa");
+                const scrollContainer = scrollContainerRef.current; // スクロールコンテナを取得
+                if (scrollContainer) {
+                    const nowPosition = scrollContainer.scrollLeft; // 現在のスクロール位置を取得
+
+                    const closestPosition = Object.values(
+                        tabMaps.map((item, index) => {
+                            item.scrollTo = window.innerWidth * index;
+                            return item.scrollTo; // 各タブのスクロール位置を取得
+                        }),
+                    ).reduce((prev, curr) =>
+                        Math.abs(curr - nowPosition) <
+                        Math.abs(prev - nowPosition)
+                            ? curr // 現在位置に最も近い位置を選択
+                            : prev,
+                    );
+
+                    scrollToPosition(closestPosition); // 最も近い位置にスクロール
+                    setActiveTab(() => {
+                        const tab = tabMaps.find(
+                            (v) => v.scrollTo === closestPosition,
+                        );
+                        return tab ? tab.value : ""; // tabが見つかった場合はtabIdを返し、見つからなければ空文字を返す
+                    });
+                }
+            };
+            // 適切な位置にスクロール(操作時間を考慮)
+            const handleScrollTime = (time: number) => {
+                // スクロールが終了した後にhandleScrollEndを実行
+                clearTimeout(scrollTimeout);
+                scrollTimeout = setTimeout(() => {
+                    handleScroll();
+                }, time); // 指定された時間後にスクロールが終了したとみなす
+            };
+
+            // イベントの登録
             // リサイズイベントリスナーを追加
-            window.addEventListener("resize", handleResize);
+            window.addEventListener("resize", () => {
+                handleResize();
+                handleScroll();
+                // activateTag(activeTab);
+            });
+
+            if (scrollContainer) {
+                scrollContainer.addEventListener("scroll", () =>
+                    handleScrollTime(150),
+                );
+            }
 
             // クリーンアップ関数でリスナーを解除
             return () => {
-                window.removeEventListener("resize", handleResize);
+                window.removeEventListener("resize", () => {
+                    handleResize();
+                    handleScroll();
+                });
+                if (scrollContainer) {
+                    clearTimeout(scrollTimeout);
+
+                    scrollContainer.removeEventListener("scroll", () =>
+                        handleScrollTime(100),
+                    );
+                }
             };
         }
-    }, []); // 依存配列は空のままでOK
+    }); // 依存配列は空のままでOK
     // 初回実行(APIを叩く)検索候補を定義
     const fetchEvents = useCallback(async () => {
         try {
@@ -447,7 +470,6 @@ export default function RootLayout({
             // ローディング終了などの後処理を行う場所
         }
     }, [inputValue]);
-
     // コンポーネントの初回レンダリング時にAPIを叩く
     useEffect(() => {
         fetchEvents();
@@ -460,22 +482,6 @@ export default function RootLayout({
             setDebugMode(true);
         }
     };
-
-    // URLの更新を監視する
-    const pathname = usePathname();
-    useEffect(() => {
-        const pathnames = pathname.split("/");
-        // 現在のタブの名前をパスを元に取得
-        const tabName = pathnames[1] ?? "";
-        const tabIndex = tabMaps.findIndex((x) => x.value === tabName);
-
-        if (tabIndex >= 0 || tabName === "") {
-            setCurrentTabValue(Math.max(tabIndex, 0));
-            return;
-        }
-
-        notFound();
-    }, [pathname, tabMaps]);
 
     return (
         <Fragment>
@@ -498,36 +504,42 @@ export default function RootLayout({
             <Box
                 ref={scrollContainerRef}
                 sx={{
-                    display: "flex",
-                    alignItems: "start",
+                    width: screenWidth,
                     overflowX: "scroll",
-                    scrollSnapType: "x mandatory",
                 }}
             >
-                {/* TODO: 一番でかい要素にスクロールが影響される */}
-                {tabMaps.map((x) => (
-                    <Box
-                        key={x.value}
-                        sx={{
-                            flexShrink: 0,
-                            width: "100vw",
-                            height: "100vh",
-                            scrollSnapAlign: "start",
-                            borderRight: isChanging ? 1 : 0,
-                        }}
-                    >
-                        <Container
-                            component="main"
+                <Box
+                    sx={{
+                        display: "flex",
+                        width: tabMaps.length * screenWidth,
+                    }}
+                >
+                    {tabMaps.map((x) => (
+                        <Box
+                            key={x.value}
                             sx={{
-                                overflowY: isPlayerFullscreen
-                                    ? "hidden"
-                                    : "auto",
+                                // flexShrink: 0,
+                                width: "100vw",
+                                height: "100vh",
+                                // ↓ tabViewの縦スクロールを切るのに必要。
+                                overflowY: "scroll",
+                                // scrollSnapAlign: "start",
+                                borderRight: isChanging ? 1 : 0,
                             }}
                         >
-                            {x.children}
-                        </Container>
-                    </Box>
-                ))}
+                            <Container
+                                component="main"
+                                sx={{
+                                    overflowY: isPlayerFullscreen
+                                        ? "hidden"
+                                        : "auto",
+                                }}
+                            >
+                                {x.children}
+                            </Container>
+                        </Box>
+                    ))}
+                </Box>
             </Box>
 
             {/* 画面下に固定されたタブバー */}
@@ -570,7 +582,9 @@ export default function RootLayout({
                 {tabMaps.length >= 2 && (
                     <Container disableGutters sx={{ minWidth: "100vw" }}>
                         <Tabs
-                            value={currentTabValue}
+                            value={tabMaps.findIndex(
+                                (item) => item.value === activeTab,
+                            )}
                             variant="fullWidth"
                             sx={{
                                 "& .MuiTabs-flexContainer": {
@@ -579,25 +593,19 @@ export default function RootLayout({
                                 backgroundColor: theme.palette.background.paper,
                             }}
                         >
-                            {tabMaps.map((x, index) => {
-                                return (
-                                    <TabWithLink
-                                        key={x.value}
-                                        href={`/${x.value}`}
-                                        icon={x.icon}
-                                        label={x.label}
-                                        isCompact={isMobile}
-                                        sx={{
-                                            minWidth: 0,
-                                            padding: 0,
-                                        }}
-                                        onClick={() => {
-                                            setCurrentTabValue(index);
-                                            setIsPlayerFullscreen(false);
-                                        }}
-                                    />
-                                );
-                            })}
+                            {tabMaps.map((x) => (
+                                <Tab
+                                    key={x.value}
+                                    icon={x.icon}
+                                    onClick={() => {
+                                        setActiveTab(x.value);
+                                        setIsPlayerFullscreen(false);
+                                    }}
+                                    sx={{ minWidth: 0, padding: 0 }} // sxプロパティはオブジェクト形式に
+                                    label={isMobile ? undefined : x.label}
+                                    iconPosition="top"
+                                />
+                            ))}
                         </Tabs>
                     </Container>
                 )}

@@ -4,7 +4,13 @@ import { createContext, useContext, useState, useEffect } from "react";
 import type React from "react";
 
 // データフェッチャー関数
-const fetcher = (url: string) => fetch(url).then((res) => res.json());
+const fetcher = (url: string) =>
+    fetch(url, {
+        headers: {
+            // SSSAPIの場合はトークンが必要。
+            Authorization: `token ${process.env.SSSAPI_ACCESS_TOKEN}`,
+        },
+    }).then((res) => res.json());
 
 // YouTubeAccount 型の定義
 export type apiData = {

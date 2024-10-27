@@ -1,4 +1,5 @@
 import { type ColorModeChoice, ThemeRegistry } from "@/contexts/ThemeContext";
+import { DataProvider } from "@/contexts/ApiDataContext";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
@@ -26,7 +27,7 @@ export default function RootLayout({
             </head>
             <body className={inter.className}>
                 <ThemeRegistry initColorMode={initColorMode}>
-                    {children}
+                    <DataProvider>{children}</DataProvider>
                 </ThemeRegistry>
             </body>
         </html>

@@ -37,6 +37,8 @@ import {
     useMemo,
 } from "react";
 import PersonIcon from "@mui/icons-material/Person";
+import { useDataContext } from "@/contexts/ApiDataContext";
+import type { apiData, DataContextType } from "@/contexts/ApiDataContext";
 
 export default function RootLayout({
     children,
@@ -45,6 +47,8 @@ export default function RootLayout({
 }) {
     // テーマ設定を取得
     const theme = useTheme();
+    // apiDataを取得
+    const apiData = useDataContext();
     // デバッグ(ローカル開発環境)モード(リンク集を10回タップするとデバッグモードへ)
     const [debugMode, setDebugMode] = useState(
         process.env.NEXT_PUBLIC_STAGE === "local",
@@ -125,10 +129,10 @@ export default function RootLayout({
                     icon: <AccountBoxIcon />,
                     label: "リンク集",
                     isDebugModeOnly: true,
-                    children: <LinkTab />,
+                    children: <LinkTab inputValue={inputValue} />,
                     scrollTo: 0,
                     onClick: () => {
-                        setAvailableCategoryIds([]);
+                        setAvailableCategoryIds(["actor"]);
                         setLimitSuperSearchCategory([]);
                         setFixedOptionValues([]);
                     },
@@ -427,22 +431,19 @@ export default function RootLayout({
         }
     }); // 依存配列は空のままでOK
     // 初回実行(APIを叩く)検索候補を定義
-    const fetchEvents = useCallback(async () => {
-        try {
-            // APIのURLを指定
-            const url = "https://api.sssapi.app/ZJUpXwYIh9lpfn3DQuyzS";
-            const response = await fetch(url);
+    const fetchEvents = useCallback(() => {
+        const YouTubeAccounts: apiData[] | undefined = apiData.find(
+            (item) => item.id === "YouTubeAccount",
+        )?.data;
 
-            // ネットワークエラーチェック
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-
-            const data = await response.json();
+        const Entity: apiData[] | undefined = apiData.find(
+            (item) => item.id === "Entity",
+        )?.data;
+        if (Entity && YouTubeAccounts) {
             const result: ultraSuperSearchBarSearchSuggestion[] = [];
 
             // データを変換し、検索候補の配列に追加
-            for (const item of data) {
+            for (const item of Entity) {
                 const resultItem: ultraSuperSearchBarSearchSuggestion = {
                     sort: item.category === "person" ? 99 : 100,
                     label: item.name,
@@ -453,6 +454,26 @@ export default function RootLayout({
                         ) : (
                             <GroupsIcon />
                         ),
+                    imgSrc: (() => {
+                        try {
+                            const YouTubeAccount: apiData | undefined =
+                                YouTubeAccounts.find((vvv) => {
+                                    // vvv.entityIdが存在し、item.idが含まれているかを確認する
+                                    if (vvv.entityId !== null) {
+                                        return vvv.entityId
+                                            .split(/ , |,| ,|, /)
+                                            .includes(item.id);
+                                    }
+                                });
+                            const data = YouTubeAccount
+                                ? JSON.parse(YouTubeAccount.apiData)
+                                : undefined;
+                            return data.snippet.thumbnails.medium.url;
+                        } catch (error) {
+                            return undefined;
+                        }
+                    })(),
+
                     categoryId:
                         item.category === "person" ? "actor" : "organization",
                     categoryLabel:
@@ -463,13 +484,8 @@ export default function RootLayout({
 
             // 検索候補を更新
             setSearchSuggestion([...inputValue, ...result]);
-        } catch (err) {
-            // エラーハンドリング（エラーメッセージを表示）
-            console.error("Error fetching events:", err);
-        } finally {
-            // ローディング終了などの後処理を行う場所
         }
-    }, [inputValue]);
+    }, [inputValue, apiData]);
     // コンポーネントの初回レンダリング時にAPIを叩く
     useEffect(() => {
         fetchEvents();
@@ -589,6 +605,8 @@ export default function RootLayout({
                             sx={{
                                 "& .MuiTabs-flexContainer": {
                                     justifyContent: "space-around",
+                                    backgroundColor:
+                                        theme.palette.background.paper,
                                 },
                                 backgroundColor: theme.palette.background.paper,
                             }}
@@ -601,7 +619,11 @@ export default function RootLayout({
                                         setActiveTab(x.value);
                                         setIsPlayerFullscreen(false);
                                     }}
-                                    sx={{ minWidth: 0, padding: 0 }} // sxプロパティはオブジェクト形式に
+                                    sx={{
+                                        minWidth: 0,
+                                        padding: 0,
+                                        textTransform: "none",
+                                    }}
                                     label={isMobile ? undefined : x.label}
                                     iconPosition="top"
                                 />

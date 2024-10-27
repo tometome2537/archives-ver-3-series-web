@@ -107,15 +107,15 @@ export default function PlayerView(props: PlayerProps) {
         );
 
         if (actorSearchSuggestion) {
-            const r: InputValueSearchSuggestion = {
-                sort: actorSearchSuggestion.sort || 99,
-                createdAt: new Date(),
-                label: actorSearchSuggestion.label,
-                value: actorSearchSuggestion.value,
-                categoryId: actorSearchSuggestion.categoryId,
-                categoryLabel: actorSearchSuggestion.categoryLabel,
-            };
-            result.push(r);
+            const value: InputValueSearchSuggestion = Object.assign(
+                {
+                    createdAt: new Date(),
+                    sort: actorSearchSuggestion.sort || 99,
+                },
+                actorSearchSuggestion,
+            );
+
+            result.push(value);
         }
 
         props.setInputValue(result);
@@ -491,13 +491,30 @@ export default function PlayerView(props: PlayerProps) {
                                                   },
                                               }}
                                               avatar={
-                                                  <Avatar>
-                                                      {
-                                                          getSearchSuggestionFromId(
-                                                              actorId,
-                                                          ).label[0]
-                                                      }
-                                                  </Avatar>
+                                                  getSearchSuggestionFromId(
+                                                      actorId,
+                                                  ).imgSrc ? (
+                                                      <Avatar
+                                                          alt={
+                                                              getSearchSuggestionFromId(
+                                                                  actorId,
+                                                              ).label
+                                                          }
+                                                          src={
+                                                              getSearchSuggestionFromId(
+                                                                  actorId,
+                                                              ).imgSrc
+                                                          }
+                                                      />
+                                                  ) : (
+                                                      <Avatar>
+                                                          {
+                                                              getSearchSuggestionFromId(
+                                                                  actorId,
+                                                              ).label[0]
+                                                          }
+                                                      </Avatar>
+                                                  )
                                               }
                                               label={
                                                   getSearchSuggestionFromId(
@@ -542,13 +559,30 @@ export default function PlayerView(props: PlayerProps) {
                                                   },
                                               }}
                                               avatar={
-                                                  <Avatar>
-                                                      {
-                                                          getSearchSuggestionFromId(
-                                                              organizationId,
-                                                          ).label[0]
-                                                      }
-                                                  </Avatar>
+                                                  getSearchSuggestionFromId(
+                                                      organizationId,
+                                                  ).imgSrc ? (
+                                                      <Avatar
+                                                          alt={
+                                                              getSearchSuggestionFromId(
+                                                                  organizationId,
+                                                              ).label
+                                                          }
+                                                          src={
+                                                              getSearchSuggestionFromId(
+                                                                  organizationId,
+                                                              ).imgSrc
+                                                          }
+                                                      />
+                                                  ) : (
+                                                      <Avatar>
+                                                          {
+                                                              getSearchSuggestionFromId(
+                                                                  organizationId,
+                                                              ).label[0]
+                                                          }
+                                                      </Avatar>
+                                                  )
                                               }
                                               label={
                                                   getSearchSuggestionFromId(

@@ -204,15 +204,8 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 // 日付ダイアログを開く
                 setOpenDatePicker(true);
             } else {
-                const item: InputValueSearchSuggestion = {
-                    sort: value.sort,
-                    createdAt: new Date(),
-                    label: value.label,
-                    value: value.value,
-                    categoryId: value.categoryId,
-                    categoryLabel: value.categoryLabel,
-                };
-                result.push(item);
+                value.createdAt = new Date();
+                result.push(value);
             }
         }
         // 並び替え

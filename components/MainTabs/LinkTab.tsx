@@ -42,7 +42,6 @@ export function LinkTab(props: LinkTabProps) {
             <h1>それぞれのリンク集</h1>
 
             <h2>YouTube アカウント</h2>
-            {/* <div>{JSON.stringify(YouTubeAccounts, null, 2)}</div> */}
             <div>
                 {YouTubeAccounts?.map((item) => (
                     <p key={item.userName}>{item.userName}</p>

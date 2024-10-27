@@ -60,7 +60,11 @@ export default function VideoTemporaryView(props: VideoViewTemporaryProps) {
         try {
             // Video取得
             const url = "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp";
-            const response = await fetch(url);
+            const response = await fetch(url, {
+                headers: {
+                    Authorization: `token ${process.env.NEXT_PUBLIC_SSSAPI_ACCESS_TOKEN}`,
+                },
+            });
             if (!response.ok) {
                 throw new Error("Network response was not ok");
             }

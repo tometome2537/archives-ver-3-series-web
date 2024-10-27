@@ -5,14 +5,14 @@ import type React from "react";
 
 // データフェッチャー関数
 const fetcher = async (url: string) => {
-    if (!process.env.SSSAPI_ACCESS_TOKEN) {
+    if (!process.env.NEXT_PUBLIC_SSSAPI_ACCESS_TOKEN) {
         throw new Error(
             "SSSAPI_ACCESS_TOKEN is missing in environment variables.",
         );
     }
     const response = await fetch(url, {
         headers: {
-            Authorization: `token ${process.env.SSSAPI_ACCESS_TOKEN}`,
+            Authorization: `token ${process.env.NEXT_PUBLIC_SSSAPI_ACCESS_TOKEN}`,
         },
     });
     if (!response.ok) {
@@ -59,8 +59,8 @@ const Db: { id: string; url: string }[] = [
     },
     // {
     //     id: "Video",
-    //     url: "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp"
-    // }
+    //     url: "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp",
+    // },
 ];
 
 // コンテキストプロバイダー

@@ -132,12 +132,17 @@ export default function UltraSuperSearchBar(
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     // 入力履歴を保存(To DO)
-    const [inputValueHistory, setInputValueHistory] = useState<InputValueSearchSuggestion[]>([]);
+    const [inputValueHistory, setInputValueHistory] = useState<
+        InputValueSearchSuggestion[]
+    >([]);
 
     return (
         <Box>
-            {/* {JSON.stringify(props.inputValue)} */}
-            {/* {JSON.stringify(searchSuggestion)} */}
+            {/* {JSON.stringify(props.inputValue[1])}
+            <p>----</p>
+            {JSON.stringify(
+                props.searchSuggestion ? props.searchSuggestion[1] : {},
+            )} */}
             {/* <Typography>全部</Typography> */}
             <SuperSearchBar
                 inputValues={props.inputValue}

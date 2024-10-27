@@ -4,13 +4,22 @@ import { createContext, useContext, useState, useEffect } from "react";
 import type React from "react";
 
 // データフェッチャー関数
-const fetcher = (url: string) =>
-    fetch(url, {
+const fetcher = async (url: string) => {
+    if (!process.env.SSSAPI_ACCESS_TOKEN) {
+        throw new Error(
+            "SSSAPI_ACCESS_TOKEN is missing in environment variables.",
+        );
+    }
+    const response = await fetch(url, {
         headers: {
-            // SSSAPIの場合はトークンが必要。
             Authorization: `token ${process.env.SSSAPI_ACCESS_TOKEN}`,
         },
-    }).then((res) => res.json());
+    });
+    if (!response.ok) {
+        throw new Error(`Failed to fetch data from ${url}`);
+    }
+    return response.json();
+};
 
 // YouTubeAccount 型の定義
 export type apiData = {
@@ -24,7 +33,6 @@ export type apiData = {
 };
 
 // コンテキストの型定義
-// @biome-ignore
 export type DataContextType = {
     id: string;
     data: apiData[];
@@ -55,40 +63,38 @@ const Db: { id: string; url: string }[] = [
     // }
 ];
 
-/*
-とめとめメモ
-SssAPI等の１度取得すればOKなデータは変数に保存し、
-コンテキストからどのページでも読み取れるようにしておく。
-*/
-
 // コンテキストプロバイダー
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
     const [data, setData] = useState<DataContextType[]>([]);
-    const [loading, setLoading] = useState<boolean>(true);
-    const [error, setError] = useState<boolean>(false);
 
     useEffect(() => {
         const fetchData = async () => {
-            setLoading(true);
             try {
                 const result: DataContextType[] = await Promise.all(
                     Db.map(async (dbItem) => {
-                        const data = await fetcher(dbItem.url);
-                        return {
-                            id: dbItem.id,
-                            data: data,
-                            isLoading: false,
-                            error: false,
-                        };
+                        try {
+                            const fetchedData = await fetcher(dbItem.url);
+                            return {
+                                id: dbItem.id,
+                                data: fetchedData,
+                                isLoading: false,
+                                error: false,
+                            };
+                        } catch (error) {
+                            return {
+                                id: dbItem.id,
+                                data: [],
+                                isLoading: false,
+                                error: true,
+                            };
+                        }
                     }),
                 );
                 setData(result);
             } catch (error) {
-                setError(true);
-            } finally {
-                setLoading(false);
+                console.error("An error occurred while fetching data:", error);
             }
         };
         fetchData();

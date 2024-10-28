@@ -40,7 +40,6 @@ type PlayerProps = {
     Playlist?: Array<PlayerItem>; // プレイリスト
     searchResult?: Array<PlayerItem>; // 検索結果のリスト
     style?: React.CSSProperties; // 外部からスタイルを受け取る（オプション）
-    setEntityIdString: Dispatch<SetStateAction<string[]>>;
 };
 
 export default function PlayerView(props: PlayerProps) {
@@ -119,8 +118,6 @@ export default function PlayerView(props: PlayerProps) {
         }
 
         props.setInputValue(result);
-
-        props.setEntityIdString(actorId ? [actorId] : [""]);
         props.setIsPlayerFullscreen(false);
     };
 

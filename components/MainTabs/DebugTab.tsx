@@ -9,8 +9,6 @@ export function DebugTab() {
     return (
         <div>
             <h3>テストUI</h3>
-            <Typography>さーちばー</Typography>
-            {/* <TestSearchBar /> */}
             <h3>デバッグ情報</h3>
             <div>
                 <Button variant="outlined" onClick={() => toggleColorMode()}>

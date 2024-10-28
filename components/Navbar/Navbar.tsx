@@ -11,8 +11,6 @@ import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useEffect, useRef, useState } from "react";
-import EntitySelector from "../EntitySelector";
-import type { EntityObj } from "../EntitySelector";
 import SearchBar from "./SearchBar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -53,10 +51,6 @@ type NavbarProps = {
 
     screenHeight: number;
     isMobile: boolean;
-    setSearchQuery: Dispatch<SetStateAction<string>>;
-    search: () => void;
-    setEntityId: Dispatch<SetStateAction<Array<EntityObj>>>;
-    entityIdString: Array<string>;
     setNavbarHeight: Dispatch<SetStateAction<number>>;
 };
 
@@ -155,10 +149,7 @@ export default function Navbar(props: NavbarProps) {
                                 </>
                             )}
 
-                            {/* <SearchBar
-                            setSearchQuery={props.setSearchQuery}
-                            search={props.search}
-                        /> */}
+
                             <Box
                                 sx={{
                                     width: props.isMobile ? "100%" : "70%",
@@ -243,7 +234,11 @@ export default function Navbar(props: NavbarProps) {
                                         props.limitSuperSearchCategory
                                     }
                                     // スマホの場合はタグのアイコンを非表示
-                                    showTagIcon={!props.isMobile}
+                                    showTagIcon={
+                                        props.inputValue.length <= 2
+                                            ? true
+                                            : !props.isMobile
+                                    }
                                     // スマホの場合に表示するタグの個数を制限する。
                                     showTagCount={
                                         props.isMobile ? 2 : undefined
@@ -251,11 +246,6 @@ export default function Navbar(props: NavbarProps) {
                                 />
                             </Box>
 
-                            {/* <Box sx={{ flexGrow: 1 }} /> */}
-                            {/* <EntitySelector
-                            entityIdString={props.entityIdString}
-                            setEntityId={props.setEntityId}
-                        /> */}
                             {!props.isMobile && <Box sx={{ flexGrow: 1 }} />}
                         </Toolbar>
                     </Container>

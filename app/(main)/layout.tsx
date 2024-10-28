@@ -1,6 +1,5 @@
 "use client";
 
-import type { EntityObj } from "@/components/EntitySelector"; // 型としてのインポート
 import Link from "@/components/Link";
 import { DebugTab } from "@/components/MainTabs/DebugTab";
 import { LinkTab } from "@/components/MainTabs/LinkTab";
@@ -60,6 +59,9 @@ export default function RootLayout({
     // スマホかどうかを判定する
     const [isMobile, setIsMobile] = useState<boolean>(true);
 
+    // ローディング画面
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+
     // ⭐️ここからウルトラスーパーサーチバー関連
     // 入力された値
     const [inputValue, setInputValue] = useState<InputValueSearchSuggestion[]>(
@@ -92,15 +94,6 @@ export default function RootLayout({
         [],
     );
 
-    // 選択されているEntity Id ※ EntitySelectorで使用。
-    const [entityIds, setEntityIds] = useState<EntityObj[]>([]);
-    const [entityIdString, setEntityIdString] = useState<string[]>([]);
-
-    const [playerSize, setPlayerSize] = useState(1);
-    const [isLargePlayer, setIsLargePlayer] = useState(false);
-    const [currentSearchQuery, setCurrentSearchQuery] = useState("");
-    const [searchQuery, setSearchQuery] = useState("");
-
     // scrollContainerRef: スクロールコンテナの要素を参照するための useRef を定義
     const scrollContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -108,7 +101,7 @@ export default function RootLayout({
     const [activeTab, setActiveTab] = useState<string>("temporaryYouTube");
 
     // タブ切り替えのスクロール中かどうか
-    const [isChanging, setIsChanging] = useState(false);
+    const [isTabScrolling, setIsTabScrolling] = useState(false);
 
     type TabMap = {
         value: string;
@@ -162,7 +155,6 @@ export default function RootLayout({
                             inputValue={inputValue}
                             playerItem={playerItem}
                             setPlayerItem={setPlayerItem}
-                            entityIds={entityIds}
                             setPlayerPlaylist={setPlayerPlaylist}
                             setPlayerSearchResult={setPlayerSearchResult}
                         />
@@ -214,14 +206,9 @@ export default function RootLayout({
                     children: (
                         <YouTubeTab
                             key="youtube"
-                            setPlayerSize={setPlayerSize}
-                            setIsLargePlayer={setIsLargePlayer}
                             playerItem={playerItem}
                             setPlayerItem={setPlayerItem}
                             setPlayerSearchResult={setPlayerSearchResult}
-                            playerSize={playerSize}
-                            isLargePlayer={isLargePlayer}
-                            searchQuery={searchQuery}
                         />
                     ),
                     onClick: () => {
@@ -278,15 +265,7 @@ export default function RootLayout({
                     }
                     return item;
                 }),
-        [
-            debugMode,
-            inputValue,
-            playerItem,
-            entityIds,
-            isLargePlayer,
-            playerSize,
-            searchQuery,
-        ],
+        [debugMode, inputValue, playerItem],
     );
 
     // 指定された位置(px)にスクロールする関数
@@ -298,6 +277,7 @@ export default function RootLayout({
                 behavior: "smooth", // スムーズにスクロール
             });
         }
+        setIsTabScrolling(false);
     }, []); // 依存関係がないため再生成されない
 
     const pathname = usePathname();
@@ -409,10 +389,13 @@ export default function RootLayout({
             });
 
             if (scrollContainer) {
-                scrollContainer.addEventListener("scroll", () =>
-                    handleScrollTime(150),
-                );
+                scrollContainer.addEventListener("scroll", () => {
+                    setIsTabScrolling(true);
+                    handleScrollTime(150);
+                });
             }
+
+            setIsLoading(false);
 
             // クリーンアップ関数でリスナーを解除
             return () => {
@@ -499,6 +482,54 @@ export default function RootLayout({
         }
     };
 
+    if (isLoading) {
+        // if (true) {
+        return (
+            <div
+                style={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    height: "100vh",
+                }}
+            >
+                <div style={{ textAlign: "center" }}>
+                    {/* 画像のプレースホルダー */}
+                    <div style={{ marginBottom: "16px" }}>
+                        {/*
+                  <Image
+                    src=""
+                    alt="Loading"
+                    width={240}
+                    height={240}
+                    style={{ objectFit: "contain" }}
+                  />
+                  */}
+                    </div>
+
+                    {/* 読み込み中メッセージ */}
+                    <p
+                        style={{
+                            fontSize: "18px",
+                            color: "#555",
+                            animation: "fade 1s infinite",
+                        }}
+                    >
+                        読 み 込 み 中...
+                    </p>
+
+                    {/* CSSアニメーション */}
+                    <style jsx>{`
+                  @keyframes fade {
+                    0%, 100% { opacity: 1; }
+                    50% { opacity: 0.5; }
+                  }
+                `}</style>
+                </div>
+            </div>
+        );
+    }
+
     return (
         <Fragment>
             <Navbar
@@ -509,10 +540,6 @@ export default function RootLayout({
                 availableCategoryIds={availableCategoryIds}
                 setInputValue={setInputValue}
                 screenHeight={screenHeight}
-                setEntityId={setEntityIds}
-                entityIdString={entityIdString}
-                setSearchQuery={setCurrentSearchQuery}
-                search={() => setSearchQuery(currentSearchQuery)}
                 setNavbarHeight={setNavbarHeight}
                 isMobile={isMobile}
             />
@@ -540,7 +567,7 @@ export default function RootLayout({
                                 // ↓ tabViewの縦スクロールを切るのに必要。
                                 overflowY: "scroll",
                                 // scrollSnapAlign: "start",
-                                borderRight: isChanging ? 1 : 0,
+                                borderRight: isTabScrolling ? 1 : 0,
                             }}
                         >
                             <Container
@@ -589,10 +616,13 @@ export default function RootLayout({
                     searchResult={playerSearchResult}
                     isPlayerFullscreen={isPlayerFullscreen}
                     setIsPlayerFullscreen={setIsPlayerFullscreen}
-                    setEntityIdString={setEntityIdString}
                     style={{
                         // ↓ header(Navbar)の分上に余白を作る。
-                        top: isPlayerFullscreen ? `${navbarHeight}px` : "auto",
+                        top: isPlayerFullscreen
+                            ? isMobile
+                                ? "0"
+                                : `${navbarHeight}px`
+                            : "auto",
                     }}
                 />
                 {tabMaps.length >= 2 && (

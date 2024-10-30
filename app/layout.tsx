@@ -24,6 +24,12 @@ export default function RootLayout({
                     name="viewport"
                     content="initial-scale=1, width=device-width"
                 />
+                <meta charSet="UTF-8" />
+                {/* ↓ サイトのテーマに合わせてブラウザの設定を変更する */}
+                <meta
+                    name="theme-color"
+                    content={initColorMode === "dark" ? "#000000" : "#FFFFFF"}
+                />
             </head>
             <body className={inter.className}>
                 <ThemeRegistry initColorMode={initColorMode}>
@@ -35,7 +41,39 @@ export default function RootLayout({
 }
 
 export async function generateMetadata(): Promise<Metadata> {
+    // const title = "ミュージックアーカイブスプロジェクト";
+    const title = "ぷらそにかアーカイブス";
+    const description =
+        "ぷらそにかアーカイブス - YouTubeチャンネル「ぷらそにか」の動画を詳細な検索機能、YouTubeの再生を提供します。";
+
     return {
-        title: "ミュージックアーカイブスプロジェクト",
+        title: title,
+        description: description,
+        icons: {
+            icon: "/favicon.ico",
+            apple: "/apple-touch-icon.png", // 未設定(To Do)
+        },
+        openGraph: {
+            title: title,
+            description: description,
+            url: "https://example.com", // 未設定(To Do)
+            siteName: title,
+            type: "website",
+            images: [
+                {
+                    url: "/og-image.jpg", // 未設定(To Do)
+                    width: 800,
+                    height: 600,
+                    alt: title,
+                },
+            ],
+        },
+        twitter: {
+            card: "summary_large_image", // 未設定(To Do)
+            site: "@MusicArchPJ",
+            title: title,
+            description: description,
+            images: ["/twitter-image.jpg"], // 未設定(To Do)
+        },
     };
 }

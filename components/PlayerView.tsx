@@ -1,5 +1,5 @@
 import SuperSearchBar, {
-    type InputValueSearchSuggestion,
+    type InputValue,
 } from "@/components/Navbar/SuperSearchBar";
 import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
 import rgbToHex from "@/libs/colorConverter";
@@ -10,11 +10,16 @@ import { useTheme } from "@mui/material/styles";
 import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import Thumbnail from "./Thumbnail";
-import YouTubePlayer from "./YouTubePlayer";
+import PauseIcon from "@mui/icons-material/Pause";
+import YouTubePlayerView from "./YouTubePlayerView";
+import { unescapeHtml } from "@/libs/unescapeHtml";
+import type { YouTubeProps, YouTubePlayer } from "react-youtube";
 
 export type PlayerItem = {
-    videoId?: string; // 動画IDをプロパティとして受け取る
+    videoId?: string;
+    short?: boolean;
     title?: string;
+    description?: string;
     viewCount?: number;
     channelId?: string;
     channelTitle?: string;
@@ -25,8 +30,8 @@ export type PlayerItem = {
 
 type PlayerProps = {
     // ウルトラスーパーサーチバー
-    inputValue: InputValueSearchSuggestion[];
-    setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
+    inputValue: InputValue[];
+    setInputValue: Dispatch<SetStateAction<InputValue[]>>;
     searchSuggestion: ultraSuperSearchBarSearchSuggestion[];
 
     screenWidth: number;
@@ -35,8 +40,9 @@ type PlayerProps = {
     // フルスクリーンで表示するかどうか
     isPlayerFullscreen: boolean;
     setIsPlayerFullscreen: Dispatch<SetStateAction<boolean>>;
-    PlayerItem: PlayerItem;
-    setPlayerItem: Dispatch<SetStateAction<PlayerItem>>;
+
+    PlayerItem: PlayerItem | undefined;
+    setPlayerItem: Dispatch<SetStateAction<PlayerItem | undefined>>;
     Playlist?: Array<PlayerItem>; // プレイリスト
     searchResult?: Array<PlayerItem>; // 検索結果のリスト
     style?: React.CSSProperties; // 外部からスタイルを受け取る（オプション）
@@ -55,10 +61,18 @@ export default function PlayerView(props: PlayerProps) {
     const [playNowDetail, setPlayNowDetail] = useState<
         PlayerItem | undefined
     >();
+    // プレイヤーの状態(例、再生中、停止中、etc...)
+    const [playerState, setPlayerState] = useState<string | undefined>(
+        undefined,
+    );
+    // YouTubeプレイヤーの実行関数集(再生を実行したり、再生を停止させたり etc...)
+    const [player, setPlayer] = useState<YouTubePlayer | undefined>(undefined);
 
     // propsのvideoIdが変更されたらplayNowVideoIdを更新。
     useEffect(() => {
-        setPlayNowVideoId(props.PlayerItem.videoId);
+        setPlayNowVideoId(
+            props.PlayerItem !== undefined ? props.PlayerItem.videoId : "",
+        );
     }, [props]);
 
     // playNowVideoIdが更新されたらplayNowDetailを更新
@@ -101,12 +115,12 @@ export default function PlayerView(props: PlayerProps) {
             (item) => item.value === actorId || item.label === actorId,
         );
 
-        const result: InputValueSearchSuggestion[] = props.inputValue.filter(
+        const result: InputValue[] = props.inputValue.filter(
             (item) => item.categoryId !== "actor",
         );
 
         if (actorSearchSuggestion) {
-            const value: InputValueSearchSuggestion = Object.assign(
+            const value: InputValue = Object.assign(
                 {
                     createdAt: new Date(),
                     sort: actorSearchSuggestion.sort || 99,
@@ -270,8 +284,12 @@ export default function PlayerView(props: PlayerProps) {
                     }}
                 >
                     {/* YouTubeプレイヤー */}
-                    <YouTubePlayer
-                        videoId={playNowVideoId ? playNowVideoId : ""}
+                    <YouTubePlayerView
+                        videoId={
+                            props.PlayerItem?.videoId
+                                ? props.PlayerItem?.videoId
+                                : ""
+                        }
                         style={{
                             // padding: "0", // プレイヤーの上下にスペースを追加
                             margin: "0 auto",
@@ -298,6 +316,8 @@ export default function PlayerView(props: PlayerProps) {
                         playerRadius={
                             !(props.isMobile && props.isPlayerFullscreen)
                         }
+                        setPlayer={setPlayer}
+                        setPlayerState={setPlayerState}
                     />
 
                     {/* PlayerView縮小表示の時のHTML */}
@@ -370,13 +390,36 @@ export default function PlayerView(props: PlayerProps) {
                             margin: "auto",
                         }}
                     >
-                        <PlayArrowIcon
-                            sx={{
-                                height: "100%",
-                                margin: "auto",
-                            }}
-                        />
-                        {/* <PauseIcon /> */}
+                        {playerState &&
+                            (playerState === "再生中" ? (
+                                <PauseIcon
+                                    sx={{
+                                        height: "100%",
+                                        margin: "auto",
+                                    }}
+                                    onClick={(e: React.MouseEvent) => {
+                                        if (player) {
+                                            // ↓ 親要素のonClickを発火させたくない場合に追記
+                                            e.stopPropagation();
+                                            player.pauseVideo();
+                                        }
+                                    }}
+                                />
+                            ) : (
+                                <PlayArrowIcon
+                                    sx={{
+                                        height: "100%",
+                                        margin: "auto",
+                                    }}
+                                    onClick={(e: React.MouseEvent) => {
+                                        // ↓ 親要素のonClickを発火させたくない場合に追記
+                                        e.stopPropagation();
+                                        if (player) {
+                                            player.playVideo();
+                                        }
+                                    }}
+                                />
+                            ))}
                     </Box>
                     {/* YouTube Playerの下の概要欄 */}
                     <Box
@@ -459,6 +502,19 @@ export default function PlayerView(props: PlayerProps) {
                                     hour12: false, // 24時間形式
                                 })}
                         </p>
+                        {/* 概要欄 */}
+                        <p>概要欄</p>
+                        <Box
+                            style={{
+                                // 文字列内の\nを適切に反映させる。
+                                whiteSpace: "pre-line",
+                            }}
+                        >
+                            {props.isPlayerFullscreen &&
+                                playNowDetail &&
+                                playNowDetail.description &&
+                                playNowDetail.description}
+                        </Box>
                         {/* 出演者一覧 */}
                         <p>出演者</p>
                         <Box

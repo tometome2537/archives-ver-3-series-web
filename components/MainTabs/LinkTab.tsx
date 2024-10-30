@@ -1,9 +1,9 @@
 import { useDataContext } from "@/contexts/ApiDataContext";
 import type { apiData, DataContextType } from "@/contexts/ApiDataContext";
-import type { InputValueSearchSuggestion } from "@/components/Navbar/SuperSearchBar";
+import type { InputValue } from "@/components/Navbar/SuperSearchBar";
 
 type LinkTabProps = {
-    inputValue: InputValueSearchSuggestion[];
+    inputValue: InputValue[];
 };
 export function LinkTab(props: LinkTabProps) {
     const apiData = useDataContext();
@@ -48,7 +48,7 @@ export function LinkTab(props: LinkTabProps) {
                 ))}
             </div>
 
-            <h2>X アカウント</h2>
+            <h2>𝕏 アカウント</h2>
             <div>
                 {XAccounts?.map((item) => (
                     <p key={item.userName}>@{item.userName}</p>

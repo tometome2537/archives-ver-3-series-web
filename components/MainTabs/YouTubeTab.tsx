@@ -27,8 +27,8 @@ type SortButtonProps = {
 };
 
 interface YouTubeTabProps {
-    playerItem: PlayerItem;
-    setPlayerItem: Dispatch<SetStateAction<PlayerItem>>;
+    playerItem: PlayerItem | undefined;
+    setPlayerItem: Dispatch<SetStateAction<PlayerItem | undefined>>;
     setPlayerSearchResult: Dispatch<SetStateAction<PlayerItem[]>>;
 }
 
@@ -52,7 +52,6 @@ export function YouTubeTab(props: YouTubeTabProps) {
     const [videoCount, setVideoCount] = useState<number>(0);
     // ソート順を保持するステート（初期値は「人気順」）
     const [sortOrder, setSortOrder] = useState<string>("pop");
-
 
     // コンポーネントの初回マウント時に動画数を取得
     useEffect(() => {
@@ -89,11 +88,8 @@ export function YouTubeTab(props: YouTubeTabProps) {
         fetchVideoCount();
     }, [fetchVideoCount]);
 
-
     // 動画サムネイルがクリックされたときに呼ばれる関数
     function handleVideoClick(event: React.MouseEvent<HTMLButtonElement>) {
-
-
         // 新しいタブでYouTubeの動画を開く
         // window.open(`https://youtube.com/watch?v=${e.currentTarget.dataset.id}`);
 

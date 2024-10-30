@@ -1,20 +1,20 @@
 import type React from "react";
 import { useEffect, useState } from "react";
-import YouTube, { type YouTubeProps } from "react-youtube";
+import type { Dispatch, SetStateAction } from "react";
+import YouTube, { type YouTubeProps, type YouTubePlayer } from "react-youtube";
 
-type YouTubePlayerProps = {
+type YouTubePlayerViewProps = {
     videoId?: string;
     width?: string;
     height?: string;
     style?: React.CSSProperties; // 外部からスタイルを受け取る（オプション）
     loop?: boolean; // ループ再生を制御するオプションを追加
     playerRadius?: boolean;
+    setPlayerState?: Dispatch<SetStateAction<string | undefined>>;
+    setPlayer?: Dispatch<SetStateAction<YouTubePlayer | undefined>>;
 };
 
-export default function YouTubePlayer(props: YouTubePlayerProps) {
-    const [playerState, setPlayerState] = useState<string>("不明"); // プレイヤーの状態を管理する状態変数
-    const [player, setPlayer] = useState(null); // YouTubeプレイヤーのインスタンス
-
+export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
     // YouTube Playerの再生オプション
     const YouTubeOpts: YouTubeProps["opts"] = {
         // widthは "％"の指定で良い。具体的な幅はPlayerの親要素で調節する。
@@ -35,25 +35,37 @@ export default function YouTubePlayer(props: YouTubePlayerProps) {
             const state = event.data;
             switch (state) {
                 case -1:
-                    setPlayerState("未開始");
+                    props.setPlayerState
+                        ? props.setPlayerState("未開始")
+                        : null;
                     break;
                 case 0:
-                    setPlayerState("終了");
+                    props.setPlayerState ? props.setPlayerState("終了") : null;
                     break;
                 case 1:
-                    setPlayerState("再生中");
+                    props.setPlayerState
+                        ? props.setPlayerState("再生中")
+                        : null;
                     break;
                 case 2:
-                    setPlayerState("一時停止");
+                    props.setPlayerState
+                        ? props.setPlayerState("一時停止")
+                        : null;
                     break;
                 case 3:
-                    setPlayerState("バッファリング");
+                    props.setPlayerState
+                        ? props.setPlayerState("バッファリング")
+                        : null;
                     break;
                 case 5:
-                    setPlayerState("頭出し（準備完了）");
+                    props.setPlayerState
+                        ? props.setPlayerState("頭出し（準備完了）")
+                        : null;
                     break;
                 default:
-                    setPlayerState("不明");
+                    props.setPlayerState
+                        ? props.setPlayerState(undefined)
+                        : null;
                     break;
             }
         }
@@ -61,20 +73,8 @@ export default function YouTubePlayer(props: YouTubePlayerProps) {
 
     // YouTube Playerの読み込みが完了した時
     const onReady: YouTubeProps["onReady"] = (event) => {
-        setPlayer(event.target); // プレイヤーのインスタンスを保存
-    };
-
-    // 再生ボタンのハンドラ
-    const handlePlay = () => {
-        if (player) {
-            // player.playVideo();
-        }
-    };
-
-    // 一時停止ボタンのハンドラ
-    const handlePause = () => {
-        if (player) {
-            // player.pauseVideo();
+        if (props.setPlayer) {
+            props.setPlayer(event.target); // プレイヤーのインスタンスを保存
         }
     };
 
@@ -97,23 +97,12 @@ export default function YouTubePlayer(props: YouTubePlayerProps) {
             }}
         >
             <YouTube
-                videoId={props.videoId || ""}
+                videoId={props.videoId ? props.videoId : ""}
                 opts={YouTubeOpts}
                 onStateChange={onStateChange}
                 onReady={onReady}
             />
-            <div
-                style={{
-                    display: "none",
-                }}
-            >
-                {/* 再生状態表示 */}
-                <p>再生状態: {playerState}</p>
-
-                {/* 再生/一時停止ボタン */}
-                {/* <button onClick={handlePlay}>再生</button> */}
-                {/* <button onClick={handlePause}>一時停止</button> */}
-            </div>
+            <div>{/* <p>{props.videoId}</p> */}</div>
         </div>
     );
 }

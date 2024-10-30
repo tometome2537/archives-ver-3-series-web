@@ -30,6 +30,10 @@ export type apiData = {
     officialArtistChannel: string;
     category: string;
     apiData: string;
+
+    musicTitle?: string;
+    musicArtist?: string;
+    subscriptionUrl?: string;
 };
 
 // コンテキストの型定義
@@ -57,6 +61,14 @@ const Db: { id: string; url: string }[] = [
         id: "Entity",
         url: "https://api.sssapi.app/ZJUpXwYIh9lpfn3DQuyzS",
     },
+    {
+        id: "Music",
+        url: "https://api.sssapi.app/V_H20t9RBDxXC4vbI-kKy",
+    },
+    // {
+    //     id: "BelongHistory",
+    //     url: "https://api.sssapi.app/HXy5cl24OnVmRtM9EtO_G",
+    // },
     // {
     //     id: "Video",
     //     url: "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp",

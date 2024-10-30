@@ -38,9 +38,11 @@ export interface SearchSuggestion {
     categoryId: string;
     // カテゴリーのラベル(表示に使用)
     categoryLabel: string;
+    // 検索候補表示時のカテゴリーの並び順(大きい順)
+    categorySort?: number;
 }
 
-export interface InputValueSearchSuggestion extends SearchSuggestion {
+export interface InputValue extends SearchSuggestion {
     sort: number;
     // 値が作成された時刻を定義。
     createdAt: Date;
@@ -74,8 +76,8 @@ type SuperSearchBarProps = {
     // 日付の入力を許可するカテゴリー
     dateSuggestionCategory?: additionalSearchSuggestions[];
 
-    inputValues: InputValueSearchSuggestion[];
-    setInputValues: (values: InputValueSearchSuggestion[]) => void;
+    inputValues: InputValue[];
+    setInputValues: (values: InputValue[]) => void;
 
     // タグにアイコンを表示するかどうか
     showTagIcon?: boolean;
@@ -98,14 +100,15 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
     const theme = useTheme();
 
     // 検索候補(SearchSuggestions)を加工してAutocompleteに渡す。
-    const options: InputValueSearchSuggestion[] = props.searchSuggestions
+    const options: SearchSuggestion[] = props.searchSuggestions
         ? props.searchSuggestions
-              .map((option) => ({
-                  sort: option.sort ?? -9999999,
-                  createdAt: new Date(0),
-                  ...option,
-              }))
-              .sort((a, b) => a.categoryLabel.localeCompare(b.categoryLabel))
+              // categoryLabelの名前で並び替える
+              //   .sort((a, b) => a.categoryLabel.localeCompare(b.categoryLabel))
+              .sort((a, b) => {
+                  const bb = b.categorySort ? b.categorySort : 0;
+                  const aa = a.categorySort ? a.categorySort : 0;
+                  return bb - aa;
+              })
         : [];
 
     // バリデーション用のダミーデータ
@@ -118,7 +121,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
     const [openDatePicker, setOpenDatePicker] = useState(false);
     // 日付ダイアログの値
     const [dialogDatePickerValue, setDialogDatePickerValue] =
-        React.useState<InputValueSearchSuggestion>({
+        React.useState<InputValue>({
             sort: 0,
             createdAt: new Date(),
             label: "",
@@ -161,29 +164,34 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
 
     // 検索候補のフィルタリング関数
     function filter(
-        options: InputValueSearchSuggestion[], // フィルタリング対象のオプションリスト
+        options: SearchSuggestion[], // フィルタリング対象のオプションリスト
         params: { inputValue: string }, // フィルタリングに使用するパラメータ（入力値）
-    ): InputValueSearchSuggestion[] {
+    ): SearchSuggestion[] {
         // 入力された値を小文字に変換して比較しやすくする
         const inputValueLowerCase = params.inputValue.toLowerCase();
 
         // optionsリストをフィルタリングし、inputValueがオプションのラベルに含まれるものを返す
         return options.filter((option) =>
-            option.label.toLowerCase().includes(inputValueLowerCase),
+            // ↓ 無駄に見えて謎にエラー回避に役立ってる String()
+            // おそらくAPIで取得した値がstringでないのが原因。
+            // APIで取得する値がStringかどうかはTypeScriptでチェックしきれない。
+            String(option.label)
+                .toLowerCase()
+                .includes(inputValueLowerCase),
         );
     }
 
     // 入力値変更時に呼び出される関数
     const handleOnChange = (
         _event: SyntheticEvent<Element, Event>,
-        newValues: (InputValueSearchSuggestion | string)[],
+        newValues: (SearchSuggestion | string)[],
     ): void => {
-        const result: InputValueSearchSuggestion[] = [];
+        const result: InputValue[] = [];
         for (const value of newValues) {
             // optionから選択されず直接入力されたのはstring型として出力されるため、
             // 必要に応じて型変換をする必要がある。
             if (typeof value === "string") {
-                const item: InputValueSearchSuggestion = {
+                const item: InputValue = {
                     sort: 0,
                     createdAt: new Date(),
                     label: value,
@@ -194,7 +202,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 result.push(item);
             } else if (value.categoryId === "_DatePickerDialog") {
                 setDialogDatePickerValue({
-                    sort: value.sort,
+                    sort: value.sort ? value.sort : -999999,
                     createdAt: new Date(),
                     label: value.label,
                     value: value.value,
@@ -204,8 +212,12 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 // 日付ダイアログを開く
                 setOpenDatePicker(true);
             } else {
-                value.createdAt = new Date();
-                result.push(value);
+                const item = {
+                    sort: value.sort ? value.sort : -999999,
+                    createdAt: new Date(),
+                    ...value,
+                };
+                result.push(item);
             }
         }
         // 並び替え
@@ -247,6 +259,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
     // 検索候補のHTML
     const GroupHeader = styled(Box)(({ theme }) => ({
         position: "sticky",
+        zIndex: "1", // 強制的に上にする。
         top: "-8px",
         padding: "4px 10px",
         color: theme.palette.primary.main,
@@ -257,8 +270,27 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
     }));
     // 検索候補のアイテムのHTML
     const GroupItems = styled("ul")({
+        // zIndex: "0",
+        display: "flex",
+        flexWrap: "wrap", //要素を折り返す
+        gap: "3px", // 要素間のスペース
         padding: 0,
+        backgroundColor: theme.palette.background.paper,
     });
+    // 検索候補からデータを取得(ラベルとカテゴリラベルを利用。)
+    const getSearchSuggestionFromLabel = (
+        label: string,
+        categoryLabel: string,
+    ) => {
+        const r = props.searchSuggestions?.find(
+            (item) =>
+                item.label === label && item.categoryLabel === categoryLabel,
+        );
+        if (r) {
+            return r;
+        }
+        return undefined;
+    };
 
     return (
         <React.Fragment>
@@ -311,7 +343,10 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 }}
                 // 検索候補のフィルタリングをする。
                 filterOptions={(options, params) => {
-                    const filtered = filter(options, params);
+                    const filtered: SearchSuggestion[] = filter(
+                        options,
+                        params,
+                    );
 
                     // 追加カテゴリーのテキストを入力しようとしている場合に日付を入力する選択肢を検索候補に表示
                     if (
@@ -322,8 +357,6 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                         // 候補から直接確定する場合
                         for (const i of props.textSuggestionCategory) {
                             filtered.push({
-                                sort: i.sort ? i.sort : 0,
-                                createdAt: new Date(),
                                 label: params.inputValue, //`Add "${formattedDate}"`,
                                 value: params.inputValue,
                                 categoryId: i.categoryId,
@@ -346,8 +379,6 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
 
                             // 日付ダイアログを開く場合
                             filtered.unshift({
-                                sort: 0,
-                                createdAt: new Date(),
                                 label: "日付を簡単に入力する場合ここをタップ", //`Add "${formattedDate}"`,
                                 value: formattedDate,
                                 categoryId: "_DatePickerDialog",
@@ -356,8 +387,6 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                             // 候補から直接確定する場合
                             for (const i of props.dateSuggestionCategory) {
                                 filtered.unshift({
-                                    sort: i.sort ? i.sort : 0,
-                                    createdAt: new Date(),
                                     label: formattedDate, //`Add "${formattedDate}"`,
                                     value: date.toString(),
                                     categoryId: i.categoryId,
@@ -366,8 +395,6 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                             }
                             // 日付の入力形式をお知らせ
                             filtered.unshift({
-                                sort: 0,
-                                createdAt: new Date(),
                                 label: "YYYY/MM/DD hh:mm:ss",
                                 value: date.toString(),
                                 categoryId: "_DatePickerDialog",
@@ -406,25 +433,110 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                     <li key={params.key}>
                         <GroupHeader>{params.group}</GroupHeader>
                         {/* params.childrenはReact.ReactNode(文字列、数値、React要素、配列、null、undefined 等の)webで表示できるすべての型。 */}
-                        <GroupItems>{params.children}</GroupItems>
-                        {/* ↓ 開発中のGroupItems */}
+                        {/* <GroupItems>{params.children}</GroupItems> */}
                         <GroupItems>
                             {React.Children.map(
+                                // 検索候補の各項目を繰り返す。
                                 params.children,
                                 (child, index) => (
                                     <Box
+                                        key={child?.toString()}
                                         sx={{
-                                            display: "none",
-                                            // display: "flex", // Flexboxを使用してアバターと内容を横に並べる
-                                            height: "110%",
-                                            borderRadius: "4px",
-                                            marginBottom: "4px",
-                                            border: "1px solid #ddd",
-                                            alignItems: "center", // 垂直方向に中央揃え
-                                            padding: "8px", // 余白を追加
+                                            // タグの横幅を定義
+                                            width: props.showTagCount
+                                                ? `${(100 - 20) / props.showTagCount}%`
+                                                : "20%",
                                         }}
                                     >
-                                        {child} {/* 子要素 */}
+                                        {/* 各要素にユニークなkeyを設定 */}
+                                        {
+                                            React.isValidElement(child)
+                                                ? // 各項目の要素をReact.cloneElementでクローンを作成する。
+                                                  React.cloneElement(<Chip />, {
+                                                      // コメント消さないで by とめとめ
+                                                      // 既存のchildのpropsをスプレッド演算子で展開
+                                                      ...child.props,
+                                                      variant: "outlined",
+                                                      sx: {
+                                                          // 既存のスタイルを維持
+                                                          //   ...child.props.style,
+                                                          //   height: "110%",
+                                                          marginBottom: "3px",
+                                                          //   "& .MuiChip-label":
+                                                          //       {},
+                                                      },
+                                                      // 新しいスタイルやイベントハンドラを追加
+                                                      icon:
+                                                          props.showTagIcon ===
+                                                          false
+                                                              ? undefined
+                                                              : getSearchSuggestionFromLabel(
+                                                                    child.props
+                                                                        .children,
+                                                                    params.group,
+                                                                )?.icon,
+                                                      avatar:
+                                                          props.showTagIcon ===
+                                                          false ? undefined : getSearchSuggestionFromLabel(
+                                                                child.props
+                                                                    .children,
+                                                                params.group,
+                                                            )?.imgSrc ? (
+                                                              <Avatar
+                                                                  alt={
+                                                                      child
+                                                                          .props
+                                                                          .children
+                                                                  }
+                                                                  src={
+                                                                      getSearchSuggestionFromLabel(
+                                                                          child
+                                                                              .props
+                                                                              .children,
+                                                                          params.group,
+                                                                      )?.imgSrc
+                                                                  }
+                                                              />
+                                                          ) : getSearchSuggestionFromLabel(
+                                                                child.props
+                                                                    .children,
+                                                                params.group,
+                                                            )
+                                                                ?.icon ? undefined : (
+                                                              <Avatar>
+                                                                  {child.props
+                                                                      .children
+                                                                      ? child
+                                                                            .props
+                                                                            .children[0]
+                                                                      : ""}
+                                                              </Avatar>
+                                                          ),
+                                                      label: child.props
+                                                          .children,
+                                                      color: "secondary",
+
+                                                      // ↓ onClick()がChipを一意に特定するために必要。
+                                                      //   id: `:r${index}:-option-${index}`,
+                                                      "data-option-index":
+                                                          child.props[
+                                                              "data-option-index"
+                                                          ],
+
+                                                      onClick: (
+                                                          e: React.MouseEvent,
+                                                      ) => {
+                                                          // 親要素のonClickを発火させたくない場合に追記
+                                                          //   e.stopPropagation();
+
+                                                          // 既存のonClickを呼び出す
+                                                          child.props.onClick(
+                                                              e,
+                                                          );
+                                                      },
+                                                  })
+                                                : child // 子要素がReactエレメントでない場合はそのまま表示
+                                        }
                                     </Box>
                                 ),
                             )}
@@ -432,96 +544,89 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                     </li>
                 )}
                 // 入力された値をタグ🏷️の見た目で表示する
-                renderTags={(
-                    value: Array<InputValueSearchSuggestion>,
-                    getTagProps,
-                ) =>
-                    value.map(
-                        (option: InputValueSearchSuggestion, index: number) => (
-                            <Box
-                                key={`${option.value}-${option.categoryId}`} // 一意なキーを設定
+                renderTags={(value: Array<SearchSuggestion>, getTagProps) =>
+                    value.map((option: SearchSuggestion, index: number) => (
+                        <Box
+                            key={`${option.value}-${option.categoryId}`} // 一意なキーを設定
+                            sx={{
+                                position: "relative", // アイコンの位置を指定するために relative を設定
+                            }}
+                        >
+                            <Chip
+                                variant="outlined"
                                 sx={{
-                                    position: "relative", // アイコンの位置を指定するために relative を設定
+                                    height: "auto",
+                                    "& .MuiChip-label": {
+                                        // textAlign: "center",
+                                        maxWidth: "100%",
+                                        lineHeight: "1.5", // 文字の上下間隔
+                                        whiteSpace: "nowrap", // 改行させない
+                                        overflow: "hidden", // オーバーフロー時に隠す
+                                        textOverflow: "ellipsis", // 長いテキストを省略して表示
+                                    },
                                 }}
-                            >
-                                <Chip
-                                    variant="outlined"
-                                    sx={{
-                                        height: "auto",
-                                        "& .MuiChip-label": {
-                                            // textAlign: "center",
-                                            maxWidth: "100%",
-                                            lineHeight: "1.5", // 文字の上下間隔
-                                            whiteSpace: "nowrap", // 改行させない
-                                            overflow: "hidden", // オーバーフロー時に隠す
-                                            textOverflow: "ellipsis", // 長いテキストを省略して表示
-                                        },
-                                    }}
-                                    icon={
-                                        props.showTagIcon === false
-                                            ? undefined
-                                            : option.icon
-                                    }
-                                    avatar={
-                                        props.showTagIcon ===
-                                        false ? undefined : option.imgSrc ? (
-                                            <Avatar
-                                                alt={option.label}
-                                                src={option.imgSrc}
-                                            />
-                                        ) : option.icon ? undefined : (
-                                            <Avatar>{option.label[0]}</Avatar>
-                                        )
-                                    }
-                                    label={
-                                        <>
-                                            {option.label}
-                                            <br />
-                                            {option.categoryLabel}
-                                        </>
-                                    }
-                                    color="success"
-                                    {...getTagProps({ index })}
-                                    // 外せない検索ワードのタグの色を薄く。
-                                    disabled={
-                                        props.fixedOptionValues
-                                            ? props.fixedOptionValues.includes(
-                                                  option.value,
-                                              )
-                                            : undefined
-                                    }
-                                    // 外せない検索ワードはタグ右側の❌のアイコンを非表示
-                                    onDelete={
-                                        props.fixedOptionValues
-                                            ? props.fixedOptionValues.includes(
-                                                  option.value,
-                                              )
-                                                ? undefined
-                                                : getTagProps({ index })
-                                                      .onDelete
-                                            : getTagProps({ index }).onDelete
-                                    }
-                                />
-                                {/* 有効化されていないcategoryIdのタグの上に❌を表示する。 */}
-                                {props.availableCategoryIds ? (
-                                    props.availableCategoryIds.includes(
-                                        option.categoryId,
-                                    ) ? null : ( // availableCategoryIdsが存在する場合のみincludesを呼び出す
-                                        <CloseIcon
-                                            sx={{
-                                                position: "absolute", // Box内の絶対位置に表示
-                                                top: "10%", // 上から20%の位置に配置
-                                                left: "40%", // 左から40%の位置に配置
-                                                color: theme.palette.warning
-                                                    .main,
-                                                fontSize: "2.5rem", // アイコンのサイズを調整
-                                            }}
+                                icon={
+                                    props.showTagIcon === false
+                                        ? undefined
+                                        : option.icon
+                                }
+                                avatar={
+                                    props.showTagIcon ===
+                                    false ? undefined : option.imgSrc ? (
+                                        <Avatar
+                                            alt={option.label}
+                                            src={option.imgSrc}
                                         />
+                                    ) : option.icon ? undefined : (
+                                        <Avatar>{option.label[0]}</Avatar>
                                     )
-                                ) : null}
-                            </Box>
-                        ),
-                    )
+                                }
+                                label={
+                                    <>
+                                        {option.label}
+                                        <br />
+                                        {option.categoryLabel}
+                                    </>
+                                }
+                                color="success"
+                                {...getTagProps({ index })}
+                                // 外せない検索ワードのタグの色を薄く。
+                                disabled={
+                                    props.fixedOptionValues
+                                        ? props.fixedOptionValues.includes(
+                                              option.value,
+                                          )
+                                        : undefined
+                                }
+                                // 外せない検索ワードはタグ右側の❌のアイコンを非表示
+                                onDelete={
+                                    props.fixedOptionValues
+                                        ? props.fixedOptionValues.includes(
+                                              option.value,
+                                          )
+                                            ? undefined
+                                            : getTagProps({ index }).onDelete
+                                        : getTagProps({ index }).onDelete
+                                }
+                            />
+                            {/* 有効化されていないcategoryIdのタグの上に❌を表示する。 */}
+                            {props.availableCategoryIds ? (
+                                props.availableCategoryIds.includes(
+                                    option.categoryId,
+                                ) ? null : ( // availableCategoryIdsが存在する場合のみincludesを呼び出す
+                                    <CloseIcon
+                                        sx={{
+                                            position: "absolute", // Box内の絶対位置に表示
+                                            top: "10%", // 上から20%の位置に配置
+                                            left: "40%", // 左から40%の位置に配置
+                                            color: theme.palette.warning.main,
+                                            fontSize: "2.5rem", // アイコンのサイズを調整
+                                        }}
+                                    />
+                                )
+                            ) : null}
+                        </Box>
+                    ))
                 }
             />
             <Dialog open={openDatePicker} onClose={handleDialogDateClose}>

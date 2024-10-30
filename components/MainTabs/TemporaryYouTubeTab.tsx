@@ -1,13 +1,14 @@
 import { type Dispatch, Fragment, type SetStateAction } from "react";
 import type { PlayerItem } from "../PlayerView";
 import SuperSearchBar, {
-    type InputValueSearchSuggestion,
+    type InputValue,
 } from "@/components/Navbar/SuperSearchBar";
 import buildUrlWithQuery from "@/libs/buildUrl";
 import { Box } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import Loading from "../Loading";
 import Thumbnail from "../Thumbnail";
+import GradeIcon from "@mui/icons-material/Grade";
 
 type VideoTemporaryObj = {
     videoId: string; // 動画ID
@@ -23,7 +24,7 @@ type VideoTemporaryObj = {
     live: boolean | undefined; // ライブ動画フラグ（null可）
     categoryFromYTApi: number | undefined; // カテゴリ（YouTube APIから取得）
     category: string | undefined; // カテゴリ（手動設定、null可）
-    tagText: string | undefined; // タグテキスト（null可）
+    tagText: string | undefined | null; // タグテキスト（null可）
     person: string | undefined; // 関連人物
     addPerson: string | undefined; // 追加する人物
     deletePerson: string | undefined; // 削除する人物
@@ -31,12 +32,14 @@ type VideoTemporaryObj = {
     addOrganization: string | undefined; // 追加する組織（null可）
     deleteOrganization: string | undefined; // 削除する組織（null可）
     karaokeKey: string | undefined; // カラオケキー（null可）
+    apiData: string | undefined;
 };
 
 type TemporaryYouTubeTab = {
-    inputValue: InputValueSearchSuggestion[];
-    playerItem: PlayerItem;
-    setPlayerItem: Dispatch<SetStateAction<PlayerItem>>;
+    isMobile: boolean;
+    inputValue: InputValue[];
+    playerItem: PlayerItem | undefined;
+    setPlayerItem: Dispatch<SetStateAction<PlayerItem | undefined>>;
     setPlayerPlaylist: Dispatch<SetStateAction<PlayerItem[]>>;
     setPlayerSearchResult: Dispatch<SetStateAction<PlayerItem[]>>;
 };
@@ -57,7 +60,8 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
     const fetchEvents = useCallback(async () => {
         try {
             // Video取得
-            const url = "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp";
+            const url =
+                "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp?filter__channelId__exact=UCZx7esGXyW6JXn98byfKEIA";
             const response = await fetch(url, {
                 headers: {
                     Authorization: `token ${process.env.NEXT_PUBLIC_SSSAPI_ACCESS_TOKEN}`,
@@ -82,6 +86,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 
     // サーチバーの値を取得し結果を表示。
     useEffect(() => {
+        setLoading(true);
         const result = apiDataVideo.filter((item, index) => {
             // 検索結果を100件に制限(開発中の一時的処置)
             // if (index > 100) {
@@ -91,6 +96,14 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 
             // 各inputValueに対してすべての条件を確認
             for (const inputValue of props.inputValue) {
+                // 公開設定は一般公開に限る
+                if (item.privacyStatus !== "public") {
+                    match = false;
+                }
+                // shortは非表示
+                if (item.short === true) {
+                    match = false;
+                }
                 if (inputValue.categoryId === "YouTubeChannel") {
                     // YouTubeチャンネルの条件を満たさなければfalse
                     if (item.channelId !== inputValue.value) {
@@ -102,13 +115,64 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                         match = false;
                     }
                 } else if (inputValue.categoryId === "organization") {
-                    // 出演者の条件を満たさなければfalse
+                    // 組織の条件を満たさなければfalse
                     if (!item.organization?.match(inputValue.value)) {
                         match = false;
                     }
                 } else if (inputValue.categoryId === "title") {
-                    // 出演者の条件を満たさなければfalse
+                    // タイトルの条件を満たさなければfalse
                     if (!item.title?.match(inputValue.value)) {
+                        match = false;
+                    }
+                } else if (inputValue.categoryId === "text") {
+                    // 概要欄の条件を満たさなければfalse
+                    if (
+                        !item.title?.match(inputValue.value) ||
+                        (item.apiData &&
+                            // JSON.parse(item.apiData).snippet.description &&
+                            !JSON.parse(
+                                item.apiData,
+                            ).snippet.description?.match(inputValue.value))
+                    ) {
+                        match = false;
+                    }
+                } else if (inputValue.categoryId === "description") {
+                    // 概要欄の条件を満たさなければfalse
+                    if (
+                        item.apiData &&
+                        // JSON.parse(item.apiData).snippet.description &&
+                        !JSON.parse(item.apiData).snippet.description?.match(
+                            inputValue.value,
+                        )
+                    ) {
+                        match = false;
+                    }
+                } else if (inputValue.categoryId === "musicArtistName") {
+                    // タイトルの条件を満たさなければfalse
+                    if (
+                        !item.title?.match(inputValue.value) ||
+                        // ↓ Offical髭男dism要検証 (To Do)
+                        (item.tagText && !item.tagText?.match(inputValue.value))
+                    ) {
+                        match = false;
+                    }
+                } else if (inputValue.categoryId === "musicTitle") {
+                    // タイトルの条件を満たさなければfalse
+                    if (!item.title?.match(inputValue.value)) {
+                        match = false;
+                    }
+                } else if (inputValue.categoryId === "specialWord_PlatMusic") {
+                    // タイトルの条件を満たさなければfalse
+                    if (!item.title?.match(/ぷらそにか/)) {
+                        match = false;
+                    }
+                    // 概要欄の条件を満たさなければfalse
+                    if (
+                        item.apiData &&
+                        !JSON.parse(item.apiData).snippet.description?.match(
+                            /ぷらっとみゅーじっく♪/,
+                        )
+                    ) {
                         match = false;
                     }
                 }
@@ -118,6 +182,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         });
 
         setResultVideo(result);
+        setLoading(false);
     }, [props.inputValue, apiDataVideo]);
 
     // 動画サムネイルがクリックされたときに呼ばれる関数
@@ -132,6 +197,9 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                   const result: PlayerItem = {
                       videoId: item.videoId,
                       title: item.title,
+                      description:
+                          item.apiData &&
+                          JSON.parse(item.apiData).snippet.description,
                       viewCount: Number(item.viewCount),
                       channelId: item.channelId,
                       channelTitle: item.channelTitle,
@@ -190,8 +258,8 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                     gap: "10px", // アイテム間のスペースを追加
                 }}
             >
-                {resultVideo ? (
-                    resultVideo.length !== 0 ? (
+                {resultVideo &&
+                    (resultVideo.length !== 0 ? (
                         resultVideo.map(
                             (item: VideoTemporaryObj, index: number) => (
                                 <>
@@ -199,6 +267,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 
                                     <Thumbnail
                                         key={item.videoId}
+                                        thumbnailType="list"
                                         // isPlayingOnHover={
                                         //     props.playerItem.videoId === "" ||
                                         //     props.playerItem.videoId === undefined
@@ -219,8 +288,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                         <>
                             <div>検索結果が0です。</div>
                         </>
-                    )
-                ) : null}
+                    ))}
             </Box>
         </Fragment>
     );

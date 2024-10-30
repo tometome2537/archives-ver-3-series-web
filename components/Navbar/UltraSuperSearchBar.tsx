@@ -3,7 +3,7 @@
 import { DatePicker } from "@/components/Form/DatePicker";
 import SuperSearchBar, {
     type SearchSuggestion,
-    type InputValueSearchSuggestion,
+    type InputValue,
     type additionalSearchSuggestions,
 } from "@/components/Navbar/SuperSearchBar";
 import { Category } from "@mui/icons-material";
@@ -30,8 +30,8 @@ export interface LimitedSuperSearchProps {
     dateSuggestionCategory?: additionalSearchSuggestions[];
     showTagIcon?: boolean;
     showTagCount?: number;
-    inputValue: InputValueSearchSuggestion[];
-    setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
+    inputValue: InputValue[];
+    setInputValue: Dispatch<SetStateAction<InputValue[]>>;
     textFieldLabel?: string;
     categoryId: string;
     onChange?: () => void;
@@ -57,7 +57,7 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
         (x) => x.categoryId === categoryId,
     );
     // 他のサーチバーで入力された値を消さないように、入力された値を出力する。
-    const handleSetInputValues = (values: InputValueSearchSuggestion[]) => {
+    const handleSetInputValues = (values: InputValue[]) => {
         setInputValue([
             ...inputValue.filter((x) => x.categoryId !== categoryId),
             ...values,
@@ -106,8 +106,8 @@ export interface ultraSuperSearchBarSearchSuggestion extends SearchSuggestion {
 }
 
 type UltraSuperSearchBarSearchBarProps = {
-    inputValue: InputValueSearchSuggestion[];
-    setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
+    inputValue: InputValue[];
+    setInputValue: Dispatch<SetStateAction<InputValue[]>>;
     // 検索候補
     searchSuggestion?: ultraSuperSearchBarSearchSuggestion[];
     // 外せない入力値を定義
@@ -133,7 +133,7 @@ export default function UltraSuperSearchBar(
 
     // 入力履歴を保存(To DO)
     const [inputValueHistory, setInputValueHistory] = useState<
-        InputValueSearchSuggestion[]
+    InputValue[]
     >([]);
 
     return (
@@ -179,8 +179,8 @@ export default function UltraSuperSearchBar(
                             )}
                         </ButtonBase>
                     )}
-                <Box sx={{ flexGrow: 1 }} />
-                <HistoryIcon />
+                {/* <Box sx={{ flexGrow: 1 }} />
+                <HistoryIcon /> */}
             </Box>
 
             {props.limitSuperSearchCategory &&

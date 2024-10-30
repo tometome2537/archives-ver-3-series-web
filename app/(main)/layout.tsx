@@ -9,7 +9,7 @@ import { TemporaryYouTubeTab } from "@/components/MainTabs/TemporaryYouTubeTab";
 import { YouTubeTab } from "@/components/MainTabs/YouTubeTab";
 import Navbar from "@/components/Navbar/Navbar";
 import type {
-    InputValueSearchSuggestion,
+    InputValue,
     additionalSearchSuggestions,
 } from "@/components/Navbar/SuperSearchBar";
 import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
@@ -38,6 +38,8 @@ import {
 import PersonIcon from "@mui/icons-material/Person";
 import { useDataContext } from "@/contexts/ApiDataContext";
 import type { apiData, DataContextType } from "@/contexts/ApiDataContext";
+import Image from "next/image";
+import GradeIcon from "@mui/icons-material/Grade";
 
 export default function RootLayout({
     children,
@@ -49,7 +51,7 @@ export default function RootLayout({
     // apiDataを取得
     const apiData = useDataContext();
     // デバッグ(ローカル開発環境)モード(リンク集を10回タップするとデバッグモードへ)
-    const [debugMode, setDebugMode] = useState(
+    const [debugMode, setDebugMode] = useState<boolean>(
         process.env.NEXT_PUBLIC_STAGE === "local",
     );
     // ディスプレイの横幅(px)
@@ -64,9 +66,7 @@ export default function RootLayout({
 
     // ⭐️ここからウルトラスーパーサーチバー関連
     // 入力された値
-    const [inputValue, setInputValue] = useState<InputValueSearchSuggestion[]>(
-        [],
-    );
+    const [inputValue, setInputValue] = useState<InputValue[]>([]);
     // 検索候補
     const [searchSuggestion, setSearchSuggestion] = useState<
         ultraSuperSearchBarSearchSuggestion[]
@@ -88,7 +88,9 @@ export default function RootLayout({
     const [isPlayerFullscreen, setIsPlayerFullscreen] =
         useState<boolean>(false);
     // PlayerView
-    const [playerItem, setPlayerItem] = useState<PlayerItem>({});
+    const [playerItem, setPlayerItem] = useState<PlayerItem | undefined>(
+        undefined,
+    );
     const [playerPlaylist, setPlayerPlaylist] = useState<PlayerItem[]>([]);
     const [playerSearchResult, setPlayerSearchResult] = useState<PlayerItem[]>(
         [],
@@ -152,6 +154,7 @@ export default function RootLayout({
                     children: (
                         <TemporaryYouTubeTab
                             key="tempYoutube"
+                            isMobile={isMobile}
                             inputValue={inputValue}
                             playerItem={playerItem}
                             setPlayerItem={setPlayerItem}
@@ -165,13 +168,18 @@ export default function RootLayout({
                             "organization",
                             "YouTubeChannel",
                             "title",
+                            "description",
+                            "specialWord_PlatMusic",
+                            "musicArtistName",
+                            "musicTitle",
+                            "text",
                         ]);
                         setLimitSuperSearchCategory([
-                            { categoryId: "actor", categoryLabel: "出演者" },
-                            {
-                                categoryId: "organization",
-                                categoryLabel: "組織",
-                            },
+                            // { categoryId: "actor", categoryLabel: "出演者" },
+                            // {
+                            //     categoryId: "organization",
+                            //     categoryLabel: "組織",
+                            // },
                         ]);
                         setFixedOptionValues(["UCZx7esGXyW6JXn98byfKEIA"]);
 
@@ -265,7 +273,7 @@ export default function RootLayout({
                     }
                     return item;
                 }),
-        [debugMode, inputValue, playerItem],
+        [debugMode, inputValue, playerItem, isMobile],
     );
 
     // 指定された位置(px)にスクロールする関数
@@ -422,6 +430,11 @@ export default function RootLayout({
         const Entity: apiData[] | undefined = apiData.find(
             (item) => item.id === "Entity",
         )?.data;
+
+        const Music: apiData[] | undefined = apiData.find(
+            (item) => item.id === "Music",
+        )?.data;
+
         if (Entity && YouTubeAccounts) {
             const result: ultraSuperSearchBarSearchSuggestion[] = [];
 
@@ -460,15 +473,74 @@ export default function RootLayout({
                     categoryId:
                         item.category === "person" ? "actor" : "organization",
                     categoryLabel:
-                        item.category === "person" ? "出演者" : "組織",
+                        item.category === "person" ? "出演者" : "出演組織",
+                    categorySort: item.category === "person" ? 100 : 101,
                 };
                 result.push(resultItem);
             }
 
+            // スペシャル検索候補を追加
+            result.push({
+                label: "ぷらっとみゅーじっく♪",
+                value: "ぷらっとみゅーじっく♪",
+                categoryId: "specialWord_PlatMusic",
+                categoryLabel: "特別な検索",
+                categorySort: 999,
+                icon: <GradeIcon />,
+            });
+
+            // アーティストを追加
+            const artists: string[] =
+                Music?.map((item) =>
+                    item.musicArtist ? item.musicArtist : "",
+                ) || [];
+            // 重複を削除
+            const uniqueArtists: string[] = artists.filter(
+                (artist, index) => artists.indexOf(artist) === index,
+            );
+            for (const artistName of uniqueArtists) {
+                if (artistName) {
+                    result.push({
+                        label: String(artistName),
+                        value: String(artistName),
+                        categoryId: "musicArtistName",
+                        categoryLabel: "楽曲アーティスト",
+                        categorySort: 20,
+                        icon: <MusicNoteIcon />,
+                    });
+                }
+            }
+
+            // 楽曲名を追加
+            const musicTitles: string[] =
+                Music?.map((item) =>
+                    item.musicTitle ? item.musicTitle : "",
+                ) || [];
+            // 重複を削除
+            const uniqueMusicTitle: string[] = musicTitles.filter(
+                (musicTitle, index) =>
+                    musicTitles.indexOf(musicTitle) === index,
+            );
+            for (const musicTitle of uniqueMusicTitle) {
+                if (musicTitle) {
+                    result.push({
+                        label: String(musicTitle),
+                        value: String(musicTitle),
+                        categoryId: "musicTitle",
+                        categoryLabel: "楽曲タイトル",
+                        categorySort: 19,
+                        // icon: <MusicNoteIcon />,
+                    });
+                }
+            }
+
             // 検索候補を更新
-            setSearchSuggestion([...inputValue, ...result]);
+            // ↓ このコードなんで inputValue を追加してるのか忘れた(；＿；)
+            // setSearchSuggestion([...inputValue, ...result]);
+            setSearchSuggestion(result);
         }
-    }, [inputValue, apiData]);
+        // }, [inputValue, apiData]);
+    }, [apiData]);
     // コンポーネントの初回レンダリング時にAPIを叩く
     useEffect(() => {
         fetchEvents();
@@ -496,15 +568,13 @@ export default function RootLayout({
                 <div style={{ textAlign: "center" }}>
                     {/* 画像のプレースホルダー */}
                     <div style={{ marginBottom: "16px" }}>
-                        {/*
-                  <Image
-                    src=""
-                    alt="Loading"
-                    width={240}
-                    height={240}
-                    style={{ objectFit: "contain" }}
-                  />
-                  */}
+                        <Image
+                            src="/icon_border_radius.png"
+                            alt="Loading"
+                            width={40}
+                            height={40}
+                            style={{ objectFit: "contain" }}
+                        />
                     </div>
 
                     {/* 読み込み中メッセージ */}
@@ -576,6 +646,7 @@ export default function RootLayout({
                                     overflowY: isPlayerFullscreen
                                         ? "hidden"
                                         : "auto",
+                                    paddingBottom: "40vh",
                                 }}
                             >
                                 {x.children}
@@ -603,28 +674,30 @@ export default function RootLayout({
                 }}
             >
                 {/* Player */}
-                <PlayerView
-                    inputValue={inputValue}
-                    setInputValue={setInputValue}
-                    searchSuggestion={searchSuggestion}
-                    screenWidth={screenWidth}
-                    screenHeight={screenHeight}
-                    isMobile={isMobile}
-                    PlayerItem={playerItem}
-                    setPlayerItem={setPlayerItem}
-                    Playlist={playerPlaylist}
-                    searchResult={playerSearchResult}
-                    isPlayerFullscreen={isPlayerFullscreen}
-                    setIsPlayerFullscreen={setIsPlayerFullscreen}
-                    style={{
-                        // ↓ header(Navbar)の分上に余白を作る。
-                        top: isPlayerFullscreen
-                            ? isMobile
-                                ? "0"
-                                : `${navbarHeight}px`
-                            : "auto",
-                    }}
-                />
+                {playerItem && (
+                    <PlayerView
+                        inputValue={inputValue}
+                        setInputValue={setInputValue}
+                        searchSuggestion={searchSuggestion}
+                        screenWidth={screenWidth}
+                        screenHeight={screenHeight}
+                        isMobile={isMobile}
+                        PlayerItem={playerItem}
+                        setPlayerItem={setPlayerItem}
+                        Playlist={playerPlaylist}
+                        searchResult={playerSearchResult}
+                        isPlayerFullscreen={isPlayerFullscreen}
+                        setIsPlayerFullscreen={setIsPlayerFullscreen}
+                        style={{
+                            // ↓ header(Navbar)の分上に余白を作る。
+                            top: isPlayerFullscreen
+                                ? isMobile
+                                    ? "0"
+                                    : `${navbarHeight}px`
+                                : "auto",
+                        }}
+                    />
+                )}
                 {tabMaps.length >= 2 && (
                     <Container disableGutters sx={{ minWidth: "100vw" }}>
                         <Tabs

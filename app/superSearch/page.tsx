@@ -5,7 +5,7 @@ import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/Ul
 import { type Dispatch, type SetStateAction, use, useState } from "react";
 import SuperSearchBar, {
     type SearchSuggestion,
-    type InputValueSearchSuggestion,
+    type InputValue,
     type additionalSearchSuggestions,
 } from "@/components/Navbar/SuperSearchBar";
 
@@ -138,7 +138,7 @@ const limitSuperSearchCategory = [
 
 export default function Home() {
     // 入力された値
-    const [inputValue, setInputValue] = useState<InputValueSearchSuggestion[]>(
+    const [inputValue, setInputValue] = useState<InputValue[]>(
         [],
     );
     return (

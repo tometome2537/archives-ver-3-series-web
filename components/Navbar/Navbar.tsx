@@ -1,5 +1,5 @@
 import SuperSearchBar, {
-    type InputValueSearchSuggestion,
+    type InputValue,
     type additionalSearchSuggestions,
 } from "@/components/Navbar/SuperSearchBar";
 import UltraSuperSearchBar from "@/components/Navbar/UltraSuperSearchBar";
@@ -28,6 +28,10 @@ import DarkModeIcon from "@mui/icons-material/DarkMode";
 import XIcon from "@mui/icons-material/X";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import YouTubeIcon from "@mui/icons-material/YouTube";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import HomeIcon from "@mui/icons-material/Home";
+import StorageIcon from "@mui/icons-material/Storage";
+import GradeIcon from "@mui/icons-material/Grade";
 
 export const NavButton = styled(Button)({
     color: "primary",
@@ -36,8 +40,8 @@ export const NavButton = styled(Button)({
 
 type NavbarProps = {
     // ウルトラスーパーサーチバー
-    inputValue: InputValueSearchSuggestion[];
-    setInputValue: Dispatch<SetStateAction<InputValueSearchSuggestion[]>>;
+    inputValue: InputValue[];
+    setInputValue: Dispatch<SetStateAction<InputValue[]>>;
     searchSuggestion: ultraSuperSearchBarSearchSuggestion[];
     availableCategoryIds?: string[];
     // 外せない入力値を定義
@@ -139,16 +143,17 @@ export default function Navbar(props: NavbarProps) {
                                     </IconButton>
                                     <Link href="/" sx={{ margin: "0.25 auto" }}>
                                         <Image
-                                            src="/MAP.png"
-                                            alt="Music Archives Project Logo"
-                                            width={160}
+                                            // src="/MAP.png"
+                                            src="/icon_border_radius.png"
+                                            // alt="Music Archives Project Logo"
+                                            alt="ぷらそにかアーカイブスロゴ"
+                                            width={40}
                                             height={40}
                                         />
                                     </Link>
                                     <Box sx={{ flexGrow: 1 }} />
                                 </>
                             )}
-
 
                             <Box
                                 sx={{
@@ -163,9 +168,11 @@ export default function Navbar(props: NavbarProps) {
                                     >
                                         <Link href="/" sx={{ mr: 2 }}>
                                             <Image
-                                                src="/MAP.png"
-                                                alt="Music Archives Project Logo"
-                                                width={160}
+                                                // src="/MAP.png"
+                                                src="/icon_border_radius.png"
+                                                // alt="Music Archives Project Logo"
+                                                alt="ぷらそにかアーカイブスロゴ"
+                                                width={40}
                                                 height={40}
                                             />
                                         </Link>
@@ -208,28 +215,30 @@ export default function Navbar(props: NavbarProps) {
                                             categoryId: "description",
                                             categoryLabel: "概要欄に含む文字列",
                                         },
-                                        {
-                                            sort: 21,
-                                            categoryId: "subTitle",
-                                            categoryLabel:
-                                                "サブタイトルに含む文字列",
-                                        },
+                                        // {
+                                        //     sort: 21,
+                                        //     categoryId: "subTitle",
+                                        //     categoryLabel:
+                                        //         "サブタイトルに含む文字列",
+                                        // },
                                     ]}
                                     // 日付の追加カテゴリー
-                                    dateSuggestionCategory={[
-                                        {
-                                            sort: 10,
-                                            // カテゴリーのID
-                                            categoryId: "since",
-                                            // カテゴリーのラベル(表示に使用)
-                                            categoryLabel: "開始日",
-                                        },
-                                        {
-                                            sort: 11,
-                                            categoryId: "until",
-                                            categoryLabel: "終了日",
-                                        },
-                                    ]}
+                                    dateSuggestionCategory={
+                                        [
+                                            // {
+                                            //     sort: 10,
+                                            //     // カテゴリーのID
+                                            //     categoryId: "since",
+                                            //     // カテゴリーのラベル(表示に使用)
+                                            //     categoryLabel: "開始日",
+                                            // },
+                                            // {
+                                            //     sort: 11,
+                                            //     categoryId: "until",
+                                            //     categoryLabel: "終了日",
+                                            // },
+                                        ]
+                                    }
                                     limitSuperSearchCategory={
                                         props.limitSuperSearchCategory
                                     }
@@ -272,15 +281,106 @@ export default function Navbar(props: NavbarProps) {
                                 setMenu(false);
                             }}
                         >
-                            <Image
-                                src="/MAP.png"
-                                alt="Music Archives Project Logo"
-                                width={160}
-                                height={40}
+                            <ListItemIcon>
+                                <Image
+                                    // src="/MAP.png"
+                                    src="/icon_border_radius.png"
+                                    // alt="Music Archives Project Logo"
+                                    alt="ぷらそにかアーカイブスロゴ"
+                                    width={40}
+                                    height={40}
+                                />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="ぷらそにかアーカイブス"
+                                secondary={
+                                    "当サイトはぷらそにかファンが制作しました。"
+                                }
                             />
                         </ListItemButton>
                     </ListItem>
                     <Divider />
+                    <Divider />
+                    <Divider />
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://m.youtube.com/@plusonica"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <YouTubeIcon sx={{ color: "rgb(236,44,46)" }} />
+                            </ListItemIcon>
+                            <ListItemText primary="ぷらそにか公式 YouTube" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://x.com/plusonica"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <XIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="ぷらそにか公式 𝕏 " />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://www.instagram.com/plusonica/"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <InstagramIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="ぷらそにか公式 Instagram " />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://www.tiktok.com/@plusonica_official"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                {/* // ↓ 未設定 TO Do */}
+                                {/* <InstagramIcon /> */}
+                            </ListItemIcon>
+                            <ListItemText primary="ぷらそにか公式 TikTok " />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://plusonica.com
+                            "
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <HomeIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="ぷらそにか公式 ホームページ " />
+                        </ListItemButton>
+                    </ListItem>
+                    <Divider />
+                    <Divider />
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://m.youtube.com/@MusicArchPJ/playlists?view=1&sort=lad&flow=grid"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <YouTubeIcon sx={{ color: "rgb(236,44,46)" }} />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="YouTubeプレイリスト"
+                                secondary={"ぷらそにかに関するプレイリスト"}
+                            />
+                        </ListItemButton>
+                    </ListItem>
                     <ListItem disablePadding>
                         <ListItemButton
                             component="a"
@@ -290,9 +390,21 @@ export default function Navbar(props: NavbarProps) {
                             <ListItemIcon>
                                 <XIcon />
                             </ListItemIcon>
-                            <ListItemText primary="公式Xアカウント" />
+                            <ListItemText primary="サイト運営 𝕏 アカウント" />
                         </ListItemButton>
                     </ListItem>
+                    {/* <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://docs.google.com/spreadsheets/d/1-Reapa-TeRj3FfRomqpj9e6aDCjwH2vMRkAv27bwSV4/edit?usp=sharing"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <StorageIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="サイトデータベース" />
+                        </ListItemButton>
+                    </ListItem> */}
                     <ListItem disablePadding>
                         <ListItemButton
                             component="a"
@@ -300,15 +412,38 @@ export default function Navbar(props: NavbarProps) {
                             target="_blank"
                         >
                             <ListItemIcon>
+                                <MailIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="お問い合わせ" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://docs.google.com/forms/d/e/1FAIpQLScfUbL_mPDFJP921o6bjvGi8Dq0VeyhNDpySpHSF97ECwWr8w/viewform?usp=pp_url&entry.1432192910=%E3%80%90%E3%83%90%E3%82%B0%E3%83%BB%E4%B8%8D%E5%85%B7%E5%90%88%E3%81%AE%E5%A0%B1%E5%91%8A%E3%80%91%0A%E3%83%BB%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%81%84%E3%82%8B%E7%AB%AF%E6%9C%AB%E5%90%8D%0A%E2%86%92%0A%E3%83%BB%E7%AB%AF%E6%9C%AB%E3%81%AEOS%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%0A%E2%86%92%0A%E3%83%BB%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%81%84%E3%82%8B%E3%83%96%E3%83%A9%E3%82%A6%E3%82%B6%0A%E2%86%92%0A%E3%83%BB%E3%83%96%E3%83%A9%E3%82%A6%E3%82%B6%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%0A%E2%86%92%0A%E3%83%BB%E5%95%8F%E9%A1%8C%E3%82%92%E5%86%8D%E7%8F%BE%E3%81%99%E3%82%8B%E6%89%8B%E9%A0%86%0A%E2%86%92"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
                                 {/* <MailIcon /> */}
                                 <FeedbackIcon />
                             </ListItemIcon>
-                            <ListItemText primary="お問い合わせ・フィードバック" />
+                            <ListItemText
+                                primary="フィードバック"
+                                secondary={
+                                    "バグ報告・誤情報の報告もこちらからお願いします。"
+                                }
+                            />
                         </ListItemButton>
                     </ListItem>
                     <Divider />
+                    <Divider />
                     <ListItem disablePadding>
-                        <ListItemButton onClick={() => toggleColorMode()}>
+                        <ListItemButton
+                            onClick={() => {
+                                toggleColorMode();
+                                setMenu(false);
+                            }}
+                        >
                             <ListItemIcon>
                                 {theme.palette.mode === "dark" ? (
                                     <LightModeIcon />
@@ -321,6 +456,64 @@ export default function Navbar(props: NavbarProps) {
                                     theme.palette.mode === "dark"
                                         ? "ライトモードに切り替え"
                                         : "ダークモードに切り替え"
+                                }
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                    <Divider />
+                    <Divider />
+                    <ListItem disablePadding>
+                        <ListItemButton>
+                            <ListItemText
+                                primary="Special Thanks"
+                                // secondary={
+                                //     "〜当サイトの構築に貢献してくださった方々〜"
+                                // }
+                                primaryTypographyProps={{ fontSize: "1.3rem" }} // テキストサイズを1.5remに設定
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://sssapi.app"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <Image
+                                    src="/sssapi_logo.png"
+                                    alt="SSSAPI ロゴ"
+                                    width={40}
+                                    height={40}
+                                    style={{
+                                        borderRadius: "20%",
+                                    }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText
+                                style={{
+                                    // 文字列内の\nを適切に反映させる。
+                                    whiteSpace: "pre-line",
+                                }}
+                                primary={"SSSAPI"}
+                                secondary={
+                                    "当サイトではSSSAPI様のサービスを利用させていただいています。\nここに感謝の意を表します。"
+                                }
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <GradeIcon />
+                            </ListItemIcon>
+                            <ListItemText
+                                style={{
+                                    // 文字列内の\nを適切に反映させる。
+                                    whiteSpace: "pre-line",
+                                }}
+                                secondary={
+                                    "その他情報提供・バグ報告してくださった方々\n本当にありがとうございます。"
                                 }
                             />
                         </ListItemButton>

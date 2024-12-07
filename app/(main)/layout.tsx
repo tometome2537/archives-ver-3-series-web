@@ -6,7 +6,6 @@ import { LinkTab } from "@/components/MainTabs/LinkTab";
 import { LiveInformationTab } from "@/components/MainTabs/LiveInformationTab";
 import { SongTab } from "@/components/MainTabs/SongTab";
 import { TemporaryYouTubeTab } from "@/components/MainTabs/TemporaryYouTubeTab";
-import { YouTubeTab } from "@/components/MainTabs/YouTubeTab";
 import Navbar from "@/components/Navbar/Navbar";
 import type {
     InputValue,
@@ -203,36 +202,6 @@ export default function RootLayout({
                                 ),
                             ]);
                         }
-                    },
-                },
-                {
-                    value: "youTube",
-                    icon: <YouTubeIcon />,
-                    label: "YouTube(DBα版)",
-                    isDebugModeOnly: true,
-                    scrollTo: 0,
-                    children: (
-                        <YouTubeTab
-                            key="youtube"
-                            playerItem={playerItem}
-                            setPlayerItem={setPlayerItem}
-                            setPlayerSearchResult={setPlayerSearchResult}
-                        />
-                    ),
-                    onClick: () => {
-                        setAvailableCategoryIds([]);
-                        setLimitSuperSearchCategory([
-                            { categoryId: "actor", categoryLabel: "出演者" },
-                            {
-                                categoryId: "organization",
-                                categoryLabel: "組織",
-                            },
-                            {
-                                categoryId: "YouTubeChannel",
-                                categoryLabel: "YouTubeチャンネル",
-                            },
-                        ]);
-                        setFixedOptionValues([]);
                     },
                 },
                 {

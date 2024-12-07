@@ -18,7 +18,7 @@ import {
     Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { type Dispatch, type SetStateAction, use, useState } from "react";
+import { type Dispatch, type SetStateAction,  useState } from "react";
 import HistoryIcon from "@mui/icons-material/History";
 
 export interface LimitedSuperSearchProps {

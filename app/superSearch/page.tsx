@@ -2,7 +2,7 @@
 
 import UltraSuperSearchBar from "@/components/Navbar/UltraSuperSearchBar";
 import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
-import { type Dispatch, type SetStateAction, use, useState } from "react";
+import { type Dispatch, type SetStateAction,  useState } from "react";
 import SuperSearchBar, {
     type SearchSuggestion,
     type InputValue,

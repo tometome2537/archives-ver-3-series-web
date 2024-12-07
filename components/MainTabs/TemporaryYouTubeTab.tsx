@@ -3,7 +3,6 @@ import type { PlayerItem } from "../PlayerView";
 import SuperSearchBar, {
     type InputValue,
 } from "@/components/Navbar/SuperSearchBar";
-import buildUrlWithQuery from "@/libs/buildUrl";
 import { Box } from "@mui/material";
 import { useCallback, useEffect, useState } from "react";
 import Loading from "../Loading";

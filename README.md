@@ -48,7 +48,7 @@ code --install-extension biomejs.biome
 npm install
 ```
 
-.env.example を参考に.env をファイルの作成。
+<!-- .env.example を参考に.env をファイルの作成。 -->
 
 サイトの立ち上げ。
 
@@ -67,78 +67,6 @@ npm run dev -- -H 0.0.0.0
 ```bash
 ctrl c
 ```
-
-## Supabaseの型作成
-
-```shell
-supabase gen types typescript --project-id "bgpcxtuhebgsioevmtfa" --schema public > src/types/supabase.ts
-```
-
-or
-
-```shell
-npm run gen-type-local
-```
-
-## Supabaseをローカルで実行する
-
-[CLI参考](https://qiita.com/masakinihirota/items/e8e83cb10b56047d4bae)
-
-[参考](https://supabase.com/docs/guides/cli/local-development)
-
-```shell
-supabase start
-```
-
-[http://localhost:54323](http://localhost:54323)を開くとSupabaseのダッシュボードが表示されます。
-
-停止する場合は
-
-```shell
-supabase stop
-```
-
-## Supabaseのリモートの変更を取得する
-
-それぞれを保存する
-
-```shell
-supabase db diff --use-migra -f name
-```
-
-## Supabaseのローカルで作成したデータを保存する
-
-```shell
-supabase db dump --local --data-only --file supabase/seed.sql
-```
-
-リセットして再読み込み
-
-```shell
-supabase db reset
-```
-
-## Supabaseをローカルで実行できないとき
-
-Dockerがインストールされてるか確認してください。
-
-## Supabaseをアップデートする
-
-Mac
-
-```shell
-brew upgrade supabase
-```
-
-Windows
-
-```shell
-scoop update supabase
-```
-
-## Supabaseの認証メールを確認する
-
-[このリンク](http://localhost:54324/)からメールを確認できる
 
 ## 今後追記予定のコード
 

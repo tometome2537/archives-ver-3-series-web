@@ -651,14 +651,6 @@ export default function PlayerView(props: PlayerProps) {
                                   )
                                 : null}
                         </Box>
-                        {/* ミニプレイヤー切り替えボタン */}
-                        <Box
-                            onClick={togglePlayerFullscreen}
-                            onKeyPress={togglePlayerFullscreen}
-                        >
-                            {props.isPlayerFullscreen &&
-                                "ミニプレイヤー切り替えボタン(仮)"}
-                        </Box>
                     </Box>
                 </Box>
                 {/* 右カラム */}

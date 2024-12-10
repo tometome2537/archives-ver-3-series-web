@@ -115,9 +115,10 @@ export default function PlayerView(props: PlayerProps) {
             (item) => item.value === actorId || item.label === actorId,
         );
 
-        const result: InputValue[] = props.inputValue.filter(
-            (item) => item.categoryId !== "actor",
-        );
+        const result: InputValue[] = [];
+        // = props.inputValue.filter(
+        //     (item) => item.categoryId !== "actor",
+        // );
 
         if (actorSearchSuggestion) {
             const value: InputValue = Object.assign(
@@ -502,19 +503,6 @@ export default function PlayerView(props: PlayerProps) {
                                     hour12: false, // 24時間形式
                                 })}
                         </p>
-                        {/* 概要欄 */}
-                        <p>概要欄</p>
-                        <Box
-                            style={{
-                                // 文字列内の\nを適切に反映させる。
-                                whiteSpace: "pre-line",
-                            }}
-                        >
-                            {props.isPlayerFullscreen &&
-                                playNowDetail &&
-                                playNowDetail.description &&
-                                playNowDetail.description}
-                        </Box>
                         {/* 出演者一覧 */}
                         <p>出演者</p>
                         <Box
@@ -650,6 +638,19 @@ export default function PlayerView(props: PlayerProps) {
                                       ),
                                   )
                                 : null}
+                        </Box>
+                        {/* 概要欄 */}
+                        <p>概要欄</p>
+                        <Box
+                            style={{
+                                // 文字列内の\nを適切に反映させる。
+                                whiteSpace: "pre-line",
+                            }}
+                        >
+                            {props.isPlayerFullscreen &&
+                                playNowDetail &&
+                                playNowDetail.description &&
+                                playNowDetail.description}
                         </Box>
                     </Box>
                 </Box>

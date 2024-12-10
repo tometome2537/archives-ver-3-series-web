@@ -155,7 +155,7 @@ export default function RootLayout({
                         setAvailableCategoryIds([
                             "actor",
                             "organization",
-                            "YouTubeChannel",
+                            // "YouTubeChannel",
                             "title",
                             "description",
                             "specialWord_PlatMusic",
@@ -172,26 +172,26 @@ export default function RootLayout({
                         ]);
                         setFixedOptionValues(["UCZx7esGXyW6JXn98byfKEIA"]);
 
-                        const i = inputValue.find(
-                            (item) => item.value === "UCZx7esGXyW6JXn98byfKEIA",
-                        );
-                        if (!i) {
-                            setInputValue([
-                                {
-                                    sort: 101,
-                                    createdAt: new Date(),
-                                    label: "ぷらそにか",
-                                    value: "UCZx7esGXyW6JXn98byfKEIA",
-                                    imgSrc: "https://yt3.ggpht.com/ytc/AIdro_lB6NxMtujj7oK0See-TGPL5eq-TjowmK6DFSjgLyCj0g=s88-c-k-c0x00ffffff-no-rj",
-                                    categoryId: "YouTubeChannel",
-                                    categoryLabel: "YouTube",
-                                },
-                                ...inputValue.filter(
-                                    (item) =>
-                                        item.categoryId !== "YouTubeChannel",
-                                ),
-                            ]);
-                        }
+                        // const i = inputValue.find(
+                        //     (item) => item.value === "UCZx7esGXyW6JXn98byfKEIA",
+                        // );
+                        // if (!i) {
+                        //     setInputValue([
+                        //         {
+                        //             sort: 101,
+                        //             createdAt: new Date(),
+                        //             label: "ぷらそにか",
+                        //             value: "UCZx7esGXyW6JXn98byfKEIA",
+                        //             imgSrc: "https://yt3.ggpht.com/ytc/AIdro_lB6NxMtujj7oK0See-TGPL5eq-TjowmK6DFSjgLyCj0g=s88-c-k-c0x00ffffff-no-rj",
+                        //             categoryId: "YouTubeChannel",
+                        //             categoryLabel: "YouTube",
+                        //         },
+                        //         ...inputValue.filter(
+                        //             (item) =>
+                        //                 item.categoryId !== "YouTubeChannel",
+                        //         ),
+                        //     ]);
+                        // }
                     },
                 },
                 // {
@@ -374,9 +374,19 @@ export default function RootLayout({
             (item) => item.id === "Music",
         )?.data;
 
-        if (Entity && YouTubeAccounts) {
-            const result: ultraSuperSearchBarSearchSuggestion[] = [];
+        const result: ultraSuperSearchBarSearchSuggestion[] = [];
 
+        // スペシャル検索候補を追加
+        result.push({
+            label: "ぷらっとみゅーじっく♪",
+            value: "ぷらっとみゅーじっく♪",
+            categoryId: "specialWord_PlatMusic",
+            categoryLabel: "特別な検索",
+            categorySort: 999,
+            icon: <GradeIcon />,
+        });
+
+        if (Entity && YouTubeAccounts) {
             // データを変換し、検索候補の配列に追加
             for (const item of Entity) {
                 const resultItem: ultraSuperSearchBarSearchSuggestion = {
@@ -417,67 +427,53 @@ export default function RootLayout({
                 };
                 result.push(resultItem);
             }
-
-            // スペシャル検索候補を追加
-            result.push({
-                label: "ぷらっとみゅーじっく♪",
-                value: "ぷらっとみゅーじっく♪",
-                categoryId: "specialWord_PlatMusic",
-                categoryLabel: "特別な検索",
-                categorySort: 999,
-                icon: <GradeIcon />,
-            });
-
-            // アーティストを追加
-            const artists: string[] =
-                Music?.map((item) =>
-                    item.musicArtist ? item.musicArtist : "",
-                ) || [];
-            // 重複を削除
-            const uniqueArtists: string[] = artists.filter(
-                (artist, index) => artists.indexOf(artist) === index,
-            );
-            for (const artistName of uniqueArtists) {
-                if (artistName) {
-                    result.push({
-                        label: String(artistName),
-                        value: String(artistName),
-                        categoryId: "musicArtistName",
-                        categoryLabel: "楽曲アーティスト",
-                        categorySort: 20,
-                        icon: <MusicNoteIcon />,
-                    });
-                }
-            }
-
-            // 楽曲名を追加
-            const musicTitles: string[] =
-                Music?.map((item) =>
-                    item.musicTitle ? item.musicTitle : "",
-                ) || [];
-            // 重複を削除
-            const uniqueMusicTitle: string[] = musicTitles.filter(
-                (musicTitle, index) =>
-                    musicTitles.indexOf(musicTitle) === index,
-            );
-            for (const musicTitle of uniqueMusicTitle) {
-                if (musicTitle) {
-                    result.push({
-                        label: String(musicTitle),
-                        value: String(musicTitle),
-                        categoryId: "musicTitle",
-                        categoryLabel: "楽曲タイトル",
-                        categorySort: 19,
-                        // icon: <MusicNoteIcon />,
-                    });
-                }
-            }
-
-            // 検索候補を更新
-            // ↓ このコードなんで inputValue を追加してるのか忘れた(；＿；)
-            // setSearchSuggestion([...inputValue, ...result]);
-            setSearchSuggestion(result);
         }
+
+        // アーティストを追加
+        const artists: string[] =
+            Music?.map((item) => (item.musicArtist ? item.musicArtist : "")) ||
+            [];
+        // 重複を削除
+        const uniqueArtists: string[] = artists.filter(
+            (artist, index) => artists.indexOf(artist) === index,
+        );
+        for (const artistName of uniqueArtists) {
+            if (artistName) {
+                result.push({
+                    label: String(artistName),
+                    value: String(artistName),
+                    categoryId: "musicArtistName",
+                    categoryLabel: "楽曲アーティスト",
+                    categorySort: 20,
+                    icon: <MusicNoteIcon />,
+                });
+            }
+        }
+
+        // 楽曲名を追加
+        const musicTitles: string[] =
+            Music?.map((item) => (item.musicTitle ? item.musicTitle : "")) ||
+            [];
+        // 重複を削除
+        const uniqueMusicTitle: string[] = musicTitles.filter(
+            (musicTitle, index) => musicTitles.indexOf(musicTitle) === index,
+        );
+        for (const musicTitle of uniqueMusicTitle) {
+            if (musicTitle) {
+                result.push({
+                    label: String(musicTitle),
+                    value: String(musicTitle),
+                    categoryId: "musicTitle",
+                    categoryLabel: "楽曲タイトル",
+                    categorySort: 19,
+                    // icon: <MusicNoteIcon />,
+                });
+            }
+        }
+
+        // 検索候補を更新
+        setSearchSuggestion(result);
+
         // }, [inputValue, apiData]);
     }, [apiData]);
     // コンポーネントの初回レンダリング時にAPIを叩く

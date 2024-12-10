@@ -5,14 +5,8 @@ import type React from "react";
 
 // データフェッチャー関数
 const fetcher = async (url: string) => {
-    if (!process.env.NEXT_PUBLIC_SSSAPI_ACCESS_TOKEN) {
-        throw new Error(
-            "SSSAPI_ACCESS_TOKEN is missing in environment variables.",
-        );
-    }
     const response = await fetch(url, {
         headers: {
-            // # https://console.sssapi.app/w@6NMsCo4Ht9SAiBiCV8wFxD7Hrwv1/settings/
             Authorization: "token s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I",
         },
     });
@@ -54,10 +48,10 @@ const Db: { id: string; url: string }[] = [
         id: "YouTubeAccount",
         url: "https://api.sssapi.app/lUvQb56owZaGWWXIWXlCE",
     },
-    {
-        id: "XAccount",
-        url: "https://api.sssapi.app/vk3bc_hfvgsR9hs0X6iBk",
-    },
+    // {
+    //     id: "XAccount",
+    //     url: "https://api.sssapi.app/vk3bc_hfvgsR9hs0X6iBk",
+    // },
     {
         id: "Entity",
         url: "https://api.sssapi.app/ZJUpXwYIh9lpfn3DQuyzS",

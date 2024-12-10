@@ -63,7 +63,8 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp?filter__channelId__exact=UCZx7esGXyW6JXn98byfKEIA";
             const response = await fetch(url, {
                 headers: {
-                    Authorization: "token s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I",
+                    Authorization:
+                        "token s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I",
                 },
             });
             if (!response.ok) {
@@ -93,16 +94,18 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             // }
             let match = true;
 
+            // 公開設定は一般公開に限る
+            if (item.privacyStatus !== "public") {
+                match = false;
+            }
+
+            // shortは非表示
+            if (item.short === true) {
+                match = false;
+            }
+
             // 各inputValueに対してすべての条件を確認
             for (const inputValue of props.inputValue) {
-                // 公開設定は一般公開に限る
-                if (item.privacyStatus !== "public") {
-                    match = false;
-                }
-                // shortは非表示
-                if (item.short === true) {
-                    match = false;
-                }
                 if (inputValue.categoryId === "YouTubeChannel") {
                     // YouTubeチャンネルの条件を満たさなければfalse
                     if (item.channelId !== inputValue.value) {

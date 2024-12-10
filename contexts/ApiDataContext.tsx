@@ -12,7 +12,8 @@ const fetcher = async (url: string) => {
     }
     const response = await fetch(url, {
         headers: {
-            Authorization: `token ${process.env.NEXT_PUBLIC_SSSAPI_ACCESS_TOKEN}`,
+            // # https://console.sssapi.app/w@6NMsCo4Ht9SAiBiCV8wFxD7Hrwv1/settings/
+            Authorization: "token s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I",
         },
     });
     if (!response.ok) {

@@ -444,8 +444,8 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                         sx={{
                                             // タグの横幅を定義
                                             width: props.showTagCount
-                                                ? `${(100 - 20) / props.showTagCount}%`
-                                                : "20%",
+                                                ? "100%"
+                                                : "24%",
                                         }}
                                     >
                                         {/* 各要素にユニークなkeyを設定 */}

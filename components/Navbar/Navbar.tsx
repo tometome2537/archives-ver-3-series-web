@@ -11,7 +11,6 @@ import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useEffect, useRef, useState } from "react";
-import SearchBar from "./SearchBar";
 import IconButton from "@mui/material/IconButton";
 import MenuIcon from "@mui/icons-material/Menu";
 import Drawer from "@mui/material/Drawer";
@@ -435,7 +434,7 @@ export default function Navbar(props: NavbarProps) {
                             />
                         </ListItemButton>
                     </ListItem>
-                    <Divider />
+                    {/* <Divider />
                     <Divider />
                     <ListItem disablePadding>
                         <ListItemButton
@@ -459,7 +458,7 @@ export default function Navbar(props: NavbarProps) {
                                 }
                             />
                         </ListItemButton>
-                    </ListItem>
+                    </ListItem> */}
                     <Divider />
                     <Divider />
                     <ListItem disablePadding>

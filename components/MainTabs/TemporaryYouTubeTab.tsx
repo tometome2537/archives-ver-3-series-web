@@ -63,7 +63,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp?filter__channelId__exact=UCZx7esGXyW6JXn98byfKEIA";
             const response = await fetch(url, {
                 headers: {
-                    Authorization: `token ${process.env.NEXT_PUBLIC_SSSAPI_ACCESS_TOKEN}`,
+                    Authorization: "token s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I",
                 },
             });
             if (!response.ok) {

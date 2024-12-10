@@ -1,7 +1,5 @@
 "use client";
 
-import Link from "@/components/Link";
-import { DebugTab } from "@/components/MainTabs/DebugTab";
 import { LinkTab } from "@/components/MainTabs/LinkTab";
 import { LiveInformationTab } from "@/components/MainTabs/LiveInformationTab";
 import { SongTab } from "@/components/MainTabs/SongTab";
@@ -49,10 +47,6 @@ export default function RootLayout({
     const theme = useTheme();
     // apiDataを取得
     const apiData = useDataContext();
-    // デバッグ(ローカル開発環境)モード(リンク集を10回タップするとデバッグモードへ)
-    const [debugMode, setDebugMode] = useState<boolean>(
-        process.env.NEXT_PUBLIC_STAGE === "local",
-    );
     // ディスプレイの横幅(px)
     const [screenWidth, setScreenWidth] = useState<number>(0);
     // ディスプレイの縦幅(px)
@@ -108,7 +102,6 @@ export default function RootLayout({
         value: string;
         icon: ReactElement;
         label: string;
-        isDebugModeOnly: boolean;
         scrollTo: number;
         children: ReactNode;
         // タブが切り替わった時に実行する処理
@@ -118,37 +111,34 @@ export default function RootLayout({
     const tabMaps: TabMap[] = useMemo(
         () =>
             [
-                {
-                    value: "linkCollection",
-                    icon: <AccountBoxIcon />,
-                    label: "リンク集",
-                    isDebugModeOnly: true,
-                    children: <LinkTab inputValue={inputValue} />,
-                    scrollTo: 0,
-                    onClick: () => {
-                        setAvailableCategoryIds(["actor"]);
-                        setLimitSuperSearchCategory([]);
-                        setFixedOptionValues([]);
-                    },
-                },
-                {
-                    value: "songs",
-                    icon: <MusicNoteIcon />,
-                    label: "楽曲集(β版)",
-                    isDebugModeOnly: true,
-                    children: <SongTab key="song" />,
-                    scrollTo: 0,
-                    onClick: () => {
-                        setAvailableCategoryIds([]);
-                        setLimitSuperSearchCategory([]);
-                        setFixedOptionValues([]);
-                    },
-                },
+                // {
+                //     value: "linkCollection",
+                //     icon: <AccountBoxIcon />,
+                //     label: "リンク集",
+                //     children: <LinkTab inputValue={inputValue} />,
+                //     scrollTo: 0,
+                //     onClick: () => {
+                //         setAvailableCategoryIds(["actor"]);
+                //         setLimitSuperSearchCategory([]);
+                //         setFixedOptionValues([]);
+                //     },
+                // },
+                // {
+                //     value: "songs",
+                //     icon: <MusicNoteIcon />,
+                //     label: "楽曲集",
+                //     children: <SongTab key="song" />,
+                //     scrollTo: 0,
+                //     onClick: () => {
+                //         setAvailableCategoryIds([]);
+                //         setLimitSuperSearchCategory([]);
+                //         setFixedOptionValues([]);
+                //     },
+                // },
                 {
                     value: "temporaryYouTube",
                     icon: <YouTubeIcon />,
-                    label: "ぷらそにかβ版",
-                    isDebugModeOnly: false,
+                    label: "ぷらそにか",
                     scrollTo: 0,
                     children: (
                         <TemporaryYouTubeTab
@@ -204,45 +194,25 @@ export default function RootLayout({
                         }
                     },
                 },
-                {
-                    value: "liveInformation",
-                    icon: <LocationOnIcon />,
-                    label: "LIVE情報(β版)",
-                    isDebugModeOnly: true,
-                    scrollTo: 0,
-                    children: <LiveInformationTab key="liveInformation" />,
-                    onClick: () => {
-                        setAvailableCategoryIds([]);
-                        setLimitSuperSearchCategory([]);
-                        setFixedOptionValues([]);
-                    },
-                },
-                {
-                    value: "debug",
-                    icon: <AdbIcon />,
-                    label: "デバック情報",
-                    isDebugModeOnly: true,
-                    scrollTo: 0,
-                    children: <DebugTab key="debug" />,
-                    onClick: () => {
-                        setAvailableCategoryIds([]);
-                        setLimitSuperSearchCategory([]);
-                        setFixedOptionValues([]);
-                    },
-                },
-            ]
-                .filter(
-                    (tab) =>
-                        tab.isDebugModeOnly === false ||
-                        (debugMode && tab.isDebugModeOnly),
-                )
-                .map((item, index) => {
-                    if (typeof window !== "undefined") {
-                        item.scrollTo = window.innerWidth * index;
-                    }
-                    return item;
-                }),
-        [debugMode, inputValue, playerItem, isMobile],
+                // {
+                //     value: "liveInformation",
+                //     icon: <LocationOnIcon />,
+                //     label: "LIVE情報(β版)",
+                //     scrollTo: 0,
+                //     children: <LiveInformationTab key="liveInformation" />,
+                //     onClick: () => {
+                //         setAvailableCategoryIds([]);
+                //         setLimitSuperSearchCategory([]);
+                //         setFixedOptionValues([]);
+                //     },
+                // },
+            ].map((item, index) => {
+                if (typeof window !== "undefined") {
+                    item.scrollTo = window.innerWidth * index;
+                }
+                return item;
+            }),
+        [inputValue, playerItem, isMobile],
     );
 
     // 指定された位置(px)にスクロールする関数
@@ -514,14 +484,6 @@ export default function RootLayout({
     useEffect(() => {
         fetchEvents();
     }, [fetchEvents]);
-
-    let count = 0;
-    const enableDebugModeOnClick = () => {
-        count += 1;
-        if (count >= 5 && debugMode === false) {
-            setDebugMode(true);
-        }
-    };
 
     if (isLoading) {
         // if (true) {

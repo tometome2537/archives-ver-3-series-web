@@ -1,20 +1,17 @@
-import SuperSearchBar, {
-    type InputValue,
-    type additionalSearchSuggestions,
+import type {
+    InputValue,
+    additionalSearchSuggestions,
 } from "@/components/Navbar/SuperSearchBar";
 import UltraSuperSearchBar from "@/components/Navbar/UltraSuperSearchBar";
 import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
 import { useColorModeContext } from "@/contexts/ThemeContext";
 import rgbToHex from "@/libs/colorConverter";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import GradeIcon from "@mui/icons-material/Grade";
 import HomeIcon from "@mui/icons-material/Home";
 import InstagramIcon from "@mui/icons-material/Instagram";
-import LightModeIcon from "@mui/icons-material/LightMode";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
-import StorageIcon from "@mui/icons-material/Storage";
 import XIcon from "@mui/icons-material/X";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import {
@@ -25,7 +22,6 @@ import {
     FormControlLabel,
     Link,
     Toolbar,
-    Typography,
 } from "@mui/material";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
@@ -35,8 +31,7 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import Switch, { SwitchProps } from "@mui/material/Switch";
-import { blueGrey } from "@mui/material/colors";
+import Switch from "@mui/material/Switch";
 import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";

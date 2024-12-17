@@ -539,6 +539,7 @@ export default function RootLayout({
                 screenHeight={screenHeight}
                 setNavbarHeight={setNavbarHeight}
                 isMobile={isMobile}
+                superSearchOnChange={() => {setIsPlayerFullscreen(false)}}
             />
             {/* メインコンテンツ */}
             <Box

@@ -1,8 +1,5 @@
 "use client";
 
-import { LinkTab } from "@/components/MainTabs/LinkTab";
-import { LiveInformationTab } from "@/components/MainTabs/LiveInformationTab";
-import { SongTab } from "@/components/MainTabs/SongTab";
 import { TemporaryYouTubeTab } from "@/components/MainTabs/TemporaryYouTubeTab";
 import Navbar from "@/components/Navbar/Navbar";
 import type {
@@ -12,31 +9,27 @@ import type {
 import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
 import PlayerView from "@/components/PlayerView";
 import type { PlayerItem } from "@/components/PlayerView"; // 型としてのインポート
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import AdbIcon from "@mui/icons-material/Adb";
+import { useDataContext } from "@/contexts/ApiDataContext";
+import type { apiData } from "@/contexts/ApiDataContext";
+import GradeIcon from "@mui/icons-material/Grade";
 import GroupsIcon from "@mui/icons-material/Groups";
-import LocationOnIcon from "@mui/icons-material/LocationOn";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
+import PersonIcon from "@mui/icons-material/Person";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import { AppBar, Box, Container, Tab, Tabs } from "@mui/material";
-import type { SxProps, Theme } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
-import { notFound, usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import {
     Fragment,
     type ReactElement,
     type ReactNode,
     useCallback,
     useEffect,
+    useMemo,
     useRef,
     useState,
-    useMemo,
 } from "react";
-import PersonIcon from "@mui/icons-material/Person";
-import { useDataContext } from "@/contexts/ApiDataContext";
-import type { apiData, DataContextType } from "@/contexts/ApiDataContext";
-import Image from "next/image";
-import GradeIcon from "@mui/icons-material/Grade";
 
 export default function RootLayout({
     children,
@@ -360,8 +353,10 @@ export default function RootLayout({
             };
         }
     }); // 依存配列は空のままでOK
+
     // 初回実行(APIを叩く)検索候補を定義
-    const fetchEvents = useCallback(() => {
+    // コンポーネントの初回レンダリング時にAPIを叩く
+    useEffect(() => {
         const YouTubeAccounts: apiData[] | undefined = apiData.find(
             (item) => item.id === "YouTubeAccount",
         )?.data;
@@ -476,10 +471,6 @@ export default function RootLayout({
 
         // }, [inputValue, apiData]);
     }, [apiData]);
-    // コンポーネントの初回レンダリング時にAPIを叩く
-    useEffect(() => {
-        fetchEvents();
-    }, [fetchEvents]);
 
     if (isLoading) {
         // if (true) {
@@ -539,7 +530,9 @@ export default function RootLayout({
                 screenHeight={screenHeight}
                 setNavbarHeight={setNavbarHeight}
                 isMobile={isMobile}
-                superSearchOnChange={() => {setIsPlayerFullscreen(false)}}
+                superSearchOnChange={() => {
+                    setIsPlayerFullscreen(false);
+                }}
             />
             {/* メインコンテンツ */}
             <Box

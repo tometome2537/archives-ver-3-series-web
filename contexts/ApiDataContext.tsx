@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import type React from "react";
 
 // データフェッチャー関数
@@ -9,6 +9,9 @@ const fetcher = async (url: string) => {
         headers: {
             Authorization: "token s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I",
         },
+        // 1ヶ月を秒にしたやつ
+        // 60 * 60 * 24 * 30 = 2592000
+        next: { revalidate: 2592000 },
     });
     if (!response.ok) {
         throw new Error(`Failed to fetch data from ${url}`);

@@ -129,7 +129,7 @@ type NavbarProps = {
 export default function Navbar(props: NavbarProps) {
     // テーマ設定を取得
     const theme = useTheme();
-    const { selectedMode, toggleColorMode } = useColorModeContext();
+    const { selectedMode, setColorMode } = useColorModeContext();
 
     // メニューの開閉
     const [menu, setMenu] = useState<boolean>(false);
@@ -514,8 +514,15 @@ export default function Navbar(props: NavbarProps) {
                                 labelId="theme-select-label"
                                 value={selectedMode}
                                 label="サイトテーマ"
-                                onChange={() => {
-                                    toggleColorMode();
+                                onChange={(mode) => {
+                                    const value = mode.target.value as
+                                        | "light"
+                                        | "dark"
+                                        | "device";
+
+                                    if (value) {
+                                        setColorMode(value);
+                                    }
                                 }}
                             >
                                 <MenuItem value={"light"}>

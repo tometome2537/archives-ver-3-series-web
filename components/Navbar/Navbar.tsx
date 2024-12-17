@@ -51,6 +51,8 @@ type NavbarProps = {
     dateSuggestionCategory?: additionalSearchSuggestions[];
     // 表示するリミットスーパーサーチバーの定義
     limitSuperSearchCategory?: additionalSearchSuggestions[];
+    // スーパーサーチバーの変更時に実行する関数
+    superSearchOnChange?: () => void;
 
     screenHeight: number;
     isMobile: boolean;
@@ -146,8 +148,8 @@ export default function Navbar(props: NavbarProps) {
                                             src="/icon_border_radius.png"
                                             // alt="Music Archives Project Logo"
                                             alt="ぷらそにかアーカイブスロゴ"
-                                            width={40}
-                                            height={40}
+                                            width={30}
+                                            height={30}
                                         />
                                     </Link>
                                     <Box sx={{ flexGrow: 1 }} />
@@ -250,6 +252,9 @@ export default function Navbar(props: NavbarProps) {
                                     // スマホの場合に表示するタグの個数を制限する。
                                     showTagCount={
                                         props.isMobile ? 2 : undefined
+                                    }
+                                    superSearchOnChange={
+                                        props.superSearchOnChange
                                     }
                                 />
                             </Box>

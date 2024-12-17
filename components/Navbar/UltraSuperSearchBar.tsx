@@ -18,7 +18,7 @@ import {
     Typography,
 } from "@mui/material";
 import dayjs from "dayjs";
-import { type Dispatch, type SetStateAction,  useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import HistoryIcon from "@mui/icons-material/History";
 
 export interface LimitedSuperSearchProps {
@@ -120,6 +120,7 @@ type UltraSuperSearchBarSearchBarProps = {
     dateSuggestionCategory?: additionalSearchSuggestions[];
     // 表示するリミットスーパーサーチバーの定義
     limitSuperSearchCategory?: additionalSearchSuggestions[];
+    superSearchOnChange?: () => void;
 
     showTagIcon?: boolean;
     showTagCount?: number;
@@ -132,9 +133,9 @@ export default function UltraSuperSearchBar(
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     // 入力履歴を保存(To DO)
-    const [inputValueHistory, setInputValueHistory] = useState<
-    InputValue[]
-    >([]);
+    const [inputValueHistory, setInputValueHistory] = useState<InputValue[]>(
+        [],
+    );
 
     return (
         <Box>
@@ -157,6 +158,7 @@ export default function UltraSuperSearchBar(
                 setInputValues={props.setInputValue}
                 searchSuggestions={props.searchSuggestion}
                 fixedOptionValues={props.fixedOptionValues}
+                onChange={props.superSearchOnChange}
             />
             <Box
                 sx={{

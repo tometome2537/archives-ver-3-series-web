@@ -550,9 +550,10 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                     height: "auto",
                                     "& .MuiChip-label": {
                                         display: "flex",
-                                        justifyContent: "center", // 水平方向の中央揃え
+                                        alignItems: "center", // 垂直方向の中央揃え
                                         // textAlign: "center",
                                         maxWidth: "100%",
+                                        height: "3em",
                                         lineHeight: "1.5", // 文字の上下間隔
                                         whiteSpace: "nowrap", // 改行させない
                                         overflow: "hidden", // オーバーフロー時に隠す

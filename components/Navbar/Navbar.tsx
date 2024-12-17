@@ -6,6 +6,8 @@ import UltraSuperSearchBar from "@/components/Navbar/UltraSuperSearchBar";
 import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
 import { useColorModeContext } from "@/contexts/ThemeContext";
 import rgbToHex from "@/libs/colorConverter";
+import { DarkModeOutlined, LightModeOutlined } from "@mui/icons-material";
+import DevicesIcon from "@mui/icons-material/Devices";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import GradeIcon from "@mui/icons-material/Grade";
 import HomeIcon from "@mui/icons-material/Home";
@@ -19,8 +21,11 @@ import {
     Box,
     Button,
     Container,
-    FormControlLabel,
+    FormControl,
+    InputLabel,
     Link,
+    MenuItem,
+    Select,
     Toolbar,
 } from "@mui/material";
 import Divider from "@mui/material/Divider";
@@ -500,23 +505,58 @@ export default function Navbar(props: NavbarProps) {
                         </ListItemButton>
                     </ListItem>
                     <Divider sx={{ borderBottomWidth: 3 }} />
-                    <ListItem disablePadding>
-                        {/*
-                                                     toggleColorMode();
-                                setMenu(false); */}
-                        <FormControlLabel
-                            control={
-                                <MaterialUISwitch
-                                    sx={{ m: 1 }}
-                                    defaultChecked={selectedMode === "dark"}
-                                />
-                            }
-                            onChange={() => {
-                                console.log(selectedMode);
-                                toggleColorMode();
-                            }}
-                            label="サイトテーマ"
-                        />
+                    <ListItem>
+                        <FormControl sx={{ width: 200 }}>
+                            <InputLabel id="theme-select-label">
+                                サイトテーマ
+                            </InputLabel>
+                            <Select
+                                labelId="theme-select-label"
+                                value={selectedMode}
+                                label="サイトテーマ"
+                                onChange={() => {
+                                    toggleColorMode();
+                                }}
+                            >
+                                <MenuItem value={"light"}>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 1,
+                                        }}
+                                    >
+                                        ライト
+                                        <LightModeOutlined />
+                                    </Box>
+                                </MenuItem>
+                                <MenuItem value={"dark"}>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 1,
+                                        }}
+                                    >
+                                        ダーク
+                                        <DarkModeOutlined />
+                                    </Box>
+                                </MenuItem>
+
+                                <MenuItem value={"device"}>
+                                    <Box
+                                        sx={{
+                                            display: "flex",
+                                            alignItems: "center",
+                                            gap: 1,
+                                        }}
+                                    >
+                                        デバイス
+                                        <DevicesIcon />
+                                    </Box>
+                                </MenuItem>
+                            </Select>
+                        </FormControl>
                     </ListItem>
                     {/* <Divider />
                     <Divider />

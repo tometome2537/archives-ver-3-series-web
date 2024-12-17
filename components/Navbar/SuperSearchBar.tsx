@@ -471,10 +471,18 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                                           false
                                                               ? undefined
                                                               : getSearchSuggestionFromLabel(
-                                                                    child.props
-                                                                        .children,
-                                                                    params.group,
-                                                                )?.icon,
+                                                                      child
+                                                                          .props
+                                                                          .children,
+                                                                      params.group,
+                                                                  )?.imgSrc
+                                                                ? undefined
+                                                                : getSearchSuggestionFromLabel(
+                                                                      child
+                                                                          .props
+                                                                          .children,
+                                                                      params.group,
+                                                                  )?.icon,
                                                       avatar:
                                                           props.showTagIcon ===
                                                           false ? undefined : getSearchSuggestionFromLabel(

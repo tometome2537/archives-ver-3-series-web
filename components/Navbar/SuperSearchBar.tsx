@@ -459,73 +459,55 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                                       variant: "outlined",
                                                       sx: {
                                                           // 既存のスタイルを維持
-                                                          //   ...child.props.style,
-                                                          //   height: "110%",
+                                                          // ...child.props.style,
+                                                          // height: "110%",
                                                           marginBottom: "3px",
-                                                          //   "& .MuiChip-label":
-                                                          //       {},
+                                                          // "& .MuiChip-label": {},
                                                       },
-                                                      // 新しいスタイルやイベントハンドラを追加
-                                                      icon:
-                                                          props.showTagIcon ===
-                                                          false
-                                                              ? undefined
-                                                              : getSearchSuggestionFromLabel(
-                                                                      child
-                                                                          .props
-                                                                          .children,
-                                                                      params.group,
-                                                                  )?.imgSrc
-                                                                ? undefined
-                                                                : getSearchSuggestionFromLabel(
-                                                                      child
-                                                                          .props
-                                                                          .children,
-                                                                      params.group,
-                                                                  )?.icon,
-                                                      avatar:
-                                                          props.showTagIcon ===
-                                                          false ? undefined : getSearchSuggestionFromLabel(
-                                                                child.props
-                                                                    .children,
-                                                                params.group,
-                                                            )?.imgSrc ? (
-                                                              <Avatar
-                                                                  alt={
-                                                                      child
-                                                                          .props
-                                                                          .children
-                                                                  }
-                                                                  src={
-                                                                      getSearchSuggestionFromLabel(
+                                                      // getSearchSuggestionFromLabelの結果を一度取得して再利用
+                                                      ...(() => {
+                                                          const suggestion =
+                                                              props.showTagIcon
+                                                                  ? getSearchSuggestionFromLabel(
+                                                                        child
+                                                                            .props
+                                                                            .children,
+                                                                        params.group,
+                                                                    )
+                                                                  : undefined;
+
+                                                          return {
+                                                              icon: suggestion?.icon,
+                                                              avatar: suggestion?.imgSrc ? (
+                                                                  <Avatar
+                                                                      alt={
                                                                           child
                                                                               .props
-                                                                              .children,
-                                                                          params.group,
-                                                                      )?.imgSrc
-                                                                  }
-                                                              />
-                                                          ) : getSearchSuggestionFromLabel(
-                                                                child.props
-                                                                    .children,
-                                                                params.group,
-                                                            )
-                                                                ?.icon ? undefined : (
-                                                              <Avatar>
-                                                                  {child.props
-                                                                      .children
-                                                                      ? child
-                                                                            .props
-                                                                            .children[0]
-                                                                      : ""}
-                                                              </Avatar>
-                                                          ),
+                                                                              .children
+                                                                      }
+                                                                      src={
+                                                                          suggestion.imgSrc
+                                                                      }
+                                                                  />
+                                                              ) : suggestion?.icon ? undefined : (
+                                                                  <Avatar>
+                                                                      {child
+                                                                          .props
+                                                                          .children
+                                                                          ? child
+                                                                                .props
+                                                                                .children[0]
+                                                                          : ""}
+                                                                  </Avatar>
+                                                              ),
+                                                          };
+                                                      })(),
                                                       label: child.props
                                                           .children,
                                                       color: "secondary",
 
                                                       // ↓ onClick()がChipを一意に特定するために必要。
-                                                      //   id: `:r${index}:-option-${index}`,
+                                                      // id: `:r${index}:-option-${index}`,
                                                       "data-option-index":
                                                           child.props[
                                                               "data-option-index"
@@ -535,7 +517,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                                           e: React.MouseEvent,
                                                       ) => {
                                                           // 親要素のonClickを発火させたくない場合に追記
-                                                          //   e.stopPropagation();
+                                                          // e.stopPropagation();
 
                                                           // 既存のonClickを呼び出す
                                                           child.props.onClick(

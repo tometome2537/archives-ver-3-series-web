@@ -196,7 +196,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                     createdAt: new Date(),
                     label: value,
                     value: value,
-                    categoryId: "text",
+                    categoryId: "",
                     categoryLabel: "",
                 };
                 result.push(item);

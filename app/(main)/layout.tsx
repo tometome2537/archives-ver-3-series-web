@@ -146,6 +146,7 @@ export default function RootLayout({
                     ),
                     onClick: () => {
                         setAvailableCategoryIds([
+                            "",
                             "actor",
                             "organization",
                             // "YouTubeChannel",
@@ -154,7 +155,6 @@ export default function RootLayout({
                             "specialWord_PlatMusic",
                             "musicArtistName",
                             "musicTitle",
-                            "text",
                         ]);
                         setLimitSuperSearchCategory([
                             // { categoryId: "actor", categoryLabel: "出演者" },

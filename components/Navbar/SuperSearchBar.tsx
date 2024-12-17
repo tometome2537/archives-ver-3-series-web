@@ -30,9 +30,9 @@ export interface SearchSuggestion {
     label: string;
     // 値
     value: string;
-    // アイコン画像
+    // アイコン画像URL
     imgSrc?: string;
-    // アイコン
+    // アイコン(MUIのアイコンを想定)
     icon?: React.ReactElement;
     // カテゴリーのID
     categoryId: string;
@@ -208,7 +208,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                     label: value,
                     value: value,
                     categoryId: "text",
-                    categoryLabel: "テキスト",
+                    categoryLabel: "",
                 };
                 result.push(item);
             } else if (value.categoryId === "_DatePickerDialog") {
@@ -548,6 +548,8 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                 sx={{
                                     height: "auto",
                                     "& .MuiChip-label": {
+                                        display: "flex",
+                                        justifyContent: "center", // 水平方向の中央揃え
                                         // textAlign: "center",
                                         maxWidth: "100%",
                                         lineHeight: "1.5", // 文字の上下間隔
@@ -575,8 +577,12 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                 label={
                                     <>
                                         {option.label}
-                                        <br />
-                                        {option.categoryLabel}
+                                        {option.categoryLabel && (
+                                            <>
+                                                <br />
+                                                {option.categoryLabel}
+                                            </>
+                                        )}
                                     </>
                                 }
                                 color="success"

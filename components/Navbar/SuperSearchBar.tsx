@@ -477,7 +477,9 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                                                   : undefined;
 
                                                           return {
-                                                              icon: suggestion?.icon,
+                                                              icon: suggestion?.imgSrc
+                                                                  ? undefined
+                                                                  : suggestion?.icon,
                                                               avatar: suggestion?.imgSrc ? (
                                                                   <Avatar
                                                                       alt={

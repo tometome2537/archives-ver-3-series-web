@@ -111,6 +111,17 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
               })
         : [];
 
+    const searchSuggestionsAsDictionary = props.searchSuggestions
+        ? props.searchSuggestions.reduce(
+              (acc, suggestion) => {
+                  const key = `${suggestion.label}_${suggestion.categoryLabel}`;
+                  acc[key] = suggestion;
+                  return acc;
+              },
+              {} as Record<string, SearchSuggestion>,
+          )
+        : {};
+
     // バリデーション用のダミーデータ
     const validation = {
         error: false, // エラーの状態を管理
@@ -282,14 +293,15 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
         label: string,
         categoryLabel: string,
     ) => {
-        const r = props.searchSuggestions?.find(
-            (item) =>
-                item.label === label && item.categoryLabel === categoryLabel,
-        );
-        if (r) {
-            return r;
-        }
-        return undefined;
+        return searchSuggestionsAsDictionary[`${label}_${categoryLabel}`];
+        // const r = props.searchSuggestions?.find(
+        //     (item) =>
+        //         item.label === label && item.categoryLabel === categoryLabel,
+        // );
+        // if (r) {
+        //     return r;
+        // }
+        // return undefined;
     };
 
     return (
@@ -436,101 +448,88 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                         {/* <GroupItems>{params.children}</GroupItems> */}
                         <GroupItems>
                             {React.Children.map(
+                                // コメント消さないで by とめとめ
                                 // 検索候補の各項目を繰り返す。
                                 params.children,
-                                (child, index) => (
-                                    <Box
-                                        key={child?.toString()}
-                                        sx={{
-                                            // タグの横幅を定義
-                                            width: props.showTagCount
-                                                ? "100%"
-                                                : "24%",
-                                        }}
-                                    >
-                                        {/* 各要素にユニークなkeyを設定 */}
-                                        {
-                                            React.isValidElement(child)
-                                                ? // 各項目の要素をReact.cloneElementでクローンを作成する。
-                                                  React.cloneElement(<Chip />, {
-                                                      // コメント消さないで by とめとめ
-                                                      // 既存のchildのpropsをスプレッド演算子で展開
-                                                      ...child.props,
-                                                      variant: "outlined",
-                                                      sx: {
-                                                          // 既存のスタイルを維持
-                                                          // ...child.props.style,
-                                                          // height: "110%",
-                                                          marginBottom: "3px",
-                                                          // "& .MuiChip-label": {},
-                                                      },
-                                                      // getSearchSuggestionFromLabelの結果を一度取得して再利用
-                                                      ...(() => {
-                                                          const suggestion =
-                                                              props.showTagIcon
-                                                                  ? getSearchSuggestionFromLabel(
-                                                                        child
-                                                                            .props
-                                                                            .children,
-                                                                        params.group,
-                                                                    )
-                                                                  : undefined;
+                                (child, index) =>
+                                    // getSearchSuggestionFromLabelの結果を一度取得して再利用
+                                    React.isValidElement(child) ? (
+                                        <Box
+                                            key={child.key}
+                                            sx={{
+                                                // タグの横幅を定義
+                                                width: props.showTagCount
+                                                    ? "100%"
+                                                    : "24%",
+                                            }}
+                                        >
+                                            {/* 各要素にユニークなkeyを設定 */}
+                                            <Chip
+                                                {...child.props}
+                                                variant="outlined"
+                                                sx={{
+                                                    // 既存のスタイルを維持
+                                                    marginBottom: "3px",
+                                                }}
+                                                // とめとめさんスペース
+                                                /*
+                                                const suggestion =
+                                          props.showTagIcon
+                                              ? getSearchSuggestionFromLabel(
+                                                    child
+                                                        .props
+                                                        .children,
+                                                    params.group,
+                                                )
+                                              : undefined;
+                                    return {
+                                        icon: suggestion?.imgSrc
+                                            ? undefined
+                                            : suggestion?.icon,
+                                        avatar: suggestion?.imgSrc ? (
+                                            <Avatar
+                                                alt={
+                                                    child
+                                                        .props
+                                                        .children
+                                                }
+                                                src={
+                                                    suggestion.imgSrc
+                                                }
+                                            />
+                                        ) : suggestion?.icon ? undefined : (
+                                            <Avatar>
+                                                {child
+                                                    .props
+                                                    .children
+                                                    ? child
+                                                          .props
+                                                          .children[0]
+                                                    : ""}
+                                            </Avatar>
+                                        ),
+                                    }; */
+                                                label={child.props.children}
+                                                color={"secondary"}
+                                                // ↓ onClick()がChipを一意に特定するために必要。
+                                                // id: `:r${index}:-option-${index}`,
+                                                data-option-index={
+                                                    child.props[
+                                                        "data-option-index"
+                                                    ]
+                                                }
+                                                onClick={(
+                                                    e: React.MouseEvent,
+                                                ) => {
+                                                    // 親要素のonClickを発火させたくない場合に追記
+                                                    // e.stopPropagation();
 
-                                                          return {
-                                                              icon: suggestion?.imgSrc
-                                                                  ? undefined
-                                                                  : suggestion?.icon,
-                                                              avatar: suggestion?.imgSrc ? (
-                                                                  <Avatar
-                                                                      alt={
-                                                                          child
-                                                                              .props
-                                                                              .children
-                                                                      }
-                                                                      src={
-                                                                          suggestion.imgSrc
-                                                                      }
-                                                                  />
-                                                              ) : suggestion?.icon ? undefined : (
-                                                                  <Avatar>
-                                                                      {child
-                                                                          .props
-                                                                          .children
-                                                                          ? child
-                                                                                .props
-                                                                                .children[0]
-                                                                          : ""}
-                                                                  </Avatar>
-                                                              ),
-                                                          };
-                                                      })(),
-                                                      label: child.props
-                                                          .children,
-                                                      color: "secondary",
-
-                                                      // ↓ onClick()がChipを一意に特定するために必要。
-                                                      // id: `:r${index}:-option-${index}`,
-                                                      "data-option-index":
-                                                          child.props[
-                                                              "data-option-index"
-                                                          ],
-
-                                                      onClick: (
-                                                          e: React.MouseEvent,
-                                                      ) => {
-                                                          // 親要素のonClickを発火させたくない場合に追記
-                                                          // e.stopPropagation();
-
-                                                          // 既存のonClickを呼び出す
-                                                          child.props.onClick(
-                                                              e,
-                                                          );
-                                                      },
-                                                  })
-                                                : child // 子要素がReactエレメントでない場合はそのまま表示
-                                        }
-                                    </Box>
-                                ),
+                                                    // 既存のonClickを呼び出す
+                                                    child.props.onClick(e);
+                                                }}
+                                            />
+                                        </Box>
+                                    ) : null,
                             )}
                         </GroupItems>
                     </li>

@@ -462,84 +462,172 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                     >
                                         {/* 各要素にユニークなkeyを設定 */}
                                         {
-                                            React.isValidElement(child)
-                                                ? // 各項目の要素をReact.cloneElementでクローンを作成する。
-                                                  React.cloneElement(<Chip />, {
-                                                      // コメント消さないで by とめとめ
-                                                      // 既存のchildのpropsをスプレッド演算子で展開
-                                                      ...child.props,
-                                                      variant: "outlined",
-                                                      sx: {
-                                                          // 既存のスタイルを維持
-                                                          // ...child.props.style,
-                                                          // height: "110%",
-                                                          marginBottom: "3px",
-                                                          // "& .MuiChip-label": {},
-                                                      },
-                                                      // getSearchSuggestionFromLabelの結果を一度取得して再利用
-                                                      ...(() => {
-                                                          const suggestion =
-                                                              props.showTagIcon
-                                                                  ? getSearchSuggestionFromLabel(
-                                                                        child
-                                                                            .props
-                                                                            .children,
-                                                                        params.group,
-                                                                    )
-                                                                  : undefined;
+                                            React.isValidElement(child) ? (
+                                                <>
+                                                    {/*  各項目の要素をReact.cloneElementでクローンを作成する。 */}
+                                                    {/* {React.cloneElement(
+                                                        <Chip />,
+                                                        {
+                                                            // コメント消さないで by とめとめ
+                                                            // 既存のchildのpropsをスプレッド演算子で展開
+                                                            ...child.props,
+                                                            variant: "outlined",
+                                                            sx: {
+                                                                // 既存のスタイルを維持
+                                                                // ...child.props.style,
+                                                                // height: "110%",
+                                                                marginBottom:
+                                                                    "3px",
+                                                                // "& .MuiChip-label": {},
+                                                            },
+                                                            // getSearchSuggestionFromLabelの結果を一度取得して再利用
+                                                            ...(() => {
+                                                                const suggestion =
+                                                                    props.showTagIcon
+                                                                        ? getSearchSuggestionFromLabel(
+                                                                              child
+                                                                                  .props
+                                                                                  .children,
+                                                                              params.group,
+                                                                          )
+                                                                        : undefined;
 
-                                                          return {
-                                                              icon: suggestion?.imgSrc
-                                                                  ? undefined
-                                                                  : suggestion?.icon,
-                                                              avatar: suggestion?.imgSrc ? (
-                                                                  <Avatar
-                                                                      alt={
-                                                                          child
-                                                                              .props
-                                                                              .children
-                                                                      }
-                                                                      src={
-                                                                          suggestion.imgSrc
-                                                                      }
-                                                                  />
-                                                              ) : suggestion?.icon ? undefined : (
-                                                                  <Avatar>
-                                                                      {child
-                                                                          .props
-                                                                          .children
-                                                                          ? child
+                                                                return {
+                                                                    icon: suggestion?.imgSrc
+                                                                        ? undefined
+                                                                        : suggestion?.icon,
+                                                                    avatar: suggestion?.imgSrc ? (
+                                                                        <Avatar
+                                                                            alt={
+                                                                                child
+                                                                                    .props
+                                                                                    .children
+                                                                            }
+                                                                            src={
+                                                                                suggestion.imgSrc
+                                                                            }
+                                                                        />
+                                                                    ) : suggestion?.icon ? undefined : (
+                                                                        <Avatar>
+                                                                            {child
                                                                                 .props
-                                                                                .children[0]
-                                                                          : ""}
-                                                                  </Avatar>
-                                                              ),
-                                                          };
-                                                      })(),
-                                                      label: child.props
-                                                          .children,
-                                                      color: "secondary",
+                                                                                .children
+                                                                                ? child
+                                                                                      .props
+                                                                                      .children[0]
+                                                                                : ""}
+                                                                        </Avatar>
+                                                                    ),
+                                                                };
+                                                            })(),
+                                                            label: child.props
+                                                                .children,
+                                                            color: "secondary",
 
-                                                      // ↓ onClick()がChipを一意に特定するために必要。
-                                                      // id: `:r${index}:-option-${index}`,
-                                                      "data-option-index":
-                                                          child.props[
-                                                              "data-option-index"
-                                                          ],
+                                                            // ↓ onClick()がChipを一意に特定するために必要。
+                                                            // id: `:r${index}:-option-${index}`,
+                                                            "data-option-index":
+                                                                child.props[
+                                                                    "data-option-index"
+                                                                ],
 
-                                                      onClick: (
-                                                          e: React.MouseEvent,
-                                                      ) => {
-                                                          // 親要素のonClickを発火させたくない場合に追記
-                                                          // e.stopPropagation();
+                                                            onClick: (
+                                                                e: React.MouseEvent,
+                                                            ) => {
+                                                                // 親要素のonClickを発火させたくない場合に追記
+                                                                // e.stopPropagation();
 
-                                                          // 既存のonClickを呼び出す
-                                                          child.props.onClick(
-                                                              e,
-                                                          );
-                                                      },
-                                                  })
-                                                : child // 子要素がReactエレメントでない場合はそのまま表示
+                                                                // 既存のonClickを呼び出す
+                                                                child.props.onClick(
+                                                                    e,
+                                                                );
+                                                            },
+                                                        },
+                                                    )} */}
+
+                                                    {(() => {
+                                                        const suggestion =
+                                                            getSearchSuggestionFromLabel(
+                                                                child.props
+                                                                    .children,
+                                                                params.group,
+                                                            );
+
+                                                        return (
+                                                            <div
+                                                                style={{
+                                                                    display:
+                                                                        "flex",
+                                                                    marginBottom:
+                                                                        "3px",
+                                                                }}
+                                                                data-option-index={
+                                                                    child.props[
+                                                                        "data-option-index"
+                                                                    ]
+                                                                }
+                                                                // クリックイベント
+                                                                onClick={(
+                                                                    e: React.MouseEvent,
+                                                                ) => {
+                                                                    child.props.onClick(
+                                                                        e,
+                                                                    );
+                                                                }}
+                                                                // キーボードイベント
+                                                                onKeyDown={(
+                                                                    e: React.KeyboardEvent,
+                                                                ) => {
+                                                                    child.props.onClick(
+                                                                        e,
+                                                                    );
+                                                                }}
+                                                            >
+                                                                {(() => {
+                                                                    if (
+                                                                        suggestion?.imgSrc
+                                                                    ) {
+                                                                        return (
+                                                                            <Avatar
+                                                                                alt={
+                                                                                    child
+                                                                                        .props
+                                                                                        .children
+                                                                                }
+                                                                                src={
+                                                                                    suggestion?.imgSrc
+                                                                                }
+                                                                            />
+                                                                        );
+                                                                    }
+                                                                    if (
+                                                                        suggestion?.icon
+                                                                    ) {
+                                                                        return suggestion?.icon;
+                                                                    }
+                                                                    return (
+                                                                        <Avatar>
+                                                                            {child
+                                                                                .props
+                                                                                .children
+                                                                                ? child
+                                                                                      .props
+                                                                                      .children[0]
+                                                                                : ""}
+                                                                        </Avatar>
+                                                                    );
+                                                                })()}
+                                                                {
+                                                                    child.props
+                                                                        .children
+                                                                }
+                                                            </div>
+                                                        );
+                                                    })()}
+                                                </>
+                                            ) : (
+                                                child
+                                            ) // 子要素がReactエレメントでない場合はそのまま表示
                                         }
                                     </Box>
                                 ),

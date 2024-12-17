@@ -40,6 +40,8 @@ export interface SearchSuggestion {
     categoryLabel: string;
     // 検索候補表示時のカテゴリーの並び順(大きい順)
     categorySort?: number;
+    // 入力された文字列が何文字以上の時に、検索候補として表示するか。(デフォルトは0)
+    queryMinLengthForSuggestions?: number;
 }
 
 export interface InputValue extends SearchSuggestion {
@@ -171,14 +173,24 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
         const inputValueLowerCase = params.inputValue.toLowerCase();
 
         // optionsリストをフィルタリングし、inputValueがオプションのラベルに含まれるものを返す
-        return options.filter((option) =>
+        return options.filter((option) => {
+            // 入力途中の文字数をカウント
+            if (option.queryMinLengthForSuggestions) {
+                if (
+                    inputValueLowerCase.length <
+                    option.queryMinLengthForSuggestions
+                ) {
+                    return false;
+                }
+            }
+
             // ↓ 無駄に見えて謎にエラー回避に役立ってる String()
             // おそらくAPIで取得した値がstringでないのが原因。
             // APIで取得する値がStringかどうかはTypeScriptでチェックしきれない。
-            String(option.label)
+            return String(option.label)
                 .toLowerCase()
-                .includes(inputValueLowerCase),
-        );
+                .includes(inputValueLowerCase);
+        });
     }
 
     // 入力値変更時に呼び出される関数

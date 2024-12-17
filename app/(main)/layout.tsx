@@ -441,6 +441,7 @@ export default function RootLayout({
                     categoryLabel: "楽曲アーティスト",
                     categorySort: 20,
                     icon: <MusicNoteIcon />,
+                    queryMinLengthForSuggestions: 1,
                 });
             }
         }
@@ -462,6 +463,7 @@ export default function RootLayout({
                     categoryLabel: "楽曲タイトル",
                     categorySort: 19,
                     // icon: <MusicNoteIcon />,
+                    queryMinLengthForSuggestions: 1,
                 });
             }
         }

@@ -126,10 +126,10 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                     if (!item.title?.match(inputValue.value)) {
                         match = false;
                     }
-                } else if (inputValue.categoryId === "text") {
+                } else if (inputValue.categoryId === "") {
                     // 概要欄の条件を満たさなければfalse
                     if (
-                        !item.title?.match(inputValue.value) ||
+                        item.title?.match(inputValue.value) ||
                         (item.apiData &&
                             // JSON.parse(item.apiData).snippet.description &&
                             !JSON.parse(

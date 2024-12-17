@@ -4,38 +4,105 @@ import SuperSearchBar, {
 } from "@/components/Navbar/SuperSearchBar";
 import UltraSuperSearchBar from "@/components/Navbar/UltraSuperSearchBar";
 import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
+import { useColorModeContext } from "@/contexts/ThemeContext";
 import rgbToHex from "@/libs/colorConverter";
-import { AppBar, Box, Button, Container, Link, Toolbar } from "@mui/material";
+import DarkModeIcon from "@mui/icons-material/DarkMode";
+import FeedbackIcon from "@mui/icons-material/Feedback";
+import GradeIcon from "@mui/icons-material/Grade";
+import HomeIcon from "@mui/icons-material/Home";
+import InstagramIcon from "@mui/icons-material/Instagram";
+import LightModeIcon from "@mui/icons-material/LightMode";
+import MailIcon from "@mui/icons-material/Mail";
+import MenuIcon from "@mui/icons-material/Menu";
+import StorageIcon from "@mui/icons-material/Storage";
+import XIcon from "@mui/icons-material/X";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import {
+    AppBar,
+    Box,
+    Button,
+    Container,
+    FormControlLabel,
+    Link,
+    Toolbar,
+    Typography,
+} from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import IconButton from "@mui/material/IconButton";
+import List from "@mui/material/List";
+import ListItem from "@mui/material/ListItem";
+import ListItemButton from "@mui/material/ListItemButton";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import ListItemText from "@mui/material/ListItemText";
+import Switch, { SwitchProps } from "@mui/material/Switch";
+import { blueGrey } from "@mui/material/colors";
 import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useEffect, useRef, useState } from "react";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
-import Drawer from "@mui/material/Drawer";
-import MailIcon from "@mui/icons-material/Mail";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import { useColorModeContext } from "@/contexts/ThemeContext";
-import LightModeIcon from "@mui/icons-material/LightMode";
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import XIcon from "@mui/icons-material/X";
-import FeedbackIcon from "@mui/icons-material/Feedback";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import InstagramIcon from "@mui/icons-material/Instagram";
-import HomeIcon from "@mui/icons-material/Home";
-import StorageIcon from "@mui/icons-material/Storage";
-import GradeIcon from "@mui/icons-material/Grade";
 
 export const NavButton = styled(Button)({
     color: "primary",
     fontWeight: "bold",
 }) as typeof Button;
+
+const MaterialUISwitch = styled(Switch)(({ theme }) => ({
+    width: 62,
+    height: 34,
+    padding: 7,
+    "& .MuiSwitch-switchBase": {
+        margin: 1,
+        padding: 0,
+        transform: "translateX(6px)",
+        "&.Mui-checked": {
+            color: "#fff",
+            transform: "translateX(22px)",
+            "& .MuiSwitch-thumb:before": {
+                backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
+                    "#fff",
+                )}" d="M4.2 2.5l-.7 1.8-1.8.7 1.8.7.7 1.8.6-1.8L6.7 5l-1.9-.7-.6-1.8zm15 8.3a6.7 6.7 0 11-6.6-6.6 5.8 5.8 0 006.6 6.6z"/></svg>')`,
+            },
+            "& + .MuiSwitch-track": {
+                opacity: 1,
+                backgroundColor: "#aab4be",
+                ...theme.applyStyles("dark", {
+                    backgroundColor: "#8796A5",
+                }),
+            },
+        },
+    },
+    "& .MuiSwitch-thumb": {
+        backgroundColor: "#001e3c",
+        width: 32,
+        height: 32,
+        "&::before": {
+            content: "''",
+            position: "absolute",
+            width: "100%",
+            height: "100%",
+            left: 0,
+            top: 0,
+            backgroundRepeat: "no-repeat",
+            backgroundPosition: "center",
+            backgroundImage: `url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" height="20" width="20" viewBox="0 0 20 20"><path fill="${encodeURIComponent(
+                "#fff",
+            )}" d="M9.305 1.667V3.75h1.389V1.667h-1.39zm-4.707 1.95l-.982.982L5.09 6.072l.982-.982-1.473-1.473zm10.802 0L13.927 5.09l.982.982 1.473-1.473-.982-.982zM10 5.139a4.872 4.872 0 00-4.862 4.86A4.872 4.872 0 0010 14.862 4.872 4.872 0 0014.86 10 4.872 4.872 0 0010 5.139zm0 1.389A3.462 3.462 0 0113.471 10a3.462 3.462 0 01-3.473 3.472A3.462 3.462 0 016.527 10 3.462 3.462 0 0110 6.528zM1.665 9.305v1.39h2.083v-1.39H1.666zm14.583 0v1.39h2.084v-1.39h-2.084zM5.09 13.928L3.616 15.4l.982.982 1.473-1.473-.982-.982zm9.82 0l-.982.982 1.473 1.473.982-.982-1.473-1.473zM9.305 16.25v2.083h1.389V16.25h-1.39z"/></svg>')`,
+        },
+        ...theme.applyStyles("dark", {
+            backgroundColor: "#003892",
+        }),
+    },
+    "& .MuiSwitch-track": {
+        opacity: 1,
+        backgroundColor: "#aab4be",
+        borderRadius: 20 / 2,
+        ...theme.applyStyles("dark", {
+            backgroundColor: "#8796A5",
+        }),
+    },
+}));
 
 type NavbarProps = {
     // ウルトラスーパーサーチバー
@@ -62,7 +129,7 @@ type NavbarProps = {
 export default function Navbar(props: NavbarProps) {
     // テーマ設定を取得
     const theme = useTheme();
-    const { toggleColorMode } = useColorModeContext();
+    const { selectedMode, toggleColorMode } = useColorModeContext();
 
     // メニューの開閉
     const [menu, setMenu] = useState<boolean>(false);
@@ -303,9 +370,8 @@ export default function Navbar(props: NavbarProps) {
                             />
                         </ListItemButton>
                     </ListItem>
-                    <Divider />
-                    <Divider />
-                    <Divider />
+                    <Divider sx={{ borderBottomWidth: 3 }} />
+
                     <ListItem disablePadding>
                         <ListItemButton
                             component="a"
@@ -368,8 +434,7 @@ export default function Navbar(props: NavbarProps) {
                             <ListItemText primary="ぷらそにか公式 ホームページ " />
                         </ListItemButton>
                     </ListItem>
-                    <Divider />
-                    <Divider />
+                    <Divider sx={{ borderBottomWidth: 3 }} />
                     <ListItem disablePadding>
                         <ListItemButton
                             component="a"
@@ -439,6 +504,25 @@ export default function Navbar(props: NavbarProps) {
                             />
                         </ListItemButton>
                     </ListItem>
+                    <Divider sx={{ borderBottomWidth: 3 }} />
+                    <ListItem disablePadding>
+                        {/*
+                                                     toggleColorMode();
+                                setMenu(false); */}
+                        <FormControlLabel
+                            control={
+                                <MaterialUISwitch
+                                    sx={{ m: 1 }}
+                                    defaultChecked={selectedMode === "dark"}
+                                />
+                            }
+                            onChange={() => {
+                                console.log(selectedMode);
+                                toggleColorMode();
+                            }}
+                            label="サイトテーマ"
+                        />
+                    </ListItem>
                     {/* <Divider />
                     <Divider />
                     <ListItem disablePadding>
@@ -464,8 +548,7 @@ export default function Navbar(props: NavbarProps) {
                             />
                         </ListItemButton>
                     </ListItem> */}
-                    <Divider />
-                    <Divider />
+                    <Divider sx={{ borderBottomWidth: 3 }} />
                     <ListItem disablePadding>
                         <ListItemButton>
                             <ListItemText

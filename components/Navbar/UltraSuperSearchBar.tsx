@@ -9,6 +9,7 @@ import SuperSearchBar, {
 import { Category } from "@mui/icons-material";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
+import HistoryIcon from "@mui/icons-material/History";
 import {
     Box,
     ButtonBase,
@@ -19,7 +20,6 @@ import {
 } from "@mui/material";
 import dayjs from "dayjs";
 import { type Dispatch, type SetStateAction, useState } from "react";
-import HistoryIcon from "@mui/icons-material/History";
 
 export interface LimitedSuperSearchProps {
     searchSuggestions?: ultraSuperSearchBarSearchSuggestion[];
@@ -64,7 +64,7 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
         ]);
     };
     // 検索候補をcategoryIdが同じのに絞る
-    // ディープカット
+    // ディープコピー
     const deepCutSuggestions: ultraSuperSearchBarSearchSuggestion[] =
         JSON.parse(JSON.stringify(searchSuggestions));
     const limitSearchSuggestion = deepCutSuggestions.filter(

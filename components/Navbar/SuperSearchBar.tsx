@@ -242,7 +242,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
     // 全角の数値を半角に変更 文字列はそのまま 全角スペースを半角スペースに
     const convertStringToDate = (str: string): Date => {
         // 全角数字のUnicode範囲
-        const fullWidthNumbers = /[\uFF10-\uFF19]/g;
+        const fullWidthNumbers = /[０-９]/g;
 
         // 全角数字を半角に変換し、スペースを削除
         const dateString = str
@@ -250,7 +250,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 // 全角数字を半角に変換するため、0xFEE0を引く
                 return String.fromCharCode(char.charCodeAt(0) - 0xfee0);
             })
-            .replace(/\u3000/g, " ") // 全角スペースを半角スペースに
+            .replace(/　/g, " ") // 全角スペースを半角スペースに
             .trim(); // 文字列の前後の空白等を取り除く
 
         return new Date(dateString);

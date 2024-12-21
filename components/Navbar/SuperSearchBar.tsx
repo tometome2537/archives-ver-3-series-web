@@ -1,13 +1,5 @@
-import { DatePicker } from "@/components/Form/DatePicker";
 import CloseIcon from "@mui/icons-material/Close";
-import {
-    Autocomplete,
-    Box,
-    Chip,
-    Stack,
-    TextField,
-    Typography,
-} from "@mui/material";
+import { Autocomplete, Box, Chip, Stack, TextField } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import Dialog from "@mui/material/Dialog";
@@ -17,7 +9,6 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useTheme } from "@mui/material/styles";
 import { darken, lighten, styled } from "@mui/system";
-import dayjs, { type Dayjs } from "dayjs";
 import type { SyntheticEvent } from "react";
 import { useState } from "react";
 import * as React from "react";
@@ -250,8 +241,8 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                 // 全角数字を半角に変換するため、0xFEE0を引く
                 return String.fromCharCode(char.charCodeAt(0) - 0xfee0);
             })
-            .replace(/　/g, " ") // 全角スペースを半角スペースに
-            .trim(); // 文字列の前後の空白等を取り除く
+            .replace(/　/g, " ")
+            .trim();
 
         return new Date(dateString);
     };

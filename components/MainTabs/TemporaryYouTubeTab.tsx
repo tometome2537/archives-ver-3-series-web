@@ -1,13 +1,10 @@
-import { type Dispatch, Fragment, type SetStateAction } from "react";
-import type { PlayerItem } from "../PlayerView";
-import SuperSearchBar, {
-    type InputValue,
-} from "@/components/Navbar/SuperSearchBar";
+import type { InputValue } from "@/components/Navbar/SuperSearchBar";
 import { Box } from "@mui/material";
+import type { Dispatch, SetStateAction } from "react";
 import { useCallback, useEffect, useState } from "react";
 import Loading from "../Loading";
+import type { PlayerItem } from "../PlayerView";
 import Thumbnail from "../Thumbnail";
-import GradeIcon from "@mui/icons-material/Grade";
 
 type VideoTemporaryObj = {
     videoId: string; // 動画ID
@@ -67,7 +64,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                         "token s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I",
                 },
             });
-            if (!response.ok) {
+            if (response.ok === false) {
                 throw new Error("Network response was not ok");
             }
             const data = await response.json();
@@ -86,22 +83,25 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 
     // サーチバーの値を取得し結果を表示。
     useEffect(() => {
+        // 最初はapiDataVideoが空だから何もしない
+        // これがないとAPIからデータを取得する前に結果が0と表示されてしまう
+        if (apiDataVideo.length === 0) return;
+
         setLoading(true);
-        const result = apiDataVideo.filter((item, index) => {
+        const result = apiDataVideo.filter((item) => {
             // 検索結果を100件に制限(開発中の一時的処置)
             // if (index > 100) {
             //     return false;
             // }
-            let match = true;
 
             // 公開設定は一般公開に限る
             if (item.privacyStatus !== "public") {
-                match = false;
+                return false;
             }
 
             // shortは非表示
             if (item.short === true) {
-                match = false;
+                return false;
             }
 
             // 各inputValueに対してすべての条件を確認
@@ -109,24 +109,31 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 if (inputValue.categoryId === "YouTubeChannel") {
                     // YouTubeチャンネルの条件を満たさなければfalse
                     if (item.channelId !== inputValue.value) {
-                        match = false;
+                        return false;
                     }
-                } else if (inputValue.categoryId === "actor") {
+                }
+                if (inputValue.categoryId === "actor") {
                     // 出演者の条件を満たさなければfalse
                     if (!item.person?.match(inputValue.value)) {
-                        match = false;
+                        return false;
                     }
-                } else if (inputValue.categoryId === "organization") {
+                }
+
+                if (inputValue.categoryId === "organization") {
                     // 組織の条件を満たさなければfalse
                     if (!item.organization?.match(inputValue.value)) {
-                        match = false;
+                        return false;
                     }
-                } else if (inputValue.categoryId === "title") {
+                }
+
+                if (inputValue.categoryId === "title") {
                     // タイトルの条件を満たさなければfalse
                     if (!item.title?.match(inputValue.value)) {
-                        match = false;
+                        return false;
                     }
-                } else if (inputValue.categoryId === "") {
+                }
+
+                if (inputValue.categoryId === "") {
                     // 概要欄の条件を満たさなければfalse
                     if (
                         item.title?.match(inputValue.value) ||
@@ -136,9 +143,11 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                 item.apiData,
                             ).snippet.description?.match(inputValue.value))
                     ) {
-                        match = false;
+                        return false;
                     }
-                } else if (inputValue.categoryId === "description") {
+                }
+
+                if (inputValue.categoryId === "description") {
                     // 概要欄の条件を満たさなければfalse
                     if (
                         item.apiData &&
@@ -147,26 +156,32 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                             inputValue.value,
                         )
                     ) {
-                        match = false;
+                        return false;
                     }
-                } else if (inputValue.categoryId === "musicArtistName") {
+                }
+
+                if (inputValue.categoryId === "musicArtistName") {
                     // タイトルの条件を満たさなければfalse
                     if (
                         !item.title?.match(inputValue.value) ||
-                        // ↓ Offical髭男dism要検証 (To Do)
+                        // ↓ Official髭男dism要検証 (To Do)
                         (item.tagText && !item.tagText?.match(inputValue.value))
                     ) {
-                        match = false;
+                        return false;
                     }
-                } else if (inputValue.categoryId === "musicTitle") {
+                }
+
+                if (inputValue.categoryId === "musicTitle") {
                     // タイトルの条件を満たさなければfalse
                     if (!item.title?.match(inputValue.value)) {
-                        match = false;
+                        return false;
                     }
-                } else if (inputValue.categoryId === "specialWord_PlatMusic") {
+                }
+
+                if (inputValue.categoryId === "specialWord_PlatMusic") {
                     // タイトルの条件を満たさなければfalse
                     if (!item.title?.match(/ぷらそにか/)) {
-                        match = false;
+                        return false;
                     }
                     // 概要欄の条件を満たさなければfalse
                     if (
@@ -175,12 +190,12 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                             /ぷらっとみゅーじっく♪/,
                         )
                     ) {
-                        match = false;
+                        return false;
                     }
                 }
             }
 
-            return match; // すべての条件がtrueの場合のみ結果に含める
+            return true;
         });
 
         setResultVideo(result);
@@ -195,7 +210,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         });
         // APIから受け取った値の型を変換する。
         const searchResult: Array<PlayerItem> = resultVideo
-            ? resultVideo.map((item: VideoTemporaryObj, index: number) => {
+            ? resultVideo.map((item: VideoTemporaryObj) => {
                   const result: PlayerItem = {
                       videoId: item.videoId,
                       title: item.title,
@@ -241,7 +256,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 VideoViewTemporary Error: {error}
                 <div
                     onClick={fetchEvents} // クリックイベント
-                    onKeyPress={fetchEvents} // キーボードイベント
+                    onKeyDown={fetchEvents} // キーボードイベント
                 >
                     再読み込み
                 </div>
@@ -249,49 +264,44 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         );
     }
     return (
-        <Fragment>
-            <Box
-                sx={{
-                    display: "flex",
-                    padding: "0 auto",
-                    justifyContent: "center", // 中央に配置
-                    alignItems: "center", // 縦方向にも中央に配置
-                    flexWrap: "wrap", // ラップさせて複数行に
-                    gap: "10px", // アイテム間のスペースを追加
-                }}
-            >
-                {resultVideo &&
-                    (resultVideo.length !== 0 ? (
-                        resultVideo.map(
-                            (item: VideoTemporaryObj, index: number) => (
-                                <>
-                                    {/* 各アイテムを表示 */}
-
-                                    <Thumbnail
-                                        key={item.videoId}
-                                        thumbnailType="list"
-                                        // isPlayingOnHover={
-                                        //     props.playerItem.videoId === "" ||
-                                        //     props.playerItem.videoId === undefined
-                                        // }
-                                        videoId={item.videoId}
-                                        title={item.title}
-                                        viewCount={Number(item.viewCount)}
-                                        channelTitle={item.channelTitle}
-                                        publishedAt={
-                                            new Date(item.publishedAt || 0)
-                                        }
-                                        onClick={handleVideoClick}
-                                    />
-                                </>
-                            ),
-                        )
-                    ) : (
+        <Box
+            sx={{
+                display: "flex",
+                padding: "0 auto",
+                justifyContent: "center", // 中央に配置
+                alignItems: "center", // 縦方向にも中央に配置
+                flexWrap: "wrap", // ラップさせて複数行に
+                gap: "10px", // アイテム間のスペースを追加
+            }}
+        >
+            {resultVideo &&
+                (resultVideo.length !== 0 ? (
+                    resultVideo.map((item: VideoTemporaryObj) => (
                         <>
-                            <div>検索結果が0です。</div>
+                            {/* 各アイテムを表示 */}
+
+                            <Thumbnail
+                                key={item.videoId}
+                                thumbnailType="list"
+                                // isPlayingOnHover={
+                                //     props.playerItem.videoId === "" ||
+                                //     props.playerItem.videoId === undefined
+                                // }
+                                videoId={item.videoId}
+                                title={item.title}
+                                viewCount={Number(item.viewCount)}
+                                channelTitle={item.channelTitle}
+                                publishedAt={new Date(item.publishedAt || 0)}
+                                onClick={handleVideoClick}
+                            />
                         </>
-                    ))}
-            </Box>
-        </Fragment>
+                    ))
+                ) : (
+                    <>
+                        <div>検索結果が0です。</div>
+                        <div>{JSON.stringify(resultVideo)}</div>
+                    </>
+                ))}
+        </Box>
     );
 }

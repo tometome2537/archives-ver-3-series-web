@@ -1,24 +1,13 @@
 "use client";
 
-import { DatePicker } from "@/components/Form/DatePicker";
 import SuperSearchBar, {
     type SearchSuggestion,
     type InputValue,
     type additionalSearchSuggestions,
 } from "@/components/Navbar/SuperSearchBar";
-import { Category } from "@mui/icons-material";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
-import HistoryIcon from "@mui/icons-material/History";
-import {
-    Box,
-    ButtonBase,
-    Checkbox,
-    Collapse,
-    Stack,
-    Typography,
-} from "@mui/material";
-import dayjs from "dayjs";
+import { Box, ButtonBase, Collapse, Stack, Typography } from "@mui/material";
 import { type Dispatch, type SetStateAction, useState } from "react";
 
 export interface LimitedSuperSearchProps {

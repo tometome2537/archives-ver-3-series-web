@@ -95,9 +95,9 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 order_by: "-publishedAt",
                 offset: "15",
             };
-            // const restData = await fetchData(slowParams);
-            // setApiDataVideo((data) => data.concat(restData));
-            // setLoading(LoadingState.AllLoaded); // ローディングを解除
+            const restData = await fetchData(slowParams);
+            setApiDataVideo((data) => data.concat(restData));
+            setLoading(LoadingState.AllLoaded); // ローディングを解除
         } catch (err) {
             setError((err as Error).message); // エラーを表示
             setLoading(LoadingState.AllLoaded); // ローディングを解除

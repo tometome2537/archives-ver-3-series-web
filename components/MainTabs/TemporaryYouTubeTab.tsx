@@ -1,7 +1,8 @@
 import type { InputValue } from "@/components/Navbar/SuperSearchBar";
+import { buildUrl } from "@/libs/urlBuilder";
 import { Box } from "@mui/material";
 import type { Dispatch, SetStateAction } from "react";
-import { useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useState } from "react";
 import Loading from "../Loading";
 import type { PlayerItem } from "../PlayerView";
 import Thumbnail from "../Thumbnail";
@@ -40,6 +41,12 @@ type TemporaryYouTubeTab = {
     setPlayerSearchResult: Dispatch<SetStateAction<PlayerItem[]>>;
 };
 
+enum LoadingState {
+    Loading = 0,
+    FastLoaded = 1,
+    AllLoaded = 2,
+}
+
 export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
     // APIで取得したデータを格納
     const [apiDataVideo, setApiDataVideo] = useState<VideoTemporaryObj[]>([]);
@@ -48,16 +55,15 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         VideoTemporaryObj[] | undefined
     >(undefined);
     // API通信中かどうか
-    const [loading, setLoading] = useState(true);
+    const [loading, setLoading] = useState<LoadingState>(LoadingState.Loading);
     // API通信でエラーが出たかどうか
     const [error, setError] = useState<string | null>(null);
 
     // APIからイベントデータを取得
     const fetchEvents = useCallback(async () => {
-        try {
-            // Video取得
-            const url =
-                "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp?filter__channelId__exact=UCZx7esGXyW6JXn98byfKEIA";
+        const fetchData = async (params: Record<string, string>) => {
+            const baseUrl = "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp";
+            const url = buildUrl(baseUrl, params);
             const response = await fetch(url, {
                 headers: {
                     Authorization:
@@ -67,12 +73,34 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             if (response.ok === false) {
                 throw new Error("Network response was not ok");
             }
-            const data = await response.json();
-            setApiDataVideo(data.reverse());
+            return await response.json();
+        };
+
+        try {
+            // Video取得
+            // 最初の15件を取得
+            const fastParams = {
+                filter__channelId__exact: "UCZx7esGXyW6JXn98byfKEIA",
+                order_by: "-publishedAt",
+                limit: "15",
+            };
+            const fastData = await fetchData(fastParams);
+            setApiDataVideo(fastData);
+            // 仮だけどローディングを解除
+            setLoading(LoadingState.FastLoaded);
+
+            // そのあと全てを取得
+            const slowParams = {
+                filter__channelId__exact: "UCZx7esGXyW6JXn98byfKEIA",
+                order_by: "-publishedAt",
+                offset: "15",
+            };
+            // const restData = await fetchData(slowParams);
+            // setApiDataVideo((data) => data.concat(restData));
+            // setLoading(LoadingState.AllLoaded); // ローディングを解除
         } catch (err) {
             setError((err as Error).message); // エラーを表示
-        } finally {
-            setLoading(false); // ローディングを解除
+            setLoading(LoadingState.AllLoaded); // ローディングを解除
         }
     }, []);
 
@@ -237,7 +265,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
     };
 
     // ローディング中
-    if (loading) {
+    if (loading === LoadingState.Loading) {
         // return <div>VideoViewTemporary Loading...</div>;
         return (
             <div
@@ -264,44 +292,54 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         );
     }
     return (
-        <Box
-            sx={{
-                display: "flex",
-                padding: "0 auto",
-                justifyContent: "center", // 中央に配置
-                alignItems: "center", // 縦方向にも中央に配置
-                flexWrap: "wrap", // ラップさせて複数行に
-                gap: "10px", // アイテム間のスペースを追加
-            }}
-        >
-            {resultVideo &&
-                (resultVideo.length !== 0 ? (
-                    resultVideo.map((item: VideoTemporaryObj) => (
+        <Fragment>
+            <Box
+                sx={{
+                    display: "flex",
+                    padding: "0 auto",
+                    justifyContent: "center", // 中央に配置
+                    alignItems: "center", // 縦方向にも中央に配置
+                    flexWrap: "wrap", // ラップさせて複数行に
+                    gap: "10px", // アイテム間のスペースを追加
+                }}
+            >
+                {resultVideo &&
+                    (resultVideo.length !== 0 ? (
                         <>
-                            {/* 各アイテムを表示 */}
+                            {resultVideo.map((item: VideoTemporaryObj) => (
+                                <>
+                                    {/* 各アイテムを表示 */}
 
-                            <Thumbnail
-                                key={item.videoId}
-                                thumbnailType="list"
-                                // isPlayingOnHover={
-                                //     props.playerItem.videoId === "" ||
-                                //     props.playerItem.videoId === undefined
-                                // }
-                                videoId={item.videoId}
-                                title={item.title}
-                                viewCount={Number(item.viewCount)}
-                                channelTitle={item.channelTitle}
-                                publishedAt={new Date(item.publishedAt || 0)}
-                                onClick={handleVideoClick}
-                            />
+                                    <Thumbnail
+                                        key={item.videoId}
+                                        thumbnailType="list"
+                                        // isPlayingOnHover={
+                                        //     props.playerItem.videoId === "" ||
+                                        //     props.playerItem.videoId === undefined
+                                        // }
+                                        videoId={item.videoId}
+                                        title={item.title}
+                                        viewCount={Number(item.viewCount)}
+                                        channelTitle={item.channelTitle}
+                                        publishedAt={
+                                            new Date(item.publishedAt || 0)
+                                        }
+                                        onClick={handleVideoClick}
+                                    />
+                                </>
+                            ))}
                         </>
-                    ))
-                ) : (
-                    <>
+                    ) : (
                         <div>検索結果が0です。</div>
-                        <div>{JSON.stringify(resultVideo)}</div>
-                    </>
-                ))}
-        </Box>
+                    ))}
+            </Box>
+            <div
+                style={{
+                    paddingTop: "3vh",
+                }}
+            >
+                <Loading />
+            </div>
+        </Fragment>
     );
 }

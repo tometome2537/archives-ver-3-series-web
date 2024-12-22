@@ -1,19 +1,19 @@
-import SuperSearchBar, {
-    type InputValue,
-} from "@/components/Navbar/SuperSearchBar";
+import type { InputValue } from "@/components/Navbar/SuperSearchBar";
 import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
 import rgbToHex from "@/libs/colorConverter";
+import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box, Chip } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { useTheme } from "@mui/material/styles";
+import Linkify from "linkify-react";
 import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
+import type { YouTubePlayer } from "react-youtube";
 import Thumbnail from "./Thumbnail";
-import PauseIcon from "@mui/icons-material/Pause";
 import YouTubePlayerView from "./YouTubePlayerView";
-import { unescapeHtml } from "@/libs/unescapeHtml";
-import type { YouTubeProps, YouTubePlayer } from "react-youtube";
+import "linkify-plugin-hashtag";
+import * as linkify from "linkifyjs";
 
 export type PlayerItem = {
     videoId?: string;
@@ -205,6 +205,13 @@ export default function PlayerView(props: PlayerProps) {
             categoryId: id,
             categoryLabel: id,
         };
+    };
+
+    const linkifyOptions = {
+        formatHref: {
+            hashtag: (href: string) =>
+                `https://www.youtube.com/hashtag/${href.substring(1)}`,
+        },
     };
 
     return (
@@ -519,56 +526,52 @@ export default function PlayerView(props: PlayerProps) {
                             playNowDetail &&
                             playNowDetail.actorId &&
                             playNowDetail.actorId.length !== 0
-                                ? playNowDetail.actorId.map(
-                                      (actorId, index) => (
-                                          <Chip
-                                              key={actorId}
-                                              variant="outlined"
-                                              sx={{
-                                                  "& .MuiChip-label": {
-                                                      maxWidth: "100%",
-                                                      whiteSpace: "nowrap", // 改行させない
-                                                      textOverflow: "ellipsis", // 長いテキストを省略して表示
-                                                  },
-                                              }}
-                                              avatar={
-                                                  getSearchSuggestionFromId(
-                                                      actorId,
-                                                  ).imgSrc ? (
-                                                      <Avatar
-                                                          alt={
-                                                              getSearchSuggestionFromId(
-                                                                  actorId,
-                                                              ).label
-                                                          }
-                                                          src={
-                                                              getSearchSuggestionFromId(
-                                                                  actorId,
-                                                              ).imgSrc
-                                                          }
-                                                      />
-                                                  ) : (
-                                                      <Avatar>
-                                                          {
-                                                              getSearchSuggestionFromId(
-                                                                  actorId,
-                                                              ).label[0]
-                                                          }
-                                                      </Avatar>
-                                                  )
-                                              }
-                                              label={
-                                                  getSearchSuggestionFromId(
-                                                      actorId,
-                                                  ).label
-                                              }
-                                              color="success"
-                                              onClick={ClickHandleActor}
-                                              onKeyPress={KeyDownHandleActor}
-                                              data-actorId={actorId}
-                                          />
-                                      ),
-                                  )
+                                ? playNowDetail.actorId.map((actorId) => (
+                                      <Chip
+                                          key={actorId}
+                                          variant="outlined"
+                                          sx={{
+                                              "& .MuiChip-label": {
+                                                  maxWidth: "100%",
+                                                  whiteSpace: "nowrap", // 改行させない
+                                                  textOverflow: "ellipsis", // 長いテキストを省略して表示
+                                              },
+                                          }}
+                                          avatar={
+                                              getSearchSuggestionFromId(actorId)
+                                                  .imgSrc ? (
+                                                  <Avatar
+                                                      alt={
+                                                          getSearchSuggestionFromId(
+                                                              actorId,
+                                                          ).label
+                                                      }
+                                                      src={
+                                                          getSearchSuggestionFromId(
+                                                              actorId,
+                                                          ).imgSrc
+                                                      }
+                                                  />
+                                              ) : (
+                                                  <Avatar>
+                                                      {
+                                                          getSearchSuggestionFromId(
+                                                              actorId,
+                                                          ).label[0]
+                                                      }
+                                                  </Avatar>
+                                              )
+                                          }
+                                          label={
+                                              getSearchSuggestionFromId(actorId)
+                                                  .label
+                                          }
+                                          color="success"
+                                          onClick={ClickHandleActor}
+                                          onKeyPress={KeyDownHandleActor}
+                                          data-actorId={actorId}
+                                      />
+                                  ))
                                 : null}
                         </Box>
                         {/* 組織名一覧 */}
@@ -648,9 +651,17 @@ export default function PlayerView(props: PlayerProps) {
                             }}
                         >
                             {props.isPlayerFullscreen &&
-                                playNowDetail &&
-                                playNowDetail.description &&
-                                playNowDetail.description}
+                                playNowDetail?.description && (
+                                    <Linkify
+                                        as="p"
+                                        options={{
+                                            ...linkifyOptions,
+                                            target: "_blank",
+                                        }}
+                                    >
+                                        {playNowDetail.description}
+                                    </Linkify>
+                                )}
                         </Box>
                     </Box>
                 </Box>
@@ -675,21 +686,17 @@ export default function PlayerView(props: PlayerProps) {
                         }}
                     >
                         {props.searchResult
-                            ? props.searchResult.map(
-                                  (item: PlayerItem, index: number) => (
-                                      <Thumbnail
-                                          key={item.videoId}
-                                          videoId={
-                                              item.videoId ? item.videoId : ""
-                                          }
-                                          title={item.title}
-                                          viewCount={item.viewCount}
-                                          channelTitle={item.channelTitle}
-                                          publishedAt={item.publishedAt}
-                                          onClick={handleVideoClick}
-                                      />
-                                  ),
-                              )
+                            ? props.searchResult.map((item: PlayerItem) => (
+                                  <Thumbnail
+                                      key={item.videoId}
+                                      videoId={item.videoId ? item.videoId : ""}
+                                      title={item.title}
+                                      viewCount={item.viewCount}
+                                      channelTitle={item.channelTitle}
+                                      publishedAt={item.publishedAt}
+                                      onClick={handleVideoClick}
+                                  />
+                              ))
                             : null}
                     </Box>
                 </Box>

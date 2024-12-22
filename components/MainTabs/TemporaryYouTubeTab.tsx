@@ -113,9 +113,12 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
     useEffect(() => {
         // 最初はapiDataVideoが空だから何もしない
         // これがないとAPIからデータを取得する前に結果が0と表示されてしまう
-        if (apiDataVideo.length === 0) return;
+        if (apiDataVideo.length === 0) {
+            setLoading(LoadingState.AllLoaded);
+            return;
+        }
 
-        setLoading(true);
+        setLoading(LoadingState.Loading);
         const result = apiDataVideo.filter((item) => {
             // 検索結果を100件に制限(開発中の一時的処置)
             // if (index > 100) {
@@ -227,7 +230,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         });
 
         setResultVideo(result);
-        setLoading(false);
+        setLoading(LoadingState.AllLoaded);
     }, [props.inputValue, apiDataVideo]);
 
     // 動画サムネイルがクリックされたときに呼ばれる関数
@@ -333,13 +336,19 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                         <div>検索結果が0です。</div>
                     ))}
             </Box>
-            <div
-                style={{
-                    paddingTop: "3vh",
-                }}
-            >
-                <Loading />
-            </div>
+            {
+                // ロードが完了している場合は何も表示しない
+                loading !== LoadingState.AllLoaded &&
+                    loading !== LoadingState.FastLoaded && (
+                        <div
+                            style={{
+                                paddingTop: "3vh",
+                            }}
+                        >
+                            <Loading />
+                        </div>
+                    )
+            }
         </Fragment>
     );
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { TemporaryYouTubeTab } from "@/components/MainTabs/TemporaryYouTubeTab";
-import type { MultiSuperSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
+import type { MultiSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
 import Navbar from "@/components/Navbar/Navbar";
 import type {
     AdditionalSearchSuggestions,
@@ -46,7 +46,7 @@ export default function RootLayout({
     const [inputValue, setInputValue] = react.useState<InputValue[]>([]);
     // 検索候補
     const [searchSuggestion, setSearchSuggestion] = react.useState<
-        MultiSuperSearchBarSearchSuggestion[]
+        MultiSearchBarSearchSuggestion[]
     >([]);
     // そのViewで使用される値のCategoryID配列
     const [availableCategoryIds, setAvailableCategoryIds] =
@@ -55,7 +55,7 @@ export default function RootLayout({
     const [fixedOptionValues, setFixedOptionValues] =
         react.useState<string[]>();
     // limitスーパーサーチで表示するカテゴリーの定義
-    const [limitSuperSearchCategory, setLimitSuperSearchCategory] =
+    const [limitSearchCategory, setLimitSearchCategory] =
         react.useState<AdditionalSearchSuggestions[]>();
     // ⭐️ここまでウルトラスーパーサーチバー関連
 
@@ -88,7 +88,7 @@ export default function RootLayout({
                 //     scrollTo: 0,
                 //     onClick: () => {
                 //         setAvailableCategoryIds(["actor"]);
-                //         setLimitSuperSearchCategory([]);
+                //         setLimitSearchCategory([]);
                 //         setFixedOptionValues([]);
                 //         setIsPlayerFullscreen(false);
                 //     },
@@ -101,7 +101,7 @@ export default function RootLayout({
                 //     scrollTo: 0,
                 //     onClick: () => {
                 //         setAvailableCategoryIds([]);
-                //         setLimitSuperSearchCategory([]);
+                //         setLimitSearchCategory([]);
                 //         setFixedOptionValues([]);
                 // setIsPlayerFullscreen(false);
                 //     },
@@ -133,7 +133,7 @@ export default function RootLayout({
                             "musicArtistName",
                             "musicTitle",
                         ]);
-                        setLimitSuperSearchCategory([
+                        setLimitSearchCategory([
                             // { categoryId: "actor", categoryLabel: "出演者" },
                             // {
                             //     categoryId: "organization",
@@ -173,7 +173,7 @@ export default function RootLayout({
                 //     children: <LiveInformationTab key="liveInformation" />,
                 //     onClick: () => {
                 //         setAvailableCategoryIds([]);
-                //         setLimitSuperSearchCategory([]);
+                //         setLimitSearchCategory([]);
                 //         setFixedOptionValues([]);
                 // setIsPlayerFullscreen(false);
                 //     },
@@ -204,7 +204,7 @@ export default function RootLayout({
             (item) => item.id === "Music",
         )?.data;
 
-        const result: MultiSuperSearchBarSearchSuggestion[] = [];
+        const result: MultiSearchBarSearchSuggestion[] = [];
 
         // スペシャル検索候補を追加
         result.push({
@@ -219,7 +219,7 @@ export default function RootLayout({
         if (Entity && YouTubeAccounts) {
             // データを変換し、検索候補の配列に追加
             for (const item of Entity) {
-                const resultItem: MultiSuperSearchBarSearchSuggestion = {
+                const resultItem: MultiSearchBarSearchSuggestion = {
                     sort: item.category === "person" ? 99 : 100,
                     label: item.name,
                     value: item.id,
@@ -363,7 +363,7 @@ export default function RootLayout({
                 inputValue={inputValue}
                 searchSuggestion={searchSuggestion}
                 fixedOptionValues={fixedOptionValues}
-                limitSuperSearchCategory={limitSuperSearchCategory}
+                limitSearchCategory={limitSearchCategory}
                 availableCategoryIds={availableCategoryIds}
                 setInputValue={setInputValue}
                 setNavbarHeight={setNavbarHeight}

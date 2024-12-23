@@ -1,4 +1,4 @@
-import type { MultiSuperSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
+import type { MultiSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
 import type { InputValue } from "@/components/Navbar/SearchBar";
 import rgbToHex from "@/libs/colorConverter";
 import PauseIcon from "@mui/icons-material/Pause";
@@ -36,7 +36,7 @@ type PlayerProps = {
     // ウルトラスーパーサーチバー
     inputValue: InputValue[];
     setInputValue: Dispatch<SetStateAction<InputValue[]>>;
-    searchSuggestion: MultiSuperSearchBarSearchSuggestion[];
+    searchSuggestion: MultiSearchBarSearchSuggestion[];
 
     // フルスクリーンで表示するかどうか
     isPlayerFullscreen: boolean;
@@ -197,7 +197,7 @@ export default function PlayerView(props: PlayerProps) {
     // idから検索候補を返す
     const getSearchSuggestionFromId = (
         id: string,
-    ): MultiSuperSearchBarSearchSuggestion => {
+    ): MultiSearchBarSearchSuggestion => {
         const r = props.searchSuggestion.find((item) => item.value === id);
         if (r) {
             return r;

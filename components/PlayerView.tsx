@@ -215,7 +215,10 @@ export default function PlayerView(props: PlayerProps) {
             url: ({
                 attributes,
                 content,
-            }: { attributes: { [attr: string]: React.ReactNode }; content: string }) => {
+            }: {
+                attributes: { [attr: string]: React.ReactNode };
+                content: string;
+            }) => {
                 try {
                     const url = new URL(content);
                     const pathSegments = url.pathname
@@ -287,7 +290,10 @@ export default function PlayerView(props: PlayerProps) {
             hashtag: ({
                 attributes,
                 content,
-            }: { attributes: { [attr: string]: React.ReactNode }; content: string }) => {
+            }: {
+                attributes: { [attr: string]: React.ReactNode };
+                content: string;
+            }) => {
                 return (
                     <Link
                         style={{ color: blue[400] }}
@@ -800,23 +806,36 @@ export default function PlayerView(props: PlayerProps) {
                 >
                     <Box
                         style={{
+                            // 上幅を定義してスクロールバーを表示
                             overflowY: "auto",
                             maxHeight: "100vh",
                             paddingBottom: "25vh",
-                            margin: "0 auto",
                         }}
                     >
                         {props.searchResult
                             ? props.searchResult.map((item: PlayerItem) => (
-                                  <Thumbnail
-                                      key={item.videoId}
-                                      videoId={item.videoId ? item.videoId : ""}
-                                      title={item.title}
-                                      viewCount={item.viewCount}
-                                      channelTitle={item.channelTitle}
-                                      publishedAt={item.publishedAt}
-                                      onClick={handleVideoClick}
-                                  />
+                                  <>
+                                      <Box
+                                          key={item.videoId}
+                                          sx={{
+                                              maxWidth: "25vw",
+                                              margin: "0 auto",
+                                          }}
+                                      >
+                                          <Thumbnail
+                                              videoId={
+                                                  item.videoId
+                                                      ? item.videoId
+                                                      : ""
+                                              }
+                                              title={item.title}
+                                              viewCount={item.viewCount}
+                                              channelTitle={item.channelTitle}
+                                              publishedAt={item.publishedAt}
+                                              onClick={handleVideoClick}
+                                          />
+                                      </Box>
+                                  </>
                               ))
                             : null}
                     </Box>

@@ -1,11 +1,12 @@
 "use client";
 
-import MultiSearchBar from "@/components/Navbar/MultiSearchBar";
-import type { MultiSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
+import MultiSearchBar, {
+    type MultiSearchBarSearchSuggestion,
+} from "@/components/Navbar/SearchBar/MultiSearchBar";
 import type {
     AdditionalSearchSuggestions,
     InputValue,
-} from "@/components/Navbar/SearchBar";
+} from "@/components/Navbar/SearchBar/SearchBar";
 import { type Dispatch, useState } from "react";
 
 type CategoryId = "actor" | "organization" | "YouTubeChannel" | "text";

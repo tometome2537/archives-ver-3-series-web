@@ -1,5 +1,4 @@
-import type { MultiSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
-import type { InputValue } from "@/components/Navbar/SearchBar";
+import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
 import rgbToHex from "@/libs/colorConverter";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -18,6 +17,7 @@ import { KeyboardArrowDown } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { blue } from "@mui/material/colors";
 import Link from "./Link";
+import type { MultiSearchBarSearchSuggestion } from "./Navbar/SearchBar/MultiSearchBar";
 
 export type PlayerItem = {
     videoId?: string;
@@ -33,7 +33,7 @@ export type PlayerItem = {
 };
 
 type PlayerProps = {
-    // ウルトラスーパーサーチバー
+    // マルチサーチバー
     inputValue: InputValue[];
     setInputValue: Dispatch<SetStateAction<InputValue[]>>;
     searchSuggestion: MultiSearchBarSearchSuggestion[];

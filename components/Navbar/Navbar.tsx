@@ -1,9 +1,7 @@
-import MultiSearchBar from "@/components/Navbar/MultiSearchBar";
-import type { MultiSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
 import type {
     AdditionalSearchSuggestions,
     InputValue,
-} from "@/components/Navbar/SearchBar";
+} from "@/components/Navbar/SearchBar/SearchBar";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { useColorModeContext } from "@/contexts/ThemeContext";
 import rgbToHex from "@/libs/colorConverter";
@@ -42,6 +40,8 @@ import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useEffect, useRef, useState } from "react";
+import type { MultiSearchBarSearchSuggestion } from "./SearchBar/MultiSearchBar";
+import MultiSearchBar from "./SearchBar/MultiSearchBar";
 
 export const NavButton = styled(Button)({
     color: "primary",
@@ -49,7 +49,7 @@ export const NavButton = styled(Button)({
 }) as typeof Button;
 
 type NavbarProps = {
-    // ウルトラスーパーサーチバー
+    // マルチサーチバー
     inputValue: InputValue[];
     setInputValue: Dispatch<SetStateAction<InputValue[]>>;
     searchSuggestion: MultiSearchBarSearchSuggestion[];
@@ -60,9 +60,9 @@ type NavbarProps = {
     textSuggestionCategory?: AdditionalSearchSuggestions[];
     // 入力する日付のカテゴリー
     dateSuggestionCategory?: AdditionalSearchSuggestions[];
-    // 表示するリミットスーパーサーチバーの定義
+    // 表示するリミットサーチバーの定義
     limitSearchCategory?: AdditionalSearchSuggestions[];
-    // スーパーサーチバーの変更時に実行する関数
+    // サーチバーの変更時に実行する関数
     searchOnChange?: () => void;
     setNavbarHeight: Dispatch<SetStateAction<number>>;
 };
@@ -72,7 +72,7 @@ export default function Navbar(props: NavbarProps) {
     const theme = useTheme();
     const { selectedMode, setColorMode } = useColorModeContext();
     // ブラウザ情報を取得
-    const { screenWidth, screenHeight, isMobile } = useBrowserInfoContext();
+    const { isMobile } = useBrowserInfoContext();
 
     // メニューの開閉
     const [menu, setMenu] = useState<boolean>(false);

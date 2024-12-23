@@ -4,7 +4,7 @@ import SearchBar, {
     type SearchSuggestion,
     type InputValue,
     type AdditionalSearchSuggestions,
-} from "@/components/Navbar/SearchBar";
+} from "@/components/Navbar/SearchBar/SearchBar";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { Box, ButtonBase, Collapse, Stack, Typography } from "@mui/material";
@@ -26,7 +26,7 @@ export interface LimitedSearchProps {
     onChange?: () => void;
 }
 
-// スーパーサーチバーの範囲を制限するためのスーパーサーチバー
+// サーチバーの範囲を制限するためのサーチバー
 const LimitedSearch: React.FC<LimitedSearchProps> = ({
     searchSuggestions,
     fixedOptionValues,
@@ -89,7 +89,7 @@ const LimitedSearch: React.FC<LimitedSearchProps> = ({
     );
 };
 
-// ウルトラスーパーサーチバーの検索候補の型
+// マルチサーチバーの検索候補の型
 export interface MultiSearchBarSearchSuggestion extends SearchSuggestion {
     // LimitSearchBarで使用します。
     categoryLabelSecond?: string;
@@ -108,7 +108,7 @@ type MultiSearchBarSearchBarProps = {
     textSuggestionCategory?: AdditionalSearchSuggestions[];
     // 入力する日付のカテゴリー
     dateSuggestionCategory?: AdditionalSearchSuggestions[];
-    // 表示するリミットスーパーサーチバーの定義
+    // 表示するリミットサーチバーの定義
     limitSearchCategory?: AdditionalSearchSuggestions[];
     searchOnChange?: () => void;
 
@@ -117,7 +117,7 @@ type MultiSearchBarSearchBarProps = {
 };
 
 export default function MultiSearchBar(props: MultiSearchBarSearchBarProps) {
-    // リミットスーパーサーチバーが開いてるかどうか
+    // リミットサーチバーが開いてるかどうか
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
     // 入力履歴を保存(To DO)

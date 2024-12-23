@@ -11,7 +11,7 @@ import PlayerView from "@/components/PlayerView";
 import type { PlayerItem } from "@/components/PlayerView"; // 型としてのインポート
 import { useDataContext } from "@/contexts/ApiDataContext";
 import type { apiData } from "@/contexts/ApiDataContext";
-import { useBrowserInfoContext } from "@/contexts/browserInfoContext";
+import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import GradeIcon from "@mui/icons-material/Grade";
 import GroupsIcon from "@mui/icons-material/Groups";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";

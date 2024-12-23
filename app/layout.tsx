@@ -1,6 +1,6 @@
 import { type ColorModeChoice, ThemeRegistry } from "@/contexts/ThemeContext";
 import { DataProvider } from "@/contexts/ApiDataContext";
-import { BrowserInfoProvider } from "@/contexts/browserInfoContext";
+import { BrowserInfoProvider } from "@/contexts/BrowserInfoContext";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";

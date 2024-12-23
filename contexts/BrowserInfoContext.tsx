@@ -14,7 +14,7 @@ export type BrowserInfoContextType = {
 };
 
 // デフォルトの設定
-const defaultConfig: BrowserInfoContextType = {
+const defaultInfo: BrowserInfoContextType = {
     screenWidth: 1000,
     screenHeight: 800,
     isMobile: false,
@@ -22,19 +22,19 @@ const defaultConfig: BrowserInfoContextType = {
 
 // コンテキストを作成
 export const BrowserInfoContext =
-    createContext<BrowserInfoContextType>(defaultConfig);
+    createContext<BrowserInfoContextType>(defaultInfo);
 
 // コンテキストプロバイダー
 export const BrowserInfoProvider: React.FC<{ children: React.ReactNode }> = ({
     children,
 }) => {
     const [screenWidth, setScreenWidth] = useState<number>(
-        defaultConfig.screenWidth,
+        defaultInfo.screenWidth,
     );
     const [screenHeight, setScreenHeight] = useState<number>(
-        defaultConfig.screenHeight,
+        defaultInfo.screenHeight,
     );
-    const [isMobile, setIsMobile] = useState<boolean>(defaultConfig.isMobile);
+    const [isMobile, setIsMobile] = useState<boolean>(defaultInfo.isMobile);
 
     useEffect(() => {
         if (typeof window !== "undefined") {

@@ -5,7 +5,7 @@ import type { InputValue } from "@/components/Navbar/SuperSearchBar";
 type LinkTabProps = {
     inputValue: InputValue[];
 };
-export function LinkTab(props: LinkTabProps) {
+export default function LinkTab(props: LinkTabProps) {
     const apiData = useDataContext();
 
     const YouTubeAccounts: apiData[] | undefined = apiData

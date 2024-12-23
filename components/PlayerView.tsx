@@ -218,45 +218,67 @@ export default function PlayerView(props: PlayerProps) {
             }: { attributes: { [attr: string]: any }; content: string }) => {
                 try {
                     const url = new URL(content);
+                    const pathSegments = url.pathname
+                        .split("/")
+                        .filter((segment) => segment);
+                    const userId = pathSegments[0]
+                        ? pathSegments[0].replace("@", "")
+                        : content;
+
                     if (
                         url.hostname === "twitter.com" ||
                         url.hostname === "x.com"
                     ) {
-                        // パス名からユーザー名を取得
-                        const pathSegments = url.pathname
-                            .split("/")
-                            .filter((segment) => segment);
                         return (
                             <Link {...attributes}>
                                 <Chip
                                     size="small"
                                     avatar={<Avatar src="/x_logo.png" />}
-                                    label={pathSegments[0] ?? content}
+                                    label={userId}
                                 />
                             </Link>
                         );
                     }
-
-                    console.log(url.hostname);
 
                     if (
                         url.hostname === "instagram.com" ||
                         url.hostname === "www.instagram.com"
                     ) {
-                        // パス名からユーザー名を取得
-                        const pathSegments = url.pathname
-                            .split("/")
-                            .filter((segment) => segment);
                         return (
                             <Link {...attributes}>
                                 <Chip
                                     size="small"
                                     avatar={<Avatar src="/ig_logo.png" />}
-                                    label={pathSegments[0] ?? content}
+                                    label={userId}
                                 />
                             </Link>
                         );
                     }
+
+                    if (url.hostname === "www.tiktok.com") {
+                        return (
+                            <Link {...attributes}>
+                                <Chip
+                                    size="small"
+                                    avatar={<Avatar src="/tiktok_logo.png" />}
+                                    label={userId}
+                                />
+                            </Link>
+                        );
+                    }
+
+                    if (url.hostname === "www.youtube.com") {
+                        return (
+                            <Link {...attributes}>
+                                <Chip
+                                    size="small"
+                                    avatar={<Avatar src="/yt_logo.png" />}
+                                    label={userId}
+                                />
+                            </Link>
+                        );
+                    }
+
                     return <Link {...attributes}>{content}</Link>;
                 } catch (error) {
                     return <Link {...attributes}>{content}</Link>;

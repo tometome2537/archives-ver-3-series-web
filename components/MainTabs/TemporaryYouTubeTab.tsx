@@ -157,15 +157,17 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 }
 
                 if (inputValue.categoryId === "") {
-                    // 概要欄の条件を満たさなければfalse
+                    // 出演者、タイトル、概要欄の条件を満たさなければfalse
                     if (
-                        item.person?.match(inputValue.value) ||
-                        item.title?.match(inputValue.value) ||
-                        (item.apiData &&
-                            // JSON.parse(item.apiData).snippet.description &&
-                            !JSON.parse(
-                                item.apiData,
-                            ).snippet.description?.match(inputValue.value))
+                        !(
+                            item.person?.match(inputValue.value) ||
+                            item.title?.match(inputValue.value) ||
+                            (item.apiData &&
+                                // JSON.parse(item.apiData).snippet.description &&
+                                JSON.parse(
+                                    item.apiData,
+                                ).snippet.description?.match(inputValue.value))
+                        )
                     ) {
                         return false;
                     }

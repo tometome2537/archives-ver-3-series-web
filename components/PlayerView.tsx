@@ -3,7 +3,7 @@ import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/Ul
 import rgbToHex from "@/libs/colorConverter";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { Box, Chip } from "@mui/material";
+import { Box, Chip, Typography } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { useTheme } from "@mui/material/styles";
 import Linkify from "linkify-react";
@@ -13,10 +13,10 @@ import type { YouTubePlayer } from "react-youtube";
 import Thumbnail from "./Thumbnail";
 import YouTubePlayerView from "./YouTubePlayerView";
 import "linkify-plugin-hashtag";
-import { blue } from "@mui/material/colors";
-import Link from "./Link";
 import CloseIcon from "@mui/icons-material/Close";
 import IconButton from "@mui/material/IconButton";
+import { blue } from "@mui/material/colors";
+import Link from "./Link";
 
 export type PlayerItem = {
     videoId?: string;
@@ -216,15 +216,51 @@ export default function PlayerView(props: PlayerProps) {
                 attributes,
                 content,
             }: { attributes: { [attr: string]: any }; content: string }) => {
-                return (
-                    <Link
-                        style={{ color: blue[400] }}
-                        underline="none"
-                        {...attributes}
-                    >
-                        {content}
-                    </Link>
-                );
+                try {
+                    const url = new URL(content);
+                    if (
+                        url.hostname === "twitter.com" ||
+                        url.hostname === "x.com"
+                    ) {
+                        // パス名からユーザー名を取得
+                        const pathSegments = url.pathname
+                            .split("/")
+                            .filter((segment) => segment);
+                        return (
+                            <Link {...attributes}>
+                                <Chip
+                                    size="small"
+                                    avatar={<Avatar src="/x_logo.png" />}
+                                    label={pathSegments[0] ?? content}
+                                />
+                            </Link>
+                        );
+                    }
+
+                    console.log(url.hostname);
+
+                    if (
+                        url.hostname === "instagram.com" ||
+                        url.hostname === "www.instagram.com"
+                    ) {
+                        // パス名からユーザー名を取得
+                        const pathSegments = url.pathname
+                            .split("/")
+                            .filter((segment) => segment);
+                        return (
+                            <Link {...attributes}>
+                                <Chip
+                                    size="small"
+                                    avatar={<Avatar src="/ig_logo.png" />}
+                                    label={pathSegments[0] ?? content}
+                                />
+                            </Link>
+                        );
+                    }
+                    return <Link {...attributes}>{content}</Link>;
+                } catch (error) {
+                    return <Link {...attributes}>{content}</Link>;
+                }
             },
             hashtag: ({
                 attributes,

@@ -17,6 +17,7 @@ import { KeyboardArrowDown } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { blue } from "@mui/material/colors";
 import Link from "./Link";
+import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 
 export type PlayerItem = {
     videoId?: string;
@@ -37,9 +38,6 @@ type PlayerProps = {
     setInputValue: Dispatch<SetStateAction<InputValue[]>>;
     searchSuggestion: ultraSuperSearchBarSearchSuggestion[];
 
-    screenWidth: number;
-    screenHeight: number;
-    isMobile: boolean;
     // フルスクリーンで表示するかどうか
     isPlayerFullscreen: boolean;
     setIsPlayerFullscreen: Dispatch<SetStateAction<boolean>>;
@@ -54,6 +52,8 @@ type PlayerProps = {
 export default function PlayerView(props: PlayerProps) {
     // テーマ設定を取得
     const theme = useTheme();
+    // ブラウザ情報を取得
+    const { screenWidth, screenHeight, isMobile } = useBrowserInfoContext();
 
     // PlayerViewのHTMLが保存される
     const playerViewRef = useRef<HTMLDivElement | null>(null);
@@ -330,7 +330,7 @@ export default function PlayerView(props: PlayerProps) {
                     top: "0",
                     // ここまで拡大表示の時にPlayerを固定する
                     // ↓ PCの時は右カラムを左カラムの下に。
-                    display: props.isMobile ? "" : "flex",
+                    display: isMobile ? "" : "flex",
                     width: "100%",
                     height: "100%",
                     maxWidth: "100vw",
@@ -381,7 +381,7 @@ export default function PlayerView(props: PlayerProps) {
                         // position: "relative",
                         display: props.isPlayerFullscreen ? "block" : "flex",
                         width:
-                            props.isPlayerFullscreen && !props.isMobile
+                            props.isPlayerFullscreen && !isMobile
                                 ? "70%"
                                 : "100%",
                         margin: props.isPlayerFullscreen ? "" : "0 auto",
@@ -394,11 +394,11 @@ export default function PlayerView(props: PlayerProps) {
                                 display: "flex",
                                 alignContent: "left",
                                 width:
-                                    props.isMobile && props.isPlayerFullscreen
-                                        ? `${props.screenWidth}px`
+                                    isMobile && props.isPlayerFullscreen
+                                        ? `${screenWidth}px`
                                         : props.isPlayerFullscreen
-                                          ? `${((props.screenHeight * 0.55) / 9) * 16}px`
-                                          : `${((props.screenHeight * 0.1) / 9) * 16}px`,
+                                          ? `${((screenHeight * 0.55) / 9) * 16}px`
+                                          : `${((screenHeight * 0.1) / 9) * 16}px`,
                                 margin: "0 auto",
                             }}
                         >
@@ -434,22 +434,22 @@ export default function PlayerView(props: PlayerProps) {
                         }}
                         // 動画の比率は、横：縦 = １６：９で
                         width={
-                            props.isMobile && props.isPlayerFullscreen
-                                ? `${props.screenWidth}px`
+                            isMobile && props.isPlayerFullscreen
+                                ? `${screenWidth}px`
                                 : props.isPlayerFullscreen
-                                  ? `${((props.screenHeight * 0.55) / 9) * 16}px`
-                                  : `${((props.screenHeight * 0.1) / 9) * 16}px`
+                                  ? `${((screenHeight * 0.55) / 9) * 16}px`
+                                  : `${((screenHeight * 0.1) / 9) * 16}px`
                         }
                         height={
-                            props.isMobile && props.isPlayerFullscreen
-                                ? `${(props.screenWidth / 16) * 9}px`
+                            isMobile && props.isPlayerFullscreen
+                                ? `${(screenWidth / 16) * 9}px`
                                 : props.isPlayerFullscreen
-                                  ? `${props.screenHeight * 0.55}px`
-                                  : `${props.screenHeight * 0.1}px`
+                                  ? `${screenHeight * 0.55}px`
+                                  : `${screenHeight * 0.1}px`
                             //   props.screenHeight / 9 < props.screenWidth / 16,
                         }
                         playerRadius={
-                            !(props.isMobile && props.isPlayerFullscreen)
+                            !(isMobile && props.isPlayerFullscreen)
                         }
                         setPlayer={setPlayer}
                         setPlayerState={setPlayerState}
@@ -797,7 +797,7 @@ export default function PlayerView(props: PlayerProps) {
                     style={{
                         // 拡大モードかつPCの横幅で右カラムを表示
                         display:
-                            props.isPlayerFullscreen && !props.isMobile
+                            props.isPlayerFullscreen && !isMobile
                                 ? "block"
                                 : "none",
                         position: "relative",

@@ -11,6 +11,7 @@ import PlayerView from "@/components/PlayerView";
 import type { PlayerItem } from "@/components/PlayerView"; // 型としてのインポート
 import { useDataContext } from "@/contexts/ApiDataContext";
 import type { apiData } from "@/contexts/ApiDataContext";
+import { useBrowserInfoContext } from "@/contexts/browserInfoContext";
 import GradeIcon from "@mui/icons-material/Grade";
 import GroupsIcon from "@mui/icons-material/Groups";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
@@ -40,12 +41,8 @@ export default function RootLayout({
     const theme = useTheme();
     // apiDataを取得
     const apiData = useDataContext();
-    // ディスプレイの横幅(px)
-    const [screenWidth, setScreenWidth] = useState<number>(0);
-    // ディスプレイの縦幅(px)
-    const [screenHeight, setScreenHeight] = useState<number>(0);
-    // スマホかどうかを判定する
-    const [isMobile, setIsMobile] = useState<boolean>(true);
+    // ブラウザ情報を取得
+    const { screenWidth, screenHeight, isMobile } = useBrowserInfoContext();
 
     // ローディング画面
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -266,19 +263,6 @@ export default function RootLayout({
     // 画面のサイズの変化を監視
     useEffect(() => {
         if (typeof window !== "undefined") {
-            const handleResize = () => {
-                // console.log("bbb");
-                // 画面の横幅と縦幅を取得
-                setScreenWidth(window.innerWidth);
-                setScreenHeight(window.innerHeight);
-
-                // スクリーン幅が768px以下の場合はスマホと判定
-                setIsMobile(window.innerWidth <= 768);
-            };
-
-            // 初回の幅と高さを設定
-            handleResize();
-
             // ここからスクロールの位置を監視する。
             const scrollContainer = scrollContainerRef.current;
             let scrollTimeout: NodeJS.Timeout;
@@ -323,7 +307,6 @@ export default function RootLayout({
             // イベントの登録
             // リサイズイベントリスナーを追加
             window.addEventListener("resize", () => {
-                handleResize();
                 handleScroll();
                 // activateTag(activeTab);
             });
@@ -340,7 +323,6 @@ export default function RootLayout({
             // クリーンアップ関数でリスナーを解除
             return () => {
                 window.removeEventListener("resize", () => {
-                    handleResize();
                     handleScroll();
                 });
                 if (scrollContainer) {

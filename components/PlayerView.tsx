@@ -15,6 +15,8 @@ import YouTubePlayerView from "./YouTubePlayerView";
 import "linkify-plugin-hashtag";
 import { blue } from "@mui/material/colors";
 import Link from "./Link";
+import CloseIcon from "@mui/icons-material/Close";
+import IconButton from "@mui/material/IconButton";
 
 export type PlayerItem = {
     videoId?: string;
@@ -322,6 +324,29 @@ export default function PlayerView(props: PlayerProps) {
                         justifyContent: "center", // 中央に配置
                     }}
                 >
+                    {props.isPlayerFullscreen && (
+                        <Box
+                            sx={{
+                                display: "flex",
+                                alignContent: "left",
+                            }}
+                        >
+                            <IconButton
+                                sx={{
+                                    marginY: 1,
+                                }}
+                                onClick={() =>
+                                    props.setIsPlayerFullscreen(false)
+                                }
+                            >
+                                <CloseIcon
+                                    sx={{
+                                        fontSize: "2rem",
+                                    }}
+                                />
+                            </IconButton>
+                        </Box>
+                    )}
                     {/* YouTubeプレイヤー */}
                     <YouTubePlayerView
                         videoId={

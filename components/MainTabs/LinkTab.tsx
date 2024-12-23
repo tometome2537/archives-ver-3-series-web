@@ -1,4 +1,4 @@
-import type { InputValue } from "@/components/Navbar/SearchBar";
+import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
 import { useDataContext } from "@/contexts/ApiDataContext";
 import type { ApiData, DataContextType } from "@/contexts/ApiDataContext";
 

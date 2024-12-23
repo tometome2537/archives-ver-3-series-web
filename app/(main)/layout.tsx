@@ -1,12 +1,12 @@
 "use client";
 
 import { TemporaryYouTubeTab } from "@/components/MainTabs/TemporaryYouTubeTab";
-import type { MultiSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
 import Navbar from "@/components/Navbar/Navbar";
+import type { MultiSearchBarSearchSuggestion } from "@/components/Navbar/SearchBar/MultiSearchBar";
 import type {
     AdditionalSearchSuggestions,
     InputValue,
-} from "@/components/Navbar/SearchBar";
+} from "@/components/Navbar/SearchBar/SearchBar";
 import PlayerView from "@/components/PlayerView";
 import type { PlayerItem } from "@/components/PlayerView"; // 型としてのインポート
 import type { TabMap } from "@/components/TabScroll";
@@ -20,9 +20,8 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import PersonIcon from "@mui/icons-material/Person";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import { AppBar } from "@mui/material";
-import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
-import react from "react";
+import react, { Fragment } from "react";
 // import AccountBoxIcon from "@mui/icons-material/AccountBox";
 // import LinkTab from "@/components/MainTabs/LinkTab";
 
@@ -31,17 +30,15 @@ export default function RootLayout({
 }: {
     children: React.ReactNode;
 }) {
-    // テーマ設定を取得
-    const theme = useTheme();
     // apiDataを取得
     const apiData = useDataContext();
     // ブラウザ情報を取得
-    const { screenWidth, screenHeight, isMobile } = useBrowserInfoContext();
+    const { isMobile } = useBrowserInfoContext();
 
     // ローディング画面
     const [isLoading, setIsLoading] = react.useState<boolean>(true);
 
-    // ⭐️ここからウルトラスーパーサーチバー関連
+    // ⭐️ここからマルチサーチバー関連
     // 入力された値
     const [inputValue, setInputValue] = react.useState<InputValue[]>([]);
     // 検索候補
@@ -57,7 +54,7 @@ export default function RootLayout({
     // limitスーパーサーチで表示するカテゴリーの定義
     const [limitSearchCategory, setLimitSearchCategory] =
         react.useState<AdditionalSearchSuggestions[]>();
-    // ⭐️ここまでウルトラスーパーサーチバー関連
+    // ⭐️ここまでマルチサーチバー関連
 
     // Navbarの高さを定義
     const [navbarHeight, setNavbarHeight] = react.useState<number>(0);
@@ -358,7 +355,7 @@ export default function RootLayout({
     }
 
     return (
-        <react.Fragment>
+        <Fragment>
             <Navbar
                 inputValue={inputValue}
                 searchSuggestion={searchSuggestion}
@@ -415,6 +412,6 @@ export default function RootLayout({
                 {/* タブ切り替えボタン */}
                 {tabScroll.tabs()}
             </AppBar>
-        </react.Fragment>
+        </Fragment>
     );
 }

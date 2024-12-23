@@ -1,4 +1,4 @@
-import type { InputValue } from "@/components/Navbar/SearchBar";
+import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { buildUrl } from "@/libs/urlBuilder";
 import { Box } from "@mui/material";

@@ -4,35 +4,25 @@ import { TemporaryYouTubeTab } from "@/components/MainTabs/TemporaryYouTubeTab";
 import type { MultiSuperSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
 import Navbar from "@/components/Navbar/Navbar";
 import type {
+    AdditionalSearchSuggestions,
     InputValue,
-    additionalSearchSuggestions,
 } from "@/components/Navbar/SearchBar";
 import PlayerView from "@/components/PlayerView";
 import type { PlayerItem } from "@/components/PlayerView"; // 型としてのインポート
 import type { TabMap } from "@/components/TabScroll";
 import TabScroll from "@/components/TabScroll";
 import { useDataContext } from "@/contexts/ApiDataContext";
-import type { apiData } from "@/contexts/ApiDataContext";
+import type { ApiData } from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import GradeIcon from "@mui/icons-material/Grade";
 import GroupsIcon from "@mui/icons-material/Groups";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import PersonIcon from "@mui/icons-material/Person";
 import YouTubeIcon from "@mui/icons-material/YouTube";
-import { AppBar, Box, Container, Tab, Tabs } from "@mui/material";
+import { AppBar } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
-import { usePathname, useRouter } from "next/navigation";
-import {
-    Fragment,
-    type ReactElement,
-    type ReactNode,
-    useCallback,
-    useEffect,
-    useMemo,
-    useRef,
-    useState,
-} from "react";
+import react from "react";
 // import AccountBoxIcon from "@mui/icons-material/AccountBox";
 // import LinkTab from "@/components/MainTabs/LinkTab";
 
@@ -49,42 +39,45 @@ export default function RootLayout({
     const { screenWidth, screenHeight, isMobile } = useBrowserInfoContext();
 
     // ローディング画面
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [isLoading, setIsLoading] = react.useState<boolean>(true);
 
     // ⭐️ここからウルトラスーパーサーチバー関連
     // 入力された値
-    const [inputValue, setInputValue] = useState<InputValue[]>([]);
+    const [inputValue, setInputValue] = react.useState<InputValue[]>([]);
     // 検索候補
-    const [searchSuggestion, setSearchSuggestion] = useState<
+    const [searchSuggestion, setSearchSuggestion] = react.useState<
         MultiSuperSearchBarSearchSuggestion[]
     >([]);
     // そのViewで使用される値のCategoryID配列
     const [availableCategoryIds, setAvailableCategoryIds] =
-        useState<string[]>();
+        react.useState<string[]>();
     // 外せない入力値を定義
-    const [fixedOptionValues, setFixedOptionValues] = useState<string[]>();
+    const [fixedOptionValues, setFixedOptionValues] =
+        react.useState<string[]>();
     // limitスーパーサーチで表示するカテゴリーの定義
     const [limitSuperSearchCategory, setLimitSuperSearchCategory] =
-        useState<additionalSearchSuggestions[]>();
+        react.useState<AdditionalSearchSuggestions[]>();
     // ⭐️ここまでウルトラスーパーサーチバー関連
 
     // Navbarの高さを定義
-    const [navbarHeight, setNavbarHeight] = useState<number>(0);
+    const [navbarHeight, setNavbarHeight] = react.useState<number>(0);
 
     // PlayerViewを拡大表示するかどうか
     const [isPlayerFullscreen, setIsPlayerFullscreen] =
-        useState<boolean>(false);
+        react.useState<boolean>(false);
     // PlayerView
-    const [playerItem, setPlayerItem] = useState<PlayerItem | undefined>(
+    const [playerItem, setPlayerItem] = react.useState<PlayerItem | undefined>(
         undefined,
     );
-    const [playerPlaylist, setPlayerPlaylist] = useState<PlayerItem[]>([]);
-    const [playerSearchResult, setPlayerSearchResult] = useState<PlayerItem[]>(
+    const [playerPlaylist, setPlayerPlaylist] = react.useState<PlayerItem[]>(
         [],
     );
+    const [playerSearchResult, setPlayerSearchResult] = react.useState<
+        PlayerItem[]
+    >([]);
 
     // useMemoでタブ設定を作成
-    const tabMaps: TabMap[] = useMemo(
+    const tabMaps: TabMap[] = react.useMemo(
         () =>
             [
                 // {
@@ -198,16 +191,16 @@ export default function RootLayout({
 
     // 検索候補を定義
     // コンポーネントの初回レンダリング時にAPIを叩く
-    useEffect(() => {
-        const YouTubeAccounts: apiData[] | undefined = apiData.find(
+    react.useEffect(() => {
+        const YouTubeAccounts: ApiData[] | undefined = apiData.find(
             (item) => item.id === "YouTubeAccount",
         )?.data;
 
-        const Entity: apiData[] | undefined = apiData.find(
+        const Entity: ApiData[] | undefined = apiData.find(
             (item) => item.id === "Entity",
         )?.data;
 
-        const Music: apiData[] | undefined = apiData.find(
+        const Music: ApiData[] | undefined = apiData.find(
             (item) => item.id === "Music",
         )?.data;
 
@@ -238,7 +231,7 @@ export default function RootLayout({
                         ),
                     imgSrc: (() => {
                         try {
-                            const YouTubeAccount: apiData | undefined =
+                            const YouTubeAccount: ApiData | undefined =
                                 YouTubeAccounts.find((vvv) => {
                                     // vvv.entityIdが存在し、item.idが含まれているかを確認する
                                     if (vvv.entityId !== null) {
@@ -365,7 +358,7 @@ export default function RootLayout({
     }
 
     return (
-        <Fragment>
+        <react.Fragment>
             <Navbar
                 inputValue={inputValue}
                 searchSuggestion={searchSuggestion}
@@ -422,6 +415,6 @@ export default function RootLayout({
                 {/* タブ切り替えボタン */}
                 {tabScroll.tabs()}
             </AppBar>
-        </Fragment>
+        </react.Fragment>
     );
 }

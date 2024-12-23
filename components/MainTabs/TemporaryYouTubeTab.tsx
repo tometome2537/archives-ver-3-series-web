@@ -1,4 +1,5 @@
-import type { InputValue } from "@/components/Navbar/SuperSearchBar";
+import type { InputValue } from "@/components/Navbar/SearchBar";
+import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { buildUrl } from "@/libs/urlBuilder";
 import { Box } from "@mui/material";
 import type { Dispatch, SetStateAction } from "react";
@@ -6,7 +7,6 @@ import { Fragment, useCallback, useEffect, useState } from "react";
 import Loading from "../Loading";
 import type { PlayerItem } from "../PlayerView";
 import Thumbnail from "../Thumbnail";
-import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 
 type VideoTemporaryObj = {
     videoId: string; // 動画ID
@@ -51,7 +51,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
     // APIで取得したデータを格納
     const [apiDataVideo, setApiDataVideo] = useState<VideoTemporaryObj[]>([]);
     // ブラウザ情報を取得
-    const {  isMobile } = useBrowserInfoContext();
+    const { isMobile } = useBrowserInfoContext();
     // 検索結果の動画一覧
     const [resultVideo, setResultVideo] = useState<
         VideoTemporaryObj[] | undefined
@@ -311,9 +311,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                     {/* 各アイテムを表示 */}
                                     <Box
                                         sx={{
-                                            width: isMobile
-                                                ? "100%"
-                                                : "auto",
+                                            width: isMobile ? "100%" : "auto",
                                         }}
                                     >
                                         <Thumbnail

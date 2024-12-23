@@ -1,6 +1,6 @@
+import type { InputValue } from "@/components/Navbar/SearchBar";
 import { useDataContext } from "@/contexts/ApiDataContext";
-import type { apiData, DataContextType } from "@/contexts/ApiDataContext";
-import type { InputValue } from "@/components/Navbar/SuperSearchBar";
+import type { DataContextType, apiData } from "@/contexts/ApiDataContext";
 
 type LinkTabProps = {
     inputValue: InputValue[];

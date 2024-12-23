@@ -1,5 +1,5 @@
-import type { InputValue } from "@/components/Navbar/SuperSearchBar";
-import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
+import type { MultiSuperSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
+import type { InputValue } from "@/components/Navbar/SearchBar";
 import rgbToHex from "@/libs/colorConverter";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
@@ -13,11 +13,11 @@ import type { YouTubePlayer } from "react-youtube";
 import Thumbnail from "./Thumbnail";
 import YouTubePlayerView from "./YouTubePlayerView";
 import "linkify-plugin-hashtag";
+import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { KeyboardArrowDown } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { blue } from "@mui/material/colors";
 import Link from "./Link";
-import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 
 export type PlayerItem = {
     videoId?: string;
@@ -36,7 +36,7 @@ type PlayerProps = {
     // ウルトラスーパーサーチバー
     inputValue: InputValue[];
     setInputValue: Dispatch<SetStateAction<InputValue[]>>;
-    searchSuggestion: ultraSuperSearchBarSearchSuggestion[];
+    searchSuggestion: MultiSuperSearchBarSearchSuggestion[];
 
     // フルスクリーンで表示するかどうか
     isPlayerFullscreen: boolean;
@@ -197,7 +197,7 @@ export default function PlayerView(props: PlayerProps) {
     // idから検索候補を返す
     const getSearchSuggestionFromId = (
         id: string,
-    ): ultraSuperSearchBarSearchSuggestion => {
+    ): MultiSuperSearchBarSearchSuggestion => {
         const r = props.searchSuggestion.find((item) => item.value === id);
         if (r) {
             return r;
@@ -448,9 +448,7 @@ export default function PlayerView(props: PlayerProps) {
                                   : `${screenHeight * 0.1}px`
                             //   props.screenHeight / 9 < props.screenWidth / 16,
                         }
-                        playerRadius={
-                            !(isMobile && props.isPlayerFullscreen)
-                        }
+                        playerRadius={!(isMobile && props.isPlayerFullscreen)}
                         setPlayer={setPlayer}
                         setPlayerState={setPlayerState}
                     />

@@ -1,17 +1,17 @@
 "use client";
 
-import SuperSearchBar, {
+import SearchBar, {
     type SearchSuggestion,
     type InputValue,
     type additionalSearchSuggestions,
-} from "@/components/Navbar/SuperSearchBar";
+} from "@/components/Navbar/SearchBar";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
 import { Box, ButtonBase, Collapse, Stack, Typography } from "@mui/material";
 import { type Dispatch, type SetStateAction, useState } from "react";
 
 export interface LimitedSuperSearchProps {
-    searchSuggestions?: ultraSuperSearchBarSearchSuggestion[];
+    searchSuggestions?: MultiSuperSearchBarSearchSuggestion[];
     // 外せない入力値を定義
     fixedOptionValues?: string[];
     availableCategoryIds?: string[];
@@ -54,10 +54,10 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
     };
     // 検索候補をcategoryIdが同じのに絞る
     // ディープコピー
-    const deepCutSuggestions: ultraSuperSearchBarSearchSuggestion[] =
+    const deepCutSuggestions: MultiSuperSearchBarSearchSuggestion[] =
         JSON.parse(JSON.stringify(searchSuggestions));
     const limitSearchSuggestion = deepCutSuggestions.filter(
-        (item: ultraSuperSearchBarSearchSuggestion) => {
+        (item: MultiSuperSearchBarSearchSuggestion) => {
             if (item.categoryId === categoryId) {
                 if (item.categoryLabelSecond) {
                     // LimitSuperSearchBarでは categoryLabelSecond を使用する。
@@ -69,7 +69,7 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
     );
 
     return (
-        <SuperSearchBar
+        <SearchBar
             textFieldLabel={textFieldLabel}
             textFieldPlaceholder={
                 "キーワードを入力し、候補の中から該当する選択肢をタップ"
@@ -89,7 +89,7 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
 };
 
 // ウルトラスーパーサーチバーの検索候補の型
-export interface ultraSuperSearchBarSearchSuggestion extends SearchSuggestion {
+export interface MultiSuperSearchBarSearchSuggestion extends SearchSuggestion {
     // LimitSuperSearchBarで使用します。
     categoryLabelSecond?: string;
 }
@@ -98,7 +98,7 @@ type UltraSuperSearchBarSearchBarProps = {
     inputValue: InputValue[];
     setInputValue: Dispatch<SetStateAction<InputValue[]>>;
     // 検索候補
-    searchSuggestion?: ultraSuperSearchBarSearchSuggestion[];
+    searchSuggestion?: MultiSuperSearchBarSearchSuggestion[];
     // 外せない入力値を定義
     fixedOptionValues?: string[];
 
@@ -109,7 +109,7 @@ type UltraSuperSearchBarSearchBarProps = {
     dateSuggestionCategory?: additionalSearchSuggestions[];
     // 表示するリミットスーパーサーチバーの定義
     limitSuperSearchCategory?: additionalSearchSuggestions[];
-    superSearchOnChange?: () => void;
+    searchOnChange?: () => void;
 
     showTagIcon?: boolean;
     showTagCount?: number;
@@ -134,7 +134,7 @@ export default function UltraSuperSearchBar(
                 props.searchSuggestion ? props.searchSuggestion[1] : {},
             )} */}
             {/* <Typography>全部</Typography> */}
-            <SuperSearchBar
+            <SearchBar
                 inputValues={props.inputValue}
                 availableCategoryIds={props.availableCategoryIds}
                 textSuggestionCategory={props.textSuggestionCategory}
@@ -147,7 +147,7 @@ export default function UltraSuperSearchBar(
                 setInputValues={props.setInputValue}
                 searchSuggestions={props.searchSuggestion}
                 fixedOptionValues={props.fixedOptionValues}
-                onChange={props.superSearchOnChange}
+                onChange={props.searchOnChange}
             />
             <Box
                 sx={{

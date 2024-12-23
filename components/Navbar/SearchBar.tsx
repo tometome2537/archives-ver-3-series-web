@@ -58,7 +58,7 @@ export type limitInputValueCategoryCount = {
     categoryId: string;
 };
 
-type SuperSearchBarProps = {
+type SearchBarProps = {
     textFieldLabel?: string;
     textFieldPlaceholder?: string;
 
@@ -85,7 +85,7 @@ type SuperSearchBarProps = {
     onChange?: () => void;
 };
 
-export default function SuperSearchBar(props: SuperSearchBarProps) {
+export default function SearchBar(props: SearchBarProps) {
     // 参考
     // https://mui.com/material-ui/react-autocomplete/
 

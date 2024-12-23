@@ -6,6 +6,7 @@ import { Fragment, useCallback, useEffect, useState } from "react";
 import Loading from "../Loading";
 import type { PlayerItem } from "../PlayerView";
 import Thumbnail from "../Thumbnail";
+import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 
 type VideoTemporaryObj = {
     videoId: string; // 動画ID
@@ -33,7 +34,6 @@ type VideoTemporaryObj = {
 };
 
 type TemporaryYouTubeTab = {
-    isMobile: boolean;
     inputValue: InputValue[];
     playerItem: PlayerItem | undefined;
     setPlayerItem: Dispatch<SetStateAction<PlayerItem | undefined>>;
@@ -50,6 +50,8 @@ enum LoadingState {
 export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
     // APIで取得したデータを格納
     const [apiDataVideo, setApiDataVideo] = useState<VideoTemporaryObj[]>([]);
+    // ブラウザ情報を取得
+    const {  isMobile } = useBrowserInfoContext();
     // 検索結果の動画一覧
     const [resultVideo, setResultVideo] = useState<
         VideoTemporaryObj[] | undefined
@@ -309,7 +311,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                     {/* 各アイテムを表示 */}
                                     <Box
                                         sx={{
-                                            width: props.isMobile
+                                            width: isMobile
                                                 ? "100%"
                                                 : "auto",
                                         }}

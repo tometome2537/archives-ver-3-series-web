@@ -41,6 +41,7 @@ import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useEffect, useRef, useState } from "react";
+import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 
 export const NavButton = styled(Button)({
     color: "primary",
@@ -63,9 +64,6 @@ type NavbarProps = {
     limitSuperSearchCategory?: additionalSearchSuggestions[];
     // スーパーサーチバーの変更時に実行する関数
     superSearchOnChange?: () => void;
-
-    screenHeight: number;
-    isMobile: boolean;
     setNavbarHeight: Dispatch<SetStateAction<number>>;
 };
 
@@ -73,6 +71,8 @@ export default function Navbar(props: NavbarProps) {
     // テーマ設定を取得
     const theme = useTheme();
     const { selectedMode, setColorMode } = useColorModeContext();
+    // ブラウザ情報を取得
+    const { screenWidth, screenHeight, isMobile } = useBrowserInfoContext();
 
     // メニューの開閉
     const [menu, setMenu] = useState<boolean>(false);
@@ -130,11 +130,11 @@ export default function Navbar(props: NavbarProps) {
                     <Container maxWidth="xl">
                         <Toolbar
                             sx={{
-                                width: props.isMobile ? "100%" : undefined,
+                                width: isMobile ? "100%" : undefined,
                                 padding: "0",
                             }}
                         >
-                            {!props.isMobile && (
+                            {!isMobile && (
                                 <>
                                     <IconButton
                                         color="inherit"
@@ -168,10 +168,10 @@ export default function Navbar(props: NavbarProps) {
 
                             <Box
                                 sx={{
-                                    width: props.isMobile ? "100%" : "70%",
+                                    width: isMobile ? "100%" : "70%",
                                 }}
                             >
-                                {props.isMobile && (
+                                {isMobile && (
                                     <Box
                                         sx={{
                                             display: "flex",
@@ -257,11 +257,11 @@ export default function Navbar(props: NavbarProps) {
                                     showTagIcon={
                                         props.inputValue.length <= 2
                                             ? true
-                                            : !props.isMobile
+                                            : !isMobile
                                     }
                                     // スマホの場合に表示するタグの個数を制限する。
                                     showTagCount={
-                                        props.isMobile ? 2 : undefined
+                                        isMobile ? 2 : undefined
                                     }
                                     superSearchOnChange={
                                         props.superSearchOnChange
@@ -269,7 +269,7 @@ export default function Navbar(props: NavbarProps) {
                                 />
                             </Box>
 
-                            {!props.isMobile && <Box sx={{ flexGrow: 1 }} />}
+                            {!isMobile && <Box sx={{ flexGrow: 1 }} />}
                         </Toolbar>
                     </Container>
                 </AppBar>

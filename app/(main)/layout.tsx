@@ -133,7 +133,6 @@ export default function RootLayout({
                     children: (
                         <TemporaryYouTubeTab
                             key="tempYoutube"
-                            isMobile={isMobile}
                             inputValue={inputValue}
                             playerItem={playerItem}
                             setPlayerItem={setPlayerItem}
@@ -202,7 +201,7 @@ export default function RootLayout({
                 }
                 return item;
             }),
-        [inputValue, playerItem, isMobile],
+        [inputValue, playerItem],
     );
 
     // 指定された位置(px)にスクロールする関数
@@ -511,9 +510,7 @@ export default function RootLayout({
                 limitSuperSearchCategory={limitSuperSearchCategory}
                 availableCategoryIds={availableCategoryIds}
                 setInputValue={setInputValue}
-                screenHeight={screenHeight}
                 setNavbarHeight={setNavbarHeight}
-                isMobile={isMobile}
                 superSearchOnChange={() => {
                     setIsPlayerFullscreen(false);
                 }}
@@ -584,9 +581,6 @@ export default function RootLayout({
                         inputValue={inputValue}
                         setInputValue={setInputValue}
                         searchSuggestion={searchSuggestion}
-                        screenWidth={screenWidth}
-                        screenHeight={screenHeight}
-                        isMobile={isMobile}
                         PlayerItem={playerItem}
                         setPlayerItem={setPlayerItem}
                         Playlist={playerPlaylist}

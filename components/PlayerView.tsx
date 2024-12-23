@@ -258,7 +258,10 @@ export default function PlayerView(props: PlayerProps) {
                         );
                     }
 
-                    if (url.hostname === "www.tiktok.com") {
+                    if (
+                        url.hostname === "tiktok.com" ||
+                        url.hostname === "www.tiktok.com"
+                    ) {
                         return (
                             <Link {...attributes}>
                                 <Chip
@@ -271,8 +274,8 @@ export default function PlayerView(props: PlayerProps) {
                     }
 
                     if (
-                        url.hostname === "www.youtube.com" ||
-                        url.hostname === "youtube.com"
+                        url.hostname === "youtube.com" ||
+                        url.hostname === "www.youtube.com"
                     ) {
                         return (
                             <Link {...attributes}>
@@ -284,8 +287,6 @@ export default function PlayerView(props: PlayerProps) {
                             </Link>
                         );
                     }
-
-                    return <Link {...attributes}>{content}</Link>;
                 } catch (error) {
                     return <Link {...attributes}>{content}</Link>;
                 }

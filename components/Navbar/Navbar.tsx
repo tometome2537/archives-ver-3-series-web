@@ -18,7 +18,6 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import {
     AppBar,
     Box,
-    Button,
     Container,
     FormControl,
     InputLabel,
@@ -35,18 +34,12 @@ import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
-import { styled } from "@mui/material/styles";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useEffect, useRef, useState } from "react";
 import type { MultiSearchBarSearchSuggestion } from "./SearchBar/MultiSearchBar";
 import MultiSearchBar from "./SearchBar/MultiSearchBar";
-
-export const NavButton = styled(Button)({
-    color: "primary",
-    fontWeight: "bold",
-}) as typeof Button;
 
 type NavbarProps = {
     // マルチサーチバー

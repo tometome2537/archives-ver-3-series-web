@@ -13,7 +13,8 @@ import type { YouTubePlayer } from "react-youtube";
 import Thumbnail from "./Thumbnail";
 import YouTubePlayerView from "./YouTubePlayerView";
 import "linkify-plugin-hashtag";
-import * as linkify from "linkifyjs";
+import { blue } from "@mui/material/colors";
+import Link from "./Link";
 
 export type PlayerItem = {
     videoId?: string;
@@ -208,6 +209,36 @@ export default function PlayerView(props: PlayerProps) {
     };
 
     const linkifyOptions = {
+        render: {
+            url: ({
+                attributes,
+                content,
+            }: { attributes: { [attr: string]: any }; content: string }) => {
+                return (
+                    <Link
+                        style={{ color: blue[400] }}
+                        underline="none"
+                        {...attributes}
+                    >
+                        {content}
+                    </Link>
+                );
+            },
+            hashtag: ({
+                attributes,
+                content,
+            }: { attributes: { [attr: string]: any }; content: string }) => {
+                return (
+                    <Link
+                        style={{ color: blue[400] }}
+                        underline="none"
+                        {...attributes}
+                    >
+                        {content}
+                    </Link>
+                );
+            },
+        },
         formatHref: {
             hashtag: (href: string) =>
                 `https://www.youtube.com/hashtag/${href.substring(1)}`,

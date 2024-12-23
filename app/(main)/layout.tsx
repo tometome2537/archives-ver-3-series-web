@@ -378,7 +378,7 @@ export default function RootLayout({
             categoryId: "specialWord_PlatMusic",
             categoryLabel: "特別な検索",
             categorySort: 999,
-            icon: <GradeIcon />,
+            icon: <GradeIcon  sx={{ color: "rgb(227, 220, 18)" }}  />,
         });
 
         if (Entity && YouTubeAccounts) {
@@ -408,7 +408,7 @@ export default function RootLayout({
                             const data = YouTubeAccount
                                 ? JSON.parse(YouTubeAccount.apiData)
                                 : undefined;
-                            return data.snippet.thumbnails.medium.url;
+                            return data.snippet.thumbnails.default.url;
                         } catch (error) {
                             return undefined;
                         }

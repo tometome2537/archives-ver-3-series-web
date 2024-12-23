@@ -81,6 +81,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             // 最初の15件を取得
             const fastParams = {
                 filter__channelId__exact: "UCZx7esGXyW6JXn98byfKEIA",
+                filter__privacyStatus__exact: "public",
                 order_by: "-publishedAt",
                 limit: "15",
             };
@@ -92,6 +93,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             // そのあと全てを取得
             const slowParams = {
                 filter__channelId__exact: "UCZx7esGXyW6JXn98byfKEIA",
+                filter__privacyStatus__exact: "public",
                 order_by: "-publishedAt",
                 offset: "15",
             };
@@ -120,16 +122,6 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 
         setLoading(LoadingState.Loading);
         const result = apiDataVideo.filter((item) => {
-            // 検索結果を100件に制限(開発中の一時的処置)
-            // if (index > 100) {
-            //     return false;
-            // }
-
-            // 公開設定は一般公開に限る
-            if (item.privacyStatus !== "public") {
-                return false;
-            }
-
             // shortは非表示
             if (item.short === true) {
                 return false;
@@ -167,6 +159,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 if (inputValue.categoryId === "") {
                     // 概要欄の条件を満たさなければfalse
                     if (
+                        item.person?.match(inputValue.value) ||
                         item.title?.match(inputValue.value) ||
                         (item.apiData &&
                             // JSON.parse(item.apiData).snippet.description &&
@@ -218,7 +211,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                     if (
                         item.apiData &&
                         !JSON.parse(item.apiData).snippet.description?.match(
-                            /ぷらっとみゅーじっく♪/,
+                            /ぷらっとみゅーじっく/,
                         )
                     ) {
                         return false;

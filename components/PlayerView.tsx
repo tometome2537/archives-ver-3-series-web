@@ -3,7 +3,7 @@ import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/Ul
 import rgbToHex from "@/libs/colorConverter";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
-import { Box, Chip, Typography } from "@mui/material";
+import { Box, Chip } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { useTheme } from "@mui/material/styles";
 import Linkify from "linkify-react";

@@ -365,6 +365,13 @@ export default function PlayerView(props: PlayerProps) {
                             sx={{
                                 display: "flex",
                                 alignContent: "left",
+                                width:
+                                    props.isMobile && props.isPlayerFullscreen
+                                        ? `${props.screenWidth}px`
+                                        : props.isPlayerFullscreen
+                                          ? `${((props.screenHeight * 0.55) / 9) * 16}px`
+                                          : `${((props.screenHeight * 0.1) / 9) * 16}px`,
+                                margin: "0 auto",
                             }}
                         >
                             <IconButton

@@ -212,54 +212,67 @@ export default function Thumbnail(props: ThumbnailProps) {
     }
 
     if (props.thumbnailType === "list") {
-        <Box
-            onClick={props.onClick ? props.onClick : undefined}
-            data-videoId={props.videoId}
-            sx={{ cursor: props.onClick ? "pointer" : "default" }} // クリック可能かどうかでカーソルを変更
-        >
-            {/* サムネイルとタイトルを中央揃え */}
+        return (
             <Box
+                onClick={props.onClick ? props.onClick : undefined}
+                data-videoId={props.videoId}
                 sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    padding: 1,
-                    borderRadius: "1.2em",
-                    transition: "transform 0.3s ease-in-out",
-                    transform: raised ? "scale(1.05)" : "scale(1)", // ホバー時の拡大効果
-                }}
-                onMouseEnter={() => setRaised(true)}
-                onMouseLeave={() => setRaised(false)}
+                    cursor: props.onClick ? "pointer" : "default",
+                }} // クリック可能かどうかでカーソルを変更
             >
-                <Image
-                    src={`https://img.youtube.com/vi/${props.videoId}/mqdefault.jpg`}
-                    alt={
-                        props.title
-                            ? `Thumbnail of ${props.title}`
-                            : "Video Thumbnail"
-                    }
-                    width={32}
-                    height={18}
-                    style={{ objectFit: "contain", borderRadius: "1.2em" }}
-                />
-
-                {/* タイトルをエリプシスで省略 */}
-                <Typography
-                    variant="body2"
+                {/* サムネイルとタイトルを中央揃え */}
+                <Box
                     sx={{
-                        maxWidth: "30ch",
-                        textOverflow: "ellipsis",
-                        overflow: "hidden",
-                        whiteSpace: "nowrap",
-                        marginTop: 1,
-                        textAlign: "center",
+                        display: "flex",
+                        flexDirection: "row",
+                        // alignItems: "center",
+                        borderRadius: "1.2em",
+                        transition: "transform 0.3s ease-in-out",
+                        transform: raised ? "scale(1.05)" : "scale(1)", // ホバー時の拡大効果
                     }}
+                    onMouseEnter={() => setRaised(true)}
+                    onMouseLeave={() => setRaised(false)}
                 >
-                    {props.title || ""}
-                    {props.channelTitle || ""} ・{" "}
-                </Typography>
+                    <Box sx={{ width: "30%" }}>
+                        <Image
+                            src={`https://img.youtube.com/vi/${props.videoId}/mqdefault.jpg`}
+                            alt={
+                                props.title
+                                    ? `Thumbnail of ${props.title}`
+                                    : "Video Thumbnail"
+                            }
+                            layout="responsive" // レスポンシブ対応
+                            width={320} // アスペクト比のための幅
+                            height={180} // アスペクト比のための高さ
+                            style={{
+                                maxWidth: "320px",
+                                objectFit: "contain",
+                                borderRadius: "10%",
+                            }}
+                        />
+                    </Box>
+
+                    {/* タイトルをエリプシスで省略 */}
+                    <Box sx={{ width: "70%" }}>
+                        <Typography
+                            variant="body2"
+                            sx={{
+                                maxWidth: "30ch",
+                                textOverflow: "ellipsis",
+                                overflow: "hidden",
+                                whiteSpace: "nowrap",
+                                marginTop: 1,
+                                textAlign: "center",
+                            }}
+                        >
+                            {props.title || ""}
+                            <br />
+                            {props.channelTitle || ""}
+                        </Typography>
+                    </Box>
+                </Box>
             </Box>
-        </Box>;
+        );
     }
 
     return (
@@ -303,6 +316,7 @@ export default function Thumbnail(props: ThumbnailProps) {
                                 ? `Thumbnail of ${props.title}`
                                 : "Video Thumbnail"
                         }
+                        layout="responsive" // レスポンシブ対応
                         width={320}
                         height={180}
                         style={{ objectFit: "contain", borderRadius: "1.2em" }}
@@ -332,7 +346,7 @@ export default function Thumbnail(props: ThumbnailProps) {
                     sx={{ marginTop: 0.5, textAlign: "center" }}
                 >
                     {props.channelTitle || ""} ・{" "}
-                    {`${props.viewCount ? String(props.viewCount) : ""}回` ||
+                    {`${props.viewCount ? String(props.viewCount) : ""}回視聴` ||
                         ""}{" "}
                     ・ {props.publishedAt ? timeAgo(props.publishedAt) : ""}
                 </Typography>

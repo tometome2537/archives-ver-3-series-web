@@ -307,23 +307,34 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                             {resultVideo.map((item: VideoTemporaryObj) => (
                                 <>
                                     {/* 各アイテムを表示 */}
-
-                                    <Thumbnail
-                                        key={item.videoId}
-                                        thumbnailType="list"
-                                        // isPlayingOnHover={
-                                        //     props.playerItem.videoId === "" ||
-                                        //     props.playerItem.videoId === undefined
-                                        // }
-                                        videoId={item.videoId}
-                                        title={item.title}
-                                        viewCount={Number(item.viewCount)}
-                                        channelTitle={item.channelTitle}
-                                        publishedAt={
-                                            new Date(item.publishedAt || 0)
-                                        }
-                                        onClick={handleVideoClick}
-                                    />
+                                    <Box
+                                        sx={{
+                                            width: props.isMobile
+                                                ? "100%"
+                                                : "auto",
+                                        }}
+                                    >
+                                        <Thumbnail
+                                            key={item.videoId}
+                                            thumbnailType={
+                                                props.isMobile
+                                                    ? "list"
+                                                    : undefined
+                                            }
+                                            // isPlayingOnHover={
+                                            //     props.playerItem.videoId === "" ||
+                                            //     props.playerItem.videoId === undefined
+                                            // }
+                                            videoId={item.videoId}
+                                            title={item.title}
+                                            viewCount={Number(item.viewCount)}
+                                            channelTitle={item.channelTitle}
+                                            publishedAt={
+                                                new Date(item.publishedAt || 0)
+                                            }
+                                            onClick={handleVideoClick}
+                                        />
+                                    </Box>
                                 </>
                             ))}
                         </>

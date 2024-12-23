@@ -3,8 +3,8 @@
 import MultiSuperSearchBar from "@/components/Navbar/MultiSearchBar";
 import type { MultiSuperSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
 import type {
+    AdditionalSearchSuggestions,
     InputValue,
-    additionalSearchSuggestions,
 } from "@/components/Navbar/SearchBar";
 import { type Dispatch, useState } from "react";
 
@@ -96,7 +96,7 @@ const searchSuggestion: MultiSuperSearchBarSearchSuggestion[] = [
     },
 ];
 // テキストの追加カテゴリー
-const textSuggestionCategory: additionalSearchSuggestions[] = [
+const textSuggestionCategory: AdditionalSearchSuggestions[] = [
     {
         // カテゴリーのID
         categoryId: "title",
@@ -109,7 +109,7 @@ const textSuggestionCategory: additionalSearchSuggestions[] = [
     },
 ];
 // 日付入力を許可する。
-const dateSuggestionCategory: additionalSearchSuggestions[] = [
+const dateSuggestionCategory: AdditionalSearchSuggestions[] = [
     {
         // カテゴリーのID
         categoryId: "since",

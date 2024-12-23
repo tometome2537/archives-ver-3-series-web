@@ -1,6 +1,6 @@
 import type { InputValue } from "@/components/Navbar/SearchBar";
 import { useDataContext } from "@/contexts/ApiDataContext";
-import type { DataContextType, apiData } from "@/contexts/ApiDataContext";
+import type { ApiData, DataContextType } from "@/contexts/ApiDataContext";
 
 type LinkTabProps = {
     inputValue: InputValue[];
@@ -8,7 +8,7 @@ type LinkTabProps = {
 export default function LinkTab(props: LinkTabProps) {
     const apiData = useDataContext();
 
-    const YouTubeAccounts: apiData[] | undefined = apiData
+    const YouTubeAccounts: ApiData[] | undefined = apiData
         .find((item) => item.id === "YouTubeAccount")
         ?.data.filter((item) => {
             let match = true;
@@ -22,7 +22,7 @@ export default function LinkTab(props: LinkTabProps) {
             }
             return match;
         });
-    const XAccounts: apiData[] | undefined = apiData
+    const XAccounts: ApiData[] | undefined = apiData
         .find((item) => item.id === "XAccount")
         ?.data.filter((item) => {
             let match = true;

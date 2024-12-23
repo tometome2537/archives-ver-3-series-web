@@ -20,7 +20,7 @@ const fetcher = async (url: string) => {
 };
 
 // YouTubeAccount 型の定義
-export type apiData = {
+export type ApiData = {
     id: string;
     entityId: string;
     userName: string;
@@ -37,7 +37,7 @@ export type apiData = {
 // コンテキストの型定義
 export type DataContextType = {
     id: string;
-    data: apiData[];
+    data: ApiData[];
     isLoading: boolean;
     error: boolean;
 };

@@ -3,7 +3,7 @@
 import SearchBar, {
     type SearchSuggestion,
     type InputValue,
-    type additionalSearchSuggestions,
+    type AdditionalSearchSuggestions,
 } from "@/components/Navbar/SearchBar";
 import ExpandLess from "@mui/icons-material/ExpandLess";
 import ExpandMore from "@mui/icons-material/ExpandMore";
@@ -15,8 +15,8 @@ export interface LimitedSuperSearchProps {
     // 外せない入力値を定義
     fixedOptionValues?: string[];
     availableCategoryIds?: string[];
-    textSuggestionCategory?: additionalSearchSuggestions[];
-    dateSuggestionCategory?: additionalSearchSuggestions[];
+    textSuggestionCategory?: AdditionalSearchSuggestions[];
+    dateSuggestionCategory?: AdditionalSearchSuggestions[];
     showTagIcon?: boolean;
     showTagCount?: number;
     inputValue: InputValue[];
@@ -104,11 +104,11 @@ type UltraSuperSearchBarSearchBarProps = {
 
     availableCategoryIds?: string[];
     // 入力するテキストのカテゴリー
-    textSuggestionCategory?: additionalSearchSuggestions[];
+    textSuggestionCategory?: AdditionalSearchSuggestions[];
     // 入力する日付のカテゴリー
-    dateSuggestionCategory?: additionalSearchSuggestions[];
+    dateSuggestionCategory?: AdditionalSearchSuggestions[];
     // 表示するリミットスーパーサーチバーの定義
-    limitSuperSearchCategory?: additionalSearchSuggestions[];
+    limitSuperSearchCategory?: AdditionalSearchSuggestions[];
     searchOnChange?: () => void;
 
     showTagIcon?: boolean;

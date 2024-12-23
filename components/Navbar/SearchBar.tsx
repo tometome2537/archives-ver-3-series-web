@@ -42,7 +42,7 @@ export interface InputValue extends SearchSuggestion {
 }
 
 // 追加の検索候補のカテゴリー
-export type additionalSearchSuggestions = {
+export type AdditionalSearchSuggestions = {
     // 並び替え
     sort?: number;
     // カテゴリーのID
@@ -51,7 +51,7 @@ export type additionalSearchSuggestions = {
     categoryLabel: string;
 };
 // 各カテゴリーの入力値の上限個数を定義。
-export type limitInputValueCategoryCount = {
+export type LimitInputValueCategoryCount = {
     // 制限個数
     limit: number;
     // カテゴリーのID
@@ -65,9 +65,9 @@ type SearchBarProps = {
     // 有効化されているカテゴリーIDのリスト
     availableCategoryIds?: string[];
     // テキストに付与するカテゴリー
-    textSuggestionCategory?: additionalSearchSuggestions[];
+    textSuggestionCategory?: AdditionalSearchSuggestions[];
     // 日付の入力を許可するカテゴリー
-    dateSuggestionCategory?: additionalSearchSuggestions[];
+    dateSuggestionCategory?: AdditionalSearchSuggestions[];
 
     inputValues: InputValue[];
     setInputValues: (values: InputValue[]) => void;

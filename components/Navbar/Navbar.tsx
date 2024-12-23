@@ -1,8 +1,8 @@
 import MultiSuperSearchBar from "@/components/Navbar/MultiSearchBar";
 import type { MultiSuperSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
 import type {
+    AdditionalSearchSuggestions,
     InputValue,
-    additionalSearchSuggestions,
 } from "@/components/Navbar/SearchBar";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { useColorModeContext } from "@/contexts/ThemeContext";
@@ -57,11 +57,11 @@ type NavbarProps = {
     // 外せない入力値を定義
     fixedOptionValues?: string[];
     // 入力するテキストのカテゴリー
-    textSuggestionCategory?: additionalSearchSuggestions[];
+    textSuggestionCategory?: AdditionalSearchSuggestions[];
     // 入力する日付のカテゴリー
-    dateSuggestionCategory?: additionalSearchSuggestions[];
+    dateSuggestionCategory?: AdditionalSearchSuggestions[];
     // 表示するリミットスーパーサーチバーの定義
-    limitSuperSearchCategory?: additionalSearchSuggestions[];
+    limitSuperSearchCategory?: AdditionalSearchSuggestions[];
     // スーパーサーチバーの変更時に実行する関数
     searchOnChange?: () => void;
     setNavbarHeight: Dispatch<SetStateAction<number>>;

@@ -10,8 +10,8 @@ import ExpandMore from "@mui/icons-material/ExpandMore";
 import { Box, ButtonBase, Collapse, Stack, Typography } from "@mui/material";
 import { type Dispatch, type SetStateAction, useState } from "react";
 
-export interface LimitedSuperSearchProps {
-    searchSuggestions?: MultiSuperSearchBarSearchSuggestion[];
+export interface LimitedSearchProps {
+    searchSuggestions?: MultiSearchBarSearchSuggestion[];
     // 外せない入力値を定義
     fixedOptionValues?: string[];
     availableCategoryIds?: string[];
@@ -27,7 +27,7 @@ export interface LimitedSuperSearchProps {
 }
 
 // スーパーサーチバーの範囲を制限するためのスーパーサーチバー
-const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
+const LimitedSearch: React.FC<LimitedSearchProps> = ({
     searchSuggestions,
     fixedOptionValues,
     availableCategoryIds,
@@ -54,13 +54,14 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
     };
     // 検索候補をcategoryIdが同じのに絞る
     // ディープコピー
-    const deepCutSuggestions: MultiSuperSearchBarSearchSuggestion[] =
-        JSON.parse(JSON.stringify(searchSuggestions));
+    const deepCutSuggestions: MultiSearchBarSearchSuggestion[] = JSON.parse(
+        JSON.stringify(searchSuggestions),
+    );
     const limitSearchSuggestion = deepCutSuggestions.filter(
-        (item: MultiSuperSearchBarSearchSuggestion) => {
+        (item: MultiSearchBarSearchSuggestion) => {
             if (item.categoryId === categoryId) {
                 if (item.categoryLabelSecond) {
-                    // LimitSuperSearchBarでは categoryLabelSecond を使用する。
+                    // LimitSearchBarでは categoryLabelSecond を使用する。
                     item.categoryLabel = item.categoryLabelSecond;
                 }
                 return item;
@@ -89,16 +90,16 @@ const LimitedSuperSearch: React.FC<LimitedSuperSearchProps> = ({
 };
 
 // ウルトラスーパーサーチバーの検索候補の型
-export interface MultiSuperSearchBarSearchSuggestion extends SearchSuggestion {
-    // LimitSuperSearchBarで使用します。
+export interface MultiSearchBarSearchSuggestion extends SearchSuggestion {
+    // LimitSearchBarで使用します。
     categoryLabelSecond?: string;
 }
 
-type UltraSuperSearchBarSearchBarProps = {
+type MultiSearchBarSearchBarProps = {
     inputValue: InputValue[];
     setInputValue: Dispatch<SetStateAction<InputValue[]>>;
     // 検索候補
-    searchSuggestion?: MultiSuperSearchBarSearchSuggestion[];
+    searchSuggestion?: MultiSearchBarSearchSuggestion[];
     // 外せない入力値を定義
     fixedOptionValues?: string[];
 
@@ -108,16 +109,14 @@ type UltraSuperSearchBarSearchBarProps = {
     // 入力する日付のカテゴリー
     dateSuggestionCategory?: AdditionalSearchSuggestions[];
     // 表示するリミットスーパーサーチバーの定義
-    limitSuperSearchCategory?: AdditionalSearchSuggestions[];
+    limitSearchCategory?: AdditionalSearchSuggestions[];
     searchOnChange?: () => void;
 
     showTagIcon?: boolean;
     showTagCount?: number;
 };
 
-export default function UltraSuperSearchBar(
-    props: UltraSuperSearchBarSearchBarProps,
-) {
+export default function MultiSearchBar(props: MultiSearchBarSearchBarProps) {
     // リミットスーパーサーチバーが開いてるかどうか
     const [isOpen, setIsOpen] = useState<boolean>(false);
 
@@ -154,8 +153,8 @@ export default function UltraSuperSearchBar(
                     display: "flex",
                 }}
             >
-                {props.limitSuperSearchCategory &&
-                    props.limitSuperSearchCategory.length !== 0 && (
+                {props.limitSearchCategory &&
+                    props.limitSearchCategory.length !== 0 && (
                         <ButtonBase
                             sx={{ py: 0.5, mb: 0.5 }} // パディングとマージンを小さく
                             onClick={() => setIsOpen(isOpen === false)}
@@ -174,9 +173,9 @@ export default function UltraSuperSearchBar(
                 <HistoryIcon /> */}
             </Box>
 
-            {props.limitSuperSearchCategory &&
-                props.limitSuperSearchCategory.length !== 0 &&
-                props.limitSuperSearchCategory.map((v, index) => (
+            {props.limitSearchCategory &&
+                props.limitSearchCategory.length !== 0 &&
+                props.limitSearchCategory.map((v, index) => (
                     <Collapse
                         key={v.categoryId}
                         in={isOpen}
@@ -186,7 +185,7 @@ export default function UltraSuperSearchBar(
                         <Stack gap={1}>
                             <Box>
                                 {/* <Typography>{v.categoryLabel}</Typography> */}
-                                <LimitedSuperSearch
+                                <LimitedSearch
                                     textFieldLabel={v.categoryLabel}
                                     searchSuggestions={props.searchSuggestion}
                                     fixedOptionValues={props.fixedOptionValues}

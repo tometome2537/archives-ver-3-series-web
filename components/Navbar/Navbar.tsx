@@ -1,5 +1,5 @@
-import MultiSuperSearchBar from "@/components/Navbar/MultiSearchBar";
-import type { MultiSuperSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
+import MultiSearchBar from "@/components/Navbar/MultiSearchBar";
+import type { MultiSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
 import type {
     AdditionalSearchSuggestions,
     InputValue,
@@ -52,7 +52,7 @@ type NavbarProps = {
     // ウルトラスーパーサーチバー
     inputValue: InputValue[];
     setInputValue: Dispatch<SetStateAction<InputValue[]>>;
-    searchSuggestion: MultiSuperSearchBarSearchSuggestion[];
+    searchSuggestion: MultiSearchBarSearchSuggestion[];
     availableCategoryIds?: string[];
     // 外せない入力値を定義
     fixedOptionValues?: string[];
@@ -61,7 +61,7 @@ type NavbarProps = {
     // 入力する日付のカテゴリー
     dateSuggestionCategory?: AdditionalSearchSuggestions[];
     // 表示するリミットスーパーサーチバーの定義
-    limitSuperSearchCategory?: AdditionalSearchSuggestions[];
+    limitSearchCategory?: AdditionalSearchSuggestions[];
     // スーパーサーチバーの変更時に実行する関数
     searchOnChange?: () => void;
     setNavbarHeight: Dispatch<SetStateAction<number>>;
@@ -205,7 +205,7 @@ export default function Navbar(props: NavbarProps) {
                                         </IconButton>
                                     </Box>
                                 )}
-                                <MultiSuperSearchBar
+                                <MultiSearchBar
                                     inputValue={props.inputValue}
                                     setInputValue={props.setInputValue}
                                     searchSuggestion={props.searchSuggestion}
@@ -249,8 +249,8 @@ export default function Navbar(props: NavbarProps) {
                                             // },
                                         ]
                                     }
-                                    limitSuperSearchCategory={
-                                        props.limitSuperSearchCategory
+                                    limitSearchCategory={
+                                        props.limitSearchCategory
                                     }
                                     // スマホの場合はタグのアイコンを非表示
                                     showTagIcon={

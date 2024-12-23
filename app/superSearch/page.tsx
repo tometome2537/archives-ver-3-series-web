@@ -1,7 +1,7 @@
 "use client";
 
-import MultiSuperSearchBar from "@/components/Navbar/MultiSearchBar";
-import type { MultiSuperSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
+import MultiSearchBar from "@/components/Navbar/MultiSearchBar";
+import type { MultiSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
 import type {
     AdditionalSearchSuggestions,
     InputValue,
@@ -11,7 +11,7 @@ import { type Dispatch, useState } from "react";
 type CategoryId = "actor" | "organization" | "YouTubeChannel" | "text";
 
 // 検索候補
-const searchSuggestion: MultiSuperSearchBarSearchSuggestion[] = [
+const searchSuggestion: MultiSearchBarSearchSuggestion[] = [
     {
         sort: 99,
         label: "幾田りら",
@@ -123,7 +123,7 @@ const dateSuggestionCategory: AdditionalSearchSuggestions[] = [
 ];
 
 // 分ける項目
-const limitSuperSearchCategory = [
+const limitSearchCategory = [
     { categoryId: "actor", categoryLabel: "出演者" },
     {
         categoryId: "organization",
@@ -139,13 +139,13 @@ export default function Home() {
     // 入力された値
     const [inputValue, setInputValue] = useState<InputValue[]>([]);
     return (
-        <MultiSuperSearchBar
+        <MultiSearchBar
             inputValue={inputValue}
             setInputValue={setInputValue}
             searchSuggestion={searchSuggestion}
             textSuggestionCategory={textSuggestionCategory}
             dateSuggestionCategory={dateSuggestionCategory}
-            limitSuperSearchCategory={limitSuperSearchCategory}
+            limitSearchCategory={limitSearchCategory}
         />
     );
 }

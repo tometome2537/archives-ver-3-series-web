@@ -270,7 +270,10 @@ export default function PlayerView(props: PlayerProps) {
                         );
                     }
 
-                    if (url.hostname === "www.youtube.com") {
+                    if (
+                        url.hostname === "www.youtube.com" ||
+                        url.hostname === "youtube.com"
+                    ) {
                         return (
                             <Link {...attributes}>
                                 <Chip

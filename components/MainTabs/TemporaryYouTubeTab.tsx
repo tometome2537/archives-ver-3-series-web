@@ -318,11 +318,13 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                     >
                                         <Thumbnail
                                             key={item.videoId}
-                                            thumbnailType={
-                                                props.isMobile
-                                                    ? "list"
-                                                    : undefined
-                                            }
+                                            // ↓ To Do 余裕があったら切り替えボタン
+                                            // thumbnailType={
+                                            //     props.isMobile
+                                            //         ? "list"
+                                            //         : undefined
+                                            // }
+                                            //
                                             // isPlayingOnHover={
                                             //     props.playerItem.videoId === "" ||
                                             //     props.playerItem.videoId === undefined

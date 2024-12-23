@@ -218,13 +218,12 @@ export default function Navbar(props: NavbarProps) {
                                         {
                                             sort: 20,
                                             categoryId: "title",
-                                            categoryLabel:
-                                                "タイトルに含む文字列",
+                                            categoryLabel: "タイトル",
                                         },
                                         {
                                             sort: 22,
                                             categoryId: "description",
-                                            categoryLabel: "概要欄に含む文字列",
+                                            categoryLabel: "概要欄",
                                         },
                                         // {
                                         //     sort: 21,
@@ -260,9 +259,7 @@ export default function Navbar(props: NavbarProps) {
                                             : !isMobile
                                     }
                                     // スマホの場合に表示するタグの個数を制限する。
-                                    showTagCount={
-                                        isMobile ? 2 : undefined
-                                    }
+                                    showTagCount={isMobile ? 2 : undefined}
                                     superSearchOnChange={
                                         props.superSearchOnChange
                                     }

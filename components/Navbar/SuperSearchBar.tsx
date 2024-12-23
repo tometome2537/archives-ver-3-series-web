@@ -456,7 +456,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                             React.isValidElement(child) ? (
                                                 <>
                                                     {/*  各項目の要素をReact.cloneElementでクローンを作成する。 */}
-                                                    {/* {React.cloneElement(
+                                                    {React.cloneElement(
                                                         <Chip />,
                                                         {
                                                             // コメント消さないで by とめとめ
@@ -534,9 +534,9 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                                                 );
                                                             },
                                                         },
-                                                    )} */}
+                                                    )}
 
-                                                    {(() => {
+                                                    {/* {(() => {
                                                         const suggestion =
                                                             getSearchSuggestionFromLabel(
                                                                 child.props
@@ -614,7 +614,7 @@ export default function SuperSearchBar(props: SuperSearchBarProps) {
                                                                 }
                                                             </div>
                                                         );
-                                                    })()}
+                                                    })()} */}
                                                 </>
                                             ) : (
                                                 child

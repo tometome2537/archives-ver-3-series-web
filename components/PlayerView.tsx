@@ -13,7 +13,7 @@ import type { YouTubePlayer } from "react-youtube";
 import Thumbnail from "./Thumbnail";
 import YouTubePlayerView from "./YouTubePlayerView";
 import "linkify-plugin-hashtag";
-import CloseIcon from "@mui/icons-material/Close";
+import { KeyboardArrowDown } from "@mui/icons-material";
 import IconButton from "@mui/material/IconButton";
 import { blue } from "@mui/material/colors";
 import Link from "./Link";
@@ -215,7 +215,7 @@ export default function PlayerView(props: PlayerProps) {
             url: ({
                 attributes,
                 content,
-            }: { attributes: { [attr: string]: any }; content: string }) => {
+            }: { attributes: { [attr: string]: React.ReactNode }; content: string }) => {
                 try {
                     const url = new URL(content);
                     const pathSegments = url.pathname
@@ -287,7 +287,7 @@ export default function PlayerView(props: PlayerProps) {
             hashtag: ({
                 attributes,
                 content,
-            }: { attributes: { [attr: string]: any }; content: string }) => {
+            }: { attributes: { [attr: string]: React.ReactNode }; content: string }) => {
                 return (
                     <Link
                         style={{ color: blue[400] }}
@@ -404,7 +404,7 @@ export default function PlayerView(props: PlayerProps) {
                                     props.setIsPlayerFullscreen(false)
                                 }
                             >
-                                <CloseIcon
+                                <KeyboardArrowDown
                                     sx={{
                                         fontSize: "2rem",
                                     }}

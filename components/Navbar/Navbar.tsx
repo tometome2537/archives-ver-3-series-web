@@ -334,7 +334,14 @@ export default function Navbar(props: NavbarProps) {
                             target="_blank"
                         >
                             <ListItemIcon>
-                                <XIcon />
+                                <XIcon
+                                    sx={{
+                                        color:
+                                            theme.palette.mode === "dark"
+                                                ? "#F5F5F5"
+                                                : "#121212",
+                                    }}
+                                />
                             </ListItemIcon>
                             <ListItemText primary="ぷらそにか公式 𝕏 " />
                         </ListItemButton>
@@ -346,7 +353,9 @@ export default function Navbar(props: NavbarProps) {
                             target="_blank"
                         >
                             <ListItemIcon>
-                                <InstagramIcon />
+                                <InstagramIcon
+                                    sx={{ color: "rgb(247, 58, 5)" }}
+                                />
                             </ListItemIcon>
                             <ListItemText primary="ぷらそにか公式 Instagram " />
                         </ListItemButton>
@@ -358,8 +367,15 @@ export default function Navbar(props: NavbarProps) {
                             target="_blank"
                         >
                             <ListItemIcon>
-                                {/* // ↓ 未設定 TO Do */}
-                                {/* <InstagramIcon /> */}
+                                <Image
+                                    src="/tiktok_logo.png"
+                                    alt="tiktok ロゴ"
+                                    width={20}
+                                    height={20}
+                                    style={{
+                                        borderRadius: "20%",
+                                    }}
+                                />
                             </ListItemIcon>
                             <ListItemText primary="ぷらそにか公式 TikTok " />
                         </ListItemButton>
@@ -372,7 +388,7 @@ export default function Navbar(props: NavbarProps) {
                             target="_blank"
                         >
                             <ListItemIcon>
-                                <HomeIcon />
+                                <HomeIcon sx={{ color: "#167c3b" }} />
                             </ListItemIcon>
                             <ListItemText primary="ぷらそにか公式 ホームページ " />
                         </ListItemButton>
@@ -400,7 +416,14 @@ export default function Navbar(props: NavbarProps) {
                             target="_blank"
                         >
                             <ListItemIcon>
-                                <XIcon />
+                                <XIcon
+                                    sx={{
+                                        color:
+                                            theme.palette.mode === "dark"
+                                                ? "#F5F5F5"
+                                                : "#121212",
+                                    }}
+                                />
                             </ListItemIcon>
                             <ListItemText primary="サイト運営 𝕏 アカウント" />
                         </ListItemButton>
@@ -424,7 +447,7 @@ export default function Navbar(props: NavbarProps) {
                             target="_blank"
                         >
                             <ListItemIcon>
-                                <MailIcon />
+                                <MailIcon sx={{ color: "rgb(50, 154, 229)" }} />
                             </ListItemIcon>
                             <ListItemText primary="お問い合わせ" />
                         </ListItemButton>
@@ -437,7 +460,9 @@ export default function Navbar(props: NavbarProps) {
                         >
                             <ListItemIcon>
                                 {/* <MailIcon /> */}
-                                <FeedbackIcon />
+                                <FeedbackIcon
+                                    sx={{ color: "rgb(165, 82, 242)" }}
+                                />
                             </ListItemIcon>
                             <ListItemText
                                 primary="フィードバック"
@@ -466,6 +491,8 @@ export default function Navbar(props: NavbarProps) {
                                     if (value) {
                                         setColorMode(value);
                                     }
+                                    // メニューを閉じる
+                                    setMenu(false);
                                 }}
                             >
                                 <MenuItem value={"light"}>
@@ -508,31 +535,6 @@ export default function Navbar(props: NavbarProps) {
                             </Select>
                         </FormControl>
                     </ListItem>
-                    {/* <Divider />
-                    <Divider />
-                    <ListItem disablePadding>
-                        <ListItemButton
-                            onClick={() => {
-                                toggleColorMode();
-                                setMenu(false);
-                            }}
-                        >
-                            <ListItemIcon>
-                                {theme.palette.mode === "dark" ? (
-                                    <LightModeIcon />
-                                ) : (
-                                    <DarkModeIcon />
-                                )}
-                            </ListItemIcon>
-                            <ListItemText
-                                primary={
-                                    theme.palette.mode === "dark"
-                                        ? "ライトモードに切り替え"
-                                        : "ダークモードに切り替え"
-                                }
-                            />
-                        </ListItemButton>
-                    </ListItem> */}
                     <Divider sx={{ borderBottomWidth: 3 }} />
                     <ListItem disablePadding>
                         <ListItemButton>
@@ -555,8 +557,8 @@ export default function Navbar(props: NavbarProps) {
                                 <Image
                                     src="/sssapi_logo.png"
                                     alt="SSSAPI ロゴ"
-                                    width={40}
-                                    height={40}
+                                    width={30}
+                                    height={30}
                                     style={{
                                         borderRadius: "20%",
                                     }}
@@ -577,7 +579,9 @@ export default function Navbar(props: NavbarProps) {
                     <ListItem disablePadding>
                         <ListItemButton>
                             <ListItemIcon>
-                                <GradeIcon />
+                                <GradeIcon
+                                    sx={{ color: "rgb(227, 220, 18)" }}
+                                />
                             </ListItemIcon>
                             <ListItemText
                                 style={{

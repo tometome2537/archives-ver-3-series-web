@@ -22,6 +22,7 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import { AppBar } from "@mui/material";
 import Image from "next/image";
 import react, { Fragment } from "react";
+import MultiSearchBar from "@/components/Navbar/SearchBar/MultiSearchBar";
 // import AccountBoxIcon from "@mui/icons-material/AccountBox";
 // import LinkTab from "@/components/MainTabs/LinkTab";
 
@@ -57,7 +58,9 @@ export default function RootLayout({
     // ⭐️ここまでマルチサーチバー関連
 
     // Navbarの高さを定義
-    const [navbarHeight, setNavbarHeight] = react.useState<number>(0);
+    const [navbarHeight, setNavbarHeight] = react.useState<number | undefined>(
+        undefined,
+    );
 
     // PlayerViewを拡大表示するかどうか
     const [isPlayerFullscreen, setIsPlayerFullscreen] =
@@ -356,18 +359,59 @@ export default function RootLayout({
 
     return (
         <Fragment>
-            <Navbar
-                inputValue={inputValue}
-                searchSuggestion={searchSuggestion}
-                fixedOptionValues={fixedOptionValues}
-                limitSearchCategory={limitSearchCategory}
-                availableCategoryIds={availableCategoryIds}
-                setInputValue={setInputValue}
-                setNavbarHeight={setNavbarHeight}
-                searchOnChange={() => {
-                    setIsPlayerFullscreen(false);
-                }}
-            />
+            <Navbar setNavbarHeight={setNavbarHeight}>
+                <MultiSearchBar
+                    inputValue={inputValue}
+                    setInputValue={setInputValue}
+                    searchSuggestion={searchSuggestion}
+                    fixedOptionValues={fixedOptionValues}
+                    availableCategoryIds={availableCategoryIds}
+                    // テキストの追加カテゴリー
+                    textSuggestionCategory={[
+                        {
+                            sort: 20,
+                            categoryId: "title",
+                            categoryLabel: "タイトル",
+                        },
+                        {
+                            sort: 22,
+                            categoryId: "description",
+                            categoryLabel: "概要欄",
+                        },
+                        // {
+                        //     sort: 21,
+                        //     categoryId: "subTitle",
+                        //     categoryLabel:
+                        //         "サブタイトルに含む文字列",
+                        // },
+                    ]}
+                    // 日付の追加カテゴリー
+                    dateSuggestionCategory={
+                        [
+                            // {
+                            //     sort: 10,
+                            //     // カテゴリーのID
+                            //     categoryId: "since",
+                            //     // カテゴリーのラベル(表示に使用)
+                            //     categoryLabel: "開始日",
+                            // },
+                            // {
+                            //     sort: 11,
+                            //     categoryId: "until",
+                            //     categoryLabel: "終了日",
+                            // },
+                        ]
+                    }
+                    limitSearchCategory={limitSearchCategory}
+                    // スマホの場合はタグのアイコンを非表示
+                    showTagIcon={inputValue.length <= 2 ? true : !isMobile}
+                    // スマホの場合に表示するタグの個数を制限する。
+                    showTagCount={isMobile ? 2 : undefined}
+                    searchOnChange={() => {
+                        setIsPlayerFullscreen(false);
+                    }}
+                />
+            </Navbar>
             {/* メインコンテンツ */}
             {tabScroll.mainContents()}
             {/* 画面下に固定されたタブバー */}

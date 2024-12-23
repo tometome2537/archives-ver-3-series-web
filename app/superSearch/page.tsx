@@ -1,18 +1,17 @@
 "use client";
 
-import UltraSuperSearchBar from "@/components/Navbar/UltraSuperSearchBar";
-import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
-import { type Dispatch, type SetStateAction,  useState } from "react";
-import SuperSearchBar, {
-    type SearchSuggestion,
-    type InputValue,
-    type additionalSearchSuggestions,
-} from "@/components/Navbar/SuperSearchBar";
+import MultiSuperSearchBar from "@/components/Navbar/MultiSearchBar";
+import type { MultiSuperSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
+import type {
+    InputValue,
+    additionalSearchSuggestions,
+} from "@/components/Navbar/SearchBar";
+import { type Dispatch, useState } from "react";
 
 type CategoryId = "actor" | "organization" | "YouTubeChannel" | "text";
 
 // 検索候補
-const searchSuggestion: ultraSuperSearchBarSearchSuggestion[] = [
+const searchSuggestion: MultiSuperSearchBarSearchSuggestion[] = [
     {
         sort: 99,
         label: "幾田りら",
@@ -138,11 +137,9 @@ const limitSuperSearchCategory = [
 
 export default function Home() {
     // 入力された値
-    const [inputValue, setInputValue] = useState<InputValue[]>(
-        [],
-    );
+    const [inputValue, setInputValue] = useState<InputValue[]>([]);
     return (
-        <UltraSuperSearchBar
+        <MultiSuperSearchBar
             inputValue={inputValue}
             setInputValue={setInputValue}
             searchSuggestion={searchSuggestion}

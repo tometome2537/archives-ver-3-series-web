@@ -1,9 +1,10 @@
+import MultiSuperSearchBar from "@/components/Navbar/MultiSearchBar";
+import type { MultiSuperSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
 import type {
     InputValue,
     additionalSearchSuggestions,
-} from "@/components/Navbar/SuperSearchBar";
-import UltraSuperSearchBar from "@/components/Navbar/UltraSuperSearchBar";
-import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
+} from "@/components/Navbar/SearchBar";
+import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { useColorModeContext } from "@/contexts/ThemeContext";
 import rgbToHex from "@/libs/colorConverter";
 import { DarkModeOutlined, LightModeOutlined } from "@mui/icons-material";
@@ -41,7 +42,6 @@ import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 
 export const NavButton = styled(Button)({
     color: "primary",
@@ -52,7 +52,7 @@ type NavbarProps = {
     // ウルトラスーパーサーチバー
     inputValue: InputValue[];
     setInputValue: Dispatch<SetStateAction<InputValue[]>>;
-    searchSuggestion: ultraSuperSearchBarSearchSuggestion[];
+    searchSuggestion: MultiSuperSearchBarSearchSuggestion[];
     availableCategoryIds?: string[];
     // 外せない入力値を定義
     fixedOptionValues?: string[];
@@ -63,7 +63,7 @@ type NavbarProps = {
     // 表示するリミットスーパーサーチバーの定義
     limitSuperSearchCategory?: additionalSearchSuggestions[];
     // スーパーサーチバーの変更時に実行する関数
-    superSearchOnChange?: () => void;
+    searchOnChange?: () => void;
     setNavbarHeight: Dispatch<SetStateAction<number>>;
 };
 
@@ -205,7 +205,7 @@ export default function Navbar(props: NavbarProps) {
                                         </IconButton>
                                     </Box>
                                 )}
-                                <UltraSuperSearchBar
+                                <MultiSuperSearchBar
                                     inputValue={props.inputValue}
                                     setInputValue={props.setInputValue}
                                     searchSuggestion={props.searchSuggestion}
@@ -260,9 +260,7 @@ export default function Navbar(props: NavbarProps) {
                                     }
                                     // スマホの場合に表示するタグの個数を制限する。
                                     showTagCount={isMobile ? 2 : undefined}
-                                    superSearchOnChange={
-                                        props.superSearchOnChange
-                                    }
+                                    searchOnChange={props.searchOnChange}
                                 />
                             </Box>
 

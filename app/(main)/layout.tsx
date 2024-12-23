@@ -1,14 +1,16 @@
 "use client";
 
 import { TemporaryYouTubeTab } from "@/components/MainTabs/TemporaryYouTubeTab";
+import type { MultiSuperSearchBarSearchSuggestion } from "@/components/Navbar/MultiSearchBar";
 import Navbar from "@/components/Navbar/Navbar";
 import type {
     InputValue,
     additionalSearchSuggestions,
-} from "@/components/Navbar/SuperSearchBar";
-import type { ultraSuperSearchBarSearchSuggestion } from "@/components/Navbar/UltraSuperSearchBar";
+} from "@/components/Navbar/SearchBar";
 import PlayerView from "@/components/PlayerView";
 import type { PlayerItem } from "@/components/PlayerView"; // 型としてのインポート
+import type { TabMap } from "@/components/TabScroll";
+import TabScroll from "@/components/TabScroll";
 import { useDataContext } from "@/contexts/ApiDataContext";
 import type { apiData } from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
@@ -21,8 +23,6 @@ import { AppBar, Box, Container, Tab, Tabs } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
-import type { TabMap } from "@/components/TabScroll";
-import TabScroll from "@/components/TabScroll";
 import {
     Fragment,
     type ReactElement,
@@ -56,7 +56,7 @@ export default function RootLayout({
     const [inputValue, setInputValue] = useState<InputValue[]>([]);
     // 検索候補
     const [searchSuggestion, setSearchSuggestion] = useState<
-        ultraSuperSearchBarSearchSuggestion[]
+        MultiSuperSearchBarSearchSuggestion[]
     >([]);
     // そのViewで使用される値のCategoryID配列
     const [availableCategoryIds, setAvailableCategoryIds] =
@@ -211,7 +211,7 @@ export default function RootLayout({
             (item) => item.id === "Music",
         )?.data;
 
-        const result: ultraSuperSearchBarSearchSuggestion[] = [];
+        const result: MultiSuperSearchBarSearchSuggestion[] = [];
 
         // スペシャル検索候補を追加
         result.push({
@@ -226,7 +226,7 @@ export default function RootLayout({
         if (Entity && YouTubeAccounts) {
             // データを変換し、検索候補の配列に追加
             for (const item of Entity) {
-                const resultItem: ultraSuperSearchBarSearchSuggestion = {
+                const resultItem: MultiSuperSearchBarSearchSuggestion = {
                     sort: item.category === "person" ? 99 : 100,
                     label: item.name,
                     value: item.id,
@@ -374,7 +374,7 @@ export default function RootLayout({
                 availableCategoryIds={availableCategoryIds}
                 setInputValue={setInputValue}
                 setNavbarHeight={setNavbarHeight}
-                superSearchOnChange={() => {
+                searchOnChange={() => {
                     setIsPlayerFullscreen(false);
                 }}
             />

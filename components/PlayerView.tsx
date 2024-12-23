@@ -13,8 +13,6 @@ import type { YouTubePlayer } from "react-youtube";
 import Thumbnail from "./Thumbnail";
 import YouTubePlayerView from "./YouTubePlayerView";
 import "linkify-plugin-hashtag";
-import CloseIcon from "@mui/icons-material/Close";
-import IconButton from "@mui/material/IconButton";
 import { blue } from "@mui/material/colors";
 import Link from "./Link";
 
@@ -324,69 +322,42 @@ export default function PlayerView(props: PlayerProps) {
                         justifyContent: "center", // 中央に配置
                     }}
                 >
-                    <Box
-                        sx={{
-                            width:
-                                props.isMobile && props.isPlayerFullscreen
-                                    ? `${props.screenWidth}px`
-                                    : props.isPlayerFullscreen
-                                      ? `${((props.screenHeight * 0.55) / 9) * 16}px`
-                                      : `${((props.screenHeight * 0.1) / 9) * 16}px`,
+                    {/* YouTubeプレイヤー */}
+                    <YouTubePlayerView
+                        videoId={
+                            props.PlayerItem?.videoId
+                                ? props.PlayerItem?.videoId
+                                : ""
+                        }
+                        style={{
+                            // padding: "0", // プレイヤーの上下にスペースを追加
                             margin: "0 auto",
+                            maxWidth: "100%",
+                            maxHeight: "100%",
+                            // maxHeight: "100%", // 高さに制限をつけることでパソコンのモニター等で無制限に大きくならないようにする。
                         }}
-                    >
-                        {props.isPlayerFullscreen && (
-                            <Box
-                                sx={{
-                                    display: "flex",
-                                    alignContent: "left",
-                                }}
-                            >
-                                <IconButton
-                                    sx={{
-                                        marginY: 1,
-                                    }}
-                                    onClick={() =>
-                                        props.setIsPlayerFullscreen(false)
-                                    }
-                                >
-                                    <CloseIcon
-                                        sx={{
-                                            fontSize: "2rem",
-                                        }}
-                                    />
-                                </IconButton>
-                            </Box>
-                        )}
-                        {/* YouTubeプレイヤー */}
-                        <YouTubePlayerView
-                            videoId={
-                                props.PlayerItem?.videoId
-                                    ? props.PlayerItem?.videoId
-                                    : ""
-                            }
-                            style={{
-                                // padding: "0", // プレイヤーの上下にスペースを追加
-                                maxWidth: "100%",
-                                maxHeight: "100%",
-                                // maxHeight: "100%", // 高さに制限をつけることでパソコンのモニター等で無制限に大きくならないようにする。
-                            }}
-                            // 動画の比率は、横：縦 = １６：９で
-                            height={
-                                props.isMobile && props.isPlayerFullscreen
-                                    ? `${(props.screenWidth / 16) * 9}px`
-                                    : props.isPlayerFullscreen
-                                      ? `${props.screenHeight * 0.55}px`
-                                      : `${props.screenHeight * 0.1}px`
-                                //   props.screenHeight / 9 < props.screenWidth / 16,
-                            }
-                            playerRadius={
-                                !(props.isMobile && props.isPlayerFullscreen)
-                            }
-                            setPlayer={setPlayer}
-                            setPlayerState={setPlayerState}
-                        />
-                    </Box>
+                        // 動画の比率は、横：縦 = １６：９で
+                        width={
+                            props.isMobile && props.isPlayerFullscreen
+                                ? `${props.screenWidth}px`
+                                : props.isPlayerFullscreen
+                                  ? `${((props.screenHeight * 0.55) / 9) * 16}px`
+                                  : `${((props.screenHeight * 0.1) / 9) * 16}px`
+                        }
+                        height={
+                            props.isMobile && props.isPlayerFullscreen
+                                ? `${(props.screenWidth / 16) * 9}px`
+                                : props.isPlayerFullscreen
+                                  ? `${props.screenHeight * 0.55}px`
+                                  : `${props.screenHeight * 0.1}px`
+                            //   props.screenHeight / 9 < props.screenWidth / 16,
+                        }
+                        playerRadius={
+                            !(props.isMobile && props.isPlayerFullscreen)
+                        }
+                        setPlayer={setPlayer}
+                        setPlayerState={setPlayerState}
+                    />
 
                     {/* PlayerView縮小表示の時のHTML */}
                     <Box

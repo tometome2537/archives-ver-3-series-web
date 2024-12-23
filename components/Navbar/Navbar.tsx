@@ -1,7 +1,3 @@
-import type {
-    AdditionalSearchSuggestions,
-    InputValue,
-} from "@/components/Navbar/SearchBar/SearchBar";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { useColorModeContext } from "@/contexts/ThemeContext";
 import rgbToHex from "@/libs/colorConverter";
@@ -38,26 +34,10 @@ import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useEffect, useRef, useState } from "react";
-import type { MultiSearchBarSearchSuggestion } from "./SearchBar/MultiSearchBar";
-import MultiSearchBar from "./SearchBar/MultiSearchBar";
 
 type NavbarProps = {
-    // マルチサーチバー
-    inputValue: InputValue[];
-    setInputValue: Dispatch<SetStateAction<InputValue[]>>;
-    searchSuggestion: MultiSearchBarSearchSuggestion[];
-    availableCategoryIds?: string[];
-    // 外せない入力値を定義
-    fixedOptionValues?: string[];
-    // 入力するテキストのカテゴリー
-    textSuggestionCategory?: AdditionalSearchSuggestions[];
-    // 入力する日付のカテゴリー
-    dateSuggestionCategory?: AdditionalSearchSuggestions[];
-    // 表示するリミットサーチバーの定義
-    limitSearchCategory?: AdditionalSearchSuggestions[];
-    // サーチバーの変更時に実行する関数
-    searchOnChange?: () => void;
-    setNavbarHeight: Dispatch<SetStateAction<number>>;
+    setNavbarHeight?: Dispatch<SetStateAction<number | undefined>>;
+    children?: React.ReactNode;
 };
 
 export default function Navbar(props: NavbarProps) {
@@ -73,7 +53,10 @@ export default function Navbar(props: NavbarProps) {
     // NavbarのHTMLが保存される
     const NavbarRef = useRef<HTMLDivElement | null>(null);
 
-    const [navbarHeight, setNavbarHeight] = useState<number>(0);
+    // Navbarの高さ
+    const [navbarHeight, setNavbarHeight] = useState<number | undefined>(
+        undefined,
+    );
 
     // BottomNavigationの高さを調べる
     useEffect(() => {
@@ -82,7 +65,9 @@ export default function Navbar(props: NavbarProps) {
             const updateNavHeight = () => {
                 if (NavbarRef.current) {
                     const height = NavbarRef.current.clientHeight;
-                    props.setNavbarHeight(height);
+                    if (props.setNavbarHeight) {
+                        props.setNavbarHeight(height);
+                    }
                     setNavbarHeight(height);
                 }
             };
@@ -198,63 +183,7 @@ export default function Navbar(props: NavbarProps) {
                                         </IconButton>
                                     </Box>
                                 )}
-                                <MultiSearchBar
-                                    inputValue={props.inputValue}
-                                    setInputValue={props.setInputValue}
-                                    searchSuggestion={props.searchSuggestion}
-                                    fixedOptionValues={props.fixedOptionValues}
-                                    availableCategoryIds={
-                                        props.availableCategoryIds
-                                    }
-                                    // テキストの追加カテゴリー
-                                    textSuggestionCategory={[
-                                        {
-                                            sort: 20,
-                                            categoryId: "title",
-                                            categoryLabel: "タイトル",
-                                        },
-                                        {
-                                            sort: 22,
-                                            categoryId: "description",
-                                            categoryLabel: "概要欄",
-                                        },
-                                        // {
-                                        //     sort: 21,
-                                        //     categoryId: "subTitle",
-                                        //     categoryLabel:
-                                        //         "サブタイトルに含む文字列",
-                                        // },
-                                    ]}
-                                    // 日付の追加カテゴリー
-                                    dateSuggestionCategory={
-                                        [
-                                            // {
-                                            //     sort: 10,
-                                            //     // カテゴリーのID
-                                            //     categoryId: "since",
-                                            //     // カテゴリーのラベル(表示に使用)
-                                            //     categoryLabel: "開始日",
-                                            // },
-                                            // {
-                                            //     sort: 11,
-                                            //     categoryId: "until",
-                                            //     categoryLabel: "終了日",
-                                            // },
-                                        ]
-                                    }
-                                    limitSearchCategory={
-                                        props.limitSearchCategory
-                                    }
-                                    // スマホの場合はタグのアイコンを非表示
-                                    showTagIcon={
-                                        props.inputValue.length <= 2
-                                            ? true
-                                            : !isMobile
-                                    }
-                                    // スマホの場合に表示するタグの個数を制限する。
-                                    showTagCount={isMobile ? 2 : undefined}
-                                    searchOnChange={props.searchOnChange}
-                                />
+                                {props.children}
                             </Box>
 
                             {!isMobile && <Box sx={{ flexGrow: 1 }} />}

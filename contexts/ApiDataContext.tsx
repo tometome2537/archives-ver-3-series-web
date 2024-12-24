@@ -44,7 +44,7 @@ export interface ApiData<T> {
     // APIデータ
     data: T;
     // APIデータを取得する関数
-    getData: () => void;
+    getData: () => Promise<T>;
 }
 
 export interface ApiDataContextType {
@@ -69,37 +69,42 @@ const ApiData: ApiDataContextType = {
     YouTubeAccount: {
         url: "https://api.sssapi.app/lUvQb56owZaGWWXIWXlCE",
         fetchOption: sssApiFetchOption,
+
         status: "idle",
         data: [],
-        getData: () => {},
+        getData: async () => [],
     },
     Entity: {
         url: "https://api.sssapi.app/ZJUpXwYIh9lpfn3DQuyzS",
         fetchOption: sssApiFetchOption,
+
         status: "idle",
         data: [],
-        getData: () => {},
+        getData: async () => [],
     },
     Music: {
         url: "https://api.sssapi.app/V_H20t9RBDxXC4vbI-kKy",
         fetchOption: sssApiFetchOption,
+
         status: "idle",
         data: [],
-        getData: () => {},
+        getData: async () => [],
     },
     XAccount: {
         url: "https://api.sssapi.app/vk3bc_hfvgsR9hs0X6iBk",
         fetchOption: sssApiFetchOption,
+
         status: "idle",
         data: [],
-        getData: () => {},
+        getData: async () => [],
     },
     BelongHistory: {
         url: "https://api.sssapi.app/HXy5cl24OnVmRtM9EtO_G",
         fetchOption: sssApiFetchOption,
+
         status: "idle",
         data: [],
-        getData: () => {},
+        getData: async () => [],
     },
     // Video: {
     //     url: "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp",
@@ -144,7 +149,9 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
                             getParams?: Record<string, string>,
                         ) => {
                             try {
+                                // status が "idle" の場合のみデータ取得処理を実行
                                 if (contextItem.status === "idle") {
+                                    console.log(`Fetching data for ${key}...`);
                                     // 通信開始前にstatusを"loading"に設定
                                     contextItem.status = "loading";
 
@@ -157,6 +164,8 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
                                     // 状態を更新
                                     contextItem.status = "success";
                                     contextItem.data = result;
+
+                                    return result;
                                 }
                             } catch (error) {
                                 console.error(
@@ -164,8 +173,10 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
                                     error,
                                 );
                                 contextItem.status = "error";
+
                                 throw error;
                             }
+                            return contextItem.data;
                         };
 
                         // `getData` を更新

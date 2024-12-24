@@ -7,6 +7,7 @@ import { Fragment, useCallback, useEffect, useState } from "react";
 import Loading from "../Loading";
 import type { PlayerItem } from "../PlayerView";
 import Thumbnail from "../Thumbnail";
+import { SSSAPI_TOKEN } from "@/contexts/ApiDataContext";
 
 type VideoTemporaryObj = {
     videoId: string; // 動画ID
@@ -68,8 +69,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             const url = buildUrl(baseUrl, params);
             const response = await fetch(url, {
                 headers: {
-                    Authorization:
-                        "token s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I",
+                    Authorization: `token ${SSSAPI_TOKEN}`,
                 },
             });
             if (response.ok === false) {

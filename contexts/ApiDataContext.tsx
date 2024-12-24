@@ -1,5 +1,6 @@
 "use client";
 
+import { buildUrl } from "@/libs/urlBuilder";
 import { createContext, useContext, useEffect, useState } from "react";
 import type React from "react";
 
@@ -30,6 +31,30 @@ export interface Music {
     musicArtist: string;
     subscriptionUrl: string;
 }
+export interface Video {
+    videoId: string;
+    channelId: string;
+    channelTitle: string;
+    videoArchiveUrl: string;
+    thumbnailArchiveUrl: string;
+    title: string;
+    publishedAt: string;
+    privacyStatus: string;
+    viewCount: number;
+    short: boolean;
+    live: boolean;
+    categoryFromYTApi: number; // カテゴリ（YouTube APIから取得）
+    category: string; // カテゴリ（手動設定、null可）
+    tagText: string;
+    person: string;
+    addPerson: string;
+    deletePerson: string;
+    organization: string;
+    addOrganization: string;
+    deleteOrganization: string;
+    karaokeKey: string;
+    apiData: string;
+}
 
 interface FetchOption {
     headers?: { Authorization?: string };
@@ -44,7 +69,7 @@ export interface ApiData<T> {
     // APIデータ
     data: T;
     // APIデータを取得する関数
-    getData: () => Promise<T>;
+    getData: (getParams?: Record<string, string>) => Promise<T>;
 }
 
 export interface ApiDataContextType {
@@ -53,6 +78,7 @@ export interface ApiDataContextType {
     Music: ApiData<Music[]>;
     XAccount: ApiData<XAccount[]>;
     BelongHistory: ApiData<BelongHistory[]>;
+    Video: ApiData<Video[]>;
 }
 
 export const SSSAPI_TOKEN = "s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I";
@@ -69,7 +95,6 @@ const ApiData: ApiDataContextType = {
     YouTubeAccount: {
         url: "https://api.sssapi.app/lUvQb56owZaGWWXIWXlCE",
         fetchOption: sssApiFetchOption,
-
         status: "idle",
         data: [],
         getData: async () => [],
@@ -77,7 +102,6 @@ const ApiData: ApiDataContextType = {
     Entity: {
         url: "https://api.sssapi.app/ZJUpXwYIh9lpfn3DQuyzS",
         fetchOption: sssApiFetchOption,
-
         status: "idle",
         data: [],
         getData: async () => [],
@@ -93,7 +117,6 @@ const ApiData: ApiDataContextType = {
     XAccount: {
         url: "https://api.sssapi.app/vk3bc_hfvgsR9hs0X6iBk",
         fetchOption: sssApiFetchOption,
-
         status: "idle",
         data: [],
         getData: async () => [],
@@ -101,18 +124,21 @@ const ApiData: ApiDataContextType = {
     BelongHistory: {
         url: "https://api.sssapi.app/HXy5cl24OnVmRtM9EtO_G",
         fetchOption: sssApiFetchOption,
-
         status: "idle",
         data: [],
         getData: async () => [],
     },
-    // Video: {
-    //     url: "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp",
-    //     fetchOption: sssApiFetchOption,
-    //     status: "idle",
-    //     data: [],
-    //     getData: () => [],
-    // },
+    Video: {
+        url: "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp",
+        fetchOption: {
+            headers: {
+                Authorization: `token ${SSSAPI_TOKEN}`,
+            },
+        },
+        status: "idle",
+        data: [],
+        getData: async () => [],
+    },
 };
 
 // コンテキストを作成
@@ -149,8 +175,23 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
                             getParams?: Record<string, string>,
                         ) => {
                             try {
+                                if (getParams) {
+                                    console.log(`Fetching data for ${key}... with getParams:`, getParams);
+                                    const url = buildUrl(
+                                        contextItem.url,
+                                        getParams,
+                                    );
+                                    // フェッチ処理
+                                    return await fetcher(
+                                        url,
+                                        contextItem.fetchOption || {},
+                                    );
+                                }
                                 // status が "idle" の場合のみデータ取得処理を実行
-                                if (contextItem.status === "idle") {
+                                if (
+                                    contextItem.status === "idle" &&
+                                    !getParams
+                                ) {
                                     console.log(`Fetching data for ${key}...`);
                                     // 通信開始前にstatusを"loading"に設定
                                     contextItem.status = "loading";
@@ -164,6 +205,12 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
                                     // 状態を更新
                                     contextItem.status = "success";
                                     contextItem.data = result;
+
+                                    // ここでstateを更新し、再レンダリングを促す
+                                    setData((prevState) => ({
+                                        ...prevState,
+                                        [key]: { ...contextItem },
+                                    }));
 
                                     return result;
                                 }

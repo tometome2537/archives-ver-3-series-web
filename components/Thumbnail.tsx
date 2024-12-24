@@ -234,22 +234,29 @@ export default function Thumbnail(props: ThumbnailProps) {
                     onMouseLeave={() => setRaised(false)}
                 >
                     <Box sx={{ width: "30%" }}>
-                        <Image
-                            src={`https://img.youtube.com/vi/${props.videoId}/mqdefault.jpg`}
-                            alt={
-                                props.title
-                                    ? `Thumbnail of ${props.title}`
-                                    : "Video Thumbnail"
-                            }
-                            layout="responsive" // レスポンシブ対応
-                            width={320} // アスペクト比のための幅
-                            height={180} // アスペクト比のための高さ
-                            style={{
-                                maxWidth: "320px",
-                                objectFit: "contain",
-                                borderRadius: "10%",
+                        <Box
+                            sx={{
+                                width: "100%",
+                                height: "auto",
                             }}
-                        />
+                        >
+                            <Image
+                                src={`https://img.youtube.com/vi/${props.videoId}/mqdefault.jpg`}
+                                alt={
+                                    props.title
+                                        ? `Thumbnail of ${props.title}`
+                                        : "Video Thumbnail"
+                                }
+                                width={320} // アスペクト比のための幅
+                                height={180} // アスペクト比のための高さ
+                                style={{
+                                    width: "100%",
+                                    height: "100%",
+                                    objectFit: "contain",
+                                    borderRadius: "1.2em",
+                                }}
+                            />
+                        </Box>
                     </Box>
 
                     {/* タイトルをエリプシスで省略 */}
@@ -309,18 +316,29 @@ export default function Thumbnail(props: ThumbnailProps) {
                         height={"180px"}
                     />
                 ) : (
-                    <Image
-                        src={`https://img.youtube.com/vi/${props.videoId}/mqdefault.jpg`}
-                        alt={
-                            props.title
-                                ? `Thumbnail of ${props.title}`
-                                : "Video Thumbnail"
-                        }
-                        layout="responsive" // レスポンシブ対応
-                        width={320}
-                        height={180}
-                        style={{ objectFit: "contain", borderRadius: "1.2em" }}
-                    />
+                    <Box
+                        sx={{
+                            width: "100%",
+                            height: "auto",
+                        }}
+                    >
+                        <Image
+                            src={`https://img.youtube.com/vi/${props.videoId}/mqdefault.jpg`}
+                            alt={
+                                props.title
+                                    ? `Thumbnail of ${props.title}`
+                                    : "Video Thumbnail"
+                            }
+                            width={320} // アスペクト比のための幅
+                            height={180} // アスペクト比のための高さ
+                            style={{
+                                width: "100%",
+                                height: "100%",
+                                objectFit: "contain",
+                                borderRadius: "1.2em",
+                            }}
+                        />
+                    </Box>
                 )}
 
                 {/* タイトルをエリプシスで省略 */}

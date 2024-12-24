@@ -214,10 +214,19 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
 };
 
 // データコンテキストを利用するカスタムフック
-export const useApiDataContext = () => {
+export const useApiDataContext = (...apiNames: string[]) => {
     const context = useContext(ApiDataContext);
     if (!context) {
-        throw new Error("useDataContext must be used within a DataProvider");
+        throw new Error(
+            "useApiDataContext must be used within a ApiDataProvider",
+        );
+    }
+    for(const name of apiNames){
+        if(!context[name]){
+            throw new Error(`useApiDataContext: ${name} is not found in ApiDataContext`);
+        }
+        // APIデータを取得
+        context[name].getData();
     }
     return context;
 };

@@ -33,7 +33,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     // apiDataを取得
-    const apiData = useApiDataContext();
+    const apiData = useApiDataContext("YouTubeAccount", "Entity", "Music");
     // ブラウザ情報を取得
     const { isMobile } = useBrowserInfoContext();
 
@@ -123,9 +123,6 @@ export default function RootLayout({
                         />
                     ),
                     onClick: () => {
-                        apiData.YouTubeAccount.getData();
-                        apiData.Entity.getData();
-                        apiData.Music.getData();
                         setAvailableCategoryIds([
                             "",
                             "actor",
@@ -188,13 +185,7 @@ export default function RootLayout({
                 }
                 return item;
             }),
-        [
-            inputValue,
-            playerItem,
-            apiData.Entity.getData,
-            apiData.Music.getData,
-            apiData.YouTubeAccount.getData,
-        ],
+        [inputValue, playerItem],
     );
 
     const tabScroll = TabScroll(tabMaps);

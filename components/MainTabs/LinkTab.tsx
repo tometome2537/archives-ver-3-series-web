@@ -6,13 +6,7 @@ type LinkTabProps = {
     inputValue: InputValue[];
 };
 export default function LinkTab(props: LinkTabProps) {
-    const apiData = useApiDataContext();
-
-    // 初回レンダリング時に `getData` を呼び出してデータを取得
-    useEffect(() => {
-        apiData.YouTubeAccount.getData();
-        apiData.XAccount.getData();
-    }, [apiData.YouTubeAccount.getData, apiData.XAccount.getData]);
+    const apiData = useApiDataContext("YouTubeAccount", "XAccount");
 
     const resultYouTubeAccounts = apiData.YouTubeAccount.data.filter((item) => {
         // 各inputValueに対してすべての条件を確認

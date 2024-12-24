@@ -293,6 +293,7 @@ export default function Thumbnail(props: ThumbnailProps) {
                 sx={{
                     display: "flex",
                     flexDirection: "column",
+                    width: "100%",
                     alignItems: "center",
                     padding: 1,
                     borderRadius: "1.2em",

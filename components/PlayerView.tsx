@@ -65,9 +65,7 @@ export default function PlayerView(props: PlayerProps) {
         PlayerItem | undefined
     >();
     // プレイヤーの状態(例、再生中、停止中、etc...)
-    const [playerState, setPlayerState] = useState<string | undefined>(
-        undefined,
-    );
+    const [playerState, setPlayerState] = useState<string>("不明");
     // YouTubeプレイヤーの実行関数集(再生を実行したり、再生を停止させたり etc...)
     const [player, setPlayer] = useState<YouTubePlayer | undefined>(undefined);
 
@@ -517,8 +515,6 @@ export default function PlayerView(props: PlayerProps) {
                         </Box>
                     </Box>
                     <Box
-                        onClick={mouseClickTogglePlayerFullscreen}
-                        onKeyDown={keyDownTogglePlayerFullscreen}
                         sx={{
                             display: props.isPlayerFullscreen
                                 ? "none"
@@ -527,36 +523,35 @@ export default function PlayerView(props: PlayerProps) {
                             margin: "auto",
                         }}
                     >
-                        {playerState &&
-                            (playerState === "再生中" ? (
-                                <PauseIcon
-                                    sx={{
-                                        height: "100%",
-                                        margin: "auto",
-                                    }}
-                                    onClick={(e: React.MouseEvent) => {
-                                        if (player) {
-                                            // ↓ 親要素のonClickを発火させたくない場合に追記
-                                            e.stopPropagation();
-                                            player.pauseVideo();
-                                        }
-                                    }}
-                                />
-                            ) : (
-                                <PlayArrowIcon
-                                    sx={{
-                                        height: "100%",
-                                        margin: "auto",
-                                    }}
-                                    onClick={(e: React.MouseEvent) => {
+                        {playerState === "再生中" ? (
+                            <PauseIcon
+                                sx={{
+                                    height: "100%",
+                                    margin: "auto",
+                                }}
+                                onClick={(e: React.MouseEvent) => {
+                                    if (player) {
                                         // ↓ 親要素のonClickを発火させたくない場合に追記
                                         e.stopPropagation();
-                                        if (player) {
-                                            player.playVideo();
-                                        }
-                                    }}
-                                />
-                            ))}
+                                        player.pauseVideo();
+                                    }
+                                }}
+                            />
+                        ) : (
+                            <PlayArrowIcon
+                                sx={{
+                                    height: "100%",
+                                    margin: "auto",
+                                }}
+                                onClick={(e: React.MouseEvent) => {
+                                    // ↓ 親要素のonClickを発火させたくない場合に追記
+                                    e.stopPropagation();
+                                    if (player) {
+                                        player.playVideo();
+                                    }
+                                }}
+                            />
+                        )}
                     </Box>
                     {/* YouTube Playerの下の概要欄 */}
                     <Box

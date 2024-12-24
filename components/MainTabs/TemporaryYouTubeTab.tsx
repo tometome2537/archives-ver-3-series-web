@@ -1,7 +1,6 @@
 import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
-import { buildUrl } from "@/libs/urlBuilder";
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import Loading from "../Loading";
@@ -9,6 +8,7 @@ import type { PlayerItem } from "../PlayerView";
 import Thumbnail from "../Thumbnail";
 import type { Video } from "@/contexts/ApiDataContext";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
+import LoadingPage from "@/components/LoadingPage";
 
 type TemporaryYouTubeTab = {
     inputValue: InputValue[];
@@ -70,7 +70,14 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             setLoading(LoadingState.AllLoaded); // ローディングを解除
 
             // 重複を削除
-            setApiDataVideo((data) => data.filter((x: Video, i: number, self: Video[]) => self.findIndex((y: Video) => y.videoId === x.videoId) === i));
+            setApiDataVideo((data) =>
+                data.filter(
+                    (x: Video, i: number, self: Video[]) =>
+                        self.findIndex(
+                            (y: Video) => y.videoId === x.videoId,
+                        ) === i,
+                ),
+            );
         } catch (err) {
             setError((err as Error).message); // エラーを表示
             setLoading(LoadingState.AllLoaded); // ローディングを解除
@@ -234,17 +241,8 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
     };
 
     // ローディング中
-    if (loading === LoadingState.Loading) {
-        // return <div>VideoViewTemporary Loading...</div>;
-        return (
-            <div
-                style={{
-                    paddingTop: "30vh",
-                }}
-            >
-                <Loading />
-            </div>
-        );
+    if (apiDataVideo.length === 0 && loading === LoadingState.Loading) {
+        return <LoadingPage />;
     }
     // エラーの場合
     if (error) {

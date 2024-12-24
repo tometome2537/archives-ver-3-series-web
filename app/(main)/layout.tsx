@@ -12,7 +12,6 @@ import type { PlayerItem } from "@/components/PlayerView"; // 型としてのイ
 import type { TabMap } from "@/components/TabScroll";
 import TabScroll from "@/components/TabScroll";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
-import type { ApiData } from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import GradeIcon from "@mui/icons-material/Grade";
 import GroupsIcon from "@mui/icons-material/Groups";
@@ -20,7 +19,6 @@ import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import PersonIcon from "@mui/icons-material/Person";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import { AppBar } from "@mui/material";
-import Image from "next/image";
 import react, { Fragment } from "react";
 import MultiSearchBar from "@/components/Navbar/SearchBar/MultiSearchBar";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
@@ -37,9 +35,6 @@ export default function RootLayout({
     // ブラウザ情報を取得
     const { isMobile } = useBrowserInfoContext();
 
-    // ローディング画面
-    const [isLoading, setIsLoading] = react.useState<boolean>(true);
-
     // ⭐️ここからマルチサーチバー関連
     // 入力された値
     const [inputValue, setInputValue] = react.useState<InputValue[]>([]);
@@ -55,6 +50,9 @@ export default function RootLayout({
         react.useState<string[]>();
     // limitスーパーサーチで表示するカテゴリーの定義
     const [limitSearchCategory, setLimitSearchCategory] =
+        react.useState<AdditionalSearchSuggestions[]>();
+    // テキストの追加カテゴリー
+    const [textSuggestionCategory, setTextSuggestionCategory] =
         react.useState<AdditionalSearchSuggestions[]>();
     // ⭐️ここまでマルチサーチバー関連
 
@@ -92,6 +90,84 @@ export default function RootLayout({
                 //         setLimitSearchCategory([]);
                 //         setFixedOptionValues([]);
                 //         setIsPlayerFullscreen(false);
+                //         setTextSuggestionCategory([]);
+
+                //         const result: MultiSearchBarSearchSuggestion[] = [];
+
+                //         const YouTubeAccounts: YouTubeAccount[] =
+                //             apiData.YouTubeAccount.data;
+                //         const Entity: Entity[] = apiData.Entity.data;
+
+                //         if (Entity && YouTubeAccounts) {
+                //             // データを変換し、検索候補の配列に追加
+                //             for (const item of Entity) {
+                //                 const resultItem: MultiSearchBarSearchSuggestion =
+                //                     {
+                //                         sort:
+                //                             item.category === "person"
+                //                                 ? 99
+                //                                 : 100,
+                //                         label: item.name,
+                //                         value: item.id,
+                //                         icon:
+                //                             item.category === "person" ? (
+                //                                 <PersonIcon />
+                //                             ) : (
+                //                                 <GroupsIcon />
+                //                             ),
+                //                         imgSrc: (() => {
+                //                             try {
+                //                                 const YouTubeAccount:
+                //                                     | YouTubeAccount
+                //                                     | undefined =
+                //                                     YouTubeAccounts.find(
+                //                                         (vvv) => {
+                //                                             // vvv.entityIdが存在し、item.idが含まれているかを確認する
+                //                                             if (
+                //                                                 vvv.entityId !==
+                //                                                 null
+                //                                             ) {
+                //                                                 return vvv.entityId
+                //                                                     .split(
+                //                                                         / , |,| ,|, /,
+                //                                                     )
+                //                                                     .includes(
+                //                                                         item.id,
+                //                                                     );
+                //                                             }
+                //                                         },
+                //                                     );
+                //                                 const data = YouTubeAccount
+                //                                     ? JSON.parse(
+                //                                           YouTubeAccount.apiData,
+                //                                       )
+                //                                     : undefined;
+                //                                 return data.snippet.thumbnails
+                //                                     .default.url;
+                //                             } catch (error) {
+                //                                 return undefined;
+                //                             }
+                //                         })(),
+
+                //                         categoryId:
+                //                             item.category === "person"
+                //                                 ? "actor"
+                //                                 : "organization",
+                //                         categoryLabel:
+                //                             item.category === "person"
+                //                                 ? "出演者"
+                //                                 : "出演組織",
+                //                         categorySort:
+                //                             item.category === "person"
+                //                                 ? 100
+                //                                 : 101,
+                //                     };
+                //                 result.push(resultItem);
+                //             }
+                //         }
+
+                //         // 検索候補を更新
+                //         setSearchSuggestion(result);
                 //     },
                 // },
                 // {
@@ -164,6 +240,157 @@ export default function RootLayout({
                         //     ]);
                         // }
                         setIsPlayerFullscreen(false);
+                        setTextSuggestionCategory([
+                            {
+                                sort: 20,
+                                categoryId: "title",
+                                categoryLabel: "タイトル",
+                            },
+                            {
+                                sort: 22,
+                                categoryId: "description",
+                                categoryLabel: "概要欄",
+                            },
+                        ]);
+
+                        const result: MultiSearchBarSearchSuggestion[] = [];
+
+                        // スペシャル検索候補を追加
+                        result.push({
+                            label: "ぷらっとみゅーじっく♪",
+                            value: "ぷらっとみゅーじっく♪",
+                            categoryId: "specialWord_PlatMusic",
+                            categoryLabel: "特別な検索",
+                            categorySort: 999,
+                            icon: (
+                                <GradeIcon
+                                    sx={{ color: "rgb(227, 220, 18)" }}
+                                />
+                            ),
+                        });
+
+                        const YouTubeAccounts: YouTubeAccount[] =
+                            apiData.YouTubeAccount.data;
+                        const Entity: Entity[] = apiData.Entity.data;
+
+                        if (Entity && YouTubeAccounts) {
+                            // データを変換し、検索候補の配列に追加
+                            for (const item of Entity) {
+                                const resultItem: MultiSearchBarSearchSuggestion =
+                                    {
+                                        sort:
+                                            item.category === "person"
+                                                ? 99
+                                                : 100,
+                                        label: item.name,
+                                        value: item.id,
+                                        icon:
+                                            item.category === "person" ? (
+                                                <PersonIcon />
+                                            ) : (
+                                                <GroupsIcon />
+                                            ),
+                                        imgSrc: (() => {
+                                            try {
+                                                const YouTubeAccount:
+                                                    | YouTubeAccount
+                                                    | undefined =
+                                                    YouTubeAccounts.find(
+                                                        (vvv) => {
+                                                            // vvv.entityIdが存在し、item.idが含まれているかを確認する
+                                                            if (
+                                                                vvv.entityId !==
+                                                                null
+                                                            ) {
+                                                                return vvv.entityId
+                                                                    .split(
+                                                                        / , |,| ,|, /,
+                                                                    )
+                                                                    .includes(
+                                                                        item.id,
+                                                                    );
+                                                            }
+                                                        },
+                                                    );
+                                                const data = YouTubeAccount
+                                                    ? JSON.parse(
+                                                          YouTubeAccount.apiData,
+                                                      )
+                                                    : undefined;
+                                                return data.snippet.thumbnails
+                                                    .default.url;
+                                            } catch (error) {
+                                                return undefined;
+                                            }
+                                        })(),
+
+                                        categoryId:
+                                            item.category === "person"
+                                                ? "actor"
+                                                : "organization",
+                                        categoryLabel:
+                                            item.category === "person"
+                                                ? "出演者"
+                                                : "出演組織",
+                                        categorySort:
+                                            item.category === "person"
+                                                ? 100
+                                                : 101,
+                                    };
+                                result.push(resultItem);
+                            }
+                        }
+
+                        // アーティストを追加
+                        const artists: string[] =
+                            apiData.Music.data.map((item) =>
+                                item.musicArtist ? item.musicArtist : "",
+                            ) || [];
+                        // 重複を削除
+                        const uniqueArtists: string[] = artists.filter(
+                            (artist, index) =>
+                                artists.indexOf(artist) === index,
+                        );
+                        for (const artistName of uniqueArtists) {
+                            if (artistName) {
+                                result.push({
+                                    label: String(artistName),
+                                    value: String(artistName),
+                                    categoryId: "musicArtistName",
+                                    categoryLabel: "楽曲アーティスト",
+                                    categorySort: 20,
+                                    icon: <MusicNoteIcon />,
+                                    queryMinLengthForSuggestions: 1,
+                                });
+                            }
+                        }
+
+                        // 楽曲名を追加
+                        const musicTitles: string[] =
+                            apiData.Music.data.map((item) =>
+                                item.musicTitle ? item.musicTitle : "",
+                            ) || [];
+                        // 重複を削除
+                        const uniqueMusicTitle: string[] = musicTitles.filter(
+                            (musicTitle, index) =>
+                                musicTitles.indexOf(musicTitle) === index,
+                        );
+                        for (const musicTitle of uniqueMusicTitle) {
+                            if (musicTitle) {
+                                result.push({
+                                    label: String(musicTitle),
+                                    value: String(musicTitle),
+                                    categoryId: "musicTitle",
+                                    categoryLabel: "楽曲タイトル",
+                                    categorySort: 19,
+                                    // icon: <MusicNoteIcon />,
+                                    queryMinLengthForSuggestions: 1,
+                                });
+                            }
+                        }
+
+                        // 検索候補を更新
+                        setSearchSuggestion(result);
                     },
                 },
                 // {
@@ -185,167 +412,16 @@ export default function RootLayout({
                 }
                 return item;
             }),
-        [inputValue, playerItem],
+        [
+            inputValue,
+            playerItem,
+            apiData.Entity.data,
+            apiData.Music.data,
+            apiData.YouTubeAccount.data,
+        ],
     );
 
     const tabScroll = TabScroll(tabMaps);
-
-    // 検索候補を定義
-    react.useEffect(() => {
-        const YouTubeAccounts: YouTubeAccount[] = apiData.YouTubeAccount.data;
-        const Entity: Entity[] = apiData.Entity.data;
-        const Music: Music[] = apiData.Music.data;
-
-        const result: MultiSearchBarSearchSuggestion[] = [];
-
-        // スペシャル検索候補を追加
-        result.push({
-            label: "ぷらっとみゅーじっく♪",
-            value: "ぷらっとみゅーじっく♪",
-            categoryId: "specialWord_PlatMusic",
-            categoryLabel: "特別な検索",
-            categorySort: 999,
-            icon: <GradeIcon sx={{ color: "rgb(227, 220, 18)" }} />,
-        });
-
-        if (Entity && YouTubeAccounts) {
-            // データを変換し、検索候補の配列に追加
-            for (const item of Entity) {
-                const resultItem: MultiSearchBarSearchSuggestion = {
-                    sort: item.category === "person" ? 99 : 100,
-                    label: item.name,
-                    value: item.id,
-                    icon:
-                        item.category === "person" ? (
-                            <PersonIcon />
-                        ) : (
-                            <GroupsIcon />
-                        ),
-                    imgSrc: (() => {
-                        try {
-                            const YouTubeAccount: YouTubeAccount | undefined =
-                                YouTubeAccounts.find((vvv) => {
-                                    // vvv.entityIdが存在し、item.idが含まれているかを確認する
-                                    if (vvv.entityId !== null) {
-                                        return vvv.entityId
-                                            .split(/ , |,| ,|, /)
-                                            .includes(item.id);
-                                    }
-                                });
-                            const data = YouTubeAccount
-                                ? JSON.parse(YouTubeAccount.apiData)
-                                : undefined;
-                            return data.snippet.thumbnails.default.url;
-                        } catch (error) {
-                            return undefined;
-                        }
-                    })(),
-
-                    categoryId:
-                        item.category === "person" ? "actor" : "organization",
-                    categoryLabel:
-                        item.category === "person" ? "出演者" : "出演組織",
-                    categorySort: item.category === "person" ? 100 : 101,
-                };
-                result.push(resultItem);
-            }
-        }
-
-        // アーティストを追加
-        const artists: string[] =
-            Music?.map((item) => (item.musicArtist ? item.musicArtist : "")) ||
-            [];
-        // 重複を削除
-        const uniqueArtists: string[] = artists.filter(
-            (artist, index) => artists.indexOf(artist) === index,
-        );
-        for (const artistName of uniqueArtists) {
-            if (artistName) {
-                result.push({
-                    label: String(artistName),
-                    value: String(artistName),
-                    categoryId: "musicArtistName",
-                    categoryLabel: "楽曲アーティスト",
-                    categorySort: 20,
-                    icon: <MusicNoteIcon />,
-                    queryMinLengthForSuggestions: 1,
-                });
-            }
-        }
-
-        // 楽曲名を追加
-        const musicTitles: string[] =
-            Music?.map((item) => (item.musicTitle ? item.musicTitle : "")) ||
-            [];
-        // 重複を削除
-        const uniqueMusicTitle: string[] = musicTitles.filter(
-            (musicTitle, index) => musicTitles.indexOf(musicTitle) === index,
-        );
-        for (const musicTitle of uniqueMusicTitle) {
-            if (musicTitle) {
-                result.push({
-                    label: String(musicTitle),
-                    value: String(musicTitle),
-                    categoryId: "musicTitle",
-                    categoryLabel: "楽曲タイトル",
-                    categorySort: 19,
-                    // icon: <MusicNoteIcon />,
-                    queryMinLengthForSuggestions: 1,
-                });
-            }
-        }
-
-        // 検索候補を更新
-        setSearchSuggestion(result);
-
-        setIsLoading(false);
-    }, [apiData.Entity.data, apiData.Music.data, apiData.YouTubeAccount.data]);
-
-    if (isLoading) {
-        // if (true) {
-        return (
-            <div
-                style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    height: "100vh",
-                }}
-            >
-                <div style={{ textAlign: "center" }}>
-                    {/* 画像のプレースホルダー */}
-                    <div style={{ marginBottom: "16px" }}>
-                        <Image
-                            src="/icon_border_radius.png"
-                            alt="Loading"
-                            width={40}
-                            height={40}
-                            style={{ objectFit: "contain" }}
-                        />
-                    </div>
-
-                    {/* 読み込み中メッセージ */}
-                    <p
-                        style={{
-                            fontSize: "18px",
-                            color: "#555",
-                            animation: "fade 1s infinite",
-                        }}
-                    >
-                        読 み 込 み 中...
-                    </p>
-
-                    {/* CSSアニメーション */}
-                    <style jsx>{`
-                  @keyframes fade {
-                    0%, 100% { opacity: 1; }
-                    50% { opacity: 0.5; }
-                  }
-                `}</style>
-                </div>
-            </div>
-        );
-    }
 
     return (
         <Fragment>
@@ -357,24 +433,7 @@ export default function RootLayout({
                     fixedOptionValues={fixedOptionValues}
                     availableCategoryIds={availableCategoryIds}
                     // テキストの追加カテゴリー
-                    textSuggestionCategory={[
-                        {
-                            sort: 20,
-                            categoryId: "title",
-                            categoryLabel: "タイトル",
-                        },
-                        {
-                            sort: 22,
-                            categoryId: "description",
-                            categoryLabel: "概要欄",
-                        },
-                        // {
-                        //     sort: 21,
-                        //     categoryId: "subTitle",
-                        //     categoryLabel:
-                        //         "サブタイトルに含む文字列",
-                        // },
-                    ]}
+                    textSuggestionCategory={textSuggestionCategory}
                     // 日付の追加カテゴリー
                     dateSuggestionCategory={
                         [

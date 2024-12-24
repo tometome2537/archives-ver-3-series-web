@@ -7,32 +7,8 @@ import { Fragment, useCallback, useEffect, useState } from "react";
 import Loading from "../Loading";
 import type { PlayerItem } from "../PlayerView";
 import Thumbnail from "../Thumbnail";
-import { SSSAPI_TOKEN } from "@/contexts/ApiDataContext";
-
-type VideoTemporaryObj = {
-    videoId: string; // 動画ID
-    channelId: string | undefined; // チャンネルID
-    channelTitle: string | undefined; // チャンネル名
-    videoArchiveUrl: string | undefined; // 動画アーカイブURL
-    thumbnailArchiveUrl: string | undefined; // サムネイルアーカイブURL
-    title: string | undefined; // 動画タイトル
-    publishedAt: string | undefined; // 公開日時
-    privacyStatus: string | undefined; // プライバシー設定
-    viewCount: number | undefined; // 再生回数（数値型）
-    short: boolean | undefined; // ショート動画フラグ
-    live: boolean | undefined; // ライブ動画フラグ（null可）
-    categoryFromYTApi: number | undefined; // カテゴリ（YouTube APIから取得）
-    category: string | undefined; // カテゴリ（手動設定、null可）
-    tagText: string | undefined | null; // タグテキスト（null可）
-    person: string | undefined; // 関連人物
-    addPerson: string | undefined; // 追加する人物
-    deletePerson: string | undefined; // 削除する人物
-    organization: string | undefined; // 関連組織（JSON形式）
-    addOrganization: string | undefined; // 追加する組織（null可）
-    deleteOrganization: string | undefined; // 削除する組織（null可）
-    karaokeKey: string | undefined; // カラオケキー（null可）
-    apiData: string | undefined;
-};
+import type { Video } from "@/contexts/ApiDataContext";
+import { useApiDataContext } from "@/contexts/ApiDataContext";
 
 type TemporaryYouTubeTab = {
     inputValue: InputValue[];
@@ -49,14 +25,18 @@ enum LoadingState {
 }
 
 export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
-    // APIで取得したデータを格納
-    const [apiDataVideo, setApiDataVideo] = useState<VideoTemporaryObj[]>([]);
+    // apiDataを取得
+    const apiData = useApiDataContext();
     // ブラウザ情報を取得
     const { isMobile } = useBrowserInfoContext();
+
+    // APIで取得したデータを格納
+    const [apiDataVideo, setApiDataVideo] = useState<Video[]>([]);
     // 検索結果の動画一覧
-    const [resultVideo, setResultVideo] = useState<
-        VideoTemporaryObj[] | undefined
-    >(undefined);
+    const [resultVideo, setResultVideo] = useState<Video[] | undefined>(
+        undefined,
+    );
+
     // API通信中かどうか
     const [loading, setLoading] = useState<LoadingState>(LoadingState.Loading);
     // API通信でエラーが出たかどうか
@@ -64,20 +44,6 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 
     // APIからイベントデータを取得
     const fetchEvents = useCallback(async () => {
-        const fetchData = async (params: Record<string, string>) => {
-            const baseUrl = "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp";
-            const url = buildUrl(baseUrl, params);
-            const response = await fetch(url, {
-                headers: {
-                    Authorization: `token ${SSSAPI_TOKEN}`,
-                },
-            });
-            if (response.ok === false) {
-                throw new Error("Network response was not ok");
-            }
-            return await response.json();
-        };
-
         try {
             // Video取得
             // 最初の15件を取得
@@ -87,7 +53,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 order_by: "-publishedAt",
                 limit: "15",
             };
-            const fastData = await fetchData(fastParams);
+            const fastData = await apiData.Video.getData(fastParams);
             setApiDataVideo(fastData);
             // 仮だけどローディングを解除
             setLoading(LoadingState.FastLoaded);
@@ -99,14 +65,17 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 order_by: "-publishedAt",
                 offset: "15",
             };
-            const restData = await fetchData(slowParams);
+            const restData = await apiData.Video.getData(slowParams);
             setApiDataVideo((data) => data.concat(restData));
             setLoading(LoadingState.AllLoaded); // ローディングを解除
+
+            // 重複を削除
+            setApiDataVideo((data) => data.filter((x: Video, i: number, self: Video[]) => self.findIndex((y: Video) => y.videoId === x.videoId) === i));
         } catch (err) {
             setError((err as Error).message); // エラーを表示
             setLoading(LoadingState.AllLoaded); // ローディングを解除
         }
-    }, []);
+    }, [apiData.Video.getData]);
 
     // API通信を定義
     useEffect(() => {
@@ -238,7 +207,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         });
         // APIから受け取った値の型を変換する。
         const searchResult: Array<PlayerItem> = resultVideo
-            ? resultVideo.map((item: VideoTemporaryObj) => {
+            ? resultVideo.map((item: Video) => {
                   const result: PlayerItem = {
                       videoId: item.videoId,
                       title: item.title,
@@ -306,16 +275,17 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 {resultVideo &&
                     (resultVideo.length !== 0 ? (
                         <>
-                            {resultVideo.map((item: VideoTemporaryObj) => (
+                            {resultVideo.map((item: Video) => (
                                 <>
                                     {/* 各アイテムを表示 */}
                                     <Box
+                                        key={item.videoId}
                                         sx={{
                                             width: isMobile ? "100%" : "auto",
+                                            maxWidth: isMobile ? "100%" : "30%",
                                         }}
                                     >
                                         <Thumbnail
-                                            key={item.videoId}
                                             // ↓ To Do 余裕があったら切り替えボタン
                                             // thumbnailType={
                                             //     props.isMobile

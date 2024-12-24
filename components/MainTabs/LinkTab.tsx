@@ -1,56 +1,57 @@
 import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
-import { useDataContext } from "@/contexts/ApiDataContext";
-import type { ApiData, DataContextType } from "@/contexts/ApiDataContext";
+import { useApiDataContext } from "@/contexts/ApiDataContext";
+import { createContext, useContext, useEffect, useState } from "react";
 
 type LinkTabProps = {
     inputValue: InputValue[];
 };
 export default function LinkTab(props: LinkTabProps) {
-    const apiData = useDataContext();
+    const apiData = useApiDataContext();
 
-    const YouTubeAccounts: ApiData[] | undefined = apiData
-        .find((item) => item.id === "YouTubeAccount")
-        ?.data.filter((item) => {
-            let match = true;
-            // 各inputValueに対してすべての条件を確認
-            for (const inputValue of props.inputValue) {
-                if (inputValue.categoryId === "actor") {
-                    if (!item.entityId?.match(inputValue.value)) {
-                        match = false;
-                    }
+    // 初回レンダリング時に `getData` を呼び出してデータを取得
+    useEffect(() => {
+        apiData.YouTubeAccount.getData();
+        apiData.XAccount.getData();
+    }, [apiData.YouTubeAccount.getData, apiData.XAccount.getData]);
+
+    const resultYouTubeAccounts = apiData.YouTubeAccount.data.filter((item) => {
+        // 各inputValueに対してすべての条件を確認
+        for (const inputValue of props.inputValue) {
+            if (inputValue.categoryId === "actor") {
+                if (!item.entityId?.match(inputValue.value)) {
+                    return false;
                 }
             }
-            return match;
-        });
-    const XAccounts: ApiData[] | undefined = apiData
-        .find((item) => item.id === "XAccount")
-        ?.data.filter((item) => {
-            let match = true;
-            // 各inputValueに対してすべての条件を確認
-            for (const inputValue of props.inputValue) {
-                if (inputValue.categoryId === "actor") {
-                    if (!item.entityId?.match(inputValue.value)) {
-                        match = false;
-                    }
+        }
+        return true;
+    });
+    const resultXAccounts = apiData.XAccount.data.filter((item) => {
+        // 各inputValueに対してすべての条件を確認
+        for (const inputValue of props.inputValue) {
+            if (inputValue.categoryId === "actor") {
+                if (!item.entityId?.match(inputValue.value)) {
+                    return false;
                 }
             }
-            return match;
-        });
+        }
+        return true;
+    });
 
     return (
         <>
             <h1>それぞれのリンク集</h1>
 
             <h2>YouTube アカウント</h2>
+
             <div>
-                {YouTubeAccounts?.map((item) => (
+                {resultYouTubeAccounts?.map((item) => (
                     <p key={item.userName}>{item.userName}</p>
                 ))}
             </div>
 
             <h2>𝕏 アカウント</h2>
             <div>
-                {XAccounts?.map((item) => (
+                {resultXAccounts?.map((item) => (
                     <p key={item.userName}>@{item.userName}</p>
                 ))}
             </div>

@@ -11,7 +11,7 @@ import PlayerView from "@/components/PlayerView";
 import type { PlayerItem } from "@/components/PlayerView"; // 型としてのインポート
 import type { TabMap } from "@/components/TabScroll";
 import TabScroll from "@/components/TabScroll";
-import { useDataContext } from "@/contexts/ApiDataContext";
+import { useApiDataContext } from "@/contexts/ApiDataContext";
 import type { ApiData } from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import GradeIcon from "@mui/icons-material/Grade";
@@ -23,8 +23,9 @@ import { AppBar } from "@mui/material";
 import Image from "next/image";
 import react, { Fragment } from "react";
 import MultiSearchBar from "@/components/Navbar/SearchBar/MultiSearchBar";
-// import AccountBoxIcon from "@mui/icons-material/AccountBox";
-// import LinkTab from "@/components/MainTabs/LinkTab";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
+import LinkTab from "@/components/MainTabs/LinkTab";
+import type { YouTubeAccount, Music, Entity } from "@/contexts/ApiDataContext";
 
 export default function RootLayout({
     children,
@@ -32,7 +33,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }) {
     // apiDataを取得
-    const apiData = useDataContext();
+    const apiData = useApiDataContext();
     // ブラウザ情報を取得
     const { isMobile } = useBrowserInfoContext();
 
@@ -122,6 +123,9 @@ export default function RootLayout({
                         />
                     ),
                     onClick: () => {
+                        apiData.YouTubeAccount.getData();
+                        apiData.Entity.getData();
+                        apiData.Music.getData();
                         setAvailableCategoryIds([
                             "",
                             "actor",
@@ -184,25 +188,22 @@ export default function RootLayout({
                 }
                 return item;
             }),
-        [inputValue, playerItem],
+        [
+            inputValue,
+            playerItem,
+            apiData.Entity.getData,
+            apiData.Music.getData,
+            apiData.YouTubeAccount.getData,
+        ],
     );
 
     const tabScroll = TabScroll(tabMaps);
 
     // 検索候補を定義
-    // コンポーネントの初回レンダリング時にAPIを叩く
     react.useEffect(() => {
-        const YouTubeAccounts: ApiData[] | undefined = apiData.find(
-            (item) => item.id === "YouTubeAccount",
-        )?.data;
-
-        const Entity: ApiData[] | undefined = apiData.find(
-            (item) => item.id === "Entity",
-        )?.data;
-
-        const Music: ApiData[] | undefined = apiData.find(
-            (item) => item.id === "Music",
-        )?.data;
+        const YouTubeAccounts: YouTubeAccount[] = apiData.YouTubeAccount.data;
+        const Entity: Entity[] = apiData.Entity.data;
+        const Music: Music[] = apiData.Music.data;
 
         const result: MultiSearchBarSearchSuggestion[] = [];
 
@@ -231,7 +232,7 @@ export default function RootLayout({
                         ),
                     imgSrc: (() => {
                         try {
-                            const YouTubeAccount: ApiData | undefined =
+                            const YouTubeAccount: YouTubeAccount | undefined =
                                 YouTubeAccounts.find((vvv) => {
                                     // vvv.entityIdが存在し、item.idが含まれているかを確認する
                                     if (vvv.entityId !== null) {
@@ -307,9 +308,7 @@ export default function RootLayout({
         setSearchSuggestion(result);
 
         setIsLoading(false);
-
-        // }, [inputValue, apiData]);
-    }, [apiData]);
+    }, [apiData.Entity.data, apiData.Music.data, apiData.YouTubeAccount.data]);
 
     if (isLoading) {
         // if (true) {

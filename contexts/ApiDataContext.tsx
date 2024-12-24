@@ -3,23 +3,20 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import type React from "react";
 
-interface BiomeErrorKaihi {
-    __mudasugi?: string;
-}
-export interface BelongHistory extends BiomeErrorKaihi {
+export interface BelongHistory {
     entityId: string;
     entityOrganizationId: string;
 }
-export interface Entity extends BiomeErrorKaihi {
+export interface Entity {
     id: string;
     name: string;
     category: string;
 }
-export interface XAccount extends BiomeErrorKaihi {
+export interface XAccount {
     entityId: string;
     userName: string;
 }
-export interface YouTubeAccount extends BiomeErrorKaihi {
+export interface YouTubeAccount {
     userId: string;
     entityId: string;
     userName: string;
@@ -27,7 +24,7 @@ export interface YouTubeAccount extends BiomeErrorKaihi {
     officialArtistChannel: string;
     apiData: string;
 }
-export interface Music extends BiomeErrorKaihi {
+export interface Music {
     id: string;
     musicTitle: string;
     musicArtist: string;
@@ -56,8 +53,6 @@ export interface ApiDataContextType {
     Music: ApiData<Music[]>;
     XAccount: ApiData<XAccount[]>;
     BelongHistory: ApiData<BelongHistory[]>;
-
-    [key: string]: ApiData<BiomeErrorKaihi[]>;
 }
 
 export const SSSAPI_TOKEN = "s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I";
@@ -106,15 +101,13 @@ const ApiData: ApiDataContextType = {
         data: [],
         getData: () => {},
     },
-    /*
-    Video: {
-        url: "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp",
-        option: sssApiFetchOption,
-        status: "idle",
-        data: [],
-        getData: () => [],
-    },
-    */
+    // Video: {
+    //     url: "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp",
+    //     fetchOption: sssApiFetchOption,
+    //     status: "idle",
+    //     data: [],
+    //     getData: () => [],
+    // },
 };
 
 // コンテキストを作成
@@ -145,11 +138,16 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
                 for (const key in ApiData) {
                     if (Object.prototype.hasOwnProperty.call(ApiData, key)) {
                         const contextItem =
-                            ApiData[key as keyof ApiDataContextType];
+                            updatedData[key as keyof ApiDataContextType];
 
-                        const getData = async () => {
+                        const getData = async (
+                            getParams?: Record<string, string>,
+                        ) => {
                             try {
                                 if (contextItem.status === "idle") {
+                                    // 通信開始前にstatusを"loading"に設定
+                                    contextItem.status = "loading";
+
                                     // フェッチ処理
                                     const result = await fetcher(
                                         contextItem.url,
@@ -157,41 +155,21 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
                                     );
 
                                     // 状態を更新
-                                    setData((prevState) => ({
-                                        ...prevState,
-                                        [key]: {
-                                            ...prevState[
-                                                key as keyof ApiDataContextType
-                                            ],
-                                            status: "success",
-                                            data: result,
-                                        },
-                                    }));
+                                    contextItem.status = "success";
+                                    contextItem.data = result;
                                 }
                             } catch (error) {
                                 console.error(
                                     `Error fetching data for ${key}:`,
                                     error,
                                 );
-                                setData((prevState) => ({
-                                    ...prevState,
-                                    [key]: {
-                                        ...prevState[
-                                            key as keyof ApiDataContextType
-                                        ],
-                                        status: "error",
-                                        data: [],
-                                    },
-                                }));
+                                contextItem.status = "error";
                                 throw error;
                             }
                         };
 
                         // `getData` を更新
-                        updatedData[key as keyof ApiDataContextType] = {
-                            ...contextItem,
-                            getData,
-                        };
+                        contextItem.getData = getData;
                     }
                 }
 
@@ -221,12 +199,14 @@ export const useApiDataContext = (...apiNames: string[]) => {
             "useApiDataContext must be used within a ApiDataProvider",
         );
     }
-    for(const name of apiNames){
-        if(!context[name]){
-            throw new Error(`useApiDataContext: ${name} is not found in ApiDataContext`);
+    for (const name of apiNames) {
+        if (!context[name as keyof ApiDataContextType]) {
+            throw new Error(
+                `useApiDataContext: ${name} is not found in ApiDataContext`,
+            );
         }
         // APIデータを取得
-        context[name].getData();
+        context[name as keyof ApiDataContextType].getData();
     }
     return context;
 };

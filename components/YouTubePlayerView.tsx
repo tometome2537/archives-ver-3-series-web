@@ -10,7 +10,7 @@ type YouTubePlayerViewProps = {
     style?: React.CSSProperties; // 外部からスタイルを受け取る（オプション）
     loop?: boolean; // ループ再生を制御するオプションを追加
     playerRadius?: boolean;
-    setPlayerState?: Dispatch<SetStateAction<string | undefined>>;
+    setPlayerState?: Dispatch<SetStateAction<string>>;
     setPlayer?: Dispatch<SetStateAction<YouTubePlayer | undefined>>;
 };
 
@@ -63,9 +63,7 @@ export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
                         : null;
                     break;
                 default:
-                    props.setPlayerState
-                        ? props.setPlayerState(undefined)
-                        : null;
+                    props.setPlayerState ? props.setPlayerState("不明") : null;
                     break;
             }
         }

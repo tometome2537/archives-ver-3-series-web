@@ -4,6 +4,8 @@ import { buildUrl } from "@/libs/urlBuilder";
 import { createContext, useContext, useEffect, useState } from "react";
 import type React from "react";
 
+// デンジャラス！！空白のセルをSSSAPIで取得するとnullになります！　つまり　↓ の型定義にすべて | null を付与する必要があります！
+
 export interface BelongHistory {
     entityId: string;
     entityOrganizationId: string;
@@ -23,6 +25,7 @@ export interface YouTubeAccount {
     userName: string;
     name: string;
     officialArtistChannel: string;
+    topic: boolean;
     apiData: string;
 }
 export interface Music {
@@ -55,6 +58,34 @@ export interface Video {
     karaokeKey: string;
     apiData: string;
 }
+export interface ArtistYTM {
+    description: string;
+    views: number;
+    name: string;
+    channelId: string;
+    subscribers: number;
+    thumbnails: { url: string; width: number; height: number }[];
+    songs: { browseId: string };
+    albums: {
+        browseId: string;
+        results: {
+            title: string;
+            browseId: string;
+            audioPlaylistId: string;
+            thumbnails: { url: string; width: number; height: number }[];
+        }[];
+    };
+    singles: {
+        browseId: string;
+        results: {
+            title: string;
+            year: string;
+            browseId: string;
+            audioPlaylistId: string;
+            thumbnails: { url: string; width: number; height: number }[];
+        }[];
+    };
+}
 
 interface FetchOption {
     headers?: { Authorization?: string };
@@ -79,6 +110,7 @@ export interface ApiDataContextType {
     XAccount: ApiData<XAccount[]>;
     BelongHistory: ApiData<BelongHistory[]>;
     Video: ApiData<Video[]>;
+    ArtistYTM: ApiData<ArtistYTM | null>;
 }
 
 export const SSSAPI_TOKEN = "s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I";
@@ -139,6 +171,14 @@ const ApiData: ApiDataContextType = {
         data: [],
         getData: async () => [],
     },
+    ArtistYTM: {
+        url: "https://api-py.tometome.org/ytm",
+        // url: "http://127.0.0.1:8000/ytm",
+        fetchOption: {},
+        status: "idle",
+        data: null,
+        getData: async () => null,
+    },
 };
 
 // コンテキストを作成
@@ -176,7 +216,10 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
                         ) => {
                             try {
                                 if (getParams) {
-                                    console.log(`Fetching data for ${key}... with getParams:`, getParams);
+                                    console.log(
+                                        `Fetching data for ${key}... with getParams:`,
+                                        getParams,
+                                    );
                                     const url = buildUrl(
                                         contextItem.url,
                                         getParams,

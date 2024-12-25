@@ -23,6 +23,7 @@ import react, { Fragment } from "react";
 import MultiSearchBar from "@/components/Navbar/SearchBar/MultiSearchBar";
 import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import LinkTab from "@/components/MainTabs/LinkTab";
+import SongTab from "@/components/MainTabs/SongTab";
 import type { YouTubeAccount, Music, Entity } from "@/contexts/ApiDataContext";
 
 export default function RootLayout({
@@ -170,19 +171,19 @@ export default function RootLayout({
                 //         setSearchSuggestion(result);
                 //     },
                 // },
-                // {
-                //     value: "songs",
-                //     icon: <MusicNoteIcon />,
-                //     label: "楽曲集",
-                //     children: <SongTab key="song" />,
-                //     scrollTo: 0,
-                //     onClick: () => {
-                //         setAvailableCategoryIds([]);
-                //         setLimitSearchCategory([]);
-                //         setFixedOptionValues([]);
-                // setIsPlayerFullscreen(false);
-                //     },
-                // },
+                {
+                    value: "songs",
+                    icon: <MusicNoteIcon />,
+                    label: "楽曲集",
+                    children: <SongTab key="song" inputValue={inputValue} />,
+                    scrollTo: 0,
+                    onClick: () => {
+                        setAvailableCategoryIds(["actor", "organization"]);
+                        setLimitSearchCategory([]);
+                        setFixedOptionValues([]);
+                        setIsPlayerFullscreen(false);
+                    },
+                },
                 {
                     value: "",
                     icon: <YouTubeIcon />,

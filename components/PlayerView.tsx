@@ -6,11 +6,12 @@ import { Box, Chip } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { useTheme } from "@mui/material/styles";
 import Linkify from "linkify-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import type { YouTubePlayer } from "react-youtube";
 import Thumbnail from "./Thumbnail";
 import YouTubePlayerView from "./YouTubePlayerView";
+import type {YouTubePlayerState}from "./YouTubePlayerView";
 import "linkify-plugin-hashtag";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { KeyboardArrowDown } from "@mui/icons-material";
@@ -18,18 +19,31 @@ import IconButton from "@mui/material/IconButton";
 import { blue } from "@mui/material/colors";
 import Link from "./Link";
 import type { MultiSearchBarSearchSuggestion } from "./Navbar/SearchBar/MultiSearchBar";
+import { truncate } from "fs";
 
 export type PlayerItem = {
+    // 優先度 高
     videoId?: string;
-    short?: boolean;
     title?: string;
+    channelTitle?: string;
+    // 優先度 中
+    short?: boolean;
     description?: string;
     viewCount?: number;
     channelId?: string;
-    channelTitle?: string;
     publishedAt?: Date;
+
     actorId?: Array<string>;
     organization?: Array<string>;
+    // 動画のタテの比率 (デフォルトは9)
+    arHeight?: number;
+    // 動画のヨコの比率 (デフォルトは16)
+    arWidth?: number;
+};
+
+export type PlayerPlaylist = {
+    title?: string;
+    videos: PlayerItem[];
 };
 
 type PlayerProps = {
@@ -42,10 +56,11 @@ type PlayerProps = {
     isPlayerFullscreen: boolean;
     setIsPlayerFullscreen: Dispatch<SetStateAction<boolean>>;
 
-    PlayerItem: PlayerItem | undefined;
+    playerItem: PlayerItem | undefined;
     setPlayerItem: Dispatch<SetStateAction<PlayerItem | undefined>>;
-    Playlist?: Array<PlayerItem>; // プレイリスト
-    searchResult?: Array<PlayerItem>; // 検索結果のリスト
+    playerPlaylist?: PlayerPlaylist; // プレイリスト
+    setPlayerPlaylist?: Dispatch<SetStateAction<PlayerPlaylist | undefined>>;
+
     style?: React.CSSProperties; // 外部からスタイルを受け取る（オプション）
 };
 
@@ -55,56 +70,57 @@ export default function PlayerView(props: PlayerProps) {
     // ブラウザ情報を取得
     const { screenWidth, screenHeight, isMobile } = useBrowserInfoContext();
 
-    // PlayerViewのHTMLが保存される
-    const playerViewRef = useRef<HTMLDivElement | null>(null);
-
-    // 現在再生されているvideoId
-    const [playNowVideoId, setPlayNowVideoId] = useState<string>();
     // 現在再生されている動画の詳細情報
     const [playNowDetail, setPlayNowDetail] = useState<
         PlayerItem | undefined
     >();
-    // プレイヤーの状態(例、再生中、停止中、etc...)
-    const [playerState, setPlayerState] = useState<string>("不明");
-    // YouTubeプレイヤーの実行関数集(再生を実行したり、再生を停止させたり etc...)
-    const [player, setPlayer] = useState<YouTubePlayer | undefined>(undefined);
 
-    // propsのvideoIdが変更されたらplayNowVideoIdを更新。
-    useEffect(() => {
-        setPlayNowVideoId(
-            props.PlayerItem !== undefined ? props.PlayerItem.videoId : "",
-        );
-    }, [props]);
+    // 動画タテの比率 (デフォルトは9)
+    const arHeight = playNowDetail?.arHeight || 9;
+    // 動画ヨコの比率 (デフォルトは16)
+    const arWidth = playNowDetail?.arWidth || 16;
+
+    // プレイヤーの状態(例、再生中、停止中、etc...)
+    const [youTubePlayerState, setYouTubePlayerState] =
+        useState<YouTubePlayerState>();
+    // YouTubeプレイヤーの実行関数集(再生を実行したり、再生を停止させたり etc...)
+    const [youTubePlayer, setYouTubePlayer] = useState<
+        YouTubePlayer | undefined
+    >(undefined);
+
 
     // playNowVideoIdが更新されたらplayNowDetailを更新
     useEffect(() => {
-        let result: PlayerItem | undefined;
-
-        // まず Playlist から探す
-        result = props.Playlist?.find((item: PlayerItem) => {
-            if (item.videoId === playNowVideoId) {
-                return item;
-            }
+        // プレイリストにないvideoIdが外部から設定された場合は、Playlistを破棄する。
+        const r = props.playerPlaylist?.videos.find((video) => {
+            return video.videoId === props.playerItem?.videoId;
         });
+        if (!r && props.setPlayerPlaylist) {
+            props.setPlayerPlaylist(undefined);
+        }
 
-        // Playlist に見つからない場合は searchResult から探す
-        if (!result) {
-            result = props.searchResult?.find((item: PlayerItem) => {
-                if (item.videoId === playNowVideoId) {
+        // 再生中のvideoIdが変更された時にPlaylistから動画詳細を取得する。
+        // (動画再生時にvideoIdだけ指定すればいいようにするための処理)
+        const result: PlayerItem | undefined =
+            props.playerPlaylist?.videos?.find((item: PlayerItem) => {
+                if (item.videoId === props.playerItem?.videoId) {
                     return item;
                 }
             });
-        }
+        setPlayNowDetail(result || props.playerItem);
+        // youTubePlayer.setLoop(true)
+        // youTubePlayer.setShuffle(true)
+        // const videoIds = props.playerPlaylist?.videos.map(item => {
+        //     return item.videoId
+        // })
+        // const startIndex = videoIds?.findIndex(item => item === props.playerItem?.videoId)
+        // if(!videoIds?.includes(props.playerItem?.videoId)){
+        //     if(videoIds && youTubePlayer){
+        //         youTubePlayer.cuePlaylist({playlist: videoIds, index: startIndex ? startIndex - 1 : 0 })
+        //     }
+        // }
 
-        setPlayNowDetail(result);
-    }, [props, playNowVideoId, props.Playlist, props.searchResult]);
-
-    // サムネイルがクリックされた時
-    const handleVideoClick = (event: React.MouseEvent<HTMLElement>) => {
-        const videoId = event.currentTarget.getAttribute("data-videoId");
-        setPlayNowVideoId(videoId ? videoId : undefined);
-        props.setPlayerItem({ videoId: videoId ? videoId : "" });
-    };
+    }, [ props.playerItem?.videoId, props.playerPlaylist,props.setIsPlayerFullscreen]);
 
     // actorId、entityIdがクリックされた時
     const handleActor = (
@@ -137,61 +153,6 @@ export default function PlayerView(props: PlayerProps) {
         props.setIsPlayerFullscreen(false);
     };
 
-    // マウスイベント用のハンドラ
-    const ClickHandleActor = (event: React.MouseEvent<HTMLElement>) => {
-        handleActor(event);
-    };
-
-    // キーボードイベント用のハンドラ
-    const KeyDownHandleActor: React.KeyboardEventHandler<HTMLElement> = (
-        event,
-    ) => {
-        // EnterキーまたはSpaceキーでアクターを選択
-        if (event.key === "Enter" || event.key === " ") {
-            handleActor(event);
-        }
-    };
-
-    // Playlist または searchResult が追加されたらHTML表示拡大モード
-    useEffect(() => {
-        // PlaylistまたはsearchResultが空の場合にフルスクリーンを設定
-        if (
-            (props.Playlist && props.Playlist.length === 0) ||
-            (props.searchResult && props.searchResult.length === 0)
-        ) {
-            props.setIsPlayerFullscreen(true);
-        }
-    }, [props.Playlist, props.searchResult, props.setIsPlayerFullscreen]);
-
-    // YouTube Playerの再生と停止を切り替える
-    const togglePlayPlayer = (event: React.MouseEvent<HTMLElement>) => {
-        console.log("a");
-    };
-
-    // 拡大モードの切り替えスイッチ
-    const togglePlayerFullscreen = () => {
-        if (props.isPlayerFullscreen) {
-            props.setIsPlayerFullscreen(false);
-        } else {
-            props.setIsPlayerFullscreen(true);
-        }
-    };
-    // マウスイベント用のハンドラ
-    const mouseClickTogglePlayerFullscreen = (
-        event: React.MouseEvent<HTMLElement>,
-    ) => {
-        togglePlayerFullscreen();
-    };
-
-    // キーボードイベント用のハンドラ
-    const keyDownTogglePlayerFullscreen: React.KeyboardEventHandler<
-        HTMLDivElement
-    > = (event) => {
-        // 例えば、Enterキーで全画面切り替えをトリガーする
-        if (event.key === "Enter") {
-            togglePlayerFullscreen();
-        }
-    };
     // idから検索候補を返す
     const getSearchSuggestionFromId = (
         id: string,
@@ -315,10 +276,9 @@ export default function PlayerView(props: PlayerProps) {
 
     return (
         <Box
-            ref={playerViewRef}
             sx={{
                 // videoIdがセットされていない時はPlayerを非表示
-                display: playNowVideoId ? "block" : "none",
+                display: props.playerItem?.videoId ? "block" : "none",
                 // 拡大モードの時、Playerを画面上下いっぱいまで広げる。
                 // height: props.isPlayerFullscreen ? "100vh" : "100%",
                 // 拡大モードの時、縦スクロールを許可しない。(YouTubePlayerが固定される。)
@@ -332,7 +292,7 @@ export default function PlayerView(props: PlayerProps) {
                     top: "0",
                     // ここまで拡大表示の時にPlayerを固定する
                     // ↓ PCの時は右カラムを左カラムの下に。
-                    display: isMobile ? "" : "flex",
+                    display: isMobile ? "block" : "flex" ,
                     width: "100%",
                     height: "100%",
                     maxWidth: "100vw",
@@ -383,7 +343,10 @@ export default function PlayerView(props: PlayerProps) {
                         // position: "relative",
                         display: props.isPlayerFullscreen ? "block" : "flex",
                         width:
-                            props.isPlayerFullscreen && !isMobile
+                            props.isPlayerFullscreen &&
+                            !isMobile &&
+                            props.playerPlaylist &&
+                            props.playerPlaylist.videos.length !== 0
                                 ? "70%"
                                 : "100%",
                         margin: props.isPlayerFullscreen ? "" : "0 auto",
@@ -399,8 +362,8 @@ export default function PlayerView(props: PlayerProps) {
                                     isMobile && props.isPlayerFullscreen
                                         ? `${screenWidth}px`
                                         : props.isPlayerFullscreen
-                                          ? `${((screenHeight * 0.55) / 9) * 16}px`
-                                          : `${((screenHeight * 0.1) / 9) * 16}px`,
+                                          ? `${((screenHeight * 0.55) / arHeight) * arWidth}px`
+                                          : `${((screenHeight * 0.1) / arHeight) * arWidth}px`,
                                 margin: "0 auto",
                             }}
                         >
@@ -423,9 +386,7 @@ export default function PlayerView(props: PlayerProps) {
                     {/* YouTubeプレイヤー */}
                     <YouTubePlayerView
                         videoId={
-                            props.PlayerItem?.videoId
-                                ? props.PlayerItem?.videoId
-                                : ""
+                           props.playerItem?.videoId ? props.playerItem?.videoId : ""
                         }
                         style={{
                             // padding: "0", // プレイヤーの上下にスペースを追加
@@ -434,31 +395,43 @@ export default function PlayerView(props: PlayerProps) {
                             maxHeight: "100%",
                             // maxHeight: "100%", // 高さに制限をつけることでパソコンのモニター等で無制限に大きくならないようにする。
                         }}
-                        // 動画の比率は、横：縦 = １６：９で
                         width={
                             isMobile && props.isPlayerFullscreen
                                 ? `${screenWidth}px`
                                 : props.isPlayerFullscreen
-                                  ? `${((screenHeight * 0.55) / 9) * 16}px`
-                                  : `${((screenHeight * 0.1) / 9) * 16}px`
+                                  ? `${((screenHeight * 0.55) / arHeight) * arWidth}px`
+                                  : `${((screenHeight * 0.1) / arHeight) * arWidth}px`
                         }
                         height={
                             isMobile && props.isPlayerFullscreen
-                                ? `${(screenWidth / 16) * 9}px`
+                                ? `${(screenWidth / arWidth) * arHeight}px`
                                 : props.isPlayerFullscreen
                                   ? `${screenHeight * 0.55}px`
                                   : `${screenHeight * 0.1}px`
                             //   props.screenHeight / 9 < props.screenWidth / 16,
                         }
                         playerRadius={!(isMobile && props.isPlayerFullscreen)}
-                        setPlayer={setPlayer}
-                        setPlayerState={setPlayerState}
+                        setPlayer={setYouTubePlayer}
+                        setPlayerState={setYouTubePlayerState}
                     />
 
                     {/* PlayerView縮小表示の時のHTML */}
                     <Box
-                        onClick={mouseClickTogglePlayerFullscreen}
-                        onKeyDown={keyDownTogglePlayerFullscreen}
+                        onClick={() => {
+                            if (props.isPlayerFullscreen) {
+                                props.setIsPlayerFullscreen(false);
+                            } else {
+                                props.setIsPlayerFullscreen(true);
+                            }
+                        }}
+                        onKeyPress={(e) => {
+                            // onClickを実行する。
+                            if (e.key === "Enter" || e.key === " ") {
+                                // Enterキーまたはスペースキーの場合にonClickをトリガー
+                                e.preventDefault(); // スペースキーでスクロールが発生しないようにする
+                                e.currentTarget.click(); // onClickを参照
+                            }
+                        }}
                         sx={{
                             display: props.isPlayerFullscreen
                                 ? "none"
@@ -484,11 +457,9 @@ export default function PlayerView(props: PlayerProps) {
                                 textOverflow: "ellipsis",
                             }}
                         >
-                            {playNowDetail
-                                ? playNowDetail.title
-                                    ? playNowDetail.title
-                                    : "タイトル不明"
-                                : "タイトル不明"}
+                            {youTubePlayerState
+                                ? youTubePlayerState?.getVideoData.title
+                                : playNowDetail?.title}
                         </Box>
                         <Box
                             sx={{
@@ -507,9 +478,9 @@ export default function PlayerView(props: PlayerProps) {
                                 textOverflow: "ellipsis",
                             }}
                         >
-                            {playNowDetail
-                                ? playNowDetail.channelTitle
-                                    ? playNowDetail.channelTitle
+                            {youTubePlayerState
+                                ? youTubePlayerState.getVideoData.author
+                                    ? youTubePlayerState.getVideoData.author
                                     : ""
                                 : ""}
                         </Box>
@@ -523,17 +494,17 @@ export default function PlayerView(props: PlayerProps) {
                             margin: "auto",
                         }}
                     >
-                        {playerState === "再生中" ? (
+                        {youTubePlayerState?.state === "再生中" ? (
                             <PauseIcon
                                 sx={{
                                     height: "100%",
                                     margin: "auto",
                                 }}
                                 onClick={(e: React.MouseEvent) => {
-                                    if (player) {
+                                    if (youTubePlayer) {
                                         // ↓ 親要素のonClickを発火させたくない場合に追記
                                         e.stopPropagation();
-                                        player.pauseVideo();
+                                        youTubePlayer.pauseVideo();
                                     }
                                 }}
                             />
@@ -546,8 +517,8 @@ export default function PlayerView(props: PlayerProps) {
                                 onClick={(e: React.MouseEvent) => {
                                     // ↓ 親要素のonClickを発火させたくない場合に追記
                                     e.stopPropagation();
-                                    if (player) {
-                                        player.playVideo();
+                                    if (youTubePlayer) {
+                                        youTubePlayer.playVideo();
                                     }
                                 }}
                             />
@@ -581,9 +552,9 @@ export default function PlayerView(props: PlayerProps) {
                                 textOverflow: "ellipsis",
                             }}
                         >
-                            {playNowDetail
-                                ? playNowDetail.title
-                                    ? playNowDetail.title
+                            {youTubePlayerState
+                                ? youTubePlayerState.getVideoData.title
+                                    ? youTubePlayerState.getVideoData.title
                                     : ""
                                 : ""}
                         </p>
@@ -603,9 +574,9 @@ export default function PlayerView(props: PlayerProps) {
                                 textOverflow: "ellipsis",
                             }}
                         >
-                            {playNowDetail
-                                ? playNowDetail.channelTitle
-                                    ? playNowDetail.channelTitle
+                            {youTubePlayerState
+                                ? youTubePlayerState.getVideoData.author
+                                    ? youTubePlayerState.getVideoData.author
                                     : ""
                                 : ""}
                         </p>
@@ -635,7 +606,6 @@ export default function PlayerView(props: PlayerProps) {
                                 })}
                         </p>
                         {/* 出演者一覧 */}
-                        <p>出演者</p>
                         <Box
                             style={{
                                 display: "flex",
@@ -691,15 +661,24 @@ export default function PlayerView(props: PlayerProps) {
                                                   .label
                                           }
                                           color="success"
-                                          onClick={ClickHandleActor}
-                                          onKeyPress={KeyDownHandleActor}
+                                          onClick={handleActor}
+                                          onKeyPress={(e) => {
+                                              // onClickを実行する。
+                                              if (
+                                                  e.key === "Enter" ||
+                                                  e.key === " "
+                                              ) {
+                                                  // Enterキーまたはスペースキーの場合にonClickをトリガー
+                                                  e.preventDefault(); // スペースキーでスクロールが発生しないようにする
+                                                  e.currentTarget.click(); // onClickを参照
+                                              }
+                                          }}
                                           data-actorId={actorId}
                                       />
                                   ))
                                 : null}
                         </Box>
                         {/* 組織名一覧 */}
-                        <p>出演組織</p>
                         <Box
                             style={{
                                 display: "flex",
@@ -758,8 +737,18 @@ export default function PlayerView(props: PlayerProps) {
                                                   ).label
                                               }
                                               color="success"
-                                              onClick={ClickHandleActor}
-                                              onKeyPress={KeyDownHandleActor}
+                                              onClick={handleActor}
+                                              onKeyPress={(e) => {
+                                                  // onClickを実行する。
+                                                  if (
+                                                      e.key === "Enter" ||
+                                                      e.key === " "
+                                                  ) {
+                                                      // Enterキーまたはスペースキーの場合にonClickをトリガー
+                                                      e.preventDefault(); // スペースキーでスクロールが発生しないようにする
+                                                      e.currentTarget.click(); // onClickを参照
+                                                  }
+                                              }}
                                               data-actorId={organizationId}
                                           />
                                       ),
@@ -767,7 +756,6 @@ export default function PlayerView(props: PlayerProps) {
                                 : null}
                         </Box>
                         {/* 概要欄 */}
-                        <p>概要欄</p>
                         <Box
                             style={{
                                 // 文字列内の\nを適切に反映させる。
@@ -794,11 +782,15 @@ export default function PlayerView(props: PlayerProps) {
                     style={{
                         // 拡大モードかつPCの横幅で右カラムを表示
                         display:
-                            props.isPlayerFullscreen && !isMobile
+                            props.isPlayerFullscreen &&
+                            !isMobile && // ← ここをコメントアウトでスマホでも閲覧可能になる。
+                            props.playerPlaylist &&
+                            props.playerPlaylist.videos.length !== 0
                                 ? "block"
                                 : "none",
-                        position: "relative",
-                        width: "30%",
+                        // position: "relative",
+                        width: props.isPlayerFullscreen &&
+                            !isMobile ? "30%" : "100%",
                     }}
                 >
                     <Box
@@ -809,31 +801,38 @@ export default function PlayerView(props: PlayerProps) {
                             paddingBottom: "25vh",
                         }}
                     >
-                        {props.searchResult
-                            ? props.searchResult.map((item: PlayerItem) => (
-                                  <>
-                                      <Box
-                                          key={item.videoId}
-                                          sx={{
-                                              maxWidth: "25vw",
-                                              margin: "0 auto",
-                                          }}
-                                      >
-                                          <Thumbnail
-                                              videoId={
-                                                  item.videoId
-                                                      ? item.videoId
-                                                      : ""
-                                              }
-                                              title={item.title}
-                                              viewCount={item.viewCount}
-                                              channelTitle={item.channelTitle}
-                                              publishedAt={item.publishedAt}
-                                              onClick={handleVideoClick}
-                                          />
-                                      </Box>
-                                  </>
-                              ))
+                        <p>{props.playerPlaylist?.title}</p>
+                        {props.playerPlaylist
+                            ? props.playerPlaylist.videos.map(
+                                  (item: PlayerItem) => (
+                                      <>
+                                          <Box
+                                              key={item.videoId}
+                                              sx={{
+                                                  maxWidth: "25vw",
+                                                  margin: "0 auto",
+                                              }}
+                                          >
+                                              <Thumbnail
+                                                  videoId={
+                                                      item.videoId
+                                                          ? item.videoId
+                                                          : ""
+                                                  }
+                                                  title={item.title}
+                                                  viewCount={item.viewCount}
+                                                  channelTitle={
+                                                      item.channelTitle
+                                                  }
+                                                  publishedAt={item.publishedAt}
+                                                  onClick={() => {
+                                                      props.setPlayerItem(item);
+                                                  }}
+                                              />
+                                          </Box>
+                                      </>
+                                  ),
+                              )
                             : null}
                     </Box>
                 </Box>

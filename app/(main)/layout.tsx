@@ -8,7 +8,7 @@ import type {
     InputValue,
 } from "@/components/Navbar/SearchBar/SearchBar";
 import PlayerView from "@/components/PlayerView";
-import type { PlayerItem } from "@/components/PlayerView"; // 型としてのインポート
+import type { PlayerItem, PlayerPlaylist } from "@/components/PlayerView"; // 型としてのインポート
 import type { TabMap } from "@/components/TabScroll";
 import TabScroll from "@/components/TabScroll";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
@@ -69,12 +69,9 @@ export default function RootLayout({
     const [playerItem, setPlayerItem] = react.useState<PlayerItem | undefined>(
         undefined,
     );
-    const [playerPlaylist, setPlayerPlaylist] = react.useState<PlayerItem[]>(
-        [],
-    );
-    const [playerSearchResult, setPlayerSearchResult] = react.useState<
-        PlayerItem[]
-    >([]);
+    const [playerPlaylist, setPlayerPlaylist] = react.useState<
+        PlayerPlaylist | undefined
+    >();
 
     // useMemoでタブ設定を作成
     const tabMaps: TabMap[] = react.useMemo(
@@ -175,7 +172,15 @@ export default function RootLayout({
                     value: "songs",
                     icon: <MusicNoteIcon />,
                     label: "楽曲集",
-                    children: <SongTab key="song" inputValue={inputValue} />,
+                    children: (
+                        <SongTab
+                            key="song"
+                            inputValue={inputValue}
+                            playerItem={playerItem}
+                            setPlayerItem={setPlayerItem}
+                            setPlayerPlaylist={setPlayerPlaylist}
+                        />
+                    ),
                     scrollTo: 0,
                     onClick: () => {
                         setAvailableCategoryIds(["actor", "organization"]);
@@ -196,7 +201,6 @@ export default function RootLayout({
                             playerItem={playerItem}
                             setPlayerItem={setPlayerItem}
                             setPlayerPlaylist={setPlayerPlaylist}
-                            setPlayerSearchResult={setPlayerSearchResult}
                         />
                     ),
                     onClick: () => {
@@ -487,10 +491,10 @@ export default function RootLayout({
                         inputValue={inputValue}
                         setInputValue={setInputValue}
                         searchSuggestion={searchSuggestion}
-                        PlayerItem={playerItem}
+                        playerItem={playerItem}
                         setPlayerItem={setPlayerItem}
-                        Playlist={playerPlaylist}
-                        searchResult={playerSearchResult}
+                        playerPlaylist={playerPlaylist}
+                        setPlayerPlaylist={setPlayerPlaylist}
                         isPlayerFullscreen={isPlayerFullscreen}
                         setIsPlayerFullscreen={setIsPlayerFullscreen}
                         style={{

@@ -4,7 +4,7 @@ import { Box, Container } from "@mui/material";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import Loading from "../Loading";
-import type { PlayerItem } from "../PlayerView";
+import type { PlayerItem, PlayerPlaylist } from "../PlayerView";
 import Thumbnail from "../Thumbnail";
 import type { Video } from "@/contexts/ApiDataContext";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
@@ -14,8 +14,7 @@ type TemporaryYouTubeTab = {
     inputValue: InputValue[];
     playerItem: PlayerItem | undefined;
     setPlayerItem: Dispatch<SetStateAction<PlayerItem | undefined>>;
-    setPlayerPlaylist: Dispatch<SetStateAction<PlayerItem[]>>;
-    setPlayerSearchResult: Dispatch<SetStateAction<PlayerItem[]>>;
+    setPlayerPlaylist: Dispatch<SetStateAction<PlayerPlaylist | undefined>>;
 };
 
 enum LoadingState {
@@ -53,7 +52,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 order_by: "-publishedAt",
                 limit: "15",
             };
-            const fastData = await apiData.Video.getData(fastParams);
+            const fastData = await apiData.Video.getDataWithParams(fastParams);
             setApiDataVideo(fastData);
             // 仮だけどローディングを解除
             setLoading(LoadingState.FastLoaded);
@@ -65,7 +64,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 order_by: "-publishedAt",
                 offset: "15",
             };
-            const restData = await apiData.Video.getData(slowParams);
+            const restData = await apiData.Video.getDataWithParams(slowParams);
             setApiDataVideo((data) => data.concat(restData));
             setLoading(LoadingState.AllLoaded); // ローディングを解除
 
@@ -82,7 +81,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             setError((err as Error).message); // エラーを表示
             setLoading(LoadingState.AllLoaded); // ローディングを解除
         }
-    }, [apiData.Video.getData]);
+    }, [apiData.Video.getDataWithParams]);
 
     // API通信を定義
     useEffect(() => {
@@ -206,40 +205,6 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         setLoading(LoadingState.AllLoaded);
     }, [props.inputValue, apiDataVideo]);
 
-    // 動画サムネイルがクリックされたときに呼ばれる関数
-    const handleVideoClick = (event: React.MouseEvent<HTMLElement>) => {
-        const videoId = event.currentTarget.getAttribute("data-videoId");
-        props.setPlayerItem({
-            videoId: videoId ? videoId : "",
-        });
-        // APIから受け取った値の型を変換する。
-        const searchResult: Array<PlayerItem> = resultVideo
-            ? resultVideo.map((item: Video) => {
-                  const result: PlayerItem = {
-                      videoId: item.videoId,
-                      title: item.title,
-                      description:
-                          item.apiData &&
-                          JSON.parse(item.apiData).snippet.description,
-                      viewCount: Number(item.viewCount),
-                      channelId: item.channelId,
-                      channelTitle: item.channelTitle,
-                      publishedAt: item.publishedAt
-                          ? new Date(item.publishedAt)
-                          : undefined,
-                      actorId: item.person
-                          ? item.person.split(/ , |,| ,|, /).filter((v) => v)
-                          : [],
-                      organization: Object.keys(
-                          JSON.parse(item.organization || "{}"),
-                      ),
-                  };
-                  return result;
-              })
-            : [];
-        props.setPlayerSearchResult(searchResult);
-    };
-
     // ローディング中
     if (apiDataVideo.length === 0 && loading === LoadingState.Loading) {
         return <LoadingPage />;
@@ -302,7 +267,40 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                             publishedAt={
                                                 new Date(item.publishedAt || 0)
                                             }
-                                            onClick={handleVideoClick}
+                                            onClick={()=>{
+                                                props.setPlayerItem({
+                                                    videoId: item.videoId,
+                                                });
+                                                // APIから受け取った値の型を変換する。
+                                                const searchResult: Array<PlayerItem> = resultVideo
+                                                ? resultVideo.map((item: Video) => {
+                                                    const result: PlayerItem = {
+                                                        videoId: item.videoId,
+                                                        title: item.title,
+                                                        description:
+                                                            item.apiData &&
+                                                            JSON.parse(item.apiData).snippet.description,
+                                                        viewCount: Number(item.viewCount),
+                                                        channelId: item.channelId,
+                                                        channelTitle: item.channelTitle,
+                                                        publishedAt: item.publishedAt
+                                                            ? new Date(item.publishedAt)
+                                                            : undefined,
+                                                        actorId: item.person
+                                                            ? item.person.split(/ , |,| ,|, /).filter((v) => v)
+                                                            : [],
+                                                        organization: Object.keys(
+                                                            JSON.parse(item.organization || "{}"),
+                                                        ),
+                                                    };
+                                                    return result;
+                                                })
+                                                : [];
+                                                props.setPlayerPlaylist({
+                                                    title: "検索結果一覧",
+                                                    videos: searchResult,
+                                                });
+                                            }}
                                         />
                                     </Box>
                                 </>

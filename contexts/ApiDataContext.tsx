@@ -25,7 +25,7 @@ export interface YouTubeAccount {
     userName: string;
     name: string;
     officialArtistChannel: string;
-    topic: boolean;
+    topic: boolean | null;
     apiData: string;
 }
 export interface Music {
@@ -65,26 +65,88 @@ export interface ArtistYTM {
     channelId: string;
     subscribers: number;
     thumbnails: { url: string; width: number; height: number }[];
-    songs: { browseId: string };
-    albums: {
-        browseId: string;
-        results: {
+    songs?: {
+        browseId: string | null;
+        results?: {
+            videoId: string;
+            artists: { name: string; id: string }[];
+            album: { name: string; id: string };
             title: string;
             browseId: string;
             audioPlaylistId: string;
             thumbnails: { url: string; width: number; height: number }[];
         }[];
     };
-    singles: {
-        browseId: string;
-        results: {
+    albums?: {
+        browseId: string | null;
+        results?: {
+            title: string;
+            browseId: string;
+            audioPlaylistId: string;
+            thumbnails: { url: string; width: number; height: number }[];
+        }[];
+        params: string | null;
+    };
+    singles?: {
+        browseId: string | null;
+        results?: {
             title: string;
             year: string;
             browseId: string;
             audioPlaylistId: string;
             thumbnails: { url: string; width: number; height: number }[];
         }[];
+        params: string | null;
     };
+    videos?: {
+        browseId: string | null;
+        results?: {
+            title: string;
+            videoId: string;
+            artists: { name: string; id: string }[];
+            playlistId: string;
+            thumbnails: { url: string; width: number; height: number }[];
+            views: string;
+        }[];
+        params: string | null;
+    };
+}
+export interface AlbumYTM {
+    title:string;
+    type:string;
+    thumbnails: { url: string; width: number; height: number }[];
+    isExplicit: boolean;
+    description: string | null;
+    artists: { name: string; id: string }[];
+    trackCount: number;
+    duration: string;
+    audioPlaylistId: string;
+    tracks:{
+        videoId: string;
+        title: string;
+        artists: { name: string; id: string }[];
+        album: string;
+        likeStatus: string;
+        inLibrary: boolean | null;
+        thumbnails: { url: string; width: number; height: number }[];
+        isAvailable: boolean;
+        isExplicit: boolean;
+        videoType: string;
+        views: string;
+        trackNumber: number;
+        duration: string;
+        duration_seconds: number;
+    }[]
+    other_versions: {
+        title:string;
+        type:string;
+        artists: { name: string; id: string }[];
+        browseId:string;
+        audioPlaylistId: string;
+        thumbnails: { url: string; width: number; height: number }[];
+        isExplicit: boolean;
+    }[];
+    duration_seconds: number;
 }
 
 interface FetchOption {
@@ -96,11 +158,14 @@ interface FetchOption {
 export interface ApiData<T> {
     url: string;
     fetchOption?: FetchOption;
+    // getData実行時のステータス
     status: "idle" | "loading" | "error" | "success";
     // APIデータ
     data: T;
-    // APIデータを取得する関数
-    getData: (getParams?: Record<string, string>) => Promise<T>;
+    // APIデータを取得しdataに保存する。
+    getData: () => Promise<T>;
+    // Getメソッドを使用してAPIを叩く。dataに保存はされない。
+    getDataWithParams: (getParams?: Record<string, string>) => Promise<T>;
 }
 
 export interface ApiDataContextType {
@@ -111,6 +176,7 @@ export interface ApiDataContextType {
     BelongHistory: ApiData<BelongHistory[]>;
     Video: ApiData<Video[]>;
     ArtistYTM: ApiData<ArtistYTM | null>;
+    AlbumYTM: ApiData<AlbumYTM | null>;
 }
 
 export const SSSAPI_TOKEN = "s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I";
@@ -130,6 +196,7 @@ const ApiData: ApiDataContextType = {
         status: "idle",
         data: [],
         getData: async () => [],
+        getDataWithParams: async () => [],
     },
     Entity: {
         url: "https://api.sssapi.app/ZJUpXwYIh9lpfn3DQuyzS",
@@ -137,14 +204,15 @@ const ApiData: ApiDataContextType = {
         status: "idle",
         data: [],
         getData: async () => [],
+        getDataWithParams: async () => [],
     },
     Music: {
         url: "https://api.sssapi.app/V_H20t9RBDxXC4vbI-kKy",
         fetchOption: sssApiFetchOption,
-
         status: "idle",
         data: [],
         getData: async () => [],
+        getDataWithParams: async () => [],
     },
     XAccount: {
         url: "https://api.sssapi.app/vk3bc_hfvgsR9hs0X6iBk",
@@ -152,6 +220,7 @@ const ApiData: ApiDataContextType = {
         status: "idle",
         data: [],
         getData: async () => [],
+        getDataWithParams: async () => [],
     },
     BelongHistory: {
         url: "https://api.sssapi.app/HXy5cl24OnVmRtM9EtO_G",
@@ -159,6 +228,7 @@ const ApiData: ApiDataContextType = {
         status: "idle",
         data: [],
         getData: async () => [],
+        getDataWithParams: async () => [],
     },
     Video: {
         url: "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp",
@@ -170,6 +240,7 @@ const ApiData: ApiDataContextType = {
         status: "idle",
         data: [],
         getData: async () => [],
+        getDataWithParams: async () => [],
     },
     ArtistYTM: {
         url: "https://api-py.tometome.org/ytm",
@@ -178,7 +249,17 @@ const ApiData: ApiDataContextType = {
         status: "idle",
         data: null,
         getData: async () => null,
+        getDataWithParams: async () => null,
     },
+    AlbumYTM: {
+        url: "https://api-py.tometome.org/ytm",
+        // url: "http://127.0.0.1:8000/ytm",
+        fetchOption: {},
+        status: "idle",
+        data: null,
+        getData: async () => null,
+        getDataWithParams: async () => null,
+    }
 };
 
 // コンテキストを作成
@@ -211,30 +292,10 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
                         const contextItem =
                             updatedData[key as keyof ApiDataContextType];
 
-                        const getData = async (
-                            getParams?: Record<string, string>,
-                        ) => {
+                        const getData = async () => {
                             try {
-                                if (getParams) {
-                                    console.log(
-                                        `Fetching data for ${key}... with getParams:`,
-                                        getParams,
-                                    );
-                                    const url = buildUrl(
-                                        contextItem.url,
-                                        getParams,
-                                    );
-                                    // フェッチ処理
-                                    return await fetcher(
-                                        url,
-                                        contextItem.fetchOption || {},
-                                    );
-                                }
                                 // status が "idle" の場合のみデータ取得処理を実行
-                                if (
-                                    contextItem.status === "idle" &&
-                                    !getParams
-                                ) {
+                                if (contextItem.status === "idle") {
                                     console.log(`Fetching data for ${key}...`);
                                     // 通信開始前にstatusを"loading"に設定
                                     contextItem.status = "loading";
@@ -269,8 +330,24 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
                             return contextItem.data;
                         };
 
+                        const getDataWithParams = async (
+                            getParams?: Record<string, string>,
+                        ) => {
+                            console.log(
+                                `Fetching data for ${key}... with getParams:`,
+                                getParams,
+                            );
+                            const url = buildUrl(contextItem.url, getParams);
+                            // フェッチ処理
+                            return await fetcher(
+                                url,
+                                contextItem.fetchOption || {},
+                            );
+                        };
+
                         // `getData` を更新
                         contextItem.getData = getData;
+                        contextItem.getDataWithParams = getDataWithParams;
                     }
                 }
 

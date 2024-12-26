@@ -8,11 +8,44 @@ type YouTubePlayerViewProps = {
     width?: string;
     height?: string;
     style?: React.CSSProperties; // 外部からスタイルを受け取る（オプション）
-    loop?: boolean; // ループ再生を制御するオプションを追加
     playerRadius?: boolean;
-    setPlayerState?: Dispatch<SetStateAction<string>>;
+    setPlayerState?: Dispatch<SetStateAction<YouTubePlayerState | undefined>>;
     setPlayer?: Dispatch<SetStateAction<YouTubePlayer | undefined>>;
 };
+
+export type YouTubePlayerState = {
+    state: string;
+    getVideoData: {
+        videoId: string
+        title: string;
+        author: string;
+        video_quality: string;
+        isPlayable: boolean
+        isPrivate: boolean;
+        isLive: boolean;
+        errorCode: number;
+        video_quality_features: string[]
+        backgroundable: boolean;
+        eventId: string;
+        cpn: string;
+        isWindowedLive: boolean;
+        isManifestless: boolean;
+        allowLiveDvr: boolean;
+        isListed: boolean;
+        isMultiChannelAudio: boolean
+        hasProgressBarBoundaries: boolean;
+        isPremiere: boolean;
+        itct: string;
+        playerResponseCpn: string;
+        progressBarStartPositionUtcTimeMillis: string;
+        progressBarEndPositionUtcTimeMillis: string;
+        paidContentOverlayDurationMs: number;
+    }
+    getCurrentTime: number;
+    getDuration: number;
+    getVideoUrl: string;
+    isMuted: boolean;
+}
 
 export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
     // YouTube Playerの再生オプション
@@ -24,50 +57,32 @@ export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
         playerVars: {
             // https://developers.google.com/youtube/player_parameters
             autoplay: 1, // 自動再生
-            loop: props.loop ? 1 : 0, // ループ再生の制御
-            playlist: props.loop && props.videoId ? props.videoId : undefined, // ループ時にプレイリストを設定
+            loop:  0, // デフォルトはループしない。
+            playlist: undefined,
         },
     };
 
     // YouTube Playerの再生の状態を取得
     const onStateChange: YouTubeProps["onStateChange"] = (event) => {
-        if (event && event.data !== undefined) {
-            const state = event.data;
-            switch (state) {
-                case -1:
-                    props.setPlayerState
-                        ? props.setPlayerState("未開始")
-                        : null;
-                    break;
-                case 0:
-                    props.setPlayerState ? props.setPlayerState("終了") : null;
-                    break;
-                case 1:
-                    props.setPlayerState
-                        ? props.setPlayerState("再生中")
-                        : null;
-                    break;
-                case 2:
-                    props.setPlayerState
-                        ? props.setPlayerState("一時停止")
-                        : null;
-                    break;
-                case 3:
-                    props.setPlayerState
-                        ? props.setPlayerState("バッファリング")
-                        : null;
-                    break;
-                case 5:
-                    props.setPlayerState
-                        ? props.setPlayerState("頭出し（準備完了）")
-                        : null;
-                    break;
-                default:
-                    props.setPlayerState ? props.setPlayerState("不明") : null;
-                    break;
-            }
+        const stateMap: { [key: number]: string } = {
+            [-1]: "未開始",
+            0: "終了",
+            1: "再生中",
+            2: "一時停止",
+            3: "バッファリング",
+            5: "頭出し（準備完了）",
+        };
+        const r = {
+            state:  stateMap[event?.data] ?? "不明",
+            getVideoData: event?.target?.getVideoData(),
+            getCurrentTime: event?.target?.getCurrentTime(),
+            getDuration: event?.target?.getDuration(),
+            getVideoUrl: event?.target?.getVideoUrl(),
+            isMuted: event?.target?.isMuted(),
         }
+        props.setPlayerState?.(r);
     };
+
 
     // YouTube Playerの読み込みが完了した時
     const onReady: YouTubeProps["onReady"] = (event) => {
@@ -100,7 +115,6 @@ export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
                 onStateChange={onStateChange}
                 onReady={onReady}
             />
-            <div>{/* <p>{props.videoId}</p> */}</div>
-        </div>
-    );
+            </div>
+            )
 }

@@ -32,6 +32,12 @@ export default function RootLayout({
                     name="theme-color"
                     content={initColorMode === "dark" ? "#000000" : "#FFFFFF"}
                 />
+                {/* Googleサイトコンソール */}
+                <meta
+                    name="google-site-verification"
+                    content="0ERg8PZXOGMCKiCI-c-8BqDFTWZrUGbGI0SmzXBmiOo"
+                />
+                {/* Googleアナリティクス */}
             </head>
             <body className={inter.className}>
                 <ThemeRegistry initColorMode={initColorMode}>
@@ -55,17 +61,17 @@ export async function generateMetadata(): Promise<Metadata> {
         description: description,
         icons: {
             icon: "/favicon.ico",
-            apple: "/apple-touch-icon.png", // 未設定(To Do)
+            apple: "/apple-touch-icon.png",
         },
         openGraph: {
             title: title,
             description: description,
-            url: "https://example.com", // 未設定(To Do)
+            url: "music-archives-project.vercel.app",
             siteName: title,
             type: "website",
             images: [
                 {
-                    url: "/og-image.jpg", // 未設定(To Do)
+                    url: "/banner1.PNG",
                     width: 800,
                     height: 600,
                     alt: title,
@@ -73,11 +79,11 @@ export async function generateMetadata(): Promise<Metadata> {
             ],
         },
         twitter: {
-            card: "summary_large_image", // 未設定(To Do)
+            card: "summary_large_image",
             site: "@MusicArchPJ",
             title: title,
             description: description,
-            images: ["/twitter-image.jpg"], // 未設定(To Do)
+            images: ["/banner1.PNG"],
         },
     };
 }

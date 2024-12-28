@@ -7,8 +7,10 @@ import Loading from "../Loading";
 import type { PlayerItem, PlayerPlaylist } from "../PlayerView";
 import Thumbnail from "../Thumbnail";
 import type { Video } from "@/contexts/ApiDataContext";
+import Image from "next/image";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
 import LoadingPage from "@/components/LoadingPage";
+import type { ArtistYTM, YouTubeAccount } from "@/contexts/ApiDataContext";
 
 type TemporaryYouTubeTab = {
     inputValue: InputValue[];
@@ -29,12 +31,13 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
     // ブラウザ情報を取得
     const { isMobile } = useBrowserInfoContext();
 
-    // APIで取得したデータを格納
+    // APIで取得した全データを格納
     const [apiDataVideo, setApiDataVideo] = useState<Video[]>([]);
     // 検索結果の動画一覧
-    const [resultVideo, setResultVideo] = useState<Video[] | undefined>(
-        undefined,
-    );
+    const [resultVideo, setResultVideo] = useState<Video[] | null>(null);
+    // YTMのAPI結果
+    // 型定義を修正
+    const [artistYTM, setArtistYTM] = useState<ArtistYTM | null>(null);
 
     // API通信中かどうか
     const [loading, setLoading] = useState<LoadingState>(LoadingState.Loading);
@@ -47,7 +50,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             // Video取得
             // 最初の15件を取得
             const fastParams = {
-                filter__channelId__exact: "UCZx7esGXyW6JXn98byfKEIA",
+                filter__channelTitle__contains: "ぷらそにか",
                 filter__privacyStatus__exact: "public",
                 order_by: "-publishedAt",
                 limit: "15",
@@ -59,7 +62,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 
             // そのあと全てを取得
             const slowParams = {
-                filter__channelId__exact: "UCZx7esGXyW6JXn98byfKEIA",
+                filter__channelTitle__contains: "ぷらそにか",
                 filter__privacyStatus__exact: "public",
                 order_by: "-publishedAt",
                 offset: "15",
@@ -205,6 +208,46 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         setLoading(LoadingState.AllLoaded);
     }, [props.inputValue, apiDataVideo]);
 
+    const fetchArtistYTM = useCallback(
+        async (channelId: string) => {
+            const res = await apiData.ArtistYTM.getDataWithParams({
+                channelId: channelId,
+            });
+            // const result = [];
+            // result.push(res?.albums?.results);
+            // if (res?.singles?.results) {
+            //     result.push(...res.singles.results);
+            // }
+            setArtistYTM(res);
+        },
+        [apiData.ArtistYTM.getDataWithParams],
+    );
+
+    // YouTubeMusicの楽曲を表示する
+    useEffect(() => {
+        // 各inputValueに対してすべての条件を確認
+        const channelId = apiData.YouTubeAccount.data.find((item) => {
+            for (const inputValue of props.inputValue) {
+                // トピックチャンネルの方が取得できる情報量が多い。
+                if (
+                    inputValue.categoryId === "actor" ||
+                    inputValue.categoryId === "organization"
+                ) {
+                    if (!(item.topic || item.officialArtistChannel)) {
+                        return false;
+                    }
+                    if (item.entityId) {
+                        return item.entityId.match(inputValue.value);
+                    }
+                    return false;
+                }
+            }
+        });
+        if (channelId) {
+            fetchArtistYTM(channelId.userId);
+        }
+    }, [apiData.YouTubeAccount.data, props.inputValue, fetchArtistYTM]);
+
     // ローディング中
     if (apiDataVideo.length === 0 && loading === LoadingState.Loading) {
         return <LoadingPage />;
@@ -227,88 +270,217 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         <Fragment>
             <Box
                 sx={{
-                    display: "flex",
                     padding: "0 auto",
-                    justifyContent: "center", // 中央に配置
                     alignItems: "center", // 縦方向にも中央に配置
-                    flexWrap: "wrap", // ラップさせて複数行に
                     gap: "10px", // アイテム間のスペースを追加
                 }}
             >
-                {resultVideo &&
-                    (resultVideo.length !== 0 ? (
-                        <>
-                            {resultVideo.map((item: Video) => (
-                                <>
-                                    {/* 各アイテムを表示 */}
+                {artistYTM && (
+                    <>
+                        <Box>アルバムを聴いてみよう</Box>
+                        <div
+                            style={{
+                                display: "flex",
+                                overflowX: "scroll",
+                                maxWidth: "100vw",
+                                textAlign: "center",
+                            }}
+                        >
+                            {artistYTM.albums?.results?.map((album) => (
+                                <div key={album?.browseId}>
                                     <Box
-                                        key={item.videoId}
-                                        sx={{
-                                            width: isMobile ? "100%" : "auto",
-                                            maxWidth: isMobile ? "100%" : "30%",
+                                        style={{
+                                            width: "15vw",
+                                            margin: "20px",
+                                        }}
+                                        onClick={() => {
+                                            const fetch = async () => {
+                                                const albumData =
+                                                    await apiData.AlbumYTM.getDataWithParams(
+                                                        {
+                                                            browseId:
+                                                                album.browseId,
+                                                        },
+                                                    );
+                                                props.setPlayerItem({
+                                                    videoId:
+                                                        albumData?.tracks[0]
+                                                            .videoId,
+                                                    arHeight: 1,
+                                                    arWidth: 1,
+                                                });
+                                                if (
+                                                    albumData &&
+                                                    albumData.tracks.length !==
+                                                        0
+                                                ) {
+                                                    props.setPlayerPlaylist({
+                                                        title: albumData?.title,
+                                                        videos: albumData?.tracks.map(
+                                                            (item) => {
+                                                                return {
+                                                                    videoId:
+                                                                        item.videoId,
+                                                                    title: item.title,
+                                                                    channelTitle:
+                                                                        item
+                                                                            .artists[0]
+                                                                            .name,
+                                                                };
+                                                            },
+                                                        ),
+                                                    });
+                                                }
+                                            };
+                                            fetch();
                                         }}
                                     >
-                                        <Thumbnail
-                                            // ↓ To Do 余裕があったら切り替えボタン
-                                            // thumbnailType={
-                                            //     props.isMobile
-                                            //         ? "list"
-                                            //         : undefined
-                                            // }
-                                            //
-                                            // isPlayingOnHover={
-                                            //     props.playerItem.videoId === "" ||
-                                            //     props.playerItem.videoId === undefined
-                                            // }
-                                            videoId={item.videoId}
-                                            title={item.title}
-                                            viewCount={Number(item.viewCount)}
-                                            channelTitle={item.channelTitle}
-                                            publishedAt={
-                                                new Date(item.publishedAt || 0)
+                                        <Image
+                                            key={album.thumbnails[0].url}
+                                            src={album.thumbnails[0].url}
+                                            alt={
+                                                album.title || "シングルの画像"
                                             }
-                                            onClick={()=>{
-                                                props.setPlayerItem({
-                                                    videoId: item.videoId,
-                                                });
-                                                // APIから受け取った値の型を変換する。
-                                                const searchResult: Array<PlayerItem> = resultVideo
-                                                ? resultVideo.map((item: Video) => {
-                                                    const result: PlayerItem = {
-                                                        videoId: item.videoId,
-                                                        title: item.title,
-                                                        description:
-                                                            item.apiData &&
-                                                            JSON.parse(item.apiData).snippet.description,
-                                                        viewCount: Number(item.viewCount),
-                                                        channelId: item.channelId,
-                                                        channelTitle: item.channelTitle,
-                                                        publishedAt: item.publishedAt
-                                                            ? new Date(item.publishedAt)
-                                                            : undefined,
-                                                        actorId: item.person
-                                                            ? item.person.split(/ , |,| ,|, /).filter((v) => v)
-                                                            : [],
-                                                        organization: Object.keys(
-                                                            JSON.parse(item.organization || "{}"),
-                                                        ),
-                                                    };
-                                                    return result;
-                                                })
-                                                : [];
-                                                props.setPlayerPlaylist({
-                                                    title: "検索結果一覧",
-                                                    videos: searchResult,
-                                                });
+                                            width={160} // アスペクト比のための幅
+                                            height={90} // アスペクト比のための高さ
+                                            style={{
+                                                width: "100%",
+                                                height: "100%",
+                                                objectFit: "contain",
+                                                borderRadius: "1.2em",
                                             }}
                                         />
                                     </Box>
-                                </>
+                                    <div>{album.title}</div>
+                                </div>
                             ))}
-                        </>
-                    ) : (
-                        <div>検索結果が0です。</div>
-                    ))}
+                        </div>
+                    </>
+                )}
+                <Box
+                    sx={{
+                        display: "flex",
+
+                        justifyContent: "center", // 中央に配置
+                        alignItems: "center", // 縦方向にも中央に配置
+                        flexWrap: "wrap", // ラップさせて複数行に
+                    }}
+                >
+                    {resultVideo &&
+                        (resultVideo.length !== 0 ? (
+                            <>
+                                {resultVideo.map((item: Video) => (
+                                    <>
+                                        {/* 各アイテムを表示 */}
+                                        <Box
+                                            key={item.videoId}
+                                            sx={{
+                                                width: isMobile
+                                                    ? "100%"
+                                                    : "30%",
+                                                maxWidth: isMobile
+                                                    ? "100%"
+                                                    : "30%",
+                                            }}
+                                        >
+                                            <Thumbnail
+                                                // ↓ To Do 余裕があったら切り替えボタン
+                                                // thumbnailType={
+                                                //     props.isMobile
+                                                //         ? "list"
+                                                //         : undefined
+                                                // }
+                                                //
+                                                // isPlayingOnHover={
+                                                //     props.playerItem.videoId === "" ||
+                                                //     props.playerItem.videoId === undefined
+                                                // }
+                                                videoId={item.videoId}
+                                                title={item.title}
+                                                viewCount={Number(
+                                                    item.viewCount,
+                                                )}
+                                                channelTitle={item.channelTitle}
+                                                publishedAt={
+                                                    new Date(
+                                                        item.publishedAt || 0,
+                                                    )
+                                                }
+                                                onClick={() => {
+                                                    props.setPlayerItem({
+                                                        videoId: item.videoId,
+                                                    });
+                                                    // APIから受け取った値の型を変換する。
+                                                    const searchResult: Array<PlayerItem> =
+                                                        resultVideo
+                                                            ? resultVideo.map(
+                                                                  (
+                                                                      item: Video,
+                                                                  ) => {
+                                                                      const result: PlayerItem =
+                                                                          {
+                                                                              videoId:
+                                                                                  item.videoId,
+                                                                              title: item.title,
+                                                                              description:
+                                                                                  item.apiData &&
+                                                                                  JSON.parse(
+                                                                                      item.apiData,
+                                                                                  )
+                                                                                      .snippet
+                                                                                      .description,
+                                                                              viewCount:
+                                                                                  Number(
+                                                                                      item.viewCount,
+                                                                                  ),
+                                                                              channelId:
+                                                                                  item.channelId,
+                                                                              channelTitle:
+                                                                                  item.channelTitle,
+                                                                              publishedAt:
+                                                                                  item.publishedAt
+                                                                                      ? new Date(
+                                                                                            item.publishedAt,
+                                                                                        )
+                                                                                      : undefined,
+                                                                              actorId:
+                                                                                  item.person
+                                                                                      ? item.person
+                                                                                            .split(
+                                                                                                / , |,| ,|, /,
+                                                                                            )
+                                                                                            .filter(
+                                                                                                (
+                                                                                                    v,
+                                                                                                ) =>
+                                                                                                    v,
+                                                                                            )
+                                                                                      : [],
+                                                                              organizationId:
+                                                                                  Object.keys(
+                                                                                      JSON.parse(
+                                                                                          item.organization ||
+                                                                                              "{}",
+                                                                                      ),
+                                                                                  ),
+                                                                          };
+                                                                      return result;
+                                                                  },
+                                                              )
+                                                            : [];
+                                                    props.setPlayerPlaylist({
+                                                        videos: searchResult,
+                                                    });
+                                                }}
+                                            />
+                                        </Box>
+                                    </>
+                                ))}
+                            </>
+                        ) : (
+                            <div>検索結果が0です。</div>
+                        ))}
+                </Box>
             </Box>
             {
                 // ロードが完了している場合は何も表示しない

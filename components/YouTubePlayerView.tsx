@@ -13,10 +13,21 @@ type YouTubePlayerViewProps = {
     setPlayer?: Dispatch<SetStateAction<YouTubePlayer | undefined>>;
 };
 
+enum State {
+    unstarted = "unstarted",
+    ended = "ended",
+    playing = "playing",
+    paused = "paused",
+    buffering = "buffering",
+    videoCued = "videoCued", //（準備完了）
+    undefined = "undefined"
+}
+
 export type YouTubePlayerState = {
-    state: string;
+    state: State;
+    stateNumber: number;
     getVideoData: {
-        videoId: string
+        video_id: string
         title: string;
         author: string;
         video_quality: string;
@@ -64,16 +75,17 @@ export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
 
     // YouTube Playerの再生の状態を取得
     const onStateChange: YouTubeProps["onStateChange"] = (event) => {
-        const stateMap: { [key: number]: string } = {
-            [-1]: "未開始",
-            0: "終了",
-            1: "再生中",
-            2: "一時停止",
-            3: "バッファリング",
-            5: "頭出し（準備完了）",
+        const stateMap: { [key: number]: State } = {
+            [-1]: State.unstarted,
+            [0]: State.ended,
+            [1]: State.playing,
+            [2]: State.paused,
+            [3]: State.buffering,
+            [5]: State.videoCued,
         };
         const r = {
-            state:  stateMap[event?.data] ?? "不明",
+            state:  stateMap[event?.data] ?? State.undefined,
+            stateNumber: event?.data,
             getVideoData: event?.target?.getVideoData(),
             getCurrentTime: event?.target?.getCurrentTime(),
             getDuration: event?.target?.getDuration(),

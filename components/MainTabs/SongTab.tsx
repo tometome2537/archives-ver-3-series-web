@@ -3,7 +3,7 @@ import { useApiDataContext } from "@/contexts/ApiDataContext";
 import { useEffect, useState, useCallback } from "react";
 import type { ArtistYTM, YouTubeAccount } from "@/contexts/ApiDataContext";
 import Image from "next/image";
-import type { PlayerItem,PlayerPlaylist } from "../PlayerView";
+import type { PlayerItem, PlayerPlaylist } from "../PlayerView";
 import type { Dispatch, SetStateAction } from "react";
 import Thumbnail from "../Thumbnail";
 import { Box, Container } from "@mui/material";
@@ -27,7 +27,6 @@ export default function SongTab(props: SongTabProps) {
     const fetchArtistYTM = useCallback(
         async (channelId: string) => {
             const d = await apiData.ArtistYTM.getDataWithParams({
-                mode: "get_artist",
                 channelId: channelId,
             });
             setArtistYTM(d);
@@ -44,20 +43,9 @@ export default function SongTab(props: SongTabProps) {
                     inputValue.categoryId === "actor" ||
                     inputValue.categoryId === "organization"
                 ) {
-                    if (!item.topic) {
+                    if (!(item.topic || item.officialArtistChannel)) {
                         return false;
                     }
-                    if (item.entityId) {
-                        return item.entityId.match(inputValue.value);
-                    }
-                    return false;
-                }
-            }
-            for (const inputValue of props.inputValue) {
-                if (
-                    inputValue.categoryId === "actor" ||
-                    inputValue.categoryId === "organization"
-                ) {
                     if (item.entityId) {
                         return item.entityId.match(inputValue.value);
                     }
@@ -74,7 +62,7 @@ export default function SongTab(props: SongTabProps) {
             // 幾田りら - Topic
             // fetchArtistYTM("UCISF03gz20_8vWnkSVYlOEw");
             // 小玉ひかり - Topic
-            fetchArtistYTM("UC6BP3fgj6dF0wOrwBO5_PKQ");
+            // fetchArtistYTM("UC6BP3fgj6dF0wOrwBO5_PKQ");
             // GReeeeN(GRe4N BOYZ) - Topic
             // fetchArtistYTM("UChGJnU2_JNprD1sAtQJpZkA");
         }
@@ -168,31 +156,39 @@ export default function SongTab(props: SongTabProps) {
                                 width: "20vw",
                                 margin: "20px",
                             }}
-                            onClick={()=>{
-                                const fetch = async ()=>{
-                                    const albumData = await apiData.AlbumYTM.getDataWithParams({mode:"get_album",browseId:album.browseId})
+                            onClick={() => {
+                                const fetch = async () => {
+                                    const albumData =
+                                        await apiData.AlbumYTM.getDataWithParams(
+                                            { browseId: album.browseId },
+                                        );
                                     props.setPlayerItem({
                                         videoId: albumData?.tracks[0].videoId,
                                         arHeight: 1,
-                                        arWidth: 1
-                                    })
-                                    if(albumData && albumData.tracks.length !== 0){
+                                        arWidth: 1,
+                                    });
+                                    if (
+                                        albumData &&
+                                        albumData.tracks.length !== 0
+                                    ) {
                                         props.setPlayerPlaylist({
                                             title: albumData?.title,
-                                            videos: albumData?.tracks.map((item=>{
-                                                return {
-                                                    videoId: item.videoId,
-                                                    title: item.title,
-                                                    channelTitle: item.artists[0].name
-                                                }
-                                            }))
-                                        })
+                                            videos: albumData?.tracks.map(
+                                                (item) => {
+                                                    return {
+                                                        videoId: item.videoId,
+                                                        title: item.title,
+                                                        channelTitle:
+                                                            item.artists[0]
+                                                                .name,
+                                                    };
+                                                },
+                                            ),
+                                        });
                                     }
-                                }
-                                fetch()
-                            }
-
-                            }
+                                };
+                                fetch();
+                            }}
                         >
                             <Image
                                 key={album.thumbnails[0].url}
@@ -228,16 +224,19 @@ export default function SongTab(props: SongTabProps) {
                                 width: "20vw",
                                 margin: "20px",
                             }}
-                            onClick={()=>{
-                                const fetch = async ()=>{
-                                    const albumData = await apiData.AlbumYTM.getDataWithParams({mode:"get_album",browseId:single.browseId})
+                            onClick={() => {
+                                const fetch = async () => {
+                                    const albumData =
+                                        await apiData.AlbumYTM.getDataWithParams(
+                                            { browseId: single.browseId },
+                                        );
                                     props.setPlayerItem({
                                         videoId: albumData?.tracks[0].videoId,
                                         // arHeight: 1,
                                         // arWidth: 1
-                                    })
-                                }
-                                fetch()
+                                    });
+                                };
+                                fetch();
                             }}
                         >
                             <Image

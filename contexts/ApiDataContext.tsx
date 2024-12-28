@@ -13,6 +13,8 @@ export interface BelongHistory {
 export interface Entity {
     id: string;
     name: string;
+    rubyJaHiragana: string | null;
+    rubyEn: string | null;
     category: string;
 }
 export interface XAccount {
@@ -24,7 +26,7 @@ export interface YouTubeAccount {
     entityId: string;
     userName: string;
     name: string;
-    officialArtistChannel: string;
+    officialArtistChannel: string | null;
     topic: boolean | null;
     apiData: string;
 }
@@ -93,7 +95,6 @@ export interface ArtistYTM {
             title: string;
             year: string;
             browseId: string;
-            audioPlaylistId: string;
             thumbnails: { url: string; width: number; height: number }[];
         }[];
         params: string | null;
@@ -112,8 +113,8 @@ export interface ArtistYTM {
     };
 }
 export interface AlbumYTM {
-    title:string;
-    type:string;
+    title: string;
+    type: string;
     thumbnails: { url: string; width: number; height: number }[];
     isExplicit: boolean;
     description: string | null;
@@ -121,7 +122,7 @@ export interface AlbumYTM {
     trackCount: number;
     duration: string;
     audioPlaylistId: string;
-    tracks:{
+    tracks: {
         videoId: string;
         title: string;
         artists: { name: string; id: string }[];
@@ -136,12 +137,12 @@ export interface AlbumYTM {
         trackNumber: number;
         duration: string;
         duration_seconds: number;
-    }[]
+    }[];
     other_versions: {
-        title:string;
-        type:string;
+        title: string;
+        type: string;
         artists: { name: string; id: string }[];
-        browseId:string;
+        browseId: string;
         audioPlaylistId: string;
         thumbnails: { url: string; width: number; height: number }[];
         isExplicit: boolean;
@@ -243,8 +244,8 @@ const ApiData: ApiDataContextType = {
         getDataWithParams: async () => [],
     },
     ArtistYTM: {
-        url: "https://api-py.tometome.org/ytm",
-        // url: "http://127.0.0.1:8000/ytm",
+        url: "https://api-py.tometome.org/ytm/get_artist",
+        // url: "http://127.0.0.1:8000/ytm/get_artist",
         fetchOption: {},
         status: "idle",
         data: null,
@@ -252,14 +253,14 @@ const ApiData: ApiDataContextType = {
         getDataWithParams: async () => null,
     },
     AlbumYTM: {
-        url: "https://api-py.tometome.org/ytm",
-        // url: "http://127.0.0.1:8000/ytm",
+        url: "https://api-py.tometome.org/ytm/get_album",
+        // url: "http://127.0.0.1:8000/ytm/get_album",
         fetchOption: {},
         status: "idle",
         data: null,
         getData: async () => null,
         getDataWithParams: async () => null,
-    }
+    },
 };
 
 // コンテキストを作成
@@ -275,6 +276,9 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
     useEffect(() => {
         const fetchData = async () => {
             try {
+                // 各データタイプのループ処理
+                const updatedData: ApiDataContextType = { ...ApiData }; // 現在のデータ定義をコピー
+
                 // Fetcher関数の定義
                 const fetcher = async (url: string, option: FetchOption) => {
                     const response = await fetch(url, option);
@@ -283,9 +287,6 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
                     }
                     return response.json();
                 };
-
-                // 各データタイプのループ処理
-                const updatedData: ApiDataContextType = { ...ApiData }; // 現在のデータ定義をコピー
 
                 for (const key in ApiData) {
                     if (Object.prototype.hasOwnProperty.call(ApiData, key)) {

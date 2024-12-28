@@ -21,6 +21,8 @@ export interface SearchSuggestion {
     label: string;
     // 値
     value: string;
+    // 入力途中の文字列に反応させる文字列
+    filterMatchText? :string;
     // アイコン画像URL
     imgSrc?: string;
     // アイコン(MUIのアイコンを想定)
@@ -175,6 +177,11 @@ export default function SearchBar(props: SearchBarProps) {
                 }
             }
 
+            // trueの場合のみ返す。
+            const r = option.filterMatchText?.toLowerCase().includes(inputValueLowerCase)
+            if(r){
+                return r
+            }
             // ↓ 無駄に見えて謎にエラー回避に役立ってる String()
             // おそらくAPIで取得した値がstringでないのが原因。
             // APIで取得する値がStringかどうかはTypeScriptでチェックしきれない。
@@ -448,7 +455,7 @@ export default function SearchBar(props: SearchBarProps) {
                                             // タグの横幅を定義
                                             width: props.showTagCount
                                                 ? "100%"
-                                                : "24%",
+                                                : "32%",
                                         }}
                                     >
                                         {/* 各要素にユニークなkeyを設定 */}

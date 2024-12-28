@@ -11,7 +11,7 @@ import type { Dispatch, SetStateAction } from "react";
 import type { YouTubePlayer } from "react-youtube";
 import Thumbnail from "./Thumbnail";
 import YouTubePlayerView from "./YouTubePlayerView";
-import type {YouTubePlayerState}from "./YouTubePlayerView";
+import type { YouTubePlayerState } from "./YouTubePlayerView";
 import "linkify-plugin-hashtag";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { KeyboardArrowDown } from "@mui/icons-material";
@@ -19,7 +19,6 @@ import IconButton from "@mui/material/IconButton";
 import { blue } from "@mui/material/colors";
 import Link from "./Link";
 import type { MultiSearchBarSearchSuggestion } from "./Navbar/SearchBar/MultiSearchBar";
-import { truncate } from "fs";
 
 export type PlayerItem = {
     // 優先度 高
@@ -34,7 +33,7 @@ export type PlayerItem = {
     publishedAt?: Date;
 
     actorId?: Array<string>;
-    organization?: Array<string>;
+    organizationId?: Array<string>;
     // 動画のタテの比率 (デフォルトは9)
     arHeight?: number;
     // 動画のヨコの比率 (デフォルトは16)
@@ -70,16 +69,6 @@ export default function PlayerView(props: PlayerProps) {
     // ブラウザ情報を取得
     const { screenWidth, screenHeight, isMobile } = useBrowserInfoContext();
 
-    // 現在再生されている動画の詳細情報
-    const [playNowDetail, setPlayNowDetail] = useState<
-        PlayerItem | undefined
-    >();
-
-    // 動画タテの比率 (デフォルトは9)
-    const arHeight = playNowDetail?.arHeight || 9;
-    // 動画ヨコの比率 (デフォルトは16)
-    const arWidth = playNowDetail?.arWidth || 16;
-
     // プレイヤーの状態(例、再生中、停止中、etc...)
     const [youTubePlayerState, setYouTubePlayerState] =
         useState<YouTubePlayerState>();
@@ -88,6 +77,20 @@ export default function PlayerView(props: PlayerProps) {
         YouTubePlayer | undefined
     >(undefined);
 
+    // 現在再生されている動画の詳細情報
+    const [playNowDetail, setPlayNowDetail] = useState<
+        PlayerItem | undefined
+    >();
+    // 動画タテの比率 (デフォルトは9、トピックチャンネルの場合は１)
+    const arHeight: number =
+        playNowDetail?.arHeight ||
+        (youTubePlayerState?.getVideoData.author.endsWith(" - Topic") && 1) ||
+        9;
+    // 動画ヨコの比率 (デフォルトは16、トピックチャンネルの場合は１)
+    const arWidth: number =
+        playNowDetail?.arHeight ||
+        (youTubePlayerState?.getVideoData.author.endsWith(" - Topic") && 1) ||
+        16;
 
     // playNowVideoIdが更新されたらplayNowDetailを更新
     useEffect(() => {
@@ -108,66 +111,34 @@ export default function PlayerView(props: PlayerProps) {
                 }
             });
         setPlayNowDetail(result || props.playerItem);
-        // youTubePlayer.setLoop(true)
-        // youTubePlayer.setShuffle(true)
-        // const videoIds = props.playerPlaylist?.videos.map(item => {
-        //     return item.videoId
-        // })
-        // const startIndex = videoIds?.findIndex(item => item === props.playerItem?.videoId)
-        // if(!videoIds?.includes(props.playerItem?.videoId)){
-        //     if(videoIds && youTubePlayer){
-        //         youTubePlayer.cuePlaylist({playlist: videoIds, index: startIndex ? startIndex - 1 : 0 })
-        //     }
-        // }
+    }, [
+        props.playerItem,
+        props.playerPlaylist?.videos,
+        props.setPlayerPlaylist,
+    ]);
 
-    }, [ props.playerItem?.videoId, props.playerPlaylist,props.setIsPlayerFullscreen]);
-
-    // actorId、entityIdがクリックされた時
-    const handleActor = (
-        event: React.MouseEvent<HTMLElement> | React.KeyboardEvent<HTMLElement>,
-    ) => {
-        const actorId = event.currentTarget.getAttribute("data-actorId");
-
-        const actorSearchSuggestion = props.searchSuggestion.find(
-            (item) => item.value === actorId || item.label === actorId,
-        );
-
-        const result: InputValue[] = [];
-        // = props.inputValue.filter(
-        //     (item) => item.categoryId !== "actor",
-        // );
-
-        if (actorSearchSuggestion) {
-            const value: InputValue = Object.assign(
-                {
-                    createdAt: new Date(),
-                    sort: actorSearchSuggestion.sort || 99,
-                },
-                actorSearchSuggestion,
+    // 楽曲の再生が終わったら次の曲を再生する。
+    useEffect(() => {
+        if (youTubePlayerState?.state === "ended") {
+            // 再生が終わったら。
+            // 次の曲を順に再生する場合。
+            const playListIndex = props.playerPlaylist?.videos.findIndex(
+                (item) =>
+                    item.videoId === youTubePlayerState?.getVideoData.video_id,
             );
-
-            result.push(value);
+            if (playListIndex) {
+                console.log(props.playerPlaylist?.videos[playListIndex + 1]);
+                props.setPlayerItem(
+                    props.playerPlaylist?.videos[playListIndex + 1],
+                );
+            }
         }
-
-        props.setInputValue(result);
-        props.setIsPlayerFullscreen(false);
-    };
-
-    // idから検索候補を返す
-    const getSearchSuggestionFromId = (
-        id: string,
-    ): MultiSearchBarSearchSuggestion => {
-        const r = props.searchSuggestion.find((item) => item.value === id);
-        if (r) {
-            return r;
-        }
-        return {
-            label: id,
-            value: id,
-            categoryId: id,
-            categoryLabel: id,
-        };
-    };
+    }, [
+        props.setPlayerItem,
+        youTubePlayerState?.state,
+        props.playerPlaylist,
+        youTubePlayerState?.getVideoData.video_id,
+    ]);
 
     const linkifyOptions = {
         render: {
@@ -292,7 +263,7 @@ export default function PlayerView(props: PlayerProps) {
                     top: "0",
                     // ここまで拡大表示の時にPlayerを固定する
                     // ↓ PCの時は右カラムを左カラムの下に。
-                    display: isMobile ? "block" : "flex" ,
+                    display: isMobile ? "block" : "flex",
                     width: "100%",
                     height: "100%",
                     maxWidth: "100vw",
@@ -386,7 +357,9 @@ export default function PlayerView(props: PlayerProps) {
                     {/* YouTubeプレイヤー */}
                     <YouTubePlayerView
                         videoId={
-                           props.playerItem?.videoId ? props.playerItem?.videoId : ""
+                            props.playerItem?.videoId
+                                ? props.playerItem?.videoId
+                                : ""
                         }
                         style={{
                             // padding: "0", // プレイヤーの上下にスペースを追加
@@ -494,7 +467,7 @@ export default function PlayerView(props: PlayerProps) {
                             margin: "auto",
                         }}
                     >
-                        {youTubePlayerState?.state === "再生中" ? (
+                        {youTubePlayerState?.state === "playing" ? (
                             <PauseIcon
                                 sx={{
                                     height: "100%",
@@ -599,13 +572,13 @@ export default function PlayerView(props: PlayerProps) {
                                     year: "numeric", // 年
                                     month: "long", // 月（長い形式）
                                     day: "numeric", // 日
-                                    hour: "2-digit", // 時（2桁形式）
-                                    minute: "2-digit", // 分（2桁形式）
+                                    // hour: "2-digit", // 時（2桁形式）
+                                    // minute: "2-digit", // 分（2桁形式）
                                     // second: "2-digit", // 秒（2桁形式）
                                     hour12: false, // 24時間形式
                                 })}
                         </p>
-                        {/* 出演者一覧 */}
+                        {/* 出演者・組織名一覧 */}
                         <Box
                             style={{
                                 display: "flex",
@@ -618,85 +591,26 @@ export default function PlayerView(props: PlayerProps) {
                         >
                             {props.isPlayerFullscreen &&
                             playNowDetail &&
-                            playNowDetail.actorId &&
-                            playNowDetail.actorId.length !== 0
-                                ? playNowDetail.actorId.map((actorId) => (
-                                      <Chip
-                                          key={actorId}
-                                          variant="outlined"
-                                          sx={{
-                                              "& .MuiChip-label": {
-                                                  maxWidth: "100%",
-                                                  whiteSpace: "nowrap", // 改行させない
-                                                  textOverflow: "ellipsis", // 長いテキストを省略して表示
-                                              },
-                                          }}
-                                          avatar={
-                                              getSearchSuggestionFromId(actorId)
-                                                  .imgSrc ? (
-                                                  <Avatar
-                                                      alt={
-                                                          getSearchSuggestionFromId(
-                                                              actorId,
-                                                          ).label
-                                                      }
-                                                      src={
-                                                          getSearchSuggestionFromId(
-                                                              actorId,
-                                                          ).imgSrc
-                                                      }
-                                                  />
-                                              ) : (
-                                                  <Avatar>
-                                                      {
-                                                          getSearchSuggestionFromId(
-                                                              actorId,
-                                                          ).label[0]
-                                                      }
-                                                  </Avatar>
-                                              )
-                                          }
-                                          label={
-                                              getSearchSuggestionFromId(actorId)
-                                                  .label
-                                          }
-                                          color="success"
-                                          onClick={handleActor}
-                                          onKeyPress={(e) => {
-                                              // onClickを実行する。
-                                              if (
-                                                  e.key === "Enter" ||
-                                                  e.key === " "
-                                              ) {
-                                                  // Enterキーまたはスペースキーの場合にonClickをトリガー
-                                                  e.preventDefault(); // スペースキーでスクロールが発生しないようにする
-                                                  e.currentTarget.click(); // onClickを参照
-                                              }
-                                          }}
-                                          data-actorId={actorId}
-                                      />
-                                  ))
-                                : null}
-                        </Box>
-                        {/* 組織名一覧 */}
-                        <Box
-                            style={{
-                                display: "flex",
-                                padding: "8 auto",
-                                justifyContent: "center", // 中央に配置
-                                alignItems: "center", // 縦方向にも中央に配置
-                                flexWrap: "wrap", // ラップさせて複数行に
-                                gap: "10px", // アイテム間のスペースを追加
-                            }}
-                        >
-                            {props.isPlayerFullscreen &&
-                            playNowDetail &&
-                            playNowDetail.organization &&
-                            playNowDetail.organization.length !== 0
-                                ? playNowDetail.organization.map(
-                                      (organizationId, index) => (
+                            (playNowDetail.actorId ||
+                                playNowDetail.organizationId) &&
+                            (playNowDetail.actorId?.length !== 0 ||
+                                playNowDetail.organizationId?.length !== 0)
+                                ? // 出演者一覧と組織名一覧を1つにまとめる処理
+                                  [
+                                      ...(playNowDetail.actorId || []),
+                                      ...(playNowDetail.organizationId || []),
+                                  ].map((id, index) => {
+                                      //   const isActor =
+                                      //       playNowDetail.actorId &&
+                                      //       playNowDetail.actorId.includes(id);
+                                      const r = props.searchSuggestion.find(
+                                          (item) => item.value === id,
+                                      );
+                                      const label = r?.label ?? "?";
+                                      const imgSrc = r?.imgSrc;
+                                      return (
                                           <Chip
-                                              key={organizationId}
+                                              key={id}
                                               variant="outlined"
                                               sx={{
                                                   "& .MuiChip-label": {
@@ -706,38 +620,55 @@ export default function PlayerView(props: PlayerProps) {
                                                   },
                                               }}
                                               avatar={
-                                                  getSearchSuggestionFromId(
-                                                      organizationId,
-                                                  ).imgSrc ? (
+                                                  imgSrc ? (
                                                       <Avatar
-                                                          alt={
-                                                              getSearchSuggestionFromId(
-                                                                  organizationId,
-                                                              ).label
-                                                          }
-                                                          src={
-                                                              getSearchSuggestionFromId(
-                                                                  organizationId,
-                                                              ).imgSrc
-                                                          }
+                                                          alt={label}
+                                                          src={imgSrc}
                                                       />
                                                   ) : (
                                                       <Avatar>
-                                                          {
-                                                              getSearchSuggestionFromId(
-                                                                  organizationId,
-                                                              ).label[0]
-                                                          }
+                                                          {label[0]}
                                                       </Avatar>
                                                   )
                                               }
-                                              label={
-                                                  getSearchSuggestionFromId(
-                                                      organizationId,
-                                                  ).label
-                                              }
+                                              label={label}
                                               color="success"
-                                              onClick={handleActor}
+                                              onClick={() => {
+                                                  const actorSearchSuggestion =
+                                                      props.searchSuggestion.find(
+                                                          (item) =>
+                                                              item.value ===
+                                                                  id ||
+                                                              item.label === id,
+                                                      );
+
+                                                  const result: InputValue[] =
+                                                      [];
+                                                  // = props.inputValue.filter(
+                                                  //     (item) => item.categoryId !== "actor",
+                                                  // );
+
+                                                  if (actorSearchSuggestion) {
+                                                      const value: InputValue =
+                                                          Object.assign(
+                                                              {
+                                                                  createdAt:
+                                                                      new Date(),
+                                                                  sort:
+                                                                      actorSearchSuggestion.sort ||
+                                                                      99,
+                                                              },
+                                                              actorSearchSuggestion,
+                                                          );
+
+                                                      result.push(value);
+                                                  }
+
+                                                  props.setInputValue(result);
+                                                  props.setIsPlayerFullscreen(
+                                                      false,
+                                                  );
+                                              }}
                                               onKeyPress={(e) => {
                                                   // onClickを実行する。
                                                   if (
@@ -749,12 +680,12 @@ export default function PlayerView(props: PlayerProps) {
                                                       e.currentTarget.click(); // onClickを参照
                                                   }
                                               }}
-                                              data-actorId={organizationId}
                                           />
-                                      ),
-                                  )
+                                      );
+                                  })
                                 : null}
                         </Box>
+
                         {/* 概要欄 */}
                         <Box
                             style={{
@@ -775,6 +706,42 @@ export default function PlayerView(props: PlayerProps) {
                                     </Linkify>
                                 )}
                         </Box>
+                        {/* プレイリストの表示 */}
+                        <p>{isMobile && props.playerPlaylist?.title}</p>
+                        {isMobile && props.playerPlaylist
+                            ? props.playerPlaylist.videos.map(
+                                  (item: PlayerItem) => (
+                                      <>
+                                          <Box
+                                              key={item.videoId}
+                                              sx={{
+                                                  maxWidth: "80vw",
+                                                  margin: "0 auto",
+                                              }}
+                                          >
+                                              <Thumbnail
+                                                  videoId={
+                                                      item.videoId
+                                                          ? item.videoId
+                                                          : ""
+                                                  }
+                                                  title={item.title}
+                                                  viewCount={item.viewCount}
+                                                  channelTitle={
+                                                      item.channelTitle
+                                                  }
+                                                  publishedAt={item.publishedAt}
+                                                  onClick={(e) => {
+                                                      // ↓ 親要素のonClickを発火させたくない場合に追記
+                                                      e.stopPropagation();
+                                                      props.setPlayerItem(item);
+                                                  }}
+                                              />
+                                          </Box>
+                                      </>
+                                  ),
+                              )
+                            : null}
                     </Box>
                 </Box>
                 {/* 右カラム */}
@@ -789,8 +756,10 @@ export default function PlayerView(props: PlayerProps) {
                                 ? "block"
                                 : "none",
                         // position: "relative",
-                        width: props.isPlayerFullscreen &&
-                            !isMobile ? "30%" : "100%",
+                        width:
+                            props.isPlayerFullscreen && !isMobile
+                                ? "30%"
+                                : "100%",
                     }}
                 >
                     <Box
@@ -825,7 +794,9 @@ export default function PlayerView(props: PlayerProps) {
                                                       item.channelTitle
                                                   }
                                                   publishedAt={item.publishedAt}
-                                                  onClick={() => {
+                                                  onClick={(e) => {
+                                                      // ↓ 親要素のonClickを発火させたくない場合に追記
+                                                      e.stopPropagation();
                                                       props.setPlayerItem(item);
                                                   }}
                                               />

@@ -8,17 +8,21 @@ type AlbumProps = {
     title?: string;
     onClick?: MouseEventHandler<HTMLElement>;
     imgSrc?: string;
+    style?: React.CSSProperties; // 外部からスタイルを受け取る（オプション）
 };
 
 export default function Album(props: AlbumProps) {
     return (
         <Box
             style={{
-                // display: "block",
-                minWidth: "18vw",
-                margin: "0 1vw",
-                cursor: "pointer",
-                textAlign: "center",
+                ...{
+                    // display: "block",
+                    minWidth: "18vw",
+                    margin: "0 1vw",
+                    cursor: "pointer",
+                    textAlign: "center",
+                },
+                ...props.style,
             }}
             onClick={props.onClick}
         >
@@ -37,7 +41,8 @@ export default function Album(props: AlbumProps) {
             />
             <Typography
                 sx={{
-                    maxWidth: "30ch",
+                    // maxWidth: "30ch",
+                    fontSize: "0.5",
                     textOverflow: "ellipsis",
                     overflow: "hidden",
                     whiteSpace: "nowrap",

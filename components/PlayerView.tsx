@@ -217,6 +217,8 @@ export default function PlayerView(props: PlayerProps) {
                             </Link>
                         );
                     }
+
+                    return <Link {...attributes}>{content}</Link>;
                 } catch (error) {
                     return <Link {...attributes}>{content}</Link>;
                 }
@@ -228,15 +230,19 @@ export default function PlayerView(props: PlayerProps) {
                 attributes: { [attr: string]: React.ReactNode };
                 content: string;
             }) => {
-                return (
-                    <Link
-                        style={{ color: blue[400] }}
-                        underline="none"
-                        {...attributes}
-                    >
-                        {content}
-                    </Link>
-                );
+                try {
+                    return (
+                        <Link
+                            style={{ color: blue[400] }}
+                            underline="none"
+                            {...attributes}
+                        >
+                            {content}
+                        </Link>
+                    );
+                } catch {
+                    return <Link {...attributes}>{content}</Link>;
+                }
             },
         },
         formatHref: {

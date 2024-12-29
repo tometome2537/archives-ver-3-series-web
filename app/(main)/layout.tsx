@@ -217,20 +217,19 @@ export default function RootLayout({
     const tabMaps: TabMap[] = react.useMemo(
         () =>
             [
-                // {
-                //     value: "linkCollection",
-                //     icon: <AccountBoxIcon />,
-                //     label: "リンク集",
-                //     children: <LinkTab inputValue={inputValue} />,
-                //     scrollTo: 0,
-                //     onClick: () => {
-                //         setAvailableCategoryIds(["actor"]);
-                //         setLimitSearchCategory([]);
-                //         setFixedOptionValues([]);
-                //         setIsPlayerFullscreen(false);
-                //         setTextSuggestionCategory([]);
-                //     },
-                // },
+                {
+                    value: "linkCollection",
+                    icon: <AccountBoxIcon />,
+                    label: "リンク集",
+                    children: <LinkTab inputValue={inputValue} />,
+                    scrollTo: 0,
+                    onClick: () => {
+                        setAvailableCategoryIds(["actor"]);
+                        setLimitSearchCategory([]);
+                        setFixedOptionValues([]);
+                        setTextSuggestionCategory([]);
+                    },
+                },
                 // {
                 //     value: "songs",
                 //     icon: <MusicNoteIcon />,
@@ -249,7 +248,6 @@ export default function RootLayout({
                 //         setAvailableCategoryIds(["actor", "organization"]);
                 //         setLimitSearchCategory([]);
                 //         setFixedOptionValues([]);
-                //         setIsPlayerFullscreen(false);
                 //         // 検索候補を更新
                 //         setSearchSuggestion(entitySearchSuggestions());
                 //     },
@@ -309,8 +307,6 @@ export default function RootLayout({
                         //         ),
                         //     ]);
                         // }
-                        // とりあえず直ったけど、他の問題が発生する可能性あり
-                        setIsPlayerFullscreen(false);
                         setTextSuggestionCategory([
                             {
                                 sort: 20,
@@ -356,7 +352,7 @@ export default function RootLayout({
                 //         setAvailableCategoryIds([]);
                 //         setLimitSearchCategory([]);
                 //         setFixedOptionValues([]);
-                // setIsPlayerFullscreen(false);
+                //
                 //     },
                 // },
             ].map((item, index) => {
@@ -374,7 +370,7 @@ export default function RootLayout({
         ],
     );
 
-    const tabScroll = TabScroll(tabMaps);
+    const tabScroll = TabScroll(tabMaps, setIsPlayerFullscreen);
 
     return (
         <Fragment>

@@ -28,10 +28,8 @@ export default function TabScroll(
     tabMaps: TabMap[],
     setIsPlayerFullscreen: (value: React.SetStateAction<boolean>) => void,
 ) {
-    // テーマの読み込み
     const theme = useTheme();
-    // ブラウザ情報を取得
-    const { screenWidth, screenHeight, isMobile } = useBrowserInfoContext();
+    const { screenWidth, isMobile } = useBrowserInfoContext();
 
     // 現在選択されているタブ
     const [activeTab, setActiveTab] = useState<string>("");
@@ -55,27 +53,6 @@ export default function TabScroll(
     }, []); // 依存関係がないため再生成されない
 
     const pathname = usePathname();
-
-    // 指定されたactiveTabに移動する。
-    const activateTab = useCallback(
-        (tabName: string) => {
-            const pathnames = pathname.split("/");
-            if (pathnames[1] !== tabName) {
-                window.history.pushState(null, "", `/${tabName}`); // URLを更新
-            }
-
-            const i = tabMaps.find((item) => item.value === tabName);
-            if (i === undefined) return;
-
-            scrollToPosition(i.scrollTo);
-            if (tabName !== "") {
-                setIsPlayerFullscreen(false);
-            }
-            i.onClick();
-        },
-        [pathname, tabMaps, scrollToPosition, activeTab],
-    );
-
     // URLの更新を監視する
     useEffect(() => {
         const pathnames = pathname.split("/");
@@ -84,12 +61,21 @@ export default function TabScroll(
         const tab = tabMaps.find((x) => x.value === tabName);
         setActiveTab(tab?.value ?? "");
         scrollToPosition(tab?.scrollTo ?? 0);
-    }, [pathname, tabMaps, scrollToPosition]);
+    }, [tabMaps, scrollToPosition, pathname]);
 
     // activeTabの変更を検知する。
     useEffect(() => {
-        activateTab(activeTab);
-    }, [activeTab, activateTab]);
+        window.history.pushState(null, "", `/${activeTab}`); // URLを更新
+
+        const i = tabMaps.find((item) => item.value === activeTab);
+        if (i === undefined) return;
+
+        scrollToPosition(i.scrollTo);
+        if (activeTab !== "") {
+            setIsPlayerFullscreen(false);
+        }
+        i.onClick();
+    }, [activeTab, scrollToPosition, tabMaps, setIsPlayerFullscreen]);
 
     // 画面のサイズの変化を監視
     useEffect(() => {

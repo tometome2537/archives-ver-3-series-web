@@ -217,19 +217,19 @@ export default function RootLayout({
     const tabMaps: TabMap[] = react.useMemo(
         () =>
             [
-                {
-                    value: "linkCollection",
-                    icon: <AccountBoxIcon />,
-                    label: "リンク集",
-                    children: <LinkTab inputValue={inputValue} />,
-                    scrollTo: 0,
-                    onClick: () => {
-                        setAvailableCategoryIds(["actor"]);
-                        setLimitSearchCategory([]);
-                        setFixedOptionValues([]);
-                        setTextSuggestionCategory([]);
-                    },
-                },
+                // {
+                //     value: "linkCollection",
+                //     icon: <AccountBoxIcon />,
+                //     label: "リンク集",
+                //     children: <LinkTab inputValue={inputValue} />,
+                //     scrollTo: 0,
+                //     onClick: () => {
+                //         setAvailableCategoryIds(["actor"]);
+                //         setLimitSearchCategory([]);
+                //         setFixedOptionValues([]);
+                //         setTextSuggestionCategory([]);
+                //     },
+                // },
                 // {
                 //     value: "songs",
                 //     icon: <MusicNoteIcon />,

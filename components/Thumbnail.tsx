@@ -115,6 +115,7 @@ type ThumbnailProps = {
     viewCount?: number;
     channelTitle?: string;
     publishedAt?: Date;
+    duration?: number;
     // onClick?: MouseEventHandler<HTMLButtonElement>;
     onClick?: MouseEventHandler<HTMLElement>;
 };
@@ -260,7 +261,7 @@ export default function Thumbnail(props: ThumbnailProps) {
                     </Box>
 
                     {/* タイトルをエリプシスで省略 */}
-                    <Box sx={{ width: "70%" }}>
+                    <Box sx={{ width: "60%" }}>
                         <Typography
                             variant="body2"
                             sx={{
@@ -275,6 +276,18 @@ export default function Thumbnail(props: ThumbnailProps) {
                             {props.title || ""}
                             <br />
                             {props.channelTitle || ""}
+                        </Typography>
+                    </Box>
+                    <Box sx={{ width: "10%" }}>
+                        <Typography
+                            sx={{
+                                whiteSpace: "nowrap", // 改行しない
+                                marginTop: 1.5,
+                            }}
+                        >
+                            {props.duration
+                                ? `${Math.floor(props.duration / 60)}:${String(props.duration % 60).padStart(2, "0")}`
+                                : ""}
                         </Typography>
                     </Box>
                 </Box>
@@ -358,16 +371,14 @@ export default function Thumbnail(props: ThumbnailProps) {
                 </Typography>
 
                 {/* チャンネル名・再生回数・投稿日を表示 */}
-
                 <Typography
                     variant="caption"
                     color="textSecondary"
                     sx={{ marginTop: 0.5, textAlign: "center" }}
                 >
-                    {props.channelTitle || ""} ・{" "}
-                    {`${props.viewCount ? String(props.viewCount) : ""}回視聴` ||
-                        ""}{" "}
-                    ・ {props.publishedAt ? timeAgo(props.publishedAt) : ""}
+                    {props.channelTitle && props.channelTitle}
+                    {props.viewCount && ` ・ ${String(props.viewCount)}回視聴`}
+                    {props.publishedAt && ` ・ ${timeAgo(props.publishedAt)}`}
                 </Typography>
             </Box>
         </Box>

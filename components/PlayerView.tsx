@@ -19,6 +19,8 @@ import IconButton from "@mui/material/IconButton";
 import { blue } from "@mui/material/colors";
 import Link from "./Link";
 import type { MultiSearchBarSearchSuggestion } from "./Navbar/SearchBar/MultiSearchBar";
+import YouTubeIcon from "@mui/icons-material/YouTube";
+import Image from "next/image";
 
 export type PlayerItem = {
     // 優先度 高
@@ -31,13 +33,14 @@ export type PlayerItem = {
     viewCount?: number;
     channelId?: string;
     publishedAt?: Date;
+    duration?: number;
 
     actorId?: Array<string>;
     organizationId?: Array<string>;
-    // 動画のタテの比率 (デフォルトは9)
-    arHeight?: number;
     // 動画のヨコの比率 (デフォルトは16)
     arWidth?: number;
+    // 動画のタテの比率 (デフォルトは9)
+    arHeight?: number;
 };
 
 export type PlayerPlaylist = {
@@ -77,20 +80,28 @@ export default function PlayerView(props: PlayerProps) {
         YouTubePlayer | undefined
     >(undefined);
 
-    // 現在再生されている動画の詳細情報
-    const [playNowDetail, setPlayNowDetail] = useState<
-        PlayerItem | undefined
-    >();
-    // 動画タテの比率 (デフォルトは9、トピックチャンネルの場合は１)
-    const arHeight: number =
-        playNowDetail?.arHeight ||
-        (youTubePlayerState?.getVideoData.author.endsWith(" - Topic") && 1) ||
-        9;
     // 動画ヨコの比率 (デフォルトは16、トピックチャンネルの場合は１)
     const arWidth: number =
-        playNowDetail?.arHeight ||
+        props.playerItem?.arWidth ||
         (youTubePlayerState?.getVideoData.author.endsWith(" - Topic") && 1) ||
         16;
+    // 動画タテの比率 (デフォルトは9、トピックチャンネルの場合は１)
+    const arHeight: number =
+        props.playerItem?.arHeight ||
+        (youTubePlayerState?.getVideoData.author.endsWith(" - Topic") && 1) ||
+        9;
+
+    // youtubePlayerの横幅(px)
+    const playerWidth: number =
+        isMobile && props.isPlayerFullscreen
+            ? arWidth === arHeight // 正方形(比率が1:1)の場合
+                ? screenWidth * 0.8 // 小さめに表示する。
+                : screenWidth
+            : props.isPlayerFullscreen
+              ? ((screenHeight * 0.55) / arHeight) * arWidth
+              : ((screenHeight * 0.1) / arHeight) * arWidth;
+    // youtubePlayerの縦幅(px)
+    const playerHeight: number = (playerWidth / arWidth) * arHeight;
 
     // playNowVideoIdが更新されたらplayNowDetailを更新
     useEffect(() => {
@@ -110,9 +121,12 @@ export default function PlayerView(props: PlayerProps) {
                     return item;
                 }
             });
-        setPlayNowDetail(result || props.playerItem);
+        if (result) {
+            props.setPlayerItem(result);
+        }
     }, [
         props.playerItem,
+        props.setPlayerItem,
         props.playerPlaylist?.videos,
         props.setPlayerPlaylist,
     ]);
@@ -126,8 +140,7 @@ export default function PlayerView(props: PlayerProps) {
                 (item) =>
                     item.videoId === youTubePlayerState?.getVideoData.video_id,
             );
-            if (playListIndex) {
-                console.log(props.playerPlaylist?.videos[playListIndex + 1]);
+            if (playListIndex !== undefined) {
                 props.setPlayerItem(
                     props.playerPlaylist?.videos[playListIndex + 1],
                 );
@@ -335,15 +348,11 @@ export default function PlayerView(props: PlayerProps) {
                             sx={{
                                 display: "flex",
                                 alignContent: "left",
-                                width:
-                                    isMobile && props.isPlayerFullscreen
-                                        ? `${screenWidth}px`
-                                        : props.isPlayerFullscreen
-                                          ? `${((screenHeight * 0.55) / arHeight) * arWidth}px`
-                                          : `${((screenHeight * 0.1) / arHeight) * arWidth}px`,
+                                width: `${playerWidth}px`,
                                 margin: "0 auto",
                             }}
                         >
+                            <Box sx={{ flexGrow: 0.02 }} />
                             <IconButton
                                 sx={{
                                     marginY: 1,
@@ -358,6 +367,42 @@ export default function PlayerView(props: PlayerProps) {
                                     }}
                                 />
                             </IconButton>
+                            <Box sx={{ flexGrow: 0.01 }} />
+                            <IconButton
+                                sx={{
+                                    marginY: 1,
+                                }}
+                                component="a"
+                                href={`https://m.youtube.com/watch?v=${props.playerItem?.videoId}`}
+                                target="_blank"
+                            >
+                                <YouTubeIcon
+                                    sx={{
+                                        fontSize: "1.5rem",
+                                        color: "rgb(236,44,46)",
+                                    }}
+                                />
+                            </IconButton>
+                            <Box sx={{ flexGrow: 0.015 }} />
+                            <IconButton
+                                sx={{
+                                    marginY: 1,
+                                }}
+                                component="a"
+                                href={`https://music.youtube.com/watch?v=${props.playerItem?.videoId}`}
+                                target="_blank"
+                            >
+                                <Image
+                                    src="/ytm.png"
+                                    alt="YouTube Music ロゴ"
+                                    width={20}
+                                    height={20}
+                                    style={{
+                                        fontSize: "1.5rem",
+                                    }}
+                                />
+                            </IconButton>
+                            <Box sx={{ flexGrow: 1 }} />
                         </Box>
                     )}
                     {/* YouTubeプレイヤー */}
@@ -374,22 +419,15 @@ export default function PlayerView(props: PlayerProps) {
                             maxHeight: "100%",
                             // maxHeight: "100%", // 高さに制限をつけることでパソコンのモニター等で無制限に大きくならないようにする。
                         }}
-                        width={
-                            isMobile && props.isPlayerFullscreen
-                                ? `${screenWidth}px`
-                                : props.isPlayerFullscreen
-                                  ? `${((screenHeight * 0.55) / arHeight) * arWidth}px`
-                                  : `${((screenHeight * 0.1) / arHeight) * arWidth}px`
+                        width={`${playerWidth}px`}
+                        height={`${playerHeight}px`}
+                        playerRadius={
+                            !(
+                                isMobile &&
+                                props.isPlayerFullscreen &&
+                                arHeight !== arWidth
+                            )
                         }
-                        height={
-                            isMobile && props.isPlayerFullscreen
-                                ? `${(screenWidth / arWidth) * arHeight}px`
-                                : props.isPlayerFullscreen
-                                  ? `${screenHeight * 0.55}px`
-                                  : `${screenHeight * 0.1}px`
-                            //   props.screenHeight / 9 < props.screenWidth / 16,
-                        }
-                        playerRadius={!(isMobile && props.isPlayerFullscreen)}
                         setPlayer={setYouTubePlayer}
                         setPlayerState={setYouTubePlayerState}
                     />
@@ -412,6 +450,7 @@ export default function PlayerView(props: PlayerProps) {
                             }
                         }}
                         sx={{
+                            cursor: "pointer", // クリック可能かどうかでカーソルを変更
                             display: props.isPlayerFullscreen
                                 ? "none"
                                 : "block",
@@ -438,7 +477,7 @@ export default function PlayerView(props: PlayerProps) {
                         >
                             {youTubePlayerState
                                 ? youTubePlayerState?.getVideoData.title
-                                : playNowDetail?.title}
+                                : props.playerItem?.title}
                         </Box>
                         <Box
                             sx={{
@@ -458,9 +497,10 @@ export default function PlayerView(props: PlayerProps) {
                             }}
                         >
                             {youTubePlayerState
-                                ? youTubePlayerState.getVideoData.author
-                                    ? youTubePlayerState.getVideoData.author
-                                    : ""
+                                ? youTubePlayerState.getVideoData.author.replace(
+                                      " - Topic",
+                                      "",
+                                  )
                                 : ""}
                         </Box>
                     </Box>
@@ -503,7 +543,7 @@ export default function PlayerView(props: PlayerProps) {
                             />
                         )}
                     </Box>
-                    {/* YouTube Playerの下の概要欄 */}
+                    {/* PlayerView縮小表示の時のHTML */}
                     <Box
                         sx={{
                             display: props.isPlayerFullscreen
@@ -516,7 +556,7 @@ export default function PlayerView(props: PlayerProps) {
                         }}
                     >
                         {/* 動画タイトル */}
-                        <p
+                        <h3
                             style={{
                                 /* 要素に幅を持たせるために必要 */
                                 display: "block",
@@ -533,10 +573,8 @@ export default function PlayerView(props: PlayerProps) {
                         >
                             {youTubePlayerState
                                 ? youTubePlayerState.getVideoData.title
-                                    ? youTubePlayerState.getVideoData.title
-                                    : ""
                                 : ""}
-                        </p>
+                        </h3>
                         {/* チャンネル名 */}
                         <p
                             style={{
@@ -554,9 +592,10 @@ export default function PlayerView(props: PlayerProps) {
                             }}
                         >
                             {youTubePlayerState
-                                ? youTubePlayerState.getVideoData.author
-                                    ? youTubePlayerState.getVideoData.author
-                                    : ""
+                                ? youTubePlayerState.getVideoData.author.replace(
+                                      " - Topic",
+                                      "",
+                                  )
                                 : ""}
                         </p>
                         {/* 動画投稿日 */}
@@ -570,10 +609,10 @@ export default function PlayerView(props: PlayerProps) {
                             }}
                         >
                             {props.isPlayerFullscreen &&
-                                playNowDetail &&
-                                playNowDetail.publishedAt &&
+                                props.playerItem &&
+                                props.playerItem.publishedAt &&
                                 new Date(
-                                    playNowDetail.publishedAt,
+                                    props.playerItem.publishedAt,
                                 ).toLocaleDateString("ja-JP", {
                                     year: "numeric", // 年
                                     month: "long", // 月（長い形式）
@@ -596,15 +635,16 @@ export default function PlayerView(props: PlayerProps) {
                             }}
                         >
                             {props.isPlayerFullscreen &&
-                            playNowDetail &&
-                            (playNowDetail.actorId ||
-                                playNowDetail.organizationId) &&
-                            (playNowDetail.actorId?.length !== 0 ||
-                                playNowDetail.organizationId?.length !== 0)
+                            props.playerItem &&
+                            (props.playerItem.actorId ||
+                                props.playerItem.organizationId) &&
+                            (props.playerItem.actorId?.length !== 0 ||
+                                props.playerItem.organizationId?.length !== 0)
                                 ? // 出演者一覧と組織名一覧を1つにまとめる処理
                                   [
-                                      ...(playNowDetail.actorId || []),
-                                      ...(playNowDetail.organizationId || []),
+                                      ...(props.playerItem.actorId || []),
+                                      ...(props.playerItem.organizationId ||
+                                          []),
                                   ].map((id, index) => {
                                       //   const isActor =
                                       //       playNowDetail.actorId &&
@@ -700,7 +740,7 @@ export default function PlayerView(props: PlayerProps) {
                             }}
                         >
                             {props.isPlayerFullscreen &&
-                                playNowDetail?.description && (
+                                props.playerItem?.description && (
                                     <Linkify
                                         as="p"
                                         options={{
@@ -708,12 +748,12 @@ export default function PlayerView(props: PlayerProps) {
                                             target: "_blank",
                                         }}
                                     >
-                                        {playNowDetail.description}
+                                        {props.playerItem.description}
                                     </Linkify>
                                 )}
                         </Box>
                         {/* プレイリストの表示 */}
-                        <p>{isMobile && props.playerPlaylist?.title}</p>
+                        <h3>{isMobile && props.playerPlaylist?.title}</h3>
                         {isMobile && props.playerPlaylist
                             ? props.playerPlaylist.videos.map(
                                   (item: PlayerItem) => (
@@ -731,11 +771,13 @@ export default function PlayerView(props: PlayerProps) {
                                                           ? item.videoId
                                                           : ""
                                                   }
+                                                  thumbnailType="list"
                                                   title={item.title}
                                                   viewCount={item.viewCount}
                                                   channelTitle={
                                                       item.channelTitle
                                                   }
+                                                  duration={item.duration}
                                                   publishedAt={item.publishedAt}
                                                   onClick={(e) => {
                                                       // ↓ 親要素のonClickを発火させたくない場合に追記

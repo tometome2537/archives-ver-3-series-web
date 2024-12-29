@@ -119,7 +119,6 @@ export default function TabScroll(
             // リサイズイベントリスナーを追加
             window.addEventListener("resize", () => {
                 handleScroll();
-                activateTab(activeTab);
             });
 
             if (scrollContainer) {

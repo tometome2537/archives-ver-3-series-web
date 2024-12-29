@@ -241,31 +241,41 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 
     // YouTubeMusicの楽曲を表示する
     useEffect(() => {
+        // トピックチャンネル
+        const YMTopicAccounts: YouTubeAccount[] =
+            apiData.YouTubeAccount.data.filter((item) => item.topic);
+        // official artist account
+        const YMOACAccounts: YouTubeAccount[] =
+            apiData.YouTubeAccount.data.filter(
+                (item) => item.officialArtistChannel,
+            );
+
         // 各inputValueに対してすべての条件を確認
-        const channelId = apiData.YouTubeAccount.data.find((item) => {
-            for (const inputValue of props.inputValue) {
-                // トピックチャンネルの方が取得できる情報量が多い。
-                if (
-                    inputValue.categoryId === "actor" ||
-                    inputValue.categoryId === "organization"
-                ) {
-                    if (!(item.topic || item.officialArtistChannel)) {
-                        return false;
-                    }
-                    if (item.entityId) {
-                        return item.entityId.match(inputValue.value);
-                    }
-                    return false;
+        props.inputValue.find((inputValue) => {
+            // トピックチャンネルの方が取得できる情報量が多い。
+            if (
+                inputValue.categoryId === "actor" ||
+                inputValue.categoryId === "organization"
+            ) {
+                const topicCh = YMTopicAccounts.find((item) =>
+                    item.entityId?.includes(inputValue.value),
+                );
+                if (topicCh) {
+                    fetchArtistYTM(topicCh.userId ?? "");
+                    return true;
                 }
+                const OACCh = YMOACAccounts.find((item) =>
+                    item.entityId?.includes(inputValue.value),
+                );
+                if (OACCh) {
+                    fetchTopicYTM(OACCh.userId ?? "");
+                    return true;
+                }
+                setArtistYTM(null);
+                return false;
             }
         });
-        if (channelId) {
-            if (channelId.topic) {
-                fetchArtistYTM(channelId.userId ?? "");
-            } else {
-                fetchTopicYTM(channelId.userId ?? "");
-            }
-        } else {
+        if (props.inputValue.length === 0) {
             setArtistYTM(null);
         }
     }, [
@@ -312,8 +322,8 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                         >
                             {artistYTM.albums?.browseId &&
                             artistYTM.singles?.browseId
-                                ? "アルバムも聴いてみよう ♪(一部抜粋)"
-                                : "アルバムも聴いてみよう ♪"}
+                                ? `${artistYTM?.name} さんのアルバムも聴いてみよう ♪(一部抜粋)`
+                                : `${artistYTM?.name} さんのアルバムも聴いてみよう ♪`}
                         </Box>
                         <Box
                             sx={{
@@ -327,7 +337,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                 <Album
                                     key={album.title}
                                     style={{
-                                        width: isMobile ? "40vw" : "20vw",
+                                        width: isMobile ? "35vw" : "15vw",
                                     }}
                                     title={album.title}
                                     imgSrc={album.thumbnails[0].url}
@@ -363,6 +373,8 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                                                     item
                                                                         .artists[0]
                                                                         .name,
+                                                                duration:
+                                                                    item?.duration_seconds,
                                                             };
                                                         },
                                                     ),
@@ -377,7 +389,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                 <Album
                                     key={single.title}
                                     style={{
-                                        width: isMobile ? "40vw" : "20vw",
+                                        width: isMobile ? "35vw" : "15vw",
                                     }}
                                     title={single.title}
                                     imgSrc={single.thumbnails[0].url}
@@ -427,6 +439,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                                 maxWidth: isMobile
                                                     ? "100%"
                                                     : "30%",
+                                                margin: "0 auto",
                                             }}
                                         >
                                             <Thumbnail

@@ -56,14 +56,14 @@ export default function TabScroll(
 
     const pathname = usePathname();
 
-    // 指定されたactiveTagに移動する。
-    const activateTag = useCallback(
-        (tagName: string) => {
+    // 指定されたactiveTabに移動する。
+    const activateTab = useCallback(
+        (tabName: string) => {
             const pathnames = pathname.split("/");
-            if (pathnames[1] !== tagName) {
-                window.history.pushState(null, "", `/${tagName}`); // URLを更新
+            if (pathnames[1] !== tabName) {
+                window.history.pushState(null, "", `/${tabName}`); // URLを更新
             }
-            const i = tabMaps.find((item) => item.value === tagName);
+            const i = tabMaps.find((item) => item.value === tabName);
             if (i) {
                 scrollToPosition(i.scrollTo);
                 if (i.value !== activeTab) {
@@ -97,8 +97,8 @@ export default function TabScroll(
 
     // activeTabの変更を検知する。
     useEffect(() => {
-        activateTag(activeTab);
-    }, [activeTab, activateTag]);
+        activateTab(activeTab);
+    }, [activeTab, activateTab]);
 
     // 画面のサイズの変化を監視
     useEffect(() => {
@@ -148,7 +148,7 @@ export default function TabScroll(
             // リサイズイベントリスナーを追加
             window.addEventListener("resize", () => {
                 handleScroll();
-                // activateTag(activeTab);
+                // activateTab(activeTab);
             });
 
             if (scrollContainer) {

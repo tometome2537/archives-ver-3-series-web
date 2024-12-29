@@ -1,8 +1,11 @@
 "use client";
 
+import LinkTab from "@/components/MainTabs/LinkTab";
+import SongTab from "@/components/MainTabs/SongTab";
 import { TemporaryYouTubeTab } from "@/components/MainTabs/TemporaryYouTubeTab";
 import Navbar from "@/components/Navbar/Navbar";
 import type { MultiSearchBarSearchSuggestion } from "@/components/Navbar/SearchBar/MultiSearchBar";
+import MultiSearchBar from "@/components/Navbar/SearchBar/MultiSearchBar";
 import type {
     AdditionalSearchSuggestions,
     InputValue,
@@ -13,19 +16,16 @@ import type { PlayerItem, PlayerPlaylist } from "@/components/PlayerView"; // �
 import type { TabMap } from "@/components/TabScroll";
 import TabScroll from "@/components/TabScroll";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
+import type { Entity, Music, YouTubeAccount } from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
+import { MusicNote } from "@mui/icons-material";
+import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import GroupsIcon from "@mui/icons-material/Groups";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import PersonIcon from "@mui/icons-material/Person";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import { AppBar } from "@mui/material";
 import react, { Fragment } from "react";
-import MultiSearchBar from "@/components/Navbar/SearchBar/MultiSearchBar";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
-import LinkTab from "@/components/MainTabs/LinkTab";
-import SongTab from "@/components/MainTabs/SongTab";
-import type { YouTubeAccount, Music, Entity } from "@/contexts/ApiDataContext";
-import { MusicNote } from "@mui/icons-material";
 import { useCallback } from "react";
 import { ImTelegram } from "react-icons/im";
 
@@ -309,7 +309,8 @@ export default function RootLayout({
                         //         ),
                         //     ]);
                         // }
-                        setIsPlayerFullscreen(false);
+                        // とりあえず直ったけど、他の問題が発生する可能性あり
+                        // setIsPlayerFullscreen(false);
                         setTextSuggestionCategory([
                             {
                                 sort: 20,

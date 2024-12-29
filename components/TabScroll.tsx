@@ -3,12 +3,13 @@
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { Box, Container, Tab, Tabs } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
     type ReactElement,
     type ReactNode,
     useCallback,
     useEffect,
+    useMemo,
     useRef,
     useState,
 } from "react";
@@ -27,9 +28,10 @@ export default function TabScroll(
     tabMaps: TabMap[],
     setIsPlayerFullscreen: (value: React.SetStateAction<boolean>) => void,
 ) {
+    // テーマの読み込み
     const theme = useTheme();
     // ブラウザ情報を取得
-    const { screenWidth, isMobile } = useBrowserInfoContext();
+    const { screenWidth, screenHeight, isMobile } = useBrowserInfoContext();
 
     // 現在選択されているタブ
     const [activeTab, setActiveTab] = useState<string>("");
@@ -55,24 +57,24 @@ export default function TabScroll(
     const pathname = usePathname();
 
     // 指定されたactiveTabに移動する。
-    // const activateTab = useCallback(
-    //     (tabName: string) => {
-    //         const pathnames = pathname.split("/");
-    //         if (pathnames[1] !== tabName) {
-    //             window.history.pushState(null, "", `/${tabName}`); // URLを更新
-    //         }
+    const activateTab = useCallback(
+        (tabName: string) => {
+            const pathnames = pathname.split("/");
+            if (pathnames[1] !== tabName) {
+                window.history.pushState(null, "", `/${tabName}`); // URLを更新
+            }
 
-    //         const i = tabMaps.find((item) => item.value === tabName);
-    //         if (i === undefined) return;
+            const i = tabMaps.find((item) => item.value === tabName);
+            if (i === undefined) return;
 
-    //         scrollToPosition(i.scrollTo);
-    //         if (tabName !== "") {
-    //             setIsPlayerFullscreen(false);
-    //         }
-    //         i.onClick();
-    //     },
-    //     [pathname, tabMaps, scrollToPosition, activeTab],
-    // );
+            scrollToPosition(i.scrollTo);
+            if (tabName !== "") {
+                setIsPlayerFullscreen(false);
+            }
+            i.onClick();
+        },
+        [pathname, tabMaps, scrollToPosition, activeTab],
+    );
 
     // URLの更新を監視する
     useEffect(() => {
@@ -81,25 +83,14 @@ export default function TabScroll(
         const tabName = pathnames[1] ?? "";
         const tab = tabMaps.find((x) => x.value === tabName);
         setActiveTab(tab?.value ?? "");
-    }, [pathname, tabMaps]);
+        scrollToPosition(tab?.scrollTo ?? 0);
+    }, [pathname, tabMaps, scrollToPosition]);
 
     // activeTabの変更を検知する。
-    //tabMapsを依存関係に含めなると、依存関係の問題で再生する動画を変更するたびに再生成されるため
-    // biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
     useEffect(() => {
-        const pathnames = pathname.split("/");
-        if (pathnames[1] !== activeTab) {
-            window.history.pushState(null, "", `/${activeTab}`); // URLを更新
-        }
+        activateTab(activeTab);
+    }, [activeTab, activateTab]);
 
-        const i = tabMaps.find((item) => item.value === activeTab);
-        if (i === undefined) return;
-
-        scrollToPosition(i.scrollTo);
-        console.log("chaaa", activeTab);
-        setIsPlayerFullscreen(false);
-        i.onClick();
-    }, [activeTab, scrollToPosition, setIsPlayerFullscreen, pathname]);
     // 画面のサイズの変化を監視
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -244,7 +235,6 @@ export default function TabScroll(
                                     onClick={() => {
                                         console.log(x.value, activeTab);
                                         setActiveTab(x.value);
-                                        console.log("chabbbb");
                                         setIsPlayerFullscreen(false);
                                     }}
                                     sx={{

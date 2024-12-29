@@ -63,19 +63,18 @@ export default function TabScroll(
             if (pathnames[1] !== tabName) {
                 window.history.pushState(null, "", `/${tabName}`); // URLを更新
             }
+
             const i = tabMaps.find((item) => item.value === tabName);
-            if (i) {
-                scrollToPosition(i.scrollTo);
-                if (i.value !== activeTab) {
-                    setIsPlayerFullscreen(false);
-                }
-                i.onClick();
+            if (i === undefined) return;
+
+            scrollToPosition(i.scrollTo);
+            if (tabName !== "") {
+                setIsPlayerFullscreen(false);
             }
+            i.onClick();
         },
         [pathname, tabMaps, scrollToPosition, activeTab],
     );
-
-    const router = useRouter();
 
     // URLの更新を監視する
     useEffect(() => {
@@ -83,17 +82,9 @@ export default function TabScroll(
         // 現在のタブの名前をパスを元に取得
         const tabName = pathnames[1] ?? "";
         const tab = tabMaps.find((x) => x.value === tabName);
-
-        if (tab) {
-            setActiveTab(tab.value);
-            return;
-        }
-
-        // if (!tab && !(1 <= tabName.length)) {
-        //     notFound();
-        // }
-        setActiveTab("");
-    }, [pathname, tabMaps]);
+        setActiveTab(tab?.value ?? "");
+        scrollToPosition(tab?.scrollTo ?? 0);
+    }, [pathname, tabMaps, scrollToPosition]);
 
     // activeTabの変更を検知する。
     useEffect(() => {
@@ -127,12 +118,6 @@ export default function TabScroll(
                     );
 
                     scrollToPosition(closestPosition); // 最も近い位置にスクロール
-                    setActiveTab(() => {
-                        const tab = tabMaps.find(
-                            (v) => v.scrollTo === closestPosition,
-                        );
-                        return tab ? tab.value : ""; // tabが見つかった場合はtabIdを返し、見つからなければ空文字を返す
-                    });
                 }
             };
             // 適切な位置にスクロール(操作時間を考慮)
@@ -148,7 +133,7 @@ export default function TabScroll(
             // リサイズイベントリスナーを追加
             window.addEventListener("resize", () => {
                 handleScroll();
-                // activateTab(activeTab);
+                activateTab(activeTab);
             });
 
             if (scrollContainer) {
@@ -248,7 +233,11 @@ export default function TabScroll(
                                     key={x.value}
                                     icon={x.icon}
                                     onClick={() => {
+                                        console.log(x.value, activeTab);
                                         setActiveTab(x.value);
+                                        if (x.value !== "") {
+                                            setIsPlayerFullscreen(false);
+                                        }
                                     }}
                                     sx={{
                                         minWidth: 0,

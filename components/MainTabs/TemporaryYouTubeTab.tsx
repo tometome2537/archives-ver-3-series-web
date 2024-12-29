@@ -11,6 +11,7 @@ import Image from "next/image";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
 import LoadingPage from "@/components/LoadingPage";
 import type { ArtistYTM, YouTubeAccount } from "@/contexts/ApiDataContext";
+import Album from "../Album";
 
 type TemporaryYouTubeTab = {
     inputValue: InputValue[];
@@ -223,6 +224,21 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         [apiData.ArtistYTM.getDataWithParams],
     );
 
+    const fetchTopicYTM = useCallback(
+        async (channelId: string) => {
+            const res = await apiData.ArtistYTM.getDataWithParams({
+                channelId: channelId,
+            });
+            // const result = [];
+            // result.push(res?.albums?.results);
+            // if (res?.singles?.results) {
+            //     result.push(...res.singles.results);
+            // }
+            fetchArtistYTM(res?.channelId ?? "");
+        },
+        [apiData.ArtistYTM.getDataWithParams, fetchArtistYTM],
+    );
+
     // YouTubeMusicの楽曲を表示する
     useEffect(() => {
         // 各inputValueに対してすべての条件を確認
@@ -244,9 +260,20 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             }
         });
         if (channelId) {
-            fetchArtistYTM(channelId.userId);
+            if (channelId.topic) {
+                fetchArtistYTM(channelId.userId ?? "");
+            } else {
+                fetchTopicYTM(channelId.userId ?? "");
+            }
+        } else {
+            setArtistYTM(null);
         }
-    }, [apiData.YouTubeAccount.data, props.inputValue, fetchArtistYTM]);
+    }, [
+        apiData.YouTubeAccount.data,
+        props.inputValue,
+        fetchArtistYTM,
+        fetchTopicYTM,
+    ]);
 
     // ローディング中
     if (apiDataVideo.length === 0 && loading === LoadingState.Loading) {
@@ -277,84 +304,96 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             >
                 {artistYTM && (
                     <>
-                        <Box>アルバムを聴いてみよう</Box>
-                        <div
-                            style={{
+                        <Box
+                            sx={{
+                                margin: "10px",
+                            }}
+                        >
+                            {artistYTM.albums?.browseId &&
+                            artistYTM.singles?.browseId
+                                ? "アルバムも聴いてみよう ♪(一部抜粋)"
+                                : "アルバムも聴いてみよう ♪"}
+                        </Box>
+                        <Box
+                            sx={{
                                 display: "flex",
                                 overflowX: "scroll",
                                 maxWidth: "100vw",
-                                textAlign: "center",
+                                marginBottom: "20px",
                             }}
                         >
                             {artistYTM.albums?.results?.map((album) => (
-                                <div key={album?.browseId}>
-                                    <Box
-                                        style={{
-                                            width: "15vw",
-                                            margin: "20px",
-                                        }}
-                                        onClick={() => {
-                                            const fetch = async () => {
-                                                const albumData =
-                                                    await apiData.AlbumYTM.getDataWithParams(
-                                                        {
-                                                            browseId:
-                                                                album.browseId,
+                                <Album
+                                    key={album.title}
+                                    title={album.title}
+                                    imgSrc={album.thumbnails[0].url}
+                                    onClick={() => {
+                                        const fetch = async () => {
+                                            const albumData =
+                                                await apiData.AlbumYTM.getDataWithParams(
+                                                    {
+                                                        browseId:
+                                                            album.browseId,
+                                                    },
+                                                );
+                                            props.setPlayerItem({
+                                                videoId:
+                                                    albumData?.tracks[0]
+                                                        .videoId,
+                                                arHeight: 1,
+                                                arWidth: 1,
+                                            });
+                                            if (
+                                                albumData &&
+                                                albumData.tracks.length !== 0
+                                            ) {
+                                                props.setPlayerPlaylist({
+                                                    title: albumData?.title,
+                                                    videos: albumData?.tracks.map(
+                                                        (item) => {
+                                                            return {
+                                                                videoId:
+                                                                    item.videoId,
+                                                                title: item.title,
+                                                                channelTitle:
+                                                                    item
+                                                                        .artists[0]
+                                                                        .name,
+                                                            };
                                                         },
-                                                    );
-                                                props.setPlayerItem({
-                                                    videoId:
-                                                        albumData?.tracks[0]
-                                                            .videoId,
-                                                    arHeight: 1,
-                                                    arWidth: 1,
+                                                    ),
                                                 });
-                                                if (
-                                                    albumData &&
-                                                    albumData.tracks.length !==
-                                                        0
-                                                ) {
-                                                    props.setPlayerPlaylist({
-                                                        title: albumData?.title,
-                                                        videos: albumData?.tracks.map(
-                                                            (item) => {
-                                                                return {
-                                                                    videoId:
-                                                                        item.videoId,
-                                                                    title: item.title,
-                                                                    channelTitle:
-                                                                        item
-                                                                            .artists[0]
-                                                                            .name,
-                                                                };
-                                                            },
-                                                        ),
-                                                    });
-                                                }
-                                            };
-                                            fetch();
-                                        }}
-                                    >
-                                        <Image
-                                            key={album.thumbnails[0].url}
-                                            src={album.thumbnails[0].url}
-                                            alt={
-                                                album.title || "シングルの画像"
                                             }
-                                            width={160} // アスペクト比のための幅
-                                            height={90} // アスペクト比のための高さ
-                                            style={{
-                                                width: "100%",
-                                                height: "100%",
-                                                objectFit: "contain",
-                                                borderRadius: "1.2em",
-                                            }}
-                                        />
-                                    </Box>
-                                    <div>{album.title}</div>
-                                </div>
+                                        };
+                                        fetch();
+                                    }}
+                                />
                             ))}
-                        </div>
+                            {artistYTM.singles?.results?.map((single) => (
+                                <Album
+                                    key={single.title}
+                                    title={single.title}
+                                    imgSrc={single.thumbnails[0].url}
+                                    onClick={() => {
+                                        const fetch = async () => {
+                                            const albumData =
+                                                await apiData.AlbumYTM.getDataWithParams(
+                                                    {
+                                                        browseId:
+                                                            single.browseId,
+                                                    },
+                                                );
+                                            props.setPlayerItem({
+                                                videoId:
+                                                    albumData?.tracks[0]
+                                                        .videoId,
+                                            });
+                                        };
+                                        fetch();
+                                    }}
+                                />
+                            ))}
+                        </Box>
                     </>
                 )}
                 <Box
@@ -395,12 +434,15 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                                 //     props.playerItem.videoId === "" ||
                                                 //     props.playerItem.videoId === undefined
                                                 // }
-                                                videoId={item.videoId}
-                                                title={item.title}
+                                                videoId={item.videoId ?? ""}
+                                                title={item.title ?? undefined}
                                                 viewCount={Number(
                                                     item.viewCount,
                                                 )}
-                                                channelTitle={item.channelTitle}
+                                                channelTitle={
+                                                    item.channelTitle ??
+                                                    undefined
+                                                }
                                                 publishedAt={
                                                     new Date(
                                                         item.publishedAt || 0,
@@ -408,7 +450,9 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                                 }
                                                 onClick={() => {
                                                     props.setPlayerItem({
-                                                        videoId: item.videoId,
+                                                        videoId:
+                                                            item.videoId ??
+                                                            undefined,
                                                     });
                                                     // APIから受け取った値の型を変換する。
                                                     const searchResult: Array<PlayerItem> =
@@ -420,8 +464,11 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                                                       const result: PlayerItem =
                                                                           {
                                                                               videoId:
-                                                                                  item.videoId,
-                                                                              title: item.title,
+                                                                                  item.videoId ??
+                                                                                  undefined,
+                                                                              title:
+                                                                                  item.title ??
+                                                                                  undefined,
                                                                               description:
                                                                                   item.apiData &&
                                                                                   JSON.parse(
@@ -434,9 +481,11 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                                                                       item.viewCount,
                                                                                   ),
                                                                               channelId:
-                                                                                  item.channelId,
+                                                                                  item.channelId ??
+                                                                                  undefined,
                                                                               channelTitle:
-                                                                                  item.channelTitle,
+                                                                                  item.channelTitle ??
+                                                                                  undefined,
                                                                               publishedAt:
                                                                                   item.publishedAt
                                                                                       ? new Date(

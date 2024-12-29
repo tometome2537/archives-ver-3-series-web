@@ -235,9 +235,7 @@ export default function TabScroll(
                                     onClick={() => {
                                         console.log(x.value, activeTab);
                                         setActiveTab(x.value);
-                                        if (x.value !== "") {
-                                            setIsPlayerFullscreen(false);
-                                        }
+                                        setIsPlayerFullscreen(false);
                                     }}
                                     sx={{
                                         minWidth: 0,

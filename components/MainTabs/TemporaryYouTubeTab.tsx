@@ -307,6 +307,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                         <Box
                             sx={{
                                 margin: "10px",
+                                textAlign: "center",
                             }}
                         >
                             {artistYTM.albums?.browseId &&
@@ -325,6 +326,9 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                             {artistYTM.albums?.results?.map((album) => (
                                 <Album
                                     key={album.title}
+                                    style={{
+                                        width: isMobile ? "40vw" : "20vw",
+                                    }}
                                     title={album.title}
                                     imgSrc={album.thumbnails[0].url}
                                     onClick={() => {
@@ -372,6 +376,9 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                             {artistYTM.singles?.results?.map((single) => (
                                 <Album
                                     key={single.title}
+                                    style={{
+                                        width: isMobile ? "40vw" : "20vw",
+                                    }}
                                     title={single.title}
                                     imgSrc={single.thumbnails[0].url}
                                     onClick={() => {

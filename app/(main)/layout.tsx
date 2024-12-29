@@ -310,7 +310,7 @@ export default function RootLayout({
                         //     ]);
                         // }
                         // とりあえず直ったけど、他の問題が発生する可能性あり
-                        // setIsPlayerFullscreen(false);
+                        setIsPlayerFullscreen(false);
                         setTextSuggestionCategory([
                             {
                                 sort: 20,

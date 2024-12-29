@@ -61,12 +61,12 @@ export default function TabScroll(tabMaps: TabMap[]) {
                 window.history.pushState(null, "", `/${tagName}`); // URLを更新
             }
             const i = tabMaps.find((item) => item.value === tagName);
-            if (i) {
+            if (i && i.value !== activeTab) {
                 scrollToPosition(i.scrollTo);
                 i.onClick();
             }
         },
-        [pathname, tabMaps, scrollToPosition],
+        [pathname, tabMaps, scrollToPosition, activeTab],
     );
 
     const router = useRouter();

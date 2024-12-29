@@ -24,7 +24,10 @@ export type TabMap = {
     onClick: () => void;
 };
 
-export default function TabScroll(tabMaps: TabMap[]) {
+export default function TabScroll(
+    tabMaps: TabMap[],
+    setIsPlayerFullscreen: (value: React.SetStateAction<boolean>) => void,
+) {
     // テーマの読み込み
     const theme = useTheme();
     // ブラウザ情報を取得
@@ -61,8 +64,11 @@ export default function TabScroll(tabMaps: TabMap[]) {
                 window.history.pushState(null, "", `/${tagName}`); // URLを更新
             }
             const i = tabMaps.find((item) => item.value === tagName);
-            if (i && i.value !== activeTab) {
+            if (i) {
                 scrollToPosition(i.scrollTo);
+                if (i.value !== activeTab) {
+                    setIsPlayerFullscreen(false);
+                }
                 i.onClick();
             }
         },

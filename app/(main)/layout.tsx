@@ -156,11 +156,11 @@ export default function RootLayout({
         if (Entity.length !== 0 && YouTubeAccounts.length !== 0) {
             // データを変換し、検索候補の配列に追加
             for (const item of Entity) {
-                const pickup = checkYM(item.id);
+                const pickup = checkYM(item.id ?? "");
                 const resultItem: MultiSearchBarSearchSuggestion = {
                     sort: item.category === "person" ? 99 : 100,
                     label: item.name + (pickup ? " ♪" : ""),
-                    value: item.id,
+                    value: item.id ?? "",
                     filterMatchText:
                         (item.rubyJaHiragana ?? "") +
                         (item.rubyEn ?? "") +
@@ -179,11 +179,11 @@ export default function RootLayout({
                                     if (vvv.entityId !== null) {
                                         return vvv.entityId
                                             .split(/ , |,| ,|, /)
-                                            .includes(item.id);
+                                            .includes(item.id ?? "");
                                     }
                                 });
                             const data = YouTubeAccount
-                                ? JSON.parse(YouTubeAccount.apiData)
+                                ? JSON.parse(YouTubeAccount.apiData ?? "")
                                 : undefined;
                             return data.snippet.thumbnails.default.url;
                         } catch (error) {

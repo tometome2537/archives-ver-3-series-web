@@ -7,64 +7,64 @@ import type React from "react";
 // デンジャラス！！空白のセルをSSSAPIで取得するとnullになります！　つまり　↓ の型定義にすべて | null を付与する必要があります！
 
 export interface BelongHistory {
-    entityId: string;
-    entityOrganizationId: string;
+    entityId: string | null;
+    entityOrganizationId: string | null;
 }
 export interface Entity {
-    id: string;
-    name: string;
+    id: string | null;
+    name: string | null;
     rubyJaHiragana: string | null;
     rubyEn: string | null;
-    category: string;
+    category: string | null;
 }
 export interface XAccount {
-    entityId: string;
-    userName: string;
+    entityId: string | null;
+    userName: string | null;
 }
 export interface YouTubeAccount {
-    userId: string;
-    entityId: string;
-    userName: string;
-    name: string;
+    userId: string | null;
+    entityId: string | null;
+    userName: string | null;
+    name: string | null;
     officialArtistChannel: string | null;
     topic: boolean | null;
-    apiData: string;
+    apiData: string | null;
 }
 export interface Music {
-    id: string;
-    musicTitle: string;
-    musicArtist: string;
-    subscriptionUrl: string;
+    id: string | null;
+    musicTitle: string | null;
+    musicArtist: string | null;
+    subscriptionUrl: string | null;
 }
 export interface Video {
-    videoId: string;
-    channelId: string;
-    channelTitle: string;
-    videoArchiveUrl: string;
-    thumbnailArchiveUrl: string;
-    title: string;
-    publishedAt: string;
-    privacyStatus: string;
-    viewCount: number;
-    short: boolean;
-    live: boolean;
-    categoryFromYTApi: number; // カテゴリ（YouTube APIから取得）
-    category: string; // カテゴリ（手動設定、null可）
-    tagText: string;
-    person: string;
-    addPerson: string;
-    deletePerson: string;
-    organization: string;
-    addOrganization: string;
-    deleteOrganization: string;
-    karaokeKey: string;
-    apiData: string;
+    videoId: string | null;
+    channelId: string | null;
+    channelTitle: string | null;
+    videoArchiveUrl: string | null;
+    thumbnailArchiveUrl: string | null;
+    title: string | null;
+    publishedAt: string | null;
+    privacyStatus: string | null;
+    viewCount: number | null;
+    short: boolean | null;
+    live: boolean | null;
+    categoryFromYTApi: number | null; // カテゴリ（YouTube APIから取得）
+    category: string | null; // カテゴリ（手動設定、null可）
+    tagText: string | null;
+    person: string | null;
+    addPerson: string | null;
+    deletePerson: string | null;
+    organization: string | null;
+    addOrganization: string | null;
+    deleteOrganization: string | null;
+    karaokeKey: string | null;
+    apiData: string | null;
 }
 export interface ArtistYTM {
     description: string;
     views: number;
     name: string;
-    channelId: string;
+    channelId: string; // topicチャンネルのIDが返される。
     subscribers: number;
     thumbnails: { url: string; width: number; height: number }[];
     songs?: {
@@ -244,7 +244,7 @@ const ApiData: ApiDataContextType = {
         getDataWithParams: async () => [],
     },
     ArtistYTM: {
-        url: "https://api-py.tometome.org/ytm/get_artist",
+        url: "https://api-py-tometome-org-254186269366.us-central1.run.app/ytm/get_artist",
         // url: "http://127.0.0.1:8000/ytm/get_artist",
         fetchOption: {},
         status: "idle",
@@ -253,7 +253,7 @@ const ApiData: ApiDataContextType = {
         getDataWithParams: async () => null,
     },
     AlbumYTM: {
-        url: "https://api-py.tometome.org/ytm/get_album",
+        url: "https://api-py-tometome-org-254186269366.us-central1.run.app/ytm/get_album",
         // url: "http://127.0.0.1:8000/ytm/get_album",
         fetchOption: {},
         status: "idle",

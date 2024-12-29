@@ -8,6 +8,7 @@ import type { Dispatch, SetStateAction } from "react";
 import Thumbnail from "../Thumbnail";
 import { Box, Container } from "@mui/material";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
+import Album from "../Album";
 
 type SongTabProps = {
     inputValue: InputValue[];
@@ -54,7 +55,7 @@ export default function SongTab(props: SongTabProps) {
             }
         });
         if (channelId) {
-            fetchArtistYTM(channelId.userId);
+            fetchArtistYTM(channelId.userId ?? "");
         } else {
             // ↓ 開発中の仮設定
             // YOASOBI - Topic
@@ -150,62 +151,43 @@ export default function SongTab(props: SongTabProps) {
                 }}
             >
                 {artistYTM?.albums?.results?.map((album) => (
-                    <div key={album.browseId}>
-                        <Box
-                            style={{
-                                width: "20vw",
-                                margin: "20px",
-                            }}
-                            onClick={() => {
-                                const fetch = async () => {
-                                    const albumData =
-                                        await apiData.AlbumYTM.getDataWithParams(
-                                            { browseId: album.browseId },
-                                        );
-                                    props.setPlayerItem({
-                                        videoId: albumData?.tracks[0].videoId,
-                                        arHeight: 1,
-                                        arWidth: 1,
+                    <Album
+                        key={album.browseId}
+                        title={album.title || "シングルの画像"}
+                        imgSrc={album.thumbnails[0].url}
+                        onClick={() => {
+                            const fetch = async () => {
+                                const albumData =
+                                    await apiData.AlbumYTM.getDataWithParams({
+                                        browseId: album.browseId,
                                     });
-                                    if (
-                                        albumData &&
-                                        albumData.tracks.length !== 0
-                                    ) {
-                                        props.setPlayerPlaylist({
-                                            title: albumData?.title,
-                                            videos: albumData?.tracks.map(
-                                                (item) => {
-                                                    return {
-                                                        videoId: item.videoId,
-                                                        title: item.title,
-                                                        channelTitle:
-                                                            item.artists[0]
-                                                                .name,
-                                                    };
-                                                },
-                                            ),
-                                        });
-                                    }
-                                };
-                                fetch();
-                            }}
-                        >
-                            <Image
-                                key={album.thumbnails[0].url}
-                                src={album.thumbnails[0].url}
-                                alt={album.title || "シングルの画像"}
-                                width={160} // アスペクト比のための幅
-                                height={90} // アスペクト比のための高さ
-                                style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    objectFit: "contain",
-                                    borderRadius: "1.2em",
-                                }}
-                            />
-                        </Box>
-                        <div>{album.title}</div>
-                    </div>
+                                props.setPlayerItem({
+                                    videoId: albumData?.tracks[0].videoId,
+                                    arHeight: 1,
+                                    arWidth: 1,
+                                });
+                                if (
+                                    albumData &&
+                                    albumData.tracks.length !== 0
+                                ) {
+                                    props.setPlayerPlaylist({
+                                        title: albumData?.title,
+                                        videos: albumData?.tracks.map(
+                                            (item) => {
+                                                return {
+                                                    videoId: item.videoId,
+                                                    title: item.title,
+                                                    channelTitle:
+                                                        item.artists[0].name,
+                                                };
+                                            },
+                                        ),
+                                    });
+                                }
+                            };
+                            fetch();
+                        }}
+                    />
                 ))}
             </div>
             <div>シングル</div>
@@ -218,43 +200,25 @@ export default function SongTab(props: SongTabProps) {
                 }}
             >
                 {artistYTM?.singles?.results?.map((single) => (
-                    <div key={single.browseId}>
-                        <Box
-                            style={{
-                                width: "20vw",
-                                margin: "20px",
-                            }}
-                            onClick={() => {
-                                const fetch = async () => {
-                                    const albumData =
-                                        await apiData.AlbumYTM.getDataWithParams(
-                                            { browseId: single.browseId },
-                                        );
-                                    props.setPlayerItem({
-                                        videoId: albumData?.tracks[0].videoId,
-                                        // arHeight: 1,
-                                        // arWidth: 1
+                    <Album
+                        key={single.browseId}
+                        title={single.title || "シングルの画像"}
+                        imgSrc={single.thumbnails[0].url}
+                        onClick={() => {
+                            const fetch = async () => {
+                                const albumData =
+                                    await apiData.AlbumYTM.getDataWithParams({
+                                        browseId: single.browseId,
                                     });
-                                };
-                                fetch();
-                            }}
-                        >
-                            <Image
-                                key={single.thumbnails[0].url}
-                                src={single.thumbnails[0].url}
-                                alt={single.title || "シングルの画像"}
-                                width={160} // アスペクト比のための幅
-                                height={90} // アスペクト比のための高さ
-                                style={{
-                                    width: "100%",
-                                    height: "100%",
-                                    objectFit: "contain",
-                                    borderRadius: "1.2em",
-                                }}
-                            />
-                        </Box>
-                        <div>{single.title}</div>
-                    </div>
+                                props.setPlayerItem({
+                                    videoId: albumData?.tracks[0].videoId,
+                                    // arHeight: 1,
+                                    // arWidth: 1
+                                });
+                            };
+                            fetch();
+                        }}
+                    />
                 ))}
             </div>
             <div>ビデオ</div>

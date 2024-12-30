@@ -34,6 +34,7 @@ import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useEffect, useRef, useState } from "react";
+import { Computer } from "@mui/icons-material";
 
 type NavbarProps = {
     setNavbarHeight?: Dispatch<SetStateAction<number | undefined>>;
@@ -451,6 +452,19 @@ export default function Navbar(props: NavbarProps) {
                                 </MenuItem>
                             </Select>
                         </FormControl>
+                    </ListItem>
+                    <Divider sx={{ borderBottomWidth: 3 }} />
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="/license"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <Computer sx={{ color: "rgb(165, 82, 242)" }} />
+                            </ListItemIcon>
+                            <ListItemText primary="ライセンス情報" />
+                        </ListItemButton>
                     </ListItem>
                     <Divider sx={{ borderBottomWidth: 3 }} />
                     <ListItem disablePadding>

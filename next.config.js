@@ -15,7 +15,8 @@ const nextConfig = {
         pathname: "/**",
       },
     ],
-    unoptimized: true, // 画像の最適化を無効にする設定
+    // 画像の最適化を無効にする設定 Vercelの無料プランでは1000枚までしか最適化できない。
+    unoptimized: true,
   },
 };
 

@@ -12,6 +12,7 @@ export default function LoadingPage() {
                 {/* 画像のプレースホルダー */}
                 <div style={{ marginBottom: "16px" }}>
                     <img
+                    loading="lazy"
                         src="/icon_border_radius.png"
                         alt="Loading"
                         width={40}

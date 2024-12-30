@@ -26,6 +26,7 @@ export default function Album(props: AlbumProps) {
             onClick={props.onClick}
         >
             <img
+            loading="lazy"
                 key={props.imgSrc}
                 src={props.imgSrc ?? ""}
                 alt={props.title ?? ""}

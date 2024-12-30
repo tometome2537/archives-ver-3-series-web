@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 export default function LoadingPage() {
     return (
         <div
@@ -11,7 +13,7 @@ export default function LoadingPage() {
             <div style={{ textAlign: "center" }}>
                 {/* 画像のプレースホルダー */}
                 <div style={{ marginBottom: "16px" }}>
-                    <img
+                    <Image
                         src="/icon_border_radius.png"
                         alt="Loading"
                         width={40}

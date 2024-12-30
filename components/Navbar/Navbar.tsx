@@ -31,6 +31,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import { useTheme } from "@mui/material/styles";
+import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useEffect, useRef, useState } from "react";
 
@@ -130,7 +131,7 @@ export default function Navbar(props: NavbarProps) {
                                         <MenuIcon />
                                     </IconButton>
                                     <Link href="/" sx={{ margin: "0.25 auto" }}>
-                                        <img
+                                        <Image
                                             // src="/MAP.png"
                                             src="/icon_border_radius.png"
                                             // alt="Music Archives Project Logo"
@@ -155,7 +156,7 @@ export default function Navbar(props: NavbarProps) {
                                         }}
                                     >
                                         <Link href="/" sx={{ mr: 2 }}>
-                                            <img
+                                            <Image
                                                 // src="/MAP.png"
                                                 src="/icon_border_radius.png"
                                                 // alt="Music Archives Project Logo"
@@ -212,7 +213,7 @@ export default function Navbar(props: NavbarProps) {
                             }}
                         >
                             <ListItemIcon>
-                                <img
+                                <Image
                                     // src="/MAP.png"
                                     src="/icon_border_radius.png"
                                     // alt="Music Archives Project Logo"
@@ -283,7 +284,7 @@ export default function Navbar(props: NavbarProps) {
                             target="_blank"
                         >
                             <ListItemIcon>
-                                <img
+                                <Image
                                     src="/tiktok_logo.png"
                                     alt="tiktok ロゴ"
                                     width={20}
@@ -470,7 +471,7 @@ export default function Navbar(props: NavbarProps) {
                             target="_blank"
                         >
                             <ListItemIcon>
-                                <img
+                                <Image
                                     src="/sssapi_logo.png"
                                     alt="SSSAPI ロゴ"
                                     width={30}

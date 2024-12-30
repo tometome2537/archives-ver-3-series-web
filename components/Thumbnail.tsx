@@ -10,7 +10,6 @@ import {
 } from "@mui/material";
 import Card from "@mui/material/Card";
 import Grid from "@mui/material/Unstable_Grid2";
-import Image from "next/image";
 import type { MouseEventHandler } from "react";
 import { useEffect, useState } from "react";
 import YouTubePlayer from "./YouTubePlayerView";
@@ -241,7 +240,7 @@ export default function Thumbnail(props: ThumbnailProps) {
                                 height: "auto",
                             }}
                         >
-                            <Image
+                            <img
                                 src={`https://img.youtube.com/vi/${props.videoId}/mqdefault.jpg`}
                                 alt={
                                     props.title
@@ -336,7 +335,7 @@ export default function Thumbnail(props: ThumbnailProps) {
                             height: "auto",
                         }}
                     >
-                        <Image
+                        <img
                             src={`https://img.youtube.com/vi/${props.videoId}/mqdefault.jpg`}
                             alt={
                                 props.title

@@ -1,7 +1,6 @@
 "use client";
 
-import { Box, Link, Typography } from "@mui/material";
-import Image from "next/image";
+import { Box, Typography } from "@mui/material";
 import type { MouseEventHandler } from "react";
 
 type AlbumProps = {
@@ -26,7 +25,7 @@ export default function Album(props: AlbumProps) {
             }}
             onClick={props.onClick}
         >
-            <Image
+            <img
                 key={props.imgSrc}
                 src={props.imgSrc ?? ""}
                 alt={props.title ?? ""}

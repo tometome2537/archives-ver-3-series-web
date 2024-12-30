@@ -15,12 +15,11 @@ import type { YouTubePlayerState } from "./YouTubePlayerView";
 import "linkify-plugin-hashtag";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { KeyboardArrowDown } from "@mui/icons-material";
+import YouTubeIcon from "@mui/icons-material/YouTube";
 import IconButton from "@mui/material/IconButton";
 import { blue } from "@mui/material/colors";
 import Link from "./Link";
 import type { MultiSearchBarSearchSuggestion } from "./Navbar/SearchBar/MultiSearchBar";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import Image from "next/image";
 
 export type PlayerItem = {
     // 優先度 高
@@ -392,7 +391,7 @@ export default function PlayerView(props: PlayerProps) {
                                 href={`https://music.youtube.com/watch?v=${props.playerItem?.videoId}`}
                                 target="_blank"
                             >
-                                <Image
+                                <img
                                     src="/ytm.png"
                                     alt="YouTube Music ロゴ"
                                     width={20}

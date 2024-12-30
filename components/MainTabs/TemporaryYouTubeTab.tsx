@@ -1,17 +1,16 @@
+import LoadingPage from "@/components/LoadingPage";
 import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
+import type { Video } from "@/contexts/ApiDataContext";
+import { useApiDataContext } from "@/contexts/ApiDataContext";
+import type { ArtistYTM, YouTubeAccount } from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
-import { Box, Container } from "@mui/material";
+import { Box } from "@mui/material";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useCallback, useEffect, useState } from "react";
+import Album from "../Album";
 import Loading from "../Loading";
 import type { PlayerItem, PlayerPlaylist } from "../PlayerView";
 import Thumbnail from "../Thumbnail";
-import type { Video } from "@/contexts/ApiDataContext";
-import Image from "next/image";
-import { useApiDataContext } from "@/contexts/ApiDataContext";
-import LoadingPage from "@/components/LoadingPage";
-import type { ArtistYTM, YouTubeAccount } from "@/contexts/ApiDataContext";
-import Album from "../Album";
 
 type TemporaryYouTubeTab = {
     inputValue: InputValue[];

@@ -241,7 +241,6 @@ export default function Thumbnail(props: ThumbnailProps) {
                             }}
                         >
                             <img
-                            loading="lazy"
                                 src={`https://img.youtube.com/vi/${props.videoId}/mqdefault.jpg`}
                                 alt={
                                     props.title
@@ -337,7 +336,6 @@ export default function Thumbnail(props: ThumbnailProps) {
                         }}
                     >
                         <img
-                        loading="lazy"
                             src={`https://img.youtube.com/vi/${props.videoId}/mqdefault.jpg`}
                             alt={
                                 props.title

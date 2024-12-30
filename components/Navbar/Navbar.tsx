@@ -131,7 +131,6 @@ export default function Navbar(props: NavbarProps) {
                                     </IconButton>
                                     <Link href="/" sx={{ margin: "0.25 auto" }}>
                                         <img
-                                        loading="lazy"
                                             // src="/MAP.png"
                                             src="/icon_border_radius.png"
                                             // alt="Music Archives Project Logo"
@@ -157,7 +156,6 @@ export default function Navbar(props: NavbarProps) {
                                     >
                                         <Link href="/" sx={{ mr: 2 }}>
                                             <img
-                                            loading="lazy"
                                                 // src="/MAP.png"
                                                 src="/icon_border_radius.png"
                                                 // alt="Music Archives Project Logo"
@@ -215,7 +213,6 @@ export default function Navbar(props: NavbarProps) {
                         >
                             <ListItemIcon>
                                 <img
-                                loading="lazy"
                                     // src="/MAP.png"
                                     src="/icon_border_radius.png"
                                     // alt="Music Archives Project Logo"
@@ -287,7 +284,6 @@ export default function Navbar(props: NavbarProps) {
                         >
                             <ListItemIcon>
                                 <img
-                                loading="lazy"
                                     src="/tiktok_logo.png"
                                     alt="tiktok ロゴ"
                                     width={20}
@@ -475,7 +471,6 @@ export default function Navbar(props: NavbarProps) {
                         >
                             <ListItemIcon>
                                 <img
-                                loading="lazy"
                                     src="/sssapi_logo.png"
                                     alt="SSSAPI ロゴ"
                                     width={30}

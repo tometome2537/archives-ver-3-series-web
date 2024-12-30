@@ -392,7 +392,6 @@ export default function PlayerView(props: PlayerProps) {
                                 target="_blank"
                             >
                                 <img
-                                loading="lazy"
                                     src="/ytm.png"
                                     alt="YouTube Music ロゴ"
                                     width={20}

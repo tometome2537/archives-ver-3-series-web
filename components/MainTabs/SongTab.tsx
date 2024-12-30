@@ -84,6 +84,7 @@ export default function SongTab(props: SongTabProps) {
                         }}
                     >
                         <img
+                            loading="lazy"
                             src={artistYTM.thumbnails[0].url}
                             alt={artistYTM.name || "アーティストの画像"}
                             width={320} // アスペクト比のための幅

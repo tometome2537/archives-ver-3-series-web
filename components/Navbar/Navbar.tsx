@@ -35,6 +35,9 @@ import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useEffect, useRef, useState } from "react";
 import { Computer } from "@mui/icons-material";
+import { PrivacyTip } from "@mui/icons-material";
+import { Policy } from "@mui/icons-material";
+import packageJson from "@/package.json" assert { type: "json" };
 
 type NavbarProps = {
     setNavbarHeight?: Dispatch<SetStateAction<number | undefined>>;
@@ -367,7 +370,15 @@ export default function Navbar(props: NavbarProps) {
                             <ListItemIcon>
                                 <MailIcon sx={{ color: "rgb(50, 154, 229)" }} />
                             </ListItemIcon>
-                            <ListItemText primary="お問い合わせ" />
+                            <ListItemText
+                                style={{
+                                    whiteSpace: "pre-line",
+                                }}
+                                primary="お問い合わせ"
+                                secondary={
+                                    "メールアドレス\nmusic-archives-project [a] googlegroups.com"
+                                }
+                            />
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
@@ -383,9 +394,12 @@ export default function Navbar(props: NavbarProps) {
                                 />
                             </ListItemIcon>
                             <ListItemText
+                                style={{
+                                    whiteSpace: "pre-line",
+                                }}
                                 primary="フィードバック"
                                 secondary={
-                                    "バグ報告・誤情報の報告もこちらからお願いします。"
+                                    "バグ報告・誤情報の報告もこちらからお願いします。\n削除依頼は上記メールアドレスへお願いします。"
                                 }
                             />
                         </ListItemButton>
@@ -466,6 +480,32 @@ export default function Navbar(props: NavbarProps) {
                             <ListItemText primary="ライセンス情報" />
                         </ListItemButton>
                     </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="/tos"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <Policy sx={{ color: "rgb(165, 82, 242)" }} />
+                            </ListItemIcon>
+                            <ListItemText primary="利用規約" />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="/policy"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <PrivacyTip
+                                    sx={{ color: "rgb(165, 82, 242)" }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary="プライバシーポリシー" />
+                        </ListItemButton>
+                    </ListItem>
                     <Divider sx={{ borderBottomWidth: 3 }} />
                     <ListItem disablePadding>
                         <ListItemButton>
@@ -521,6 +561,24 @@ export default function Navbar(props: NavbarProps) {
                                 }}
                                 secondary={
                                     "その他情報提供・バグ報告してくださった方々\n本当にありがとうございます。"
+                                }
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            onClick={() => {
+                                setMenu(false);
+                            }}
+                        >
+                            <ListItemText
+                                style={{
+                                    // 文字列内の\nを適切に反映させる。
+                                    whiteSpace: "pre-line",
+                                }}
+                                secondary={
+                                    // "Copyright © 2025 ぷらそにか\nCopyright © 2025 Sony Music Entertainment (Japan) Inc\nCopyright © 2025 Google LLC\n\n"
+                                    `当サイトはファン制作の非公式サイトです。\n使用している画像の著作権および商標権、その他知的財産権は、\n当該コンテンツの提供元に帰属します。\n本当にありがとうございます。\n\n以下は当サイト独自の内容に関するものです。\nCopyright © 2025 ミュージックアーカイブスプロジェクト v${packageJson.version}`
                                 }
                             />
                         </ListItemButton>

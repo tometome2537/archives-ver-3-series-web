@@ -27,7 +27,6 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import { AppBar } from "@mui/material";
 import react, { Fragment } from "react";
 import { useCallback } from "react";
-import { ImTelegram } from "react-icons/im";
 
 export default function RootLayout({
     children,
@@ -58,6 +57,9 @@ export default function RootLayout({
     // テキストの追加カテゴリー
     const [textSuggestionCategory, setTextSuggestionCategory] =
         react.useState<AdditionalSearchSuggestions[]>();
+    // 入力中かどうか
+    const [inProgressInput, setInProgressInput] =
+        react.useState<boolean>(false);
     // ⭐️ここまでマルチサーチバー関連
 
     // Navbarの高さを定義
@@ -383,8 +385,29 @@ export default function RootLayout({
 
     return (
         <Fragment>
-            <Navbar setNavbarHeight={setNavbarHeight}>
+            <Navbar
+                style={{
+                    // 入力中は親要素を非表示
+                    visibility:
+                        isMobile && inProgressInput ? "hidden" : "visible",
+                    // ↓ サーチバーに入力する項目が複数行に渡っても背景を確保できるように伸ばす。
+                    height: isMobile && inProgressInput ? "20vh" : undefined,
+                }}
+                setNavbarHeight={setNavbarHeight}
+            >
                 <MultiSearchBar
+                    style={{
+                        // 入力中でも子要素を表示
+                        visibility: "visible",
+                        // ポジションを一番上にする
+                        position:
+                            isMobile && inProgressInput ? "fixed" : undefined,
+                        top: isMobile && inProgressInput ? 0 : undefined,
+                        // サーチバーを端から端までしっかり表示する。
+                        minWidth:
+                            isMobile && inProgressInput ? "auto" : undefined,
+                        width: isMobile && inProgressInput ? "90%" : undefined, // ← safari(webkit)はこれがないとバグる。chromeはバグらない。
+                    }}
                     inputValue={inputValue}
                     setInputValue={setInputValue}
                     searchSuggestion={searchSuggestion}
@@ -417,6 +440,7 @@ export default function RootLayout({
                     searchOnChange={() => {
                         setIsPlayerFullscreen(false);
                     }}
+                    setInProgressInput={setInProgressInput}
                 />
             </Navbar>
             {/* メインコンテンツ */}

@@ -24,6 +24,7 @@ export interface LimitedSearchProps {
     textFieldLabel?: string;
     categoryId: string;
     onChange?: () => void;
+    setInProgressInput?: Dispatch<SetStateAction<boolean>>;
 }
 
 // サーチバーの範囲を制限するためのサーチバー
@@ -40,6 +41,7 @@ const LimitedSearch: React.FC<LimitedSearchProps> = ({
     textFieldLabel,
     categoryId,
     onChange,
+    setInProgressInput,
 }) => {
     // 入力値をcategoryIdが同じのに絞る
     const filteredInputValues = inputValue.filter(
@@ -85,6 +87,7 @@ const LimitedSearch: React.FC<LimitedSearchProps> = ({
             searchSuggestions={limitSearchSuggestion}
             fixedOptionValues={fixedOptionValues}
             onChange={onChange}
+            setInProgressInput={setInProgressInput}
         />
     );
 };
@@ -111,9 +114,12 @@ type MultiSearchBarSearchBarProps = {
     // 表示するリミットサーチバーの定義
     limitSearchCategory?: AdditionalSearchSuggestions[];
     searchOnChange?: () => void;
+    // 入力途中かどうか
+    setInProgressInput?: Dispatch<SetStateAction<boolean>>;
 
     showTagIcon?: boolean;
     showTagCount?: number;
+    style?: React.CSSProperties;
 };
 
 export default function MultiSearchBar(props: MultiSearchBarSearchBarProps) {
@@ -126,7 +132,12 @@ export default function MultiSearchBar(props: MultiSearchBarSearchBarProps) {
     );
 
     return (
-        <Box>
+        <Box
+            style={{
+                ...{},
+                ...props.style,
+            }}
+        >
             {/* {JSON.stringify(props.inputValue[1])}
             <p>----</p>
             {JSON.stringify(
@@ -147,6 +158,7 @@ export default function MultiSearchBar(props: MultiSearchBarSearchBarProps) {
                 searchSuggestions={props.searchSuggestion}
                 fixedOptionValues={props.fixedOptionValues}
                 onChange={props.searchOnChange}
+                setInProgressInput={props.setInProgressInput}
             />
             <Box
                 sx={{

@@ -42,6 +42,7 @@ import packageJson from "@/package.json" assert { type: "json" };
 type NavbarProps = {
     setNavbarHeight?: Dispatch<SetStateAction<number | undefined>>;
     children?: React.ReactNode;
+    style?: React.CSSProperties;
 };
 
 export default function Navbar(props: NavbarProps) {
@@ -87,7 +88,7 @@ export default function Navbar(props: NavbarProps) {
                 window.removeEventListener("resize", updateNavHeight);
             };
         }
-    }, [props]);
+    });
 
     return (
         <>
@@ -97,16 +98,19 @@ export default function Navbar(props: NavbarProps) {
                     position="fixed"
                     color="default"
                     sx={{
-                        // ↓ 背景色の指定と背景の透過
-                        backgroundColor: `rgba(
-                        ${rgbToHex(theme.palette.background.paper).r},
-                        ${rgbToHex(theme.palette.background.paper).g},
-                        ${rgbToHex(theme.palette.background.paper).b},
-                        0.75)`,
-                        // 背景をぼかす
-                        backdropFilter: "blur(15px)",
-                        // 背景をぼかす{Safari(WebKit)対応}
-                        WebkitBackdropFilter: "blur(15px)",
+                        ...{
+                            // ↓ 背景色の指定と背景の透過
+                            backgroundColor: `rgba(
+                            ${rgbToHex(theme.palette.background.paper).r},
+                            ${rgbToHex(theme.palette.background.paper).g},
+                            ${rgbToHex(theme.palette.background.paper).b},
+                            0.75)`,
+                            // 背景をぼかす
+                            backdropFilter: "blur(15px)",
+                            // 背景をぼかす{Safari(WebKit)対応}
+                            WebkitBackdropFilter: "blur(15px)",
+                        },
+                        ...props.style,
                     }}
                 >
                     <Container maxWidth="xl">

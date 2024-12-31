@@ -123,6 +123,7 @@ export default function PlayerView(props: PlayerProps) {
         });
         if (!r && props.setPlayerPlaylist) {
             props.setPlayerPlaylist(undefined);
+            setRepeat(false);
         }
 
         // 再生中のvideoIdが変更された時にPlaylistから動画詳細を取得する。
@@ -135,6 +136,7 @@ export default function PlayerView(props: PlayerProps) {
             });
         if (result) {
             props.setPlayerItem(result);
+            setRepeat(false);
         }
     }, [
         props.playerItem,

@@ -4,6 +4,7 @@ import { BrowserInfoProvider } from "@/contexts/BrowserInfoContext";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
+import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -38,6 +39,7 @@ export default function RootLayout({
                     content="0ERg8PZXOGMCKiCI-c-8BqDFTWZrUGbGI0SmzXBmiOo"
                 />
                 {/* Googleアナリティクス */}
+                <GoogleAnalytics gaId="G-EGPYKGH18H" />
             </head>
             <body className={inter.className}>
                 <ThemeRegistry initColorMode={initColorMode}>

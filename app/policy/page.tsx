@@ -6,8 +6,6 @@ import { Box } from "@mui/material";
 export default function Home() {
     // 利用規約の内容を文字列として格納する
     const termsOfService: string = `
-プライバシーポリシー(Privacy Policy)
-
 [ぷらそにかアーカイブス]（以下、「当サイト」といいます）は、ユーザーのプライバシーを尊重し、個人情報を保護することを重要視しています。本プライバシーポリシーは、当サイトが収集する個人情報、収集方法、使用目的、及びその取り扱いについて説明します。
 
 第1条（個人情報の定義）
@@ -55,6 +53,9 @@ export default function Home() {
         <>
             <Navbar />
             <Box style={{ padding: "40px", fontFamily: "Arial, sans-serif" }}>
+                <h1 style={{ fontSize: "2.5rem", marginBottom: "20px" }}>
+                    プライバシーポリシー(Privacy Policy)
+                </h1>
                 <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
                     {termsOfService}
                 </pre>

@@ -21,6 +21,8 @@ import Link from "./Link";
 import type { MultiSearchBarSearchSuggestion } from "./Navbar/SearchBar/MultiSearchBar";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import Image from "next/image";
+import type { YouTubeIframe } from "./YouTubePlayerView";
+import { Repeat } from "@mui/icons-material";
 
 export type PlayerItem = {
     // 優先度 高
@@ -79,6 +81,10 @@ export default function PlayerView(props: PlayerProps) {
     const [youTubePlayer, setYouTubePlayer] = useState<
         YouTubePlayer | undefined
     >(undefined);
+    const [youTubeIframe, setYouTubeIframe] = useState<YouTubeIframe>({
+        width: 320,
+        height: 180,
+    });
 
     // 動画ヨコの比率 (デフォルトは16、トピックチャンネルの場合は１)
     const arWidth: number =
@@ -101,7 +107,13 @@ export default function PlayerView(props: PlayerProps) {
               ? ((screenHeight * 0.55) / arHeight) * arWidth
               : ((screenHeight * 0.1) / arHeight) * arWidth;
     // youtubePlayerの縦幅(px)
-    const playerHeight: number = (playerWidth / arWidth) * arHeight;
+    const playerHeight: number =
+        youTubeIframe.width < playerWidth
+            ? (youTubeIframe.width / arWidth) * arHeight
+            : (playerWidth / arWidth) * arHeight;
+
+    // ループ再生の設定
+    const [repeat, setRepeat] = useState<boolean>(false);
 
     // playNowVideoIdが更新されたらplayNowDetailを更新
     useEffect(() => {
@@ -131,16 +143,21 @@ export default function PlayerView(props: PlayerProps) {
         props.setPlayerPlaylist,
     ]);
 
-    // 楽曲の再生が終わったら次の曲を再生する。
+    // 楽曲の再生が終わったら...(次の曲を再生 or ループ再生)
     useEffect(() => {
         if (youTubePlayerState?.state === "ended") {
             // 再生が終わったら。
-            // 次の曲を順に再生する場合。
             const playListIndex = props.playerPlaylist?.videos.findIndex(
                 (item) =>
                     item.videoId === youTubePlayerState?.getVideoData.video_id,
             );
-            if (playListIndex !== undefined) {
+            // ループする場合
+            if (repeat) {
+                // 再生を実行
+                youTubePlayer.playVideo();
+
+                // 次の曲を順に再生する場合。
+            } else if (playListIndex !== undefined) {
                 props.setPlayerItem(
                     props.playerPlaylist?.videos[playListIndex + 1],
                 );
@@ -148,9 +165,11 @@ export default function PlayerView(props: PlayerProps) {
         }
     }, [
         props.setPlayerItem,
+        youTubePlayer,
         youTubePlayerState?.state,
         props.playerPlaylist,
         youTubePlayerState?.getVideoData.video_id,
+        repeat,
     ]);
 
     const linkifyOptions = {
@@ -348,7 +367,7 @@ export default function PlayerView(props: PlayerProps) {
                             sx={{
                                 display: "flex",
                                 alignContent: "left",
-                                width: `${playerWidth}px`,
+                                width: `${youTubeIframe.width}px`,
                                 margin: "0 auto",
                             }}
                         >
@@ -403,9 +422,25 @@ export default function PlayerView(props: PlayerProps) {
                                 />
                             </IconButton>
                             <Box sx={{ flexGrow: 1 }} />
+                            <IconButton
+                                onClick={() => {
+                                    setRepeat(!repeat);
+                                }}
+                            >
+                                <Repeat
+                                    sx={{
+                                        color: repeat
+                                            ? theme.palette.primary.main
+                                            : "",
+                                        fontSize: "1.5rem",
+                                    }}
+                                />
+                            </IconButton>
+                            <Box sx={{ flexGrow: 0.02 }} />
                         </Box>
                     )}
                     {/* YouTubeプレイヤー */}
+
                     <YouTubePlayerView
                         videoId={
                             props.playerItem?.videoId
@@ -430,6 +465,7 @@ export default function PlayerView(props: PlayerProps) {
                         }
                         setPlayer={setYouTubePlayer}
                         setPlayerState={setYouTubePlayerState}
+                        setYouTubeIframe={setYouTubeIframe}
                     />
 
                     {/* PlayerView縮小表示の時のHTML */}
@@ -543,16 +579,17 @@ export default function PlayerView(props: PlayerProps) {
                             />
                         )}
                     </Box>
-                    {/* PlayerView縮小表示の時のHTML */}
+                    {/* PlayerView拡大表示の時のHTML */}
                     <Box
                         sx={{
+                            width: `${youTubeIframe.width}px`,
+                            margin: "0 auto",
                             display: props.isPlayerFullscreen
                                 ? "block"
                                 : "none",
                             overflowY: "auto",
                             maxHeight: "50vh",
                             paddingBottom: "40vh",
-                            // width: props.isPlayerFullscreen ? "" : "60%",
                         }}
                     >
                         {/* 動画タイトル */}
@@ -818,7 +855,7 @@ export default function PlayerView(props: PlayerProps) {
                             paddingBottom: "25vh",
                         }}
                     >
-                        <p>{props.playerPlaylist?.title}</p>
+                        <h3>{props.playerPlaylist?.title}</h3>
                         {props.playerPlaylist
                             ? props.playerPlaylist.videos.map(
                                   (item: PlayerItem) => (

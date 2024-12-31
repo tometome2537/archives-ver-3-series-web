@@ -274,8 +274,17 @@ export default function Navbar(props: NavbarProps) {
                             target="_blank"
                         >
                             <ListItemIcon>
-                                <InstagramIcon
+                                {/* <InstagramIcon
                                     sx={{ color: "rgb(247, 58, 5)" }}
+                                /> */}
+                                <Image
+                                    src="/ig_logo.png"
+                                    alt="instagram ロゴ"
+                                    width={23}
+                                    height={23}
+                                    style={{
+                                        borderRadius: "20%",
+                                    }}
                                 />
                             </ListItemIcon>
                             <ListItemText primary="ぷらそにか公式 Instagram " />
@@ -312,96 +321,6 @@ export default function Navbar(props: NavbarProps) {
                                 <HomeIcon sx={{ color: "#167c3b" }} />
                             </ListItemIcon>
                             <ListItemText primary="ぷらそにか公式 ホームページ " />
-                        </ListItemButton>
-                    </ListItem>
-                    <Divider sx={{ borderBottomWidth: 3 }} />
-                    <ListItem disablePadding>
-                        <ListItemButton
-                            component="a"
-                            href="https://m.youtube.com/@MusicArchPJ/playlists?view=1&sort=lad&flow=grid"
-                            target="_blank"
-                        >
-                            <ListItemIcon>
-                                <YouTubeIcon sx={{ color: "rgb(236,44,46)" }} />
-                            </ListItemIcon>
-                            <ListItemText
-                                primary="YouTubeプレイリスト"
-                                secondary={"ぷらそにかに関するプレイリスト"}
-                            />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton
-                            component="a"
-                            href="https://x.com/MusicArchPJ"
-                            target="_blank"
-                        >
-                            <ListItemIcon>
-                                <XIcon
-                                    sx={{
-                                        color:
-                                            theme.palette.mode === "dark"
-                                                ? "#F5F5F5"
-                                                : "#121212",
-                                    }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText primary="サイト運営 𝕏 アカウント" />
-                        </ListItemButton>
-                    </ListItem>
-                    {/* <ListItem disablePadding>
-                        <ListItemButton
-                            component="a"
-                            href="https://docs.google.com/spreadsheets/d/1-Reapa-TeRj3FfRomqpj9e6aDCjwH2vMRkAv27bwSV4/edit?usp=sharing"
-                            target="_blank"
-                        >
-                            <ListItemIcon>
-                                <StorageIcon />
-                            </ListItemIcon>
-                            <ListItemText primary="サイトデータベース" />
-                        </ListItemButton>
-                    </ListItem> */}
-                    <ListItem disablePadding>
-                        <ListItemButton
-                            component="a"
-                            href="https://forms.gle/osqdRqh1MxWhA51A8"
-                            target="_blank"
-                        >
-                            <ListItemIcon>
-                                <MailIcon sx={{ color: "rgb(50, 154, 229)" }} />
-                            </ListItemIcon>
-                            <ListItemText
-                                style={{
-                                    whiteSpace: "pre-line",
-                                }}
-                                primary="お問い合わせ"
-                                secondary={
-                                    "メールアドレス\nmusic-archives-project [a] googlegroups.com"
-                                }
-                            />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton
-                            component="a"
-                            href="https://docs.google.com/forms/d/e/1FAIpQLScfUbL_mPDFJP921o6bjvGi8Dq0VeyhNDpySpHSF97ECwWr8w/viewform?usp=pp_url&entry.1432192910=%0A%E3%80%90%E8%AA%A4%E6%83%85%E5%A0%B1%E3%80%91%0A%E3%83%BB%E5%AF%BE%E8%B1%A1%E3%81%AEYouTube%E3%81%AE%E3%83%AA%E3%83%B3%E3%82%AF%0A%E2%86%92%0A%E3%83%BB%E5%AF%BE%E8%B1%A1%E3%81%AEYouTube%E3%81%AE%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB%0A%E2%86%92%0A%E3%83%BB%E8%A9%B3%E7%B4%B0%0A%E2%86%92%0A%0A%0A%E3%80%90%E3%83%90%E3%82%B0%E3%83%BB%E4%B8%8D%E5%85%B7%E5%90%88%E3%81%AE%E5%A0%B1%E5%91%8A%E3%80%91%0A%E3%83%BB%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%81%84%E3%82%8B%E7%AB%AF%E6%9C%AB%E5%90%8D%0A%E2%86%92%0A%E3%83%BB%E7%AB%AF%E6%9C%AB%E3%81%AEOS%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%0A%E2%86%92%0A%E3%83%BB%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%81%84%E3%82%8B%E3%83%96%E3%83%A9%E3%82%A6%E3%82%B6%0A%E2%86%92%0A%E3%83%BB%E3%83%96%E3%83%A9%E3%82%A6%E3%82%B6%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%0A%E2%86%92%0A%E3%83%BB%E5%95%8F%E9%A1%8C%E3%82%92%E5%86%8D%E7%8F%BE%E3%81%99%E3%82%8B%E6%89%8B%E9%A0%86%0A%E2%86%92"
-                            target="_blank"
-                        >
-                            <ListItemIcon>
-                                {/* <MailIcon /> */}
-                                <FeedbackIcon
-                                    sx={{ color: "rgb(165, 82, 242)" }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText
-                                style={{
-                                    whiteSpace: "pre-line",
-                                }}
-                                primary="フィードバック"
-                                secondary={
-                                    "バグ報告・誤情報の報告もこちらからお願いします。\n削除依頼は上記メールアドレスへお願いします。"
-                                }
-                            />
                         </ListItemButton>
                     </ListItem>
                     <Divider sx={{ borderBottomWidth: 3 }} />
@@ -471,6 +390,155 @@ export default function Navbar(props: NavbarProps) {
                     <ListItem disablePadding>
                         <ListItemButton
                             component="a"
+                            href="https://m.youtube.com/@MusicArchPJ/playlists?view=1&sort=lad&flow=grid"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <YouTubeIcon sx={{ color: "rgb(236,44,46)" }} />
+                            </ListItemIcon>
+                            <ListItemText
+                                primary="YouTubeプレイリスト"
+                                secondary={"ぷらそにかに関するプレイリスト"}
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://x.com/MusicArchPJ"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <XIcon
+                                    sx={{
+                                        color:
+                                            theme.palette.mode === "dark"
+                                                ? "#F5F5F5"
+                                                : "#121212",
+                                    }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText primary="サイト運営 𝕏 アカウント" />
+                        </ListItemButton>
+                    </ListItem>
+                    {/* <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://docs.google.com/spreadsheets/d/1-Reapa-TeRj3FfRomqpj9e6aDCjwH2vMRkAv27bwSV4/edit?usp=sharing"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <StorageIcon />
+                            </ListItemIcon>
+                            <ListItemText primary="サイトデータベース" />
+                        </ListItemButton>
+                    </ListItem> */}
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://forms.gle/osqdRqh1MxWhA51A8"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <MailIcon sx={{ color: "rgb(50, 154, 229)" }} />
+                            </ListItemIcon>
+                            <ListItemText
+                                style={{
+                                    whiteSpace: "pre-line",
+                                }}
+                                primary="お問い合わせ"
+                                secondary={
+                                    "music-archives-project [a] googlegroups.com"
+                                }
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://docs.google.com/forms/d/e/1FAIpQLScfUbL_mPDFJP921o6bjvGi8Dq0VeyhNDpySpHSF97ECwWr8w/viewform?usp=pp_url&entry.1432192910=%0A%E3%80%90%E8%AA%A4%E6%83%85%E5%A0%B1%E3%80%91%0A%E3%83%BB%E5%AF%BE%E8%B1%A1%E3%81%AEYouTube%E3%81%AE%E3%83%AA%E3%83%B3%E3%82%AF%0A%E2%86%92%0A%E3%83%BB%E5%AF%BE%E8%B1%A1%E3%81%AEYouTube%E3%81%AE%E3%82%BF%E3%82%A4%E3%83%88%E3%83%AB%0A%E2%86%92%0A%E3%83%BB%E8%A9%B3%E7%B4%B0%0A%E2%86%92%0A%0A%0A%E3%80%90%E3%83%90%E3%82%B0%E3%83%BB%E4%B8%8D%E5%85%B7%E5%90%88%E3%81%AE%E5%A0%B1%E5%91%8A%E3%80%91%0A%E3%83%BB%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%81%84%E3%82%8B%E7%AB%AF%E6%9C%AB%E5%90%8D%0A%E2%86%92%0A%E3%83%BB%E7%AB%AF%E6%9C%AB%E3%81%AEOS%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%0A%E2%86%92%0A%E3%83%BB%E4%BD%BF%E7%94%A8%E3%81%97%E3%81%A6%E3%81%84%E3%82%8B%E3%83%96%E3%83%A9%E3%82%A6%E3%82%B6%0A%E2%86%92%0A%E3%83%BB%E3%83%96%E3%83%A9%E3%82%A6%E3%82%B6%E3%81%AE%E3%83%90%E3%83%BC%E3%82%B8%E3%83%A7%E3%83%B3%0A%E2%86%92%0A%E3%83%BB%E5%95%8F%E9%A1%8C%E3%82%92%E5%86%8D%E7%8F%BE%E3%81%99%E3%82%8B%E6%89%8B%E9%A0%86%0A%E2%86%92"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                {/* <MailIcon /> */}
+                                <FeedbackIcon
+                                    sx={{ color: "rgb(165, 82, 242)" }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText
+                                style={{
+                                    whiteSpace: "pre-line",
+                                }}
+                                primary="フィードバック"
+                                secondary={
+                                    "バグ報告・誤情報の報告もこちらからお願いします。\n削除依頼は上記メールアドレスへお願いします。"
+                                }
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                    <Divider sx={{ borderBottomWidth: 3 }} />
+                    <ListItem disablePadding>
+                        <ListItemButton>
+                            <ListItemText
+                                primary="Special Thanks"
+                                // secondary={
+                                //     "〜当サイトの構築に貢献してくださった方々〜"
+                                // }
+                                primaryTypographyProps={{ fontSize: "1.3rem" }} // テキストサイズを1.5remに設定
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
+                            href="https://sssapi.app"
+                            target="_blank"
+                        >
+                            <ListItemIcon>
+                                <Image
+                                    src="/sssapi_logo.png"
+                                    alt="SSSAPI ロゴ"
+                                    width={25}
+                                    height={25}
+                                    style={{
+                                        borderRadius: "20%",
+                                    }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText
+                                style={{
+                                    // 文字列内の\nを適切に反映させる。
+                                    whiteSpace: "pre-line",
+                                }}
+                                primary={"SSSAPI"}
+                                secondary={
+                                    "当サイトではSSSAPI様のサービスを利用させていただいています。\nここに感謝の意を表します。"
+                                }
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                    <ListItem disablePadding>
+                        <ListItemButton>
+                            <ListItemIcon>
+                                <GradeIcon
+                                    sx={{ color: "rgb(227, 220, 18)" }}
+                                />
+                            </ListItemIcon>
+                            <ListItemText
+                                style={{
+                                    // 文字列内の\nを適切に反映させる。
+                                    whiteSpace: "pre-line",
+                                }}
+                                secondary={
+                                    "その他情報提供・バグ報告してくださった方々\n本当にありがとうございます。"
+                                }
+                            />
+                        </ListItemButton>
+                    </ListItem>
+                    <Divider sx={{ borderBottomWidth: 3 }} />
+                    <ListItem disablePadding>
+                        <ListItemButton
+                            component="a"
                             href="/license"
                             target="_blank"
                         >
@@ -507,64 +575,6 @@ export default function Navbar(props: NavbarProps) {
                         </ListItemButton>
                     </ListItem>
                     <Divider sx={{ borderBottomWidth: 3 }} />
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemText
-                                primary="Special Thanks"
-                                // secondary={
-                                //     "〜当サイトの構築に貢献してくださった方々〜"
-                                // }
-                                primaryTypographyProps={{ fontSize: "1.3rem" }} // テキストサイズを1.5remに設定
-                            />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton
-                            component="a"
-                            href="https://sssapi.app"
-                            target="_blank"
-                        >
-                            <ListItemIcon>
-                                <Image
-                                    src="/sssapi_logo.png"
-                                    alt="SSSAPI ロゴ"
-                                    width={30}
-                                    height={30}
-                                    style={{
-                                        borderRadius: "20%",
-                                    }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText
-                                style={{
-                                    // 文字列内の\nを適切に反映させる。
-                                    whiteSpace: "pre-line",
-                                }}
-                                primary={"SSSAPI"}
-                                secondary={
-                                    "当サイトではSSSAPI様のサービスを利用させていただいています。\nここに感謝の意を表します。"
-                                }
-                            />
-                        </ListItemButton>
-                    </ListItem>
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemIcon>
-                                <GradeIcon
-                                    sx={{ color: "rgb(227, 220, 18)" }}
-                                />
-                            </ListItemIcon>
-                            <ListItemText
-                                style={{
-                                    // 文字列内の\nを適切に反映させる。
-                                    whiteSpace: "pre-line",
-                                }}
-                                secondary={
-                                    "その他情報提供・バグ報告してくださった方々\n本当にありがとうございます。"
-                                }
-                            />
-                        </ListItemButton>
-                    </ListItem>
                     <ListItem disablePadding>
                         <ListItemButton
                             onClick={() => {

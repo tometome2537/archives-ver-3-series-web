@@ -98,7 +98,7 @@
     "path": "/node_modules/@emotion/babel-plugin",
     "licenseFile": "/node_modules/@emotion/babel-plugin/LICENSE"
   },
-  "@emotion/cache@11.13.5": {
+  "@emotion/cache@11.14.0": {
     "licenses": "MIT",
     "repository": "https://github.com/emotion-js/emotion/tree/main/packages/cache",
     "path": "/node_modules/@emotion/cache",
@@ -122,7 +122,7 @@
     "path": "/node_modules/@emotion/memoize",
     "licenseFile": "/node_modules/@emotion/memoize/LICENSE"
   },
-  "@emotion/react@11.13.5": {
+  "@emotion/react@11.14.0": {
     "licenses": "MIT",
     "repository": "https://github.com/emotion-js/emotion/tree/main/packages/react",
     "publisher": "Emotion Contributors",
@@ -141,7 +141,7 @@
     "path": "/node_modules/@emotion/sheet",
     "licenseFile": "/node_modules/@emotion/sheet/LICENSE"
   },
-  "@emotion/styled@11.13.5": {
+  "@emotion/styled@11.14.0": {
     "licenses": "MIT",
     "repository": "https://github.com/emotion-js/emotion/tree/main/packages/styled",
     "path": "/node_modules/@emotion/styled",
@@ -153,7 +153,7 @@
     "path": "/node_modules/@emotion/unitless",
     "licenseFile": "/node_modules/@emotion/unitless/LICENSE"
   },
-  "@emotion/use-insertion-effect-with-fallbacks@1.1.0": {
+  "@emotion/use-insertion-effect-with-fallbacks@1.2.0": {
     "licenses": "MIT",
     "repository": "https://github.com/emotion-js/emotion/tree/main/packages/use-insertion-effect-with-fallbacks",
     "path": "/node_modules/@emotion/use-insertion-effect-with-fallbacks",
@@ -171,7 +171,7 @@
     "path": "/node_modules/@emotion/weak-memoize",
     "licenseFile": "/node_modules/@emotion/weak-memoize/LICENSE"
   },
-  "@jridgewell/gen-mapping@0.3.5": {
+  "@jridgewell/gen-mapping@0.3.8": {
     "licenses": "MIT",
     "repository": "https://github.com/jridgewell/gen-mapping",
     "publisher": "Justin Ridgewell",
@@ -210,91 +210,91 @@
     "path": "/node_modules/@jridgewell/trace-mapping",
     "licenseFile": "/node_modules/@jridgewell/trace-mapping/LICENSE"
   },
-  "@mui/core-downloads-tracker@5.16.9": {
+  "@mui/core-downloads-tracker@5.16.13": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/node_modules/@mui/core-downloads-tracker",
     "licenseFile": "/node_modules/@mui/core-downloads-tracker/LICENSE"
   },
-  "@mui/icons-material@5.16.9": {
+  "@mui/icons-material@5.16.13": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/node_modules/@mui/icons-material",
     "licenseFile": "/node_modules/@mui/icons-material/LICENSE"
   },
-  "@mui/material@5.16.9": {
+  "@mui/material@5.16.13": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/node_modules/@mui/material",
     "licenseFile": "/node_modules/@mui/material/LICENSE"
   },
-  "@mui/private-theming@5.16.8": {
+  "@mui/private-theming@5.16.13": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/node_modules/@mui/material/node_modules/@mui/private-theming",
     "licenseFile": "/node_modules/@mui/material/node_modules/@mui/private-theming/LICENSE"
   },
-  "@mui/private-theming@6.1.10": {
+  "@mui/private-theming@6.3.0": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/node_modules/@mui/private-theming",
     "licenseFile": "/node_modules/@mui/private-theming/LICENSE"
   },
-  "@mui/styled-engine@5.16.8": {
+  "@mui/styled-engine@5.16.13": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/node_modules/@mui/material/node_modules/@mui/styled-engine",
     "licenseFile": "/node_modules/@mui/material/node_modules/@mui/styled-engine/LICENSE"
   },
-  "@mui/styled-engine@6.1.10": {
+  "@mui/styled-engine@6.3.0": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/node_modules/@mui/styled-engine",
     "licenseFile": "/node_modules/@mui/styled-engine/LICENSE"
   },
-  "@mui/system@5.16.8": {
+  "@mui/system@5.16.13": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/node_modules/@mui/material/node_modules/@mui/system",
     "licenseFile": "/node_modules/@mui/material/node_modules/@mui/system/LICENSE"
   },
-  "@mui/system@6.1.10": {
+  "@mui/system@6.3.0": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/node_modules/@mui/system",
     "licenseFile": "/node_modules/@mui/system/LICENSE"
   },
-  "@mui/types@7.2.19": {
+  "@mui/types@7.2.20": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/node_modules/@mui/types",
     "licenseFile": "/node_modules/@mui/types/LICENSE"
   },
-  "@mui/utils@5.16.8": {
+  "@mui/utils@5.16.13": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/node_modules/@mui/utils",
     "licenseFile": "/node_modules/@mui/utils/LICENSE"
   },
-  "@mui/utils@6.1.10": {
+  "@mui/utils@6.3.0": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/node_modules/@mui/private-theming/node_modules/@mui/utils",
     "licenseFile": "/node_modules/@mui/private-theming/node_modules/@mui/utils/LICENSE"
   },
-  "@mui/x-date-pickers@7.23.1": {
+  "@mui/x-date-pickers@7.23.3": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/mui-x",
     "publisher": "MUI Team",
@@ -308,7 +308,7 @@
     "path": "/node_modules/@mui/x-internals",
     "licenseFile": "/node_modules/@mui/x-internals/LICENSE"
   },
-  "@next/env@14.2.20": {
+  "@next/env@14.2.22": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "publisher": "Next.js Team",
@@ -316,11 +316,17 @@
     "path": "/node_modules/@next/env",
     "licenseFile": "/node_modules/@next/env/README.md"
   },
-  "@next/swc-darwin-arm64@14.2.20": {
+  "@next/swc-darwin-arm64@14.2.22": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/node_modules/@next/swc-darwin-arm64",
     "licenseFile": "/node_modules/@next/swc-darwin-arm64/README.md"
+  },
+  "@next/third-parties@15.1.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/vercel/next.js",
+    "path": "/node_modules/@next/third-parties",
+    "licenseFile": "/node_modules/@next/third-parties/README.md"
   },
   "@popperjs/core@2.11.8": {
     "licenses": "MIT",
@@ -352,7 +358,7 @@
     "path": "/node_modules/@types/js-cookie",
     "licenseFile": "/node_modules/@types/js-cookie/LICENSE"
   },
-  "@types/node@22.10.1": {
+  "@types/node@22.10.2": {
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
     "path": "/node_modules/@types/node",
@@ -370,13 +376,13 @@
     "path": "/node_modules/@types/prop-types",
     "licenseFile": "/node_modules/@types/prop-types/LICENSE"
   },
-  "@types/react-transition-group@4.4.11": {
+  "@types/react-transition-group@4.4.12": {
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
     "path": "/node_modules/@types/react-transition-group",
     "licenseFile": "/node_modules/@types/react-transition-group/LICENSE"
   },
-  "@types/react@18.3.14": {
+  "@types/react@18.3.18": {
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
     "path": "/node_modules/@types/react",
@@ -473,7 +479,7 @@
     "path": "/node_modules/callsites",
     "licenseFile": "/node_modules/callsites/license"
   },
-  "caniuse-lite@1.0.30001687": {
+  "caniuse-lite@1.0.30001690": {
     "licenses": "CC-BY-4.0",
     "repository": "https://github.com/browserslist/caniuse-lite",
     "publisher": "Ben Briggs",
@@ -607,6 +613,15 @@
     "url": "http://debuggable.com/",
     "path": "/node_modules/delayed-stream",
     "licenseFile": "/node_modules/delayed-stream/License"
+  },
+  "dequal@2.0.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/lukeed/dequal",
+    "publisher": "Luke Edwards",
+    "email": "luke.edwards05@gmail.com",
+    "url": "https://lukeed.com",
+    "path": "/node_modules/dequal",
+    "licenseFile": "/node_modules/dequal/license"
   },
   "dezalgo@1.0.4": {
     "licenses": "ISC",
@@ -788,7 +803,7 @@
     "path": "/node_modules/is-arrayish",
     "licenseFile": "/node_modules/is-arrayish/LICENSE"
   },
-  "is-core-module@2.15.1": {
+  "is-core-module@2.16.1": {
     "licenses": "MIT",
     "repository": "https://github.com/inspect-js/is-core-module",
     "publisher": "Jordan Harband",
@@ -810,7 +825,7 @@
     "path": "/node_modules/js-tokens",
     "licenseFile": "/node_modules/js-tokens/LICENSE"
   },
-  "jsesc@3.0.2": {
+  "jsesc@3.1.0": {
     "licenses": "MIT",
     "repository": "https://github.com/mathiasbynens/jsesc",
     "publisher": "Mathias Bynens",
@@ -880,7 +895,7 @@
     "path": "/node_modules/loose-envify",
     "licenseFile": "/node_modules/loose-envify/LICENSE"
   },
-  "map@0.1.0": {
+  "map@3.0.0": {
     "licenses": "UNLICENSED",
     "private": true,
     "path": "",
@@ -945,7 +960,7 @@
     "path": "/node_modules/nanoid",
     "licenseFile": "/node_modules/nanoid/LICENSE"
   },
-  "next@14.2.20": {
+  "next@14.2.22": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/node_modules/next",
@@ -1123,7 +1138,7 @@
     "path": "/node_modules/hoist-non-react-statics/node_modules/react-is",
     "licenseFile": "/node_modules/hoist-non-react-statics/node_modules/react-is/LICENSE"
   },
-  "react-is@18.3.1": {
+  "react-is@19.0.0": {
     "licenses": "MIT",
     "repository": "https://github.com/facebook/react",
     "path": "/node_modules/react-is",
@@ -1193,7 +1208,7 @@
     "path": "/node_modules/resolve-from",
     "licenseFile": "/node_modules/resolve-from/license"
   },
-  "resolve@1.22.8": {
+  "resolve@1.22.10": {
     "licenses": "MIT",
     "repository": "https://github.com/browserify/resolve",
     "publisher": "James Halliday",
@@ -1343,11 +1358,17 @@
     "path": "/node_modules/supports-preserve-symlinks-flag",
     "licenseFile": "/node_modules/supports-preserve-symlinks-flag/LICENSE"
   },
-  "swr@2.2.5": {
+  "swr@2.3.0": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/swr",
     "path": "/node_modules/swr",
     "licenseFile": "/node_modules/swr/LICENSE"
+  },
+  "third-party-capital@1.0.20": {
+    "licenses": "ISC",
+    "repository": "https://github.com/housseindjirdeh/third-party-capital",
+    "path": "/node_modules/third-party-capital",
+    "licenseFile": "/node_modules/third-party-capital/LICENSE"
   },
   "throttle-debounce@2.3.0": {
     "licenses": "MIT",
@@ -1373,7 +1394,7 @@
     "path": "/node_modules/tslib",
     "licenseFile": "/node_modules/tslib/LICENSE.txt"
   },
-  "typescript@5.6.2": {
+  "typescript@5.7.2": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/microsoft/TypeScript",
     "publisher": "Microsoft Corp.",

@@ -254,22 +254,27 @@ export default function Thumbnail(props: ThumbnailProps) {
                                     width: "100%",
                                     height: "100%",
                                     objectFit: "contain",
-                                    borderRadius: "1.2em",
+                                    borderRadius: "10%",
                                 }}
                             />
                         </Box>
                     </Box>
 
                     {/* タイトルをエリプシスで省略 */}
-                    <Box sx={{ width: "60%" }}>
+                    <Box
+                        sx={{
+                            width: props.duration === undefined ? "70%" : "60%",
+                        }}
+                    >
                         <Typography
                             variant="body2"
                             sx={{
-                                maxWidth: "30ch",
+                                // maxWidth: "30ch",
                                 textOverflow: "ellipsis",
                                 overflow: "hidden",
                                 whiteSpace: "nowrap",
                                 marginTop: 1,
+                                marginLeft: 1,
                                 textAlign: "center",
                             }}
                         >
@@ -278,18 +283,24 @@ export default function Thumbnail(props: ThumbnailProps) {
                             {props.channelTitle || ""}
                         </Typography>
                     </Box>
-                    <Box sx={{ width: "10%" }}>
-                        <Typography
+                    {props.duration && (
+                        <Box
                             sx={{
-                                whiteSpace: "nowrap", // 改行しない
-                                marginTop: 1.5,
+                                width: props.duration ? "10%" : "0%",
                             }}
                         >
-                            {props.duration
-                                ? `${Math.floor(props.duration / 60)}:${String(props.duration % 60).padStart(2, "0")}`
-                                : ""}
-                        </Typography>
-                    </Box>
+                            <Typography
+                                sx={{
+                                    whiteSpace: "nowrap", // 改行しない
+                                    marginTop: 1.5,
+                                }}
+                            >
+                                {props.duration
+                                    ? `${Math.floor(props.duration / 60)}:${String(props.duration % 60).padStart(2, "0")}`
+                                    : ""}
+                            </Typography>
+                        </Box>
+                    )}
                 </Box>
             </Box>
         );

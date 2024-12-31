@@ -1,7 +1,12 @@
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import YouTube, { type YouTubeProps, type YouTubePlayer } from "react-youtube";
+
+export type YouTubeIframe = {
+    width: number;
+    height: number;
+};
 
 type YouTubePlayerViewProps = {
     videoId?: string;
@@ -11,6 +16,7 @@ type YouTubePlayerViewProps = {
     playerRadius?: boolean;
     setPlayerState?: Dispatch<SetStateAction<YouTubePlayerState | undefined>>;
     setPlayer?: Dispatch<SetStateAction<YouTubePlayer | undefined>>;
+    setYouTubeIframe?: Dispatch<SetStateAction<YouTubeIframe>>;
 };
 
 enum State {
@@ -20,22 +26,22 @@ enum State {
     paused = "paused",
     buffering = "buffering",
     videoCued = "videoCued", //（準備完了）
-    undefined = "undefined"
+    undefined = "undefined",
 }
 
 export type YouTubePlayerState = {
     state: State;
     stateNumber: number;
     getVideoData: {
-        video_id: string
+        video_id: string;
         title: string;
         author: string;
         video_quality: string;
-        isPlayable: boolean
+        isPlayable: boolean;
         isPrivate: boolean;
         isLive: boolean;
         errorCode: number;
-        video_quality_features: string[]
+        video_quality_features: string[];
         backgroundable: boolean;
         eventId: string;
         cpn: string;
@@ -43,7 +49,7 @@ export type YouTubePlayerState = {
         isManifestless: boolean;
         allowLiveDvr: boolean;
         isListed: boolean;
-        isMultiChannelAudio: boolean
+        isMultiChannelAudio: boolean;
         hasProgressBarBoundaries: boolean;
         isPremiere: boolean;
         itct: string;
@@ -51,14 +57,17 @@ export type YouTubePlayerState = {
         progressBarStartPositionUtcTimeMillis: string;
         progressBarEndPositionUtcTimeMillis: string;
         paidContentOverlayDurationMs: number;
-    }
+    };
     getCurrentTime: number;
     getDuration: number;
     getVideoUrl: string;
     isMuted: boolean;
-}
+};
 
 export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
+    // NavbarのHTMLが保存される
+    const PlayerRef = useRef<HTMLDivElement | null>(null);
+
     // YouTube Playerの再生オプション
     const YouTubeOpts: YouTubeProps["opts"] = {
         // widthは "％"の指定で良い。具体的な幅はPlayerの親要素で調節する。
@@ -68,7 +77,7 @@ export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
         playerVars: {
             // https://developers.google.com/youtube/player_parameters
             autoplay: 1, // 自動再生
-            loop:  0, // デフォルトはループしない。
+            loop: 0, // デフォルトはループしない。
             playlist: undefined,
         },
     };
@@ -84,17 +93,16 @@ export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
             [5]: State.videoCued,
         };
         const r = {
-            state:  stateMap[event?.data] ?? State.undefined,
+            state: stateMap[event?.data] ?? State.undefined,
             stateNumber: event?.data,
             getVideoData: event?.target?.getVideoData(),
             getCurrentTime: event?.target?.getCurrentTime(),
             getDuration: event?.target?.getDuration(),
             getVideoUrl: event?.target?.getVideoUrl(),
             isMuted: event?.target?.isMuted(),
-        }
+        };
         props.setPlayerState?.(r);
     };
-
 
     // YouTube Playerの読み込みが完了した時
     const onReady: YouTubeProps["onReady"] = (event) => {
@@ -103,8 +111,40 @@ export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
         }
     };
 
+    useEffect(() => {
+        // Playerの横幅を調べる
+        if (typeof window !== "undefined") {
+            // タブバーの高さを再計算する関数
+            const updatePlayer = () => {
+                if (PlayerRef.current) {
+                    const width = PlayerRef.current.clientWidth;
+                    const height = PlayerRef.current.clientHeight;
+                    const r = {
+                        width,
+                        height,
+                    };
+                    if (props.setYouTubeIframe) {
+                        props.setYouTubeIframe(r);
+                    }
+                }
+            };
+
+            // 初回の高さ計算
+            updatePlayer();
+
+            // ウィンドウリサイズ時に高さを再計算
+            window.addEventListener("resize", updatePlayer);
+
+            // クリーンアップ: コンポーネントがアンマウントされたときにイベントリスナーを削除
+            return () => {
+                window.removeEventListener("resize", updatePlayer);
+            };
+        }
+    }, [props]);
+
     return (
         <div
+            ref={PlayerRef}
             style={{
                 ...{
                     width: props.width || "100%",
@@ -121,12 +161,13 @@ export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
                 ...props.style,
             }}
         >
+            {/* {playerWidth} */}
             <YouTube
                 videoId={props.videoId ? props.videoId : ""}
                 opts={YouTubeOpts}
                 onStateChange={onStateChange}
                 onReady={onReady}
             />
-            </div>
-            )
+        </div>
+    );
 }

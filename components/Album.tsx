@@ -9,6 +9,7 @@ type AlbumProps = {
     onClick?: MouseEventHandler<HTMLElement>;
     imgSrc?: string;
     style?: React.CSSProperties; // 外部からスタイルを受け取る（オプション）
+    year?: string;
 };
 
 export default function Album(props: AlbumProps) {
@@ -36,7 +37,7 @@ export default function Album(props: AlbumProps) {
                     width: "100%",
                     height: "auto",
                     objectFit: "contain",
-                    borderRadius: "10%",
+                    borderRadius: "0.6em",
                 }}
             />
             <Typography
@@ -51,6 +52,14 @@ export default function Album(props: AlbumProps) {
                 }}
             >
                 {props.title ?? "不明"}
+            </Typography>
+            {/* リリース年を表示 */}
+            <Typography
+                variant="caption"
+                color="textSecondary"
+                sx={{ marginTop: 0.1, textAlign: "center" }}
+            >
+                {props.year && props.year}
             </Typography>
         </Box>
     );

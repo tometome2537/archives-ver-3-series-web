@@ -264,6 +264,7 @@ export default function RootLayout({
                             playerItem={playerItem}
                             setPlayerItem={setPlayerItem}
                             setPlayerPlaylist={setPlayerPlaylist}
+                            setIsPlayerFullscreen={setIsPlayerFullscreen}
                         />
                     ),
                     onClick: () => {
@@ -274,7 +275,7 @@ export default function RootLayout({
                             // "YouTubeChannel",
                             "title",
                             "description",
-                            "specialWord_PlatMusic",
+                            "specialWord_plusonica",
                             "musicArtistName",
                             "musicTitle",
                         ]);
@@ -326,7 +327,15 @@ export default function RootLayout({
                         result.push({
                             label: "ぷらっとみゅーじっく♪",
                             value: "ぷらっとみゅーじっく♪",
-                            categoryId: "specialWord_PlatMusic",
+                            categoryId: "specialWord_plusonica",
+                            categoryLabel: "特別な検索",
+                            categorySort: 999,
+                            icon: <MusicNote />,
+                        });
+                        result.push({
+                            label: "ぷらそにか(original)",
+                            value: "ぷらそにか(original)",
+                            categoryId: "specialWord_plusonica",
                             categoryLabel: "特別な検索",
                             categorySort: 999,
                             icon: <MusicNote />,

@@ -254,7 +254,7 @@ export default function Thumbnail(props: ThumbnailProps) {
                                     width: "100%",
                                     height: "100%",
                                     objectFit: "contain",
-                                    borderRadius: "10%",
+                                    borderRadius: "1em",
                                 }}
                             />
                         </Box>

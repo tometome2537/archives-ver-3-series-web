@@ -442,7 +442,6 @@ export default function PlayerView(props: PlayerProps) {
                         </Box>
                     )}
                     {/* YouTubeプレイヤー */}
-
                     <YouTubePlayerView
                         videoId={
                             props.playerItem?.videoId
@@ -513,9 +512,9 @@ export default function PlayerView(props: PlayerProps) {
                                 textOverflow: "ellipsis",
                             }}
                         >
-                            {youTubePlayerState
-                                ? youTubePlayerState?.getVideoData.title
-                                : props.playerItem?.title}
+                            {props.playerItem?.title
+                                ? props.playerItem?.title
+                                : youTubePlayerState?.getVideoData.title}
                         </Box>
                         <Box
                             sx={{
@@ -534,12 +533,15 @@ export default function PlayerView(props: PlayerProps) {
                                 textOverflow: "ellipsis",
                             }}
                         >
-                            {youTubePlayerState
-                                ? youTubePlayerState.getVideoData.author.replace(
+                            {props.playerItem?.channelTitle
+                                ? props.playerItem?.channelTitle.replace(
                                       " - Topic",
                                       "",
                                   )
-                                : ""}
+                                : youTubePlayerState?.getVideoData.author.replace(
+                                      " - Topic",
+                                      "",
+                                  )}
                         </Box>
                     </Box>
                     <Box
@@ -610,9 +612,9 @@ export default function PlayerView(props: PlayerProps) {
                                 textOverflow: "ellipsis",
                             }}
                         >
-                            {youTubePlayerState
-                                ? youTubePlayerState.getVideoData.title
-                                : ""}
+                            {props.playerItem?.title
+                                ? props.playerItem?.title
+                                : youTubePlayerState?.getVideoData.title}
                         </h3>
                         {/* チャンネル名 */}
                         <p
@@ -630,12 +632,15 @@ export default function PlayerView(props: PlayerProps) {
                                 textOverflow: "ellipsis",
                             }}
                         >
-                            {youTubePlayerState
-                                ? youTubePlayerState.getVideoData.author.replace(
+                            {props.playerItem?.channelTitle
+                                ? props.playerItem?.channelTitle.replace(
                                       " - Topic",
                                       "",
                                   )
-                                : ""}
+                                : youTubePlayerState?.getVideoData.author.replace(
+                                      " - Topic",
+                                      "",
+                                  )}
                         </p>
                         {/* 動画投稿日 */}
                         <p

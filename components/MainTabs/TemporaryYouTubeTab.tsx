@@ -18,6 +18,7 @@ type TemporaryYouTubeTab = {
     playerItem: PlayerItem | undefined;
     setPlayerItem: Dispatch<SetStateAction<PlayerItem | undefined>>;
     setPlayerPlaylist: Dispatch<SetStateAction<PlayerPlaylist | undefined>>;
+    setIsPlayerFullscreen: Dispatch<SetStateAction<boolean>>;
 };
 
 enum LoadingState {
@@ -185,7 +186,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                     }
                 }
 
-                if (inputValue.categoryId === "specialWord_PlatMusic") {
+                if (inputValue.value === "ぷらっとみゅーじっく♪") {
                     // タイトルの条件を満たさなければfalse
                     if (!item.title?.match(/ぷらそにか/)) {
                         return false;
@@ -197,6 +198,16 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                             /ぷらっとみゅーじっく/,
                         )
                     ) {
+                        return false;
+                    }
+                }
+
+                if (inputValue.value === "ぷらそにか(original)") {
+                    // タイトルの条件を満たさなければfalse
+                    if (!item.title?.match(/ぷらそにか/)) {
+                        return false;
+                    }
+                    if (!item.title?.match(/original/)) {
                         return false;
                     }
                 }
@@ -274,6 +285,9 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 setArtistYTM(null);
                 return false;
             }
+            if (inputValue.categoryId === "specialWord_plusonica") {
+                fetchArtistYTM("UC3tYTei6p55gWg2rr0g4ybQ");
+            }
         });
         if (props.inputValue.length === 0) {
             setArtistYTM(null);
@@ -314,17 +328,17 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             >
                 {artistYTM && (
                     <>
-                        <Box
-                            sx={{
+                        <h4
+                            style={{
                                 margin: "10px",
                                 textAlign: "center",
                             }}
                         >
-                            {artistYTM.albums?.browseId &&
+                            {artistYTM.albums?.browseId ||
                             artistYTM.singles?.browseId
-                                ? `${artistYTM?.name} さんのアルバムも聴いてみよう ♪(一部抜粋)`
+                                ? `${artistYTM?.name} さんのアルバムも聴いてみよう ♪ (一部抜粋)`
                                 : `${artistYTM?.name} さんのアルバムも聴いてみよう ♪`}
-                        </Box>
+                        </h4>
                         <Box
                             sx={{
                                 display: "flex",
@@ -337,7 +351,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                 <Album
                                     key={album.title}
                                     style={{
-                                        width: isMobile ? "35vw" : "15vw",
+                                        minWidth: isMobile ? "30vw" : "15vw",
                                     }}
                                     title={album.title}
                                     imgSrc={album.thumbnails[0].url}
@@ -382,6 +396,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                             }
                                         };
                                         fetch();
+                                        props.setIsPlayerFullscreen(true);
                                     }}
                                 />
                             ))}
@@ -389,9 +404,10 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                 <Album
                                     key={single.title}
                                     style={{
-                                        width: isMobile ? "35vw" : "15vw",
+                                        minWidth: isMobile ? "30vw" : "15vw",
                                     }}
                                     title={single.title}
+                                    year={single.year}
                                     imgSrc={single.thumbnails[0].url}
                                     onClick={() => {
                                         const fetch = async () => {
@@ -409,6 +425,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                             });
                                         };
                                         fetch();
+                                        props.setIsPlayerFullscreen(true);
                                     }}
                                 />
                             ))}
@@ -540,6 +557,9 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                                     props.setPlayerPlaylist({
                                                         videos: searchResult,
                                                     });
+                                                    props.setIsPlayerFullscreen(
+                                                        true,
+                                                    );
                                                 }}
                                             />
                                         </Box>

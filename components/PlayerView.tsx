@@ -5,7 +5,6 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box, Chip } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
 import { useTheme } from "@mui/material/styles";
-import Linkify from "linkify-react";
 import { useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import type { YouTubePlayer } from "react-youtube";
@@ -15,14 +14,15 @@ import type { YouTubePlayerState } from "./YouTubePlayerView";
 import "linkify-plugin-hashtag";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { KeyboardArrowDown } from "@mui/icons-material";
+import { Repeat } from "@mui/icons-material";
+import YouTubeIcon from "@mui/icons-material/YouTube";
 import IconButton from "@mui/material/IconButton";
 import { blue } from "@mui/material/colors";
+import Image from "next/image";
+import Description from "./Description";
 import Link from "./Link";
 import type { MultiSearchBarSearchSuggestion } from "./Navbar/SearchBar/MultiSearchBar";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import Image from "next/image";
 import type { YouTubeIframe } from "./YouTubePlayerView";
-import { Repeat } from "@mui/icons-material";
 
 export type PlayerItem = {
     // 優先度 高
@@ -173,117 +173,6 @@ export default function PlayerView(props: PlayerProps) {
         youTubePlayerState?.getVideoData.video_id,
         repeat,
     ]);
-
-    const linkifyOptions = {
-        render: {
-            url: ({
-                attributes,
-                content,
-            }: {
-                attributes: { [attr: string]: React.ReactNode };
-                content: string;
-            }) => {
-                try {
-                    const url = new URL(content);
-                    const pathSegments = url.pathname
-                        .split("/")
-                        .filter((segment) => segment);
-                    const userId = pathSegments[0]
-                        ? pathSegments[0].replace("@", "")
-                        : content;
-
-                    if (
-                        url.hostname === "twitter.com" ||
-                        url.hostname === "x.com"
-                    ) {
-                        return (
-                            <Link {...attributes}>
-                                <Chip
-                                    size="small"
-                                    avatar={<Avatar src="/x_logo.png" />}
-                                    label={userId}
-                                />
-                            </Link>
-                        );
-                    }
-
-                    if (
-                        url.hostname === "instagram.com" ||
-                        url.hostname === "www.instagram.com"
-                    ) {
-                        return (
-                            <Link {...attributes}>
-                                <Chip
-                                    size="small"
-                                    avatar={<Avatar src="/ig_logo.png" />}
-                                    label={userId}
-                                />
-                            </Link>
-                        );
-                    }
-
-                    if (
-                        url.hostname === "tiktok.com" ||
-                        url.hostname === "www.tiktok.com"
-                    ) {
-                        return (
-                            <Link {...attributes}>
-                                <Chip
-                                    size="small"
-                                    avatar={<Avatar src="/tiktok_logo.png" />}
-                                    label={userId}
-                                />
-                            </Link>
-                        );
-                    }
-
-                    if (
-                        url.hostname === "youtube.com" ||
-                        url.hostname === "www.youtube.com"
-                    ) {
-                        return (
-                            <Link {...attributes}>
-                                <Chip
-                                    size="small"
-                                    avatar={<Avatar src="/yt_logo.png" />}
-                                    label={userId}
-                                />
-                            </Link>
-                        );
-                    }
-
-                    return <Link {...attributes}>{content}</Link>;
-                } catch (error) {
-                    return <Link {...attributes}>{content}</Link>;
-                }
-            },
-            hashtag: ({
-                attributes,
-                content,
-            }: {
-                attributes: { [attr: string]: React.ReactNode };
-                content: string;
-            }) => {
-                try {
-                    return (
-                        <Link
-                            style={{ color: blue[400] }}
-                            underline="none"
-                            {...attributes}
-                        >
-                            {content}
-                        </Link>
-                    );
-                } catch {
-                    return <Link {...attributes}>{content}</Link>;
-                }
-            },
-        },
-        formatHref: {
-            hashtag: (href: string) =>
-                `https://www.youtube.com/hashtag/${href.substring(1)}`,
-        },
-    };
 
     return (
         <Box
@@ -785,15 +674,10 @@ export default function PlayerView(props: PlayerProps) {
                         >
                             {props.isPlayerFullscreen &&
                                 props.playerItem?.description && (
-                                    <Linkify
-                                        as="p"
-                                        options={{
-                                            ...linkifyOptions,
-                                            target: "_blank",
-                                        }}
-                                    >
-                                        {props.playerItem.description}
-                                    </Linkify>
+                                    <Description
+                                        text={props.playerItem.description}
+                                        maxLine={2}
+                                    />
                                 )}
                         </Box>
                         {/* プレイリストの表示 */}

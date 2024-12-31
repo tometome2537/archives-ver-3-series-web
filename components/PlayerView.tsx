@@ -531,31 +531,6 @@ export default function PlayerView(props: PlayerProps) {
                                       "",
                                   )}
                         </p>
-                        {/* 動画投稿日 */}
-                        <p
-                            style={{
-                                fontSize: "14px", // フォントサイズ
-                                color: "#555", // 色
-                                margin: "10px 0", // 上下のマージン
-                                fontStyle: "italic", // イタリック体
-                                textAlign: "center", // 中央揃え
-                            }}
-                        >
-                            {props.isPlayerFullscreen &&
-                                props.playerItem &&
-                                props.playerItem.publishedAt &&
-                                new Date(
-                                    props.playerItem.publishedAt,
-                                ).toLocaleDateString("ja-JP", {
-                                    year: "numeric", // 年
-                                    month: "long", // 月（長い形式）
-                                    day: "numeric", // 日
-                                    // hour: "2-digit", // 時（2桁形式）
-                                    // minute: "2-digit", // 分（2桁形式）
-                                    // second: "2-digit", // 秒（2桁形式）
-                                    hour12: false, // 24時間形式
-                                })}
-                        </p>
                         {/* 出演者・組織名一覧 */}
                         <Box
                             style={{
@@ -668,15 +643,19 @@ export default function PlayerView(props: PlayerProps) {
                         {/* 概要欄 */}
                         <Box
                             style={{
-                                // 文字列内の\nを適切に反映させる。
-                                whiteSpace: "pre-line",
+                                margin: "0.5em",
                             }}
                         >
                             {props.isPlayerFullscreen &&
                                 props.playerItem?.description && (
                                     <Description
                                         text={props.playerItem.description}
-                                        maxLine={2}
+                                        date={
+                                            props.playerItem?.publishedAt
+                                                ? props.playerItem?.publishedAt
+                                                : undefined
+                                        }
+                                        maxLine={3}
                                     />
                                 )}
                         </Box>

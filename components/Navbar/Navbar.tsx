@@ -159,7 +159,13 @@ export default function Navbar(props: NavbarProps) {
                                             display: "flex",
                                         }}
                                     >
-                                        <Link href="/" sx={{ mr: 2 }}>
+                                        <Link
+                                            href="/"
+                                            sx={{
+                                                paddingTop: 0.75,
+                                                paddingBottom: 0.25,
+                                            }}
+                                        >
                                             <Image
                                                 // src="/MAP.png"
                                                 src="/icon_border_radius.png"
@@ -478,7 +484,11 @@ export default function Navbar(props: NavbarProps) {
                     </ListItem>
                     <Divider sx={{ borderBottomWidth: 3 }} />
                     <ListItem disablePadding>
-                        <ListItemButton>
+                        <ListItemButton
+                            onClick={() => {
+                                setMenu(false);
+                            }}
+                        >
                             <ListItemText
                                 primary="Special Thanks"
                                 // secondary={
@@ -518,7 +528,11 @@ export default function Navbar(props: NavbarProps) {
                         </ListItemButton>
                     </ListItem>
                     <ListItem disablePadding>
-                        <ListItemButton>
+                        <ListItemButton
+                            onClick={() => {
+                                setMenu(false);
+                            }}
+                        >
                             <ListItemIcon>
                                 <GradeIcon
                                     sx={{ color: "rgb(227, 220, 18)" }}

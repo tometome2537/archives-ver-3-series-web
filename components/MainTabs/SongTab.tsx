@@ -1,14 +1,14 @@
 import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
-import { useEffect, useState, useCallback } from "react";
-import type { ArtistYTM, YouTubeAccount } from "@/contexts/ApiDataContext";
-import Image from "next/image";
-import type { PlayerItem, PlayerPlaylist } from "../PlayerView";
-import type { Dispatch, SetStateAction } from "react";
-import Thumbnail from "../Thumbnail";
-import { Box, Container } from "@mui/material";
+import type { ArtistYTM } from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
+import { Box } from "@mui/material";
+import Image from "next/image";
+import { useCallback, useEffect, useState } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import Album from "../Album";
+import type { PlayerItem, PlayerPlaylist } from "../PlayerView";
+import Thumbnail from "../Thumbnail";
 
 type SongTabProps = {
     inputValue: InputValue[];

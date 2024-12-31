@@ -1,12 +1,15 @@
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { useColorModeContext } from "@/contexts/ThemeContext";
 import rgbToHex from "@/libs/colorConverter";
+import packageJson from "@/package.json" assert { type: "json" };
 import { DarkModeOutlined, LightModeOutlined } from "@mui/icons-material";
+import { Computer } from "@mui/icons-material";
+import { PrivacyTip } from "@mui/icons-material";
+import { Policy } from "@mui/icons-material";
 import DevicesIcon from "@mui/icons-material/Devices";
 import FeedbackIcon from "@mui/icons-material/Feedback";
 import GradeIcon from "@mui/icons-material/Grade";
 import HomeIcon from "@mui/icons-material/Home";
-import InstagramIcon from "@mui/icons-material/Instagram";
 import MailIcon from "@mui/icons-material/Mail";
 import MenuIcon from "@mui/icons-material/Menu";
 import XIcon from "@mui/icons-material/X";
@@ -34,10 +37,6 @@ import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useEffect, useRef, useState } from "react";
-import { Computer } from "@mui/icons-material";
-import { PrivacyTip } from "@mui/icons-material";
-import { Policy } from "@mui/icons-material";
-import packageJson from "@/package.json" assert { type: "json" };
 
 type NavbarProps = {
     setNavbarHeight?: Dispatch<SetStateAction<number | undefined>>;

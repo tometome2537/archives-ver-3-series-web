@@ -10,8 +10,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import { useTheme } from "@mui/material/styles";
 import { darken, lighten, styled } from "@mui/system";
 import type { SyntheticEvent } from "react";
-import { useState } from "react";
 import * as React from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 
 export interface SearchSuggestion {
     // 入力された値はsortの数値が大きい順に並び替えられる。
@@ -22,7 +22,7 @@ export interface SearchSuggestion {
     // 値
     value: string;
     // 入力途中の文字列に反応させる文字列
-    filterMatchText? :string;
+    filterMatchText?: string;
     // アイコン画像URL
     imgSrc?: string;
     // アイコン(MUIのアイコンを想定)
@@ -85,6 +85,8 @@ type SearchBarProps = {
     fixedOptionValues?: string[];
     // 入力された値が変更された時に実行したい処理を追加できる。
     onChange?: () => void;
+    // 入力途中かどうか
+    setInProgressInput?: Dispatch<SetStateAction<boolean>>;
 };
 
 export default function SearchBar(props: SearchBarProps) {
@@ -178,9 +180,11 @@ export default function SearchBar(props: SearchBarProps) {
             }
 
             // trueの場合のみ返す。
-            const r = option.filterMatchText?.toLowerCase().includes(inputValueLowerCase)
-            if(r){
-                return r
+            const r = option.filterMatchText
+                ?.toLowerCase()
+                .includes(inputValueLowerCase);
+            if (r) {
+                return r;
             }
             // ↓ 無駄に見えて謎にエラー回避に役立ってる String()
             // おそらくAPIで取得した値がstringでないのが原因。
@@ -436,6 +440,18 @@ export default function SearchBar(props: SearchBarProps) {
                         }
                         error={validation.error} // エラー時の見た目変更
                         helperText={validation.message} // エラーメッセージ
+                        onFocus={() => {
+                            // 入力中true
+                            if (props.setInProgressInput) {
+                                props.setInProgressInput(true);
+                            }
+                        }}
+                        onBlur={() => {
+                            // 入力中false
+                            if (props.setInProgressInput) {
+                                props.setInProgressInput(false);
+                            }
+                        }}
                     />
                 )}
                 // 検索候補の表示デザイン

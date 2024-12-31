@@ -4,9 +4,12 @@ import { Avatar, Button, Chip, Typography } from "@mui/material";
 import Linkify from "linkify-react";
 import { useLayoutEffect, useRef, useState } from "react";
 import Link from "./Link";
+import { blue } from "@mui/material/colors";
+import { useTheme } from "@mui/material/styles";
 
 type DescriptionProps = {
     text: string;
+    date?: Date;
     maxLine: number;
 };
 
@@ -125,11 +128,26 @@ const linkifyOptions = {
 };
 
 export default function Description(props: DescriptionProps) {
+    // テーマ設定を取得
+    const theme = useTheme();
+
     const { text, maxLine } = props;
 
     const contentRef = useRef<HTMLDivElement>(null);
     const [isExpandable, setIsExpandable] = useState(true);
     const [isExpanded, setIsExpanded] = useState(false);
+
+    const date = props.date
+        ? `${props.date.toLocaleDateString("ja-JP", {
+              year: "numeric", // 年
+              month: "long", // 月（長い形式）
+              day: "numeric", // 日
+              // hour: "2-digit", // 時（2桁形式）
+              // minute: "2-digit", // 分（2桁形式）
+              // second: "2-digit", // 秒（2桁形式）
+              hour12: false, // 24時間形式
+          })} に公開済み`
+        : null;
 
     useLayoutEffect(() => {
         if (contentRef.current) {
@@ -151,6 +169,11 @@ export default function Description(props: DescriptionProps) {
                         isExpanded || isExpandable === false
                             ? "auto"
                             : maxLine * LINE_TO_PIXEL,
+                    // 文字列内の\nを適切に反映させる。
+                    whiteSpace: "pre-line",
+                    backgroundColor: theme.palette.background.default,
+                    margin: "0 10px",
+                    borderRadius: "1em",
                 }}
             >
                 <Linkify
@@ -161,7 +184,7 @@ export default function Description(props: DescriptionProps) {
                     }}
                     ref={contentRef}
                 >
-                    {text}
+                    {`${date}\n${text}`}
                 </Linkify>
             </div>
             <Button onClick={toggle} variant="text">

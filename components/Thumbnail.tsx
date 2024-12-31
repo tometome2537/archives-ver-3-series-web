@@ -12,7 +12,7 @@ import Card from "@mui/material/Card";
 import Grid from "@mui/material/Unstable_Grid2";
 import Image from "next/image";
 import type { MouseEventHandler } from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import YouTubePlayer from "./YouTubePlayerView";
 
 export interface NoteContentProps {

@@ -1,10 +1,10 @@
-import { type ColorModeChoice, ThemeRegistry } from "@/contexts/ThemeContext";
 import { ApiDataProvider } from "@/contexts/ApiDataContext";
 import { BrowserInfoProvider } from "@/contexts/BrowserInfoContext";
+import { type ColorModeChoice, ThemeRegistry } from "@/contexts/ThemeContext";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
-import { GoogleAnalytics } from "@next/third-parties/google";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -33,13 +33,17 @@ export default function RootLayout({
                     name="theme-color"
                     content={initColorMode === "dark" ? "#000000" : "#FFFFFF"}
                 />
-                {/* Googleサイトコンソール */}
-                <meta
-                    name="google-site-verification"
-                    content="0ERg8PZXOGMCKiCI-c-8BqDFTWZrUGbGI0SmzXBmiOo"
-                />
-                {/* Googleアナリティクス */}
-                <GoogleAnalytics gaId="G-EGPYKGH18H" />
+                {process.env.NEXT_PUBLIC_ENV_NAME !== "dev" && (
+                    <>
+                        {/* Googleサイトコンソール */}
+                        <meta
+                            name="google-site-verification"
+                            content="0ERg8PZXOGMCKiCI-c-8BqDFTWZrUGbGI0SmzXBmiOo"
+                        />
+                        {/* Googleアナリティクス */}
+                        <GoogleAnalytics gaId="G-EGPYKGH18H" />
+                    </>
+                )}
             </head>
             <body className={inter.className}>
                 <ThemeRegistry initColorMode={initColorMode}>

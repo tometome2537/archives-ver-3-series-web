@@ -3,13 +3,12 @@
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { Box, Container, Tab, Tabs } from "@mui/material";
 import { useTheme } from "@mui/material/styles";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname } from "next/navigation";
 import {
     type ReactElement,
     type ReactNode,
     useCallback,
     useEffect,
-    useMemo,
     useRef,
     useState,
 } from "react";
@@ -218,7 +217,6 @@ export default function TabScroll(
                                     key={x.value}
                                     icon={x.icon}
                                     onClick={() => {
-                                        console.log(x.value, activeTab);
                                         setActiveTab(x.value);
                                         setIsPlayerFullscreen(false);
                                     }}

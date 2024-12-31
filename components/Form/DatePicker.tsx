@@ -1,4 +1,3 @@
-// import { DatePickerProps } from "@mui/x-data-pickers/DatePicker.types";
 import {
     DatePicker as DatePickerBase,
     LocalizationProvider,

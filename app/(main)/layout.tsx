@@ -325,16 +325,16 @@ export default function RootLayout({
 
                         // スペシャル検索候補を追加
                         result.push({
-                            label: "ぷらっとみゅーじっく♪",
-                            value: "ぷらっとみゅーじっく♪",
+                            label: "ぷらそにか(original)",
+                            value: "ぷらそにか(original)",
                             categoryId: "specialWord_plusonica",
                             categoryLabel: "特別な検索",
                             categorySort: 999,
                             icon: <MusicNote />,
                         });
                         result.push({
-                            label: "ぷらそにか(original)",
-                            value: "ぷらそにか(original)",
+                            label: "ぷらっとみゅーじっく♪",
+                            value: "ぷらっとみゅーじっく♪",
                             categoryId: "specialWord_plusonica",
                             categoryLabel: "特別な検索",
                             categorySort: 999,

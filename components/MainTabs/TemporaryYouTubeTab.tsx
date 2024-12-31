@@ -287,6 +287,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             }
             if (inputValue.categoryId === "specialWord_plusonica") {
                 fetchArtistYTM("UC3tYTei6p55gWg2rr0g4ybQ");
+                return true;
             }
         });
         if (props.inputValue.length === 0) {

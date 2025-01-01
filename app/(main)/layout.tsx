@@ -9,17 +9,15 @@ import MultiSearchBar from "@/components/Navbar/SearchBar/MultiSearchBar";
 import type {
     AdditionalSearchSuggestions,
     InputValue,
-    SearchSuggestion,
 } from "@/components/Navbar/SearchBar/SearchBar";
 import PlayerView from "@/components/PlayerView";
 import type { PlayerItem, PlayerPlaylist } from "@/components/PlayerView"; // 型としてのインポート
 import type { TabMap } from "@/components/TabScroll";
 import TabScroll from "@/components/TabScroll";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
-import type { Entity, Music, YouTubeAccount } from "@/contexts/ApiDataContext";
+import type { Entity, YouTubeAccount } from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { MusicNote } from "@mui/icons-material";
-import AccountBoxIcon from "@mui/icons-material/AccountBox";
 import GroupsIcon from "@mui/icons-material/Groups";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import PersonIcon from "@mui/icons-material/Person";

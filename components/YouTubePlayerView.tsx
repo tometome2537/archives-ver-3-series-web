@@ -1,23 +1,33 @@
 import type React from "react";
-import { useEffect, useRef } from "react";
-import type { Dispatch, SetStateAction } from "react";
+import { type Dispatch, Fragment, type SetStateAction } from "react";
 import YouTube, { type YouTubeProps, type YouTubePlayer } from "react-youtube";
-
-export type YouTubeIframe = {
-    width: number;
-    height: number;
-};
 
 type YouTubePlayerViewProps = {
     videoId?: string;
-    width?: string;
-    height?: string;
+    aspectRatio?: number;
+    width?: number;
     style?: React.CSSProperties; // 外部からスタイルを受け取る（オプション）
     playerRadius?: boolean;
     setPlayerState?: Dispatch<SetStateAction<YouTubePlayerState | undefined>>;
     setPlayer?: Dispatch<SetStateAction<YouTubePlayer | undefined>>;
-    setYouTubeIframe?: Dispatch<SetStateAction<YouTubeIframe>>;
 };
+
+/*
+    // youtubePlayerの横幅(px)
+    const playerWidth: number =
+        isMobile && props.isPlayerFullscreen
+            ? arWidth === arHeight // 正方形(比率が1:1)の場合
+                ? screenWidth * 0.8 // 小さめに表示する。
+                : screenWidth
+            : props.isPlayerFullscreen
+              ? ((screenHeight * 0.55) / arHeight) * arWidth
+              : ((screenHeight * 0.1) / arHeight) * arWidth;
+    // youtubePlayerの縦幅(px)
+    const playerHeight: number =
+        youTubeIframe.width < playerWidth
+            ? (youTubeIframe.width / arWidth) * arHeight
+            : (playerWidth / arWidth) * arHeight;
+             */
 
 enum State {
     unstarted = "unstarted",
@@ -65,15 +75,10 @@ export type YouTubePlayerState = {
 };
 
 export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
-    // NavbarのHTMLが保存される
-    const PlayerRef = useRef<HTMLDivElement | null>(null);
-
     // YouTube Playerの再生オプション
     const YouTubeOpts: YouTubeProps["opts"] = {
-        // widthは "％"の指定で良い。具体的な幅はPlayerの親要素で調節する。
         width: "100%",
-        // heightは "%"で指定しても反映されない。pxで指定するある必要がある(説)。
-        height: props.height || "390",
+        height: "100%",
         playerVars: {
             // https://developers.google.com/youtube/player_parameters
             autoplay: 1, // 自動再生
@@ -111,95 +116,32 @@ export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
         }
     };
 
-    useEffect(() => {
-        // Playerの横幅を調べる
-        if (typeof window !== "undefined") {
-            // タブバーの高さを再計算する関数
-            const updatePlayer = () => {
-                if (PlayerRef.current) {
-                    const width = PlayerRef.current.clientWidth;
-                    const height = PlayerRef.current.clientHeight;
-                    const r = {
-                        width,
-                        height,
-                    };
-                    if (props.setYouTubeIframe) {
-                        props.setYouTubeIframe(r);
-                    }
-                }
-            };
-
-            // 初回の高さ計算
-            updatePlayer();
-
-            // ウィンドウリサイズ時に高さを再計算
-            window.addEventListener("resize", updatePlayer);
-
-            // クリーンアップ: コンポーネントがアンマウントされたときにイベントリスナーを削除
-            return () => {
-                window.removeEventListener("resize", updatePlayer);
-            };
-        }
-    }, [props]);
-
-    useEffect(() => {
-        // Playerの横幅を調べる
-        if (typeof window === "undefined") return;
-
-        // タブバーの高さを再計算する関数
-        const updatePlayer = () => {
-            if (!PlayerRef.current) return;
-
-            const width = PlayerRef.current.clientWidth;
-            const height = PlayerRef.current.clientHeight;
-            const r = {
-                width,
-                height,
-            };
-
-            // 早期リターン
-            if (!props.setYouTubeIframe) return;
-            props.setYouTubeIframe(r);
-        };
-
-        // 初回の高さ計算
-        updatePlayer();
-
-        // ウィンドウリサイズ時に高さを再計算
-        window.addEventListener("resize", updatePlayer);
-
-        // クリーンアップ: コンポーネントがアンマウントされたときにイベントリスナーを削除
-        return () => {
-            window.removeEventListener("resize", updatePlayer);
-        };
-    }, [props]);
-
     return (
-        <div
-            ref={PlayerRef}
-            style={{
-                ...{
-                    width: props.width || "100%",
-                    // ↓ この色がついてるところをどうにかする To Do
-                    // backgroundColor: "orange",
-                    // ↓ 修正完了 2024/09/26
-                    height: props.height,
-
+        <Fragment>
+            <YouTube
+                videoId={props.videoId ? props.videoId : ""}
+                style={{
+                    width: props.width,
+                    aspectRatio: props.aspectRatio,
                     overflow: "hidden",
                     // ↑ overflow: "hidden",はプレイヤーの角を丸める
                     // ↓ のコードを機能させるのに必要。
                     borderRadius: props.playerRadius ? "1em" : 0,
-                },
-                ...props.style,
-            }}
-        >
-            {/* {playerWidth} */}
-            <YouTube
-                videoId={props.videoId ? props.videoId : ""}
+                    ...props.style,
+                    // width: "100%",
+                    // height: "100%",
+                }}
+                className="youtube-container"
                 opts={YouTubeOpts}
                 onStateChange={onStateChange}
                 onReady={onReady}
             />
-        </div>
+            <style>{`
+                .youtube-container iframe{
+                    width: 100%;
+                    height: 100%;
+                }
+            `}</style>
+        </Fragment>
     );
 }

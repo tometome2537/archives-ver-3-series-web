@@ -17,12 +17,9 @@ import { KeyboardArrowDown } from "@mui/icons-material";
 import { Repeat } from "@mui/icons-material";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import IconButton from "@mui/material/IconButton";
-import { blue } from "@mui/material/colors";
 import Image from "next/image";
 import Description from "./Description";
-import Link from "./Link";
 import type { MultiSearchBarSearchSuggestion } from "./Navbar/SearchBar/MultiSearchBar";
-import type { YouTubeIframe } from "./YouTubePlayerView";
 
 export type PlayerItem = {
     // 優先度 高
@@ -39,10 +36,8 @@ export type PlayerItem = {
 
     actorId?: Array<string>;
     organizationId?: Array<string>;
-    // 動画のヨコの比率 (デフォルトは16)
-    arWidth?: number;
-    // 動画のタテの比率 (デフォルトは9)
-    arHeight?: number;
+    width?: number;
+    height?: number;
 };
 
 export type PlayerPlaylist = {
@@ -81,36 +76,6 @@ export default function PlayerView(props: PlayerProps) {
     const [youTubePlayer, setYouTubePlayer] = useState<
         YouTubePlayer | undefined
     >(undefined);
-    const [youTubeIframe, setYouTubeIframe] = useState<YouTubeIframe>({
-        width: 320,
-        height: 180,
-    });
-
-    // 動画ヨコの比率 (デフォルトは16、トピックチャンネルの場合は１)
-    const arWidth: number =
-        props.playerItem?.arWidth ||
-        (youTubePlayerState?.getVideoData.author.endsWith(" - Topic") && 1) ||
-        16;
-    // 動画タテの比率 (デフォルトは9、トピックチャンネルの場合は１)
-    const arHeight: number =
-        props.playerItem?.arHeight ||
-        (youTubePlayerState?.getVideoData.author.endsWith(" - Topic") && 1) ||
-        9;
-
-    // youtubePlayerの横幅(px)
-    const playerWidth: number =
-        isMobile && props.isPlayerFullscreen
-            ? arWidth === arHeight // 正方形(比率が1:1)の場合
-                ? screenWidth * 0.8 // 小さめに表示する。
-                : screenWidth
-            : props.isPlayerFullscreen
-              ? ((screenHeight * 0.55) / arHeight) * arWidth
-              : ((screenHeight * 0.1) / arHeight) * arWidth;
-    // youtubePlayerの縦幅(px)
-    const playerHeight: number =
-        youTubeIframe.width < playerWidth
-            ? (youTubeIframe.width / arWidth) * arHeight
-            : (playerWidth / arWidth) * arHeight;
 
     // ループ再生の設定
     const [repeat, setRepeat] = useState<boolean>(false);
@@ -258,7 +223,6 @@ export default function PlayerView(props: PlayerProps) {
                             sx={{
                                 display: "flex",
                                 alignContent: "left",
-                                width: `${youTubeIframe.width}px`,
                                 margin: "0 auto",
                             }}
                         >
@@ -331,31 +295,52 @@ export default function PlayerView(props: PlayerProps) {
                         </Box>
                     )}
                     {/* YouTubeプレイヤー */}
+                    {/* TODO: ベースとなるwidthの求め方コピペしたのにうまく動かん... */}
+                    <p>
+                        {props.isPlayerFullscreen
+                            ? isMobile
+                                ? youTubePlayerState?.getVideoData.author.endsWith(
+                                      " - Topic",
+                                  )
+                                    ? screenWidth * 0.8
+                                    : screenWidth
+                                : screenHeight * 0.55
+                            : screenHeight * 0.1}
+                    </p>
                     <YouTubePlayerView
                         videoId={
                             props.playerItem?.videoId
                                 ? props.playerItem?.videoId
                                 : ""
                         }
+                        aspectRatio={
+                            youTubePlayerState?.getVideoData.author.endsWith(
+                                " - Topic",
+                            )
+                                ? 1
+                                : 16 / 9
+                        }
+                        width={
+                            props.isPlayerFullscreen
+                                ? isMobile
+                                    ? youTubePlayerState?.getVideoData.author.endsWith(
+                                          " - Topic",
+                                      )
+                                        ? screenWidth * 0.8
+                                        : screenWidth
+                                    : screenHeight * 0.55
+                                : screenHeight * 0.1
+                        }
                         style={{
                             // padding: "0", // プレイヤーの上下にスペースを追加
                             margin: "0 auto",
                             maxWidth: "100%",
+                            // パソコンのモニター等で無制限に大きくならないようにする。
                             maxHeight: "100%",
-                            // maxHeight: "100%", // 高さに制限をつけることでパソコンのモニター等で無制限に大きくならないようにする。
                         }}
-                        width={`${playerWidth}px`}
-                        height={`${playerHeight}px`}
-                        playerRadius={
-                            !(
-                                isMobile &&
-                                props.isPlayerFullscreen &&
-                                arHeight !== arWidth
-                            )
-                        }
+                        playerRadius={!(isMobile && props.isPlayerFullscreen)}
                         setPlayer={setYouTubePlayer}
                         setPlayerState={setYouTubePlayerState}
-                        setYouTubeIframe={setYouTubeIframe}
                     />
 
                     {/* PlayerView縮小表示の時のHTML */}
@@ -475,7 +460,6 @@ export default function PlayerView(props: PlayerProps) {
                     {/* PlayerView拡大表示の時のHTML */}
                     <Box
                         sx={{
-                            width: `${youTubeIframe.width}px`,
                             margin: "0 auto",
                             display: props.isPlayerFullscreen
                                 ? "block"

@@ -142,6 +142,38 @@ export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
         }
     }, [props]);
 
+    useEffect(() => {
+        // Playerの横幅を調べる
+        if (typeof window === "undefined") return;
+
+        // タブバーの高さを再計算する関数
+        const updatePlayer = () => {
+            if (!PlayerRef.current) return;
+
+            const width = PlayerRef.current.clientWidth;
+            const height = PlayerRef.current.clientHeight;
+            const r = {
+                width,
+                height,
+            };
+
+            // 早期リターン
+            if (!props.setYouTubeIframe) return;
+            props.setYouTubeIframe(r);
+        };
+
+        // 初回の高さ計算
+        updatePlayer();
+
+        // ウィンドウリサイズ時に高さを再計算
+        window.addEventListener("resize", updatePlayer);
+
+        // クリーンアップ: コンポーネントがアンマウントされたときにイベントリスナーを削除
+        return () => {
+            window.removeEventListener("resize", updatePlayer);
+        };
+    }, [props]);
+
     return (
         <div
             ref={PlayerRef}

@@ -165,7 +165,14 @@ export default function Description(props: DescriptionProps) {
             >
                 {`${date}\n${text}`}
             </Linkify>
-            <Typography onClick={toggle} style={{ cursor: "pointer" }}>
+            <Typography
+                onClick={() => {
+                    if (isExpanded) {
+                        toggle();
+                    }
+                }}
+                style={{ cursor: "pointer" }}
+            >
                 {isExpanded ? "一部を表示" : "...もっと見る"}
             </Typography>
         </Box>

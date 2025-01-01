@@ -5,7 +5,6 @@ import { blue } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
 import Linkify from "linkify-react";
 import { useLayoutEffect, useRef, useState } from "react";
-import { TbPointerDown } from "react-icons/tb";
 import Link from "./Link";
 
 type DescriptionProps = {

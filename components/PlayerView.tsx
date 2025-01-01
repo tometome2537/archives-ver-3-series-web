@@ -295,18 +295,6 @@ export default function PlayerView(props: PlayerProps) {
                         </Box>
                     )}
                     {/* YouTubeプレイヤー */}
-                    {/* TODO: ベースとなるwidthの求め方コピペしたのにうまく動かん... */}
-                    <p>
-                        {props.isPlayerFullscreen
-                            ? isMobile
-                                ? youTubePlayerState?.getVideoData.author.endsWith(
-                                      " - Topic",
-                                  )
-                                    ? screenWidth * 0.8
-                                    : screenWidth
-                                : screenHeight * 0.55
-                            : screenHeight * 0.1}
-                    </p>
                     <YouTubePlayerView
                         videoId={
                             props.playerItem?.videoId
@@ -328,8 +316,8 @@ export default function PlayerView(props: PlayerProps) {
                                       )
                                         ? screenWidth * 0.8
                                         : screenWidth
-                                    : screenHeight * 0.55
-                                : screenHeight * 0.1
+                                    : screenWidth * 0.55
+                                : screenWidth * 0.1
                         }
                         style={{
                             // padding: "0", // プレイヤーの上下にスペースを追加

@@ -1,11 +1,12 @@
 // Reference: https://ilxanlar.medium.com/ellipsis-the-art-of-truncation-in-web-applications-8b141ce33774
 
-import { Avatar, Button, Chip, Typography } from "@mui/material";
-import Linkify from "linkify-react";
-import { useLayoutEffect, useRef, useState } from "react";
-import Link from "./Link";
+import { Avatar, Box, Button, Chip, Typography } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
+import Linkify from "linkify-react";
+import { useLayoutEffect, useRef, useState } from "react";
+import { TbPointerDown } from "react-icons/tb";
+import Link from "./Link";
 
 type DescriptionProps = {
     text: string;
@@ -15,6 +16,25 @@ type DescriptionProps = {
 
 // 1行の高さ
 const LINE_TO_PIXEL = 32;
+
+const getLogoPath = (hostname: string) => {
+    switch (hostname) {
+        case "twitter.com":
+        case "x.com":
+            return "/x_logo.png";
+        case "instagram.com":
+        case "www.instagram.com":
+            return "/ig_logo.png";
+        case "tiktok.com":
+        case "www.tiktok.com":
+            return "/tiktok_logo.png";
+        case "youtube.com":
+        case "www.youtube.com":
+            return "/yt_logo.png";
+        default:
+            return "";
+    }
+};
 
 const linkifyOptions = {
     render: {
@@ -34,60 +54,14 @@ const linkifyOptions = {
                     ? pathSegments[0].replace("@", "")
                     : content;
 
-                if (
-                    url.hostname === "twitter.com" ||
-                    url.hostname === "x.com"
-                ) {
-                    return (
-                        <Link {...attributes}>
-                            <Chip
-                                size="small"
-                                avatar={<Avatar src="/x_logo.png" />}
-                                label={userId}
-                            />
-                        </Link>
-                    );
-                }
+                const avatarSrc = getLogoPath(url.hostname);
 
-                if (
-                    url.hostname === "instagram.com" ||
-                    url.hostname === "www.instagram.com"
-                ) {
+                if (avatarSrc === "") {
                     return (
                         <Link {...attributes}>
                             <Chip
                                 size="small"
-                                avatar={<Avatar src="/ig_logo.png" />}
-                                label={userId}
-                            />
-                        </Link>
-                    );
-                }
-
-                if (
-                    url.hostname === "tiktok.com" ||
-                    url.hostname === "www.tiktok.com"
-                ) {
-                    return (
-                        <Link {...attributes}>
-                            <Chip
-                                size="small"
-                                avatar={<Avatar src="/tiktok_logo.png" />}
-                                label={userId}
-                            />
-                        </Link>
-                    );
-                }
-
-                if (
-                    url.hostname === "youtube.com" ||
-                    url.hostname === "www.youtube.com"
-                ) {
-                    return (
-                        <Link {...attributes}>
-                            <Chip
-                                size="small"
-                                avatar={<Avatar src="/yt_logo.png" />}
+                                avatar={<Avatar src={avatarSrc} />}
                                 label={userId}
                             />
                         </Link>
@@ -153,7 +127,6 @@ export default function Description(props: DescriptionProps) {
         if (contentRef.current) {
             const contentHeight =
                 contentRef.current.getBoundingClientRect().height;
-            // テキストの行の高さは24pxだから
             setIsExpandable(contentHeight > maxLine * LINE_TO_PIXEL);
         }
     }, [maxLine]);
@@ -161,35 +134,41 @@ export default function Description(props: DescriptionProps) {
     const toggle = () => setIsExpanded((prev) => !prev);
 
     return (
-        <>
-            <div
+        <Box
+            style={{
+                // 文字列内の\nを適切に反映させる。
+                whiteSpace: "pre-line",
+                backgroundColor: theme.palette.background.default,
+                margin: "0 10px",
+                borderRadius: "1em",
+                cursor: isExpanded ? "default" : "pointer",
+            }}
+            onClick={() => {
+                if (isExpanded === false) {
+                    toggle();
+                }
+            }}
+        >
+            <Linkify
+                as="p"
+                options={{
+                    ...linkifyOptions,
+                    target: "_blank",
+                }}
                 style={{
-                    overflow: "hidden",
                     height:
                         isExpanded || isExpandable === false
                             ? "auto"
                             : maxLine * LINE_TO_PIXEL,
-                    // 文字列内の\nを適切に反映させる。
-                    whiteSpace: "pre-line",
-                    backgroundColor: theme.palette.background.default,
-                    margin: "0 10px",
-                    borderRadius: "1em",
+                    overflow: "hidden",
                 }}
+                ref={contentRef}
             >
-                <Linkify
-                    as="p"
-                    options={{
-                        ...linkifyOptions,
-                        target: "_blank",
-                    }}
-                    ref={contentRef}
-                >
-                    {`${date}\n${text}`}
-                </Linkify>
-            </div>
-            <Button onClick={toggle} variant="text">
+                {`${date}\n${text}`}
+            </Linkify>
+            <Typography onClick={toggle} style={{ cursor: "pointer" }}>
                 {isExpanded ? "一部を表示" : "...もっと見る"}
-            </Button>
-        </>
+            </Typography>
+        </Box>
     );
 }

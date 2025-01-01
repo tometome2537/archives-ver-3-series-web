@@ -655,7 +655,7 @@ export default function PlayerView(props: PlayerProps) {
                                                 ? props.playerItem?.publishedAt
                                                 : undefined
                                         }
-                                        maxLine={3}
+                                        maxLine={2}
                                     />
                                 )}
                         </Box>

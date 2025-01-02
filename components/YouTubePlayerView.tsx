@@ -12,23 +12,6 @@ type YouTubePlayerViewProps = {
     setPlayer?: Dispatch<SetStateAction<YouTubePlayer | undefined>>;
 };
 
-/*
-    // youtubePlayerの横幅(px)
-    const playerWidth: number =
-        isMobile && props.isPlayerFullscreen
-            ? arWidth === arHeight // 正方形(比率が1:1)の場合
-                ? screenWidth * 0.8 // 小さめに表示する。
-                : screenWidth
-            : props.isPlayerFullscreen
-              ? ((screenHeight * 0.55) / arHeight) * arWidth
-              : ((screenHeight * 0.1) / arHeight) * arWidth;
-    // youtubePlayerの縦幅(px)
-    const playerHeight: number =
-        youTubeIframe.width < playerWidth
-            ? (youTubeIframe.width / arWidth) * arHeight
-            : (playerWidth / arWidth) * arHeight;
-             */
-
 enum State {
     unstarted = "unstarted",
     ended = "ended",
@@ -128,8 +111,6 @@ export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
                     // ↓ のコードを機能させるのに必要。
                     borderRadius: props.playerRadius ? "1em" : 0,
                     ...props.style,
-                    // width: "100%",
-                    // height: "100%",
                 }}
                 className="youtube-container"
                 opts={YouTubeOpts}

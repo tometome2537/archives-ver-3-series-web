@@ -110,6 +110,20 @@ export default function PlayerView(props: PlayerProps) {
         props.setPlayerPlaylist,
     ]);
 
+    const aspectRatio = youTubePlayerState?.getVideoData.author.endsWith(
+        " - Topic",
+    )
+        ? 1
+        : 16 / 9;
+
+    const width = props.isPlayerFullscreen
+        ? isMobile
+            ? youTubePlayerState?.getVideoData.author.endsWith(" - Topic")
+                ? screenWidth * 0.8
+                : screenWidth
+            : screenHeight * 0.55 * aspectRatio
+        : screenHeight * 0.1 * aspectRatio;
+
     // 楽曲の再生が終わったら...(次の曲を再生 or ループ再生)
     useEffect(() => {
         if (youTubePlayerState?.state === "ended") {
@@ -223,6 +237,7 @@ export default function PlayerView(props: PlayerProps) {
                             sx={{
                                 display: "flex",
                                 alignContent: "left",
+                                width: width,
                                 margin: "0 auto",
                             }}
                         >
@@ -301,24 +316,8 @@ export default function PlayerView(props: PlayerProps) {
                                 ? props.playerItem?.videoId
                                 : ""
                         }
-                        aspectRatio={
-                            youTubePlayerState?.getVideoData.author.endsWith(
-                                " - Topic",
-                            )
-                                ? 1
-                                : 16 / 9
-                        }
-                        width={
-                            props.isPlayerFullscreen
-                                ? isMobile
-                                    ? youTubePlayerState?.getVideoData.author.endsWith(
-                                          " - Topic",
-                                      )
-                                        ? screenWidth * 0.8
-                                        : screenWidth
-                                    : screenWidth * 0.55
-                                : screenWidth * 0.1
-                        }
+                        aspectRatio={aspectRatio}
+                        width={width}
                         style={{
                             // padding: "0", // プレイヤーの上下にスペースを追加
                             margin: "0 auto",
@@ -448,6 +447,7 @@ export default function PlayerView(props: PlayerProps) {
                     {/* PlayerView拡大表示の時のHTML */}
                     <Box
                         sx={{
+                            width: width,
                             margin: "0 auto",
                             display: props.isPlayerFullscreen
                                 ? "block"

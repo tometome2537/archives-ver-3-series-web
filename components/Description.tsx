@@ -13,6 +13,7 @@ type DescriptionProps = {
     text: string;
     date?: Date;
     maxLine: number;
+    getTitleWithVideoId?: (videoId: string) => string;
 };
 
 // 1行の高さ
@@ -37,65 +38,94 @@ const getLogoPath = (hostname: string) => {
     }
 };
 
-const linkifyOptions = {
-    render: {
-        url: ({
-            attributes,
-            content,
-        }: {
-            attributes: { [attr: string]: React.ReactNode };
-            content: string;
-        }) => {
-            const url = new URL(content);
-            const pathSegments = url.pathname
-                .split("/")
-                .filter((segment) => segment);
-            const userId = pathSegments[0]
-                ? pathSegments[0].replace("@", "")
-                : content;
+export default function Description(props: DescriptionProps) {
+    const linkifyOptions = {
+        render: {
+            url: ({
+                attributes,
+                content,
+            }: {
+                attributes: { [attr: string]: React.ReactNode };
+                content: string;
+            }) => {
+                const url = new URL(content);
+                const pathSegments = url.pathname
+                    .split("/")
+                    .filter((segment) => segment);
+                const userId = pathSegments[0]
+                    ? pathSegments[0].replace("@", "")
+                    : content;
 
-            // 動画につながるリンクの場合
-            if (
-                url.hostname === "youtu.be" ||
-                ((url.hostname === "youtube.com" ||
-                    url.hostname === "www.youtube.com") &&
-                    pathSegments[0] === "watch")
-            ) {
-                return (
-                    <Link {...attributes}>
-                        <Chip
-                            size="small"
-                            avatar={<Avatar src={"/yt_logo.png"} />}
-                            label={content}
-                        />
-                    </Link>
-                );
-            }
+                // 動画につながるリンクの場合
+                if (
+                    url.hostname === "youtu.be" ||
+                    ((url.hostname === "youtube.com" ||
+                        url.hostname === "www.youtube.com") &&
+                        pathSegments[0] === "watch")
+                ) {
+                    const videoId =
+                        url.hostname === "youtu.be"
+                            ? pathSegments[0]
+                            : (url.searchParams.get("v") ?? "");
+                    return (
+                        <Link {...attributes}>
+                            <Chip
+                                size="small"
+                                avatar={<Avatar src={"/yt_logo.png"} />}
+                                label={
+                                    props.getTitleWithVideoId
+                                        ? props.getTitleWithVideoId(videoId)
+                                        : content
+                                }
+                            />
+                        </Link>
+                    );
+                }
 
-            const avatarSrc = getLogoPath(url.hostname);
+                const avatarSrc = getLogoPath(url.hostname);
 
-            if (avatarSrc !== "") {
-                return (
-                    <Link {...attributes}>
-                        <Chip
-                            size="small"
-                            avatar={<Avatar src={avatarSrc} />}
-                            label={userId}
-                        />
-                    </Link>
-                );
-            }
+                if (avatarSrc !== "") {
+                    return (
+                        <Link {...attributes}>
+                            <Chip
+                                size="small"
+                                avatar={<Avatar src={avatarSrc} />}
+                                label={userId}
+                            />
+                        </Link>
+                    );
+                }
 
-            return <Link {...attributes}>{content}</Link>;
-        },
-        hashtag: ({
-            attributes,
-            content,
-        }: {
-            attributes: { [attr: string]: React.ReactNode };
-            content: string;
-        }) => {
-            try {
+                return <Link {...attributes}>{content}</Link>;
+            },
+            hashtag: ({
+                attributes,
+                content,
+            }: {
+                attributes: { [attr: string]: React.ReactNode };
+                content: string;
+            }) => {
+                try {
+                    return (
+                        <Link
+                            style={{ color: blue[400] }}
+                            underline="none"
+                            {...attributes}
+                        >
+                            {content}
+                        </Link>
+                    );
+                } catch {
+                    return <Link {...attributes}>{content}</Link>;
+                }
+            },
+            mention: ({
+                attributes,
+                content,
+            }: {
+                attributes: { [attr: string]: React.ReactNode };
+                content: string;
+            }) => {
                 return (
                     <Link
                         style={{ color: blue[400] }}
@@ -105,37 +135,16 @@ const linkifyOptions = {
                         {content}
                     </Link>
                 );
-            } catch {
-                return <Link {...attributes}>{content}</Link>;
-            }
+            },
         },
-        mention: ({
-            attributes,
-            content,
-        }: {
-            attributes: { [attr: string]: React.ReactNode };
-            content: string;
-        }) => {
-            return (
-                <Link
-                    style={{ color: blue[400] }}
-                    underline="none"
-                    {...attributes}
-                >
-                    {content}
-                </Link>
-            );
+        formatHref: {
+            hashtag: (href: string) =>
+                `https://www.youtube.com/hashtag/${href.substring(1)}`,
+            mention: (href: string) =>
+                `https://www.youtube.com/@${href.substring(1)}`,
         },
-    },
-    formatHref: {
-        hashtag: (href: string) =>
-            `https://www.youtube.com/hashtag/${href.substring(1)}`,
-        mention: (href: string) =>
-            `https://www.youtube.com/@${href.substring(1)}`,
-    },
-};
+    };
 
-export default function Description(props: DescriptionProps) {
     // テーマ設定を取得
     const theme = useTheme();
 

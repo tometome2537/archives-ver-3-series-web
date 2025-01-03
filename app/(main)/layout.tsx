@@ -1,6 +1,7 @@
 "use client";
 
 import LinkTab from "@/components/MainTabs/LinkTab";
+import { LiveInformationTab } from "@/components/MainTabs/LiveInformationTab";
 import SongTab from "@/components/MainTabs/SongTab";
 import { TemporaryYouTubeTab } from "@/components/MainTabs/TemporaryYouTubeTab";
 import Navbar from "@/components/Navbar/Navbar";
@@ -18,6 +19,7 @@ import { useApiDataContext } from "@/contexts/ApiDataContext";
 import type { Entity, YouTubeAccount } from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { MusicNote } from "@mui/icons-material";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import GroupsIcon from "@mui/icons-material/Groups";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
 import PersonIcon from "@mui/icons-material/Person";
@@ -351,19 +353,18 @@ export default function RootLayout({
                         setSearchSuggestion(result);
                     },
                 },
-                // {
-                //     value: "liveInformation",
-                //     icon: <LocationOnIcon />,
-                //     label: "LIVE情報(β版)",
-                //     scrollTo: 0,
-                //     children: <LiveInformationTab key="liveInformation" />,
-                //     onClick: () => {
-                //         setAvailableCategoryIds([]);
-                //         setLimitSearchCategory([]);
-                //         setFixedOptionValues([]);
-                //
-                //     },
-                // },
+                {
+                    value: "liveInformation",
+                    icon: <CalendarMonthIcon />,
+                    label: "LIVE情報(β版)",
+                    scrollTo: 0,
+                    children: <LiveInformationTab key="liveInformation" />,
+                    onClick: () => {
+                        setAvailableCategoryIds([]);
+                        setLimitSearchCategory([]);
+                        setFixedOptionValues([]);
+                    },
+                },
             ].map((item, index) => {
                 if (typeof window !== "undefined") {
                     item.scrollTo = window.innerWidth * index;

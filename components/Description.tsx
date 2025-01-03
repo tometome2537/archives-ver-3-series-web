@@ -7,6 +7,7 @@ import Linkify from "linkify-react";
 import { useLayoutEffect, useRef, useState } from "react";
 import Link from "./Link";
 import "linkify-plugin-hashtag";
+import "linkify-plugin-mention";
 
 type DescriptionProps = {
     text: string;
@@ -45,51 +46,47 @@ const linkifyOptions = {
             attributes: { [attr: string]: React.ReactNode };
             content: string;
         }) => {
-            try {
-                const url = new URL(content);
-                const pathSegments = url.pathname
-                    .split("/")
-                    .filter((segment) => segment);
-                const userId = pathSegments[0]
-                    ? pathSegments[0].replace("@", "")
-                    : content;
+            const url = new URL(content);
+            const pathSegments = url.pathname
+                .split("/")
+                .filter((segment) => segment);
+            const userId = pathSegments[0]
+                ? pathSegments[0].replace("@", "")
+                : content;
 
-                // 動画につながるリンクの場合
-                if (
-                    url.hostname === "youtu.be" ||
-                    ((url.hostname === "youtube.com" ||
-                        url.hostname === "www.youtube.com") &&
-                        pathSegments[0] === "watch")
-                ) {
-                    return (
-                        <Link {...attributes}>
-                            <Chip
-                                size="small"
-                                avatar={<Avatar src={"/yt_logo.png"} />}
-                                label={content}
-                            />
-                        </Link>
-                    );
-                }
-
-                const avatarSrc = getLogoPath(url.hostname);
-
-                if (avatarSrc !== "") {
-                    return (
-                        <Link {...attributes}>
-                            <Chip
-                                size="small"
-                                avatar={<Avatar src={avatarSrc} />}
-                                label={userId}
-                            />
-                        </Link>
-                    );
-                }
-
-                return <Link {...attributes}>{content}</Link>;
-            } catch (error) {
-                return <Link {...attributes}>{content}</Link>;
+            // 動画につながるリンクの場合
+            if (
+                url.hostname === "youtu.be" ||
+                ((url.hostname === "youtube.com" ||
+                    url.hostname === "www.youtube.com") &&
+                    pathSegments[0] === "watch")
+            ) {
+                return (
+                    <Link {...attributes}>
+                        <Chip
+                            size="small"
+                            avatar={<Avatar src={"/yt_logo.png"} />}
+                            label={content}
+                        />
+                    </Link>
+                );
             }
+
+            const avatarSrc = getLogoPath(url.hostname);
+
+            if (avatarSrc !== "") {
+                return (
+                    <Link {...attributes}>
+                        <Chip
+                            size="small"
+                            avatar={<Avatar src={avatarSrc} />}
+                            label={userId}
+                        />
+                    </Link>
+                );
+            }
+
+            return <Link {...attributes}>{content}</Link>;
         },
         hashtag: ({
             attributes,
@@ -112,10 +109,29 @@ const linkifyOptions = {
                 return <Link {...attributes}>{content}</Link>;
             }
         },
+        mention: ({
+            attributes,
+            content,
+        }: {
+            attributes: { [attr: string]: React.ReactNode };
+            content: string;
+        }) => {
+            return (
+                <Link
+                    style={{ color: blue[400] }}
+                    underline="none"
+                    {...attributes}
+                >
+                    {content}
+                </Link>
+            );
+        },
     },
     formatHref: {
         hashtag: (href: string) =>
             `https://www.youtube.com/hashtag/${href.substring(1)}`,
+        mention: (href: string) =>
+            `https://www.youtube.com/@${href.substring(1)}`,
     },
 };
 

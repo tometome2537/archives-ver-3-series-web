@@ -1,11 +1,12 @@
 // Reference: https://ilxanlar.medium.com/ellipsis-the-art-of-truncation-in-web-applications-8b141ce33774
 
-import { Avatar, Box, Button, Chip, Typography } from "@mui/material";
+import { Avatar, Box, Chip, Typography } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
 import Linkify from "linkify-react";
 import { useLayoutEffect, useRef, useState } from "react";
 import Link from "./Link";
+import "linkify-plugin-hashtag";
 
 type DescriptionProps = {
     text: string;
@@ -53,9 +54,27 @@ const linkifyOptions = {
                     ? pathSegments[0].replace("@", "")
                     : content;
 
+                // 動画につながるリンクの場合
+                if (
+                    url.hostname === "youtu.be" ||
+                    ((url.hostname === "youtube.com" ||
+                        url.hostname === "www.youtube.com") &&
+                        pathSegments[0] === "watch")
+                ) {
+                    return (
+                        <Link {...attributes}>
+                            <Chip
+                                size="small"
+                                avatar={<Avatar src={"/yt_logo.png"} />}
+                                label={content}
+                            />
+                        </Link>
+                    );
+                }
+
                 const avatarSrc = getLogoPath(url.hostname);
 
-                if (avatarSrc === "") {
+                if (avatarSrc !== "") {
                     return (
                         <Link {...attributes}>
                             <Chip

@@ -8,12 +8,12 @@ import { useLayoutEffect, useRef, useState } from "react";
 import Link from "./Link";
 import "linkify-plugin-hashtag";
 import "linkify-plugin-mention";
+import { useApiDataContext } from "@/contexts/ApiDataContext";
 
 type DescriptionProps = {
     text: string;
     date?: Date;
     maxLine: number;
-    getTitleWithVideoId?: (videoId: string) => string;
 };
 
 // 1行の高さ
@@ -39,6 +39,8 @@ const getLogoPath = (hostname: string) => {
 };
 
 export default function Description(props: DescriptionProps) {
+    const videoData = useApiDataContext("Video");
+
     const linkifyOptions = {
         render: {
             url: ({
@@ -73,9 +75,9 @@ export default function Description(props: DescriptionProps) {
                                 size="small"
                                 avatar={<Avatar src={"/yt_logo.png"} />}
                                 label={
-                                    props.getTitleWithVideoId
-                                        ? props.getTitleWithVideoId(videoId)
-                                        : content
+                                    videoData.Video.data.find(
+                                        (x) => x.videoId === videoId,
+                                    )?.title ?? content
                                 }
                             />
                         </Link>

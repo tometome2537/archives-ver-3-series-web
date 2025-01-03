@@ -1,25 +1,24 @@
 import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
+import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import rgbToHex from "@/libs/colorConverter";
+import { KeyboardArrowDown } from "@mui/icons-material";
+import { Repeat } from "@mui/icons-material";
 import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
+import YouTubeIcon from "@mui/icons-material/YouTube";
 import { Box, Chip } from "@mui/material";
 import Avatar from "@mui/material/Avatar";
+import IconButton from "@mui/material/IconButton";
 import { useTheme } from "@mui/material/styles";
+import Image from "next/image";
 import { useEffect, useState } from "react";
 import type { Dispatch, SetStateAction } from "react";
 import type { YouTubePlayer } from "react-youtube";
+import Description from "./Description";
+import type { MultiSearchBarSearchSuggestion } from "./Navbar/SearchBar/MultiSearchBar";
 import Thumbnail from "./Thumbnail";
 import YouTubePlayerView from "./YouTubePlayerView";
 import type { YouTubePlayerState } from "./YouTubePlayerView";
-import "linkify-plugin-hashtag";
-import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
-import { KeyboardArrowDown } from "@mui/icons-material";
-import { Repeat } from "@mui/icons-material";
-import YouTubeIcon from "@mui/icons-material/YouTube";
-import IconButton from "@mui/material/IconButton";
-import Image from "next/image";
-import Description from "./Description";
-import type { MultiSearchBarSearchSuggestion } from "./Navbar/SearchBar/MultiSearchBar";
 
 export type PlayerItem = {
     // 優先度 高

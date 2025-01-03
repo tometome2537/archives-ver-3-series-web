@@ -368,8 +368,6 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                                 videoId:
                                                     albumData?.tracks[0]
                                                         .videoId,
-                                                arHeight: 1,
-                                                arWidth: 1,
                                             });
                                             if (
                                                 albumData &&

@@ -627,6 +627,15 @@ export default function PlayerView(props: PlayerProps) {
                                                 : undefined
                                         }
                                         maxLine={2}
+                                        getTitleWithVideoId={(videoId) => {
+                                            return (
+                                                props.playerPlaylist?.videos.find(
+                                                    (item) =>
+                                                        item.videoId ===
+                                                        videoId,
+                                                )?.title ?? ""
+                                            );
+                                        }}
                                     />
                                 )}
                         </Box>

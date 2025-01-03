@@ -132,8 +132,6 @@ export default function SongTab(props: SongTabProps) {
                                         videoId: single.videoId,
                                         title: single.title,
                                         channelTitle: single.artists[0].name,
-                                        arHeight: 1,
-                                        arWidth: 1,
                                     });
                                 }}
                             />
@@ -163,8 +161,6 @@ export default function SongTab(props: SongTabProps) {
                                     });
                                 props.setPlayerItem({
                                     videoId: albumData?.tracks[0].videoId,
-                                    arHeight: 1,
-                                    arWidth: 1,
                                 });
                                 if (
                                     albumData &&
@@ -250,8 +246,6 @@ export default function SongTab(props: SongTabProps) {
                                         videoId: video.videoId,
                                         title: video.title,
                                         channelTitle: video.artists[0].name,
-                                        arHeight: 9,
-                                        arWidth: 16,
                                     });
                                 }}
                             />

@@ -237,6 +237,7 @@ export default function PlayerView(props: PlayerProps) {
                                 display: "flex",
                                 alignContent: "left",
                                 width: width,
+                                maxWidth: "100%",
                                 margin: "0 auto",
                             }}
                         >
@@ -447,6 +448,7 @@ export default function PlayerView(props: PlayerProps) {
                     <Box
                         sx={{
                             width: width,
+                            maxWidth: "100%",
                             margin: "0 auto",
                             display: props.isPlayerFullscreen
                                 ? "block"

@@ -1,36 +1,8 @@
-"use client";
-import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar/Navbar";
 import { Box } from "@mui/material";
-import Loading from "@/components/Loading";
-import LoadingPage from "@/components/LoadingPage";
+import licenses from "./licenses";
 
-// ライセンス情報の型定義
-type LicenseDetails = {
-    licenses: string;
-    repository?: string;
-    publisher?: string;
-    email?: string;
-};
-
-type Licenses = {
-    [packageName: string]: LicenseDetails;
-};
 export default function Home() {
-    const [licenses, setLicenses] = useState<Licenses | null>(null);
-
-    useEffect(() => {
-        // licenses.json を読み込む
-        fetch("/licenses.json")
-            .then((response) => response.json())
-            .then((data) => setLicenses(data))
-            .catch((error) => console.error("Error loading licenses:", error));
-    }, []);
-
-    if (!licenses) {
-        return <LoadingPage />; // データが読み込まれるまでの表示
-    }
-
     return (
         <>
             <Navbar />

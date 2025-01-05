@@ -1,3 +1,5 @@
+"use client";
+
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { useColorModeContext } from "@/contexts/ThemeContext";
 import rgbToHex from "@/libs/colorConverter";

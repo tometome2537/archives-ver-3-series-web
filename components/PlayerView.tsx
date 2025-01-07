@@ -325,7 +325,7 @@ export default function PlayerView(props: PlayerProps) {
                             // パソコンのモニター等で無制限に大きくならないようにする。
                             maxHeight: "100%",
                         }}
-                        playerRadius={!(isMobile && props.isPlayerFullscreen)}
+                        playerRadius={!(isMobile && props.isPlayerFullscreen && aspectRatio !== 1)}
                         setPlayer={setYouTubePlayer}
                         setPlayerState={setYouTubePlayerState}
                     />

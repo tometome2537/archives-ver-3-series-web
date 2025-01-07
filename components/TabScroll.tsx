@@ -15,6 +15,7 @@ import {
 
 export type TabMap = {
     value: string;
+    // icon: ReactElement<any>;
     icon: ReactElement;
     label: string;
     scrollTo: number;

@@ -1,6 +1,6 @@
 import { unescapeHtml } from "@/libs/unescapeHtml";
 import { Box, Divider, Typography } from "@mui/material";
-import ical from "cal-parser";
+// import ical from "cal-parser";
 import { Fragment, useEffect, useState } from "react";
 
 type Event = {
@@ -41,9 +41,9 @@ export function LiveInformationTab() {
             try {
                 const response = await fetch("api/liveInfo");
                 const data = await response.text();
-                const parsedCal = ical.parseString(data);
+                // const parsedCal = ical.parseString(data);
 
-                setEvents(parsedCal.events);
+                // setEvents(parsedCal.events);
             } catch (error) {
                 console.error("Error fetching YouTube accounts:", error);
             }

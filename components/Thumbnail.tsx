@@ -135,7 +135,7 @@ export default function Thumbnail(props: ThumbnailProps) {
                 >
                     <CardActionArea
                         onClick={props.onClick}
-                        data-videoId={props.videoId}
+                        data-videoid={props.videoId}
                     >
                         <Box
                             sx={{
@@ -162,8 +162,8 @@ export default function Thumbnail(props: ThumbnailProps) {
                                         pointerEvents: "none",
                                     }}
                                     // 動画の比率は、横：縦 = １６：９で
-                                    width={"320px"}
-                                    height={"180px"}
+                                    width={320}
+                                    // height={180}
                                 />
                             ) : (
                                 <CardMedia
@@ -216,7 +216,7 @@ export default function Thumbnail(props: ThumbnailProps) {
         return (
             <Box
                 onClick={props.onClick ? props.onClick : undefined}
-                data-videoId={props.videoId}
+                data-videoid={props.videoId}
                 sx={{
                     cursor: props.onClick ? "pointer" : "default",
                 }} // クリック可能かどうかでカーソルを変更
@@ -309,7 +309,7 @@ export default function Thumbnail(props: ThumbnailProps) {
     return (
         <Box
             onClick={props.onClick ? props.onClick : undefined}
-            data-videoId={props.videoId}
+            data-videoid={props.videoId}
             sx={{ cursor: props.onClick ? "pointer" : "default" }} // クリック可能かどうかでカーソルを変更
         >
             {/* サムネイルとタイトルを中央揃え */}
@@ -337,8 +337,8 @@ export default function Thumbnail(props: ThumbnailProps) {
                             pointerEvents: "none",
                         }}
                         // 動画の比率は、横：縦 = １６：９で
-                        width={"320px"}
-                        height={"180px"}
+                        width={320}
+                        // height={180}
                     />
                 ) : (
                     <Box

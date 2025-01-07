@@ -26,6 +26,7 @@ export interface SearchSuggestion {
     // アイコン画像URL
     imgSrc?: string;
     // アイコン(MUIのアイコンを想定)
+    // icon?: React.ReactElement<any>;
     icon?: React.ReactElement;
     // カテゴリーのID
     categoryId: string;
@@ -476,7 +477,10 @@ export default function SearchBar(props: SearchBarProps) {
                                     >
                                         {/* 各要素にユニークなkeyを設定 */}
                                         {
-                                            React.isValidElement(child) ? (
+                                            React.isValidElement(child) &&
+                                            child.props &&
+                                            typeof child.props === "object" &&
+                                            "children" in child.props ? (
                                                 <>
                                                     {/*  各項目の要素をReact.cloneElementでクローンを作成する。 */}
                                                     {React.cloneElement(
@@ -499,9 +503,11 @@ export default function SearchBar(props: SearchBarProps) {
                                                                 const suggestion =
                                                                     props.showTagIcon
                                                                         ? getSearchSuggestionFromLabel(
-                                                                              child
-                                                                                  .props
-                                                                                  .children,
+                                                                              String(
+                                                                                  child
+                                                                                      .props
+                                                                                      .children,
+                                                                              ),
                                                                               params.group,
                                                                           )
                                                                         : undefined;
@@ -512,11 +518,11 @@ export default function SearchBar(props: SearchBarProps) {
                                                                         : suggestion?.icon,
                                                                     avatar: suggestion?.imgSrc ? (
                                                                         <Avatar
-                                                                            alt={
+                                                                            alt={String(
                                                                                 child
                                                                                     .props
-                                                                                    .children
-                                                                            }
+                                                                                    .children,
+                                                                            )}
                                                                             src={
                                                                                 suggestion.imgSrc
                                                                             }
@@ -526,9 +532,11 @@ export default function SearchBar(props: SearchBarProps) {
                                                                             {child
                                                                                 .props
                                                                                 .children
-                                                                                ? child
-                                                                                      .props
-                                                                                      .children[0]
+                                                                                ? String(
+                                                                                      child
+                                                                                          .props
+                                                                                          .children,
+                                                                                  )[0]
                                                                                 : ""}
                                                                         </Avatar>
                                                                     ),
@@ -540,10 +548,10 @@ export default function SearchBar(props: SearchBarProps) {
 
                                                             // ↓ onClick()がChipを一意に特定するために必要。
                                                             // id: `:r${index}:-option-${index}`,
-                                                            "data-option-index":
-                                                                child.props[
-                                                                    "data-option-index"
-                                                                ],
+                                                            // "data-option-index":
+                                                            //     child.props[
+                                                            //         "data-option-index"
+                                                            //     ],
 
                                                             onClick: (
                                                                 e: React.MouseEvent,
@@ -552,9 +560,19 @@ export default function SearchBar(props: SearchBarProps) {
                                                                 // e.stopPropagation();
 
                                                                 // 既存のonClickを呼び出す
-                                                                child.props.onClick(
-                                                                    e,
-                                                                );
+                                                                const childProps =
+                                                                    child.props as {
+                                                                        onClick?: (
+                                                                            e: React.MouseEvent,
+                                                                        ) => void;
+                                                                    };
+                                                                if (
+                                                                    childProps.onClick
+                                                                ) {
+                                                                    childProps.onClick(
+                                                                        e,
+                                                                    );
+                                                                }
                                                             },
                                                         },
                                                     )}

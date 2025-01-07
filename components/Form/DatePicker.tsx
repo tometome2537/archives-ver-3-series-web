@@ -8,6 +8,8 @@ import dayjs from "dayjs";
 import "dayjs/locale/ja";
 import ja from "dayjs/locale/ja";
 
+import type { JSX } from "react";
+
 type MyDatePickerProps = {
     id: string;
     label: string;

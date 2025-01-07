@@ -1,36 +1,86 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# ミュージックアーカイブスプロジェクト（web 版）ver3.0.0
 
-## Getting Started
+## 概要
 
-First, run the development server:
+ぷらそにか公式 Youtube チャンネル([↗︎](https://www.youtube.com/channel/UCZx7esGXyW6JXn98byfKEIA))内の動画約 700 本(2023/10/09 現在)において、特定のぷらそにかメンバーが出演している動画をリスト表示できることを目的に開発された。
+現在ではぷらそにかチャンネル以外にも対応している。
+
+## 技術仕様
+
+- GitHub 内にある web サイト表示に必要なデータを Vercel（<https://vercel.com）というサービスを利用して公開している。>
+- 使用言語は TypeScript
+
+### 動画一覧を古い順に表示する機能の廃止
+
+古い動画より新しくパワーアップした動画を閲覧してほしいため。
+初めてサイトを訪問した人が古い動画を最初に見ることを防止する。
+
+## 開発環境の構築
+
+### 前提条件
+
+- VSCode がインストールされている。
+  <https://code.visualstudio.com>
+
+- コードのフォーマットには 拡張機能のBiome を使用しています。
+([参考](https://tometome.notion.site/Biome-10f0553833378065a3b7cc7298b4d2fd?pvs=4))
+
+Biomeインストールコマンド
+
+```bash
+code --install-extension biomejs.biome
+```
+
+### ①node.js のインストール
+
+<https://nodejs.org/ja/>
+
+.nvmrc のファイルで定義されているバージョンを使用。不定期にアップデートしてます。
+
+1 台の PC に複数バージョンの Node.Js を共存させる場合はこちらを参考にどうぞ。
+<https://tometome.notion.site/nvm-53d391fa3afb430e89e2bafbff852a1c>
+
+### ② サイトの起動
+
+以下のコマンドで必要なライブラリをインストール
+
+```bash
+npm install
+```
+
+<!-- .env.example を参考に.env をファイルの作成。 -->
+
+サイトの立ち上げ。
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+サイト(サーバー)の立ち上げ。(ローカルネットワーク内で公開する場合。)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run dev -- -H 0.0.0.0
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
+サイトを終了させる。
 
-## Learn More
+```bash
+ctrl c
+```
 
-To learn more about Next.js, take a look at the following resources:
+## 今後追記予定のコード
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+・スクレイピングを禁止するためのコード
+→ スクレイピングする人は google.com へ
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+```jsx
+if (navigator.webdriver === true) {
+  location.href = "https://google.com";
+}
+```
 
-## Deploy on Vercel
+・右クリック禁止
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+```jsx
+document.oncontextmenu = () => false;
+```

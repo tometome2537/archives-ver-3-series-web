@@ -9,7 +9,6 @@ import {
     Typography,
 } from "@mui/material";
 import Card from "@mui/material/Card";
-import Grid from "@mui/material/Unstable_Grid2";
 import Image from "next/image";
 import type { MouseEventHandler } from "react";
 import { useState } from "react";
@@ -126,7 +125,7 @@ export default function Thumbnail(props: ThumbnailProps) {
 
     if (props.thumbnailType === "card") {
         return (
-            <Grid xs={12} sm={6} md={3}>
+            <Box>
                 <Card
                     sx={{ maxWidth: 480 }}
                     onMouseOver={() => setRaised(true)}
@@ -208,7 +207,7 @@ export default function Thumbnail(props: ThumbnailProps) {
                         </CardContent>
                     </CardActionArea>
                 </Card>
-            </Grid>
+            </Box>
         );
     }
 

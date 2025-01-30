@@ -39,7 +39,7 @@ const getLogoPath = (hostname: string) => {
 };
 
 export default function Description(props: DescriptionProps) {
-    const videoData = useApiDataContext("Video");
+    const apiData = useApiDataContext();
 
     const linkifyOptions = {
         render: {
@@ -58,6 +58,14 @@ export default function Description(props: DescriptionProps) {
                     ? pathSegments[0].replace("@", "")
                     : content;
 
+                const fetchVideo = async (videoId: string) => {
+                    const r = await apiData.YdbVideo.getDataWithParams({
+                        videoIds: videoId,
+                    });
+                    console.log(r);
+                    return r?.videos[0].youTubeApi.snippet.title;
+                };
+
                 // 動画につながるリンクの場合
                 if (
                     url.hostname === "youtu.be" ||
@@ -74,11 +82,9 @@ export default function Description(props: DescriptionProps) {
                             <Chip
                                 size="small"
                                 avatar={<Avatar src={"/yt_logo.png"} />}
-                                label={
-                                    videoData.Video.data.find(
-                                        (x) => x.videoId === videoId,
-                                    )?.title ?? content
-                                }
+                                // label={(() => {
+                                //     fetchVideo(videoId) ?? content;
+                                // })()}
                             />
                         </Link>
                     );

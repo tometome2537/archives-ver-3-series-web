@@ -56,7 +56,7 @@ export function LiveInformationTab() {
 
     return (
         <Fragment>
-            <button
+            {/* <button
                 onClick={() => {
                     musicKit.musicKitInstance?.authorize();
                 }}
@@ -75,11 +75,11 @@ export function LiveInformationTab() {
             <br />
             国コード{String(musicKit.musicKitInstance?.storefrontCountryCode)}
             <br />
-            サブスク加入の有無{String(musicKit.musicKitInstance?.previewOnly)}
+            サブスク加入の有無{String(musicKit.musicKitInstance?.previewOnly)} */}
             {/* ↓ 画像のみ */}
-            <apple-music-artwork width="250"></apple-music-artwork>
+            {/* <apple-music-artwork width="250"></apple-music-artwork> */}
             {/* ↓ 再生ボタン付き */}
-            <apple-music-artwork-lockup
+            {/* <apple-music-artwork-lockup
                 type="album"
                 content-id="1573386004"
             ></apple-music-artwork-lockup>
@@ -99,7 +99,7 @@ export function LiveInformationTab() {
                 }}
             >
                 あわいに再生
-            </button>
+            </button> */}
             {musicKit.musicKitInstance?.nowPlayingItem?.title}
             {events.map((x) => {
                 return (

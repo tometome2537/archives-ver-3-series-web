@@ -35,8 +35,8 @@ export type PlayerItem = {
 
     actorId?: Array<string>;
     organizationId?: Array<string>;
-    width?: number;
-    height?: number;
+    arWidth?: number; // 画面比率の幅
+    arHeight?: number; // 画面比率の高さ
 };
 
 export type PlayerPlaylist = {
@@ -113,7 +113,9 @@ export default function PlayerView(props: PlayerProps) {
         " - Topic",
     )
         ? 1
-        : 16 / 9;
+        : props.playerItem?.arWidth && props.playerItem.arHeight
+          ? props.playerItem.arWidth / props.playerItem.arHeight
+          : 16 / 9;
 
     const width = props.isPlayerFullscreen
         ? isMobile
@@ -325,7 +327,13 @@ export default function PlayerView(props: PlayerProps) {
                             // パソコンのモニター等で無制限に大きくならないようにする。
                             maxHeight: "100%",
                         }}
-                        playerRadius={!(isMobile && props.isPlayerFullscreen && aspectRatio !== 1)}
+                        playerRadius={
+                            !(
+                                isMobile &&
+                                props.isPlayerFullscreen &&
+                                aspectRatio !== 1
+                            )
+                        }
                         setPlayer={setYouTubePlayer}
                         setPlayerState={setYouTubePlayerState}
                     />

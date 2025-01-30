@@ -149,6 +149,26 @@ export interface AlbumYTM {
     }[];
     duration_seconds: number;
 }
+export interface YdbVideo {
+    status: string;
+    channelIds: string[];
+    videos: {
+        id: string;
+        videoId: string;
+        videoOwnerChannelId: string;
+        channelId?: string | undefined;
+        privacyStatus: string;
+        youTubeApi: {
+            id: string;
+            snippet: {
+                publishedAt: string;
+                title: string;
+                description: string;
+                channelTitle: string;
+            };
+        };
+    }[];
+}
 
 interface FetchOption {
     headers?: { Authorization?: string };
@@ -178,6 +198,7 @@ export interface ApiDataContextType {
     Video: ApiData<Video[]>;
     ArtistYTM: ApiData<ArtistYTM | null>;
     AlbumYTM: ApiData<AlbumYTM | null>;
+    YdbVideo: ApiData<YdbVideo | null>;
 }
 
 export const SSSAPI_TOKEN = "s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I";
@@ -255,6 +276,15 @@ const ApiData: ApiDataContextType = {
     AlbumYTM: {
         url: "https://api-py-tometome-org-254186269366.us-central1.run.app/ytm/get_album",
         // url: "http://127.0.0.1:8000/ytm/get_album",
+        fetchOption: {},
+        status: "idle",
+        data: null,
+        getData: async () => null,
+        getDataWithParams: async () => null,
+    },
+    YdbVideo: {
+        url: "https://api-py-tometome-org-254186269366.us-central1.run.app/ydb/video/list",
+        // url: "http://127.0.0.1:8000/ydb/video/list",
         fetchOption: {},
         status: "idle",
         data: null,

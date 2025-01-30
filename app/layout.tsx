@@ -5,16 +5,15 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
+import { AppleMusicProvider } from "@/contexts/AppleMusicContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
-export default async function RootLayout(
-    {
-        children,
-    }: {
-        children: React.ReactNode;
-    }
-) {
+export default async function RootLayout({
+    children,
+}: {
+    children: React.ReactNode;
+}) {
     const preColorMode = (await cookies()).get("colorMode")?.value;
     const initColorMode: ColorModeChoice =
         preColorMode === "light" || preColorMode === "dark"
@@ -35,7 +34,7 @@ export default async function RootLayout(
                     name="theme-color"
                     content={initColorMode === "dark" ? "#000000" : "#FFFFFF"}
                 />
-                {process.env.NEXT_PUBLIC_ENV_NAME !== "dev" && (
+                {process.env.NEXT_PUBLIC_STAGE !== "dev" && (
                     <>
                         {/* Googleサイトコンソール */}
                         <meta
@@ -49,9 +48,13 @@ export default async function RootLayout(
             </head>
             <body className={inter.className}>
                 <ThemeRegistry initColorMode={initColorMode}>
-                    <ApiDataProvider>
-                        <BrowserInfoProvider>{children}</BrowserInfoProvider>
-                    </ApiDataProvider>
+                    <AppleMusicProvider>
+                        <ApiDataProvider>
+                            <BrowserInfoProvider>
+                                {children}
+                            </BrowserInfoProvider>
+                        </ApiDataProvider>
+                    </AppleMusicProvider>
                 </ThemeRegistry>
             </body>
         </html>

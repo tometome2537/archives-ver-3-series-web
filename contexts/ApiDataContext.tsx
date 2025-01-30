@@ -169,6 +169,10 @@ export interface YdbVideo {
         };
     }[];
 }
+export interface AppleMusicAccount {
+    entityId: string;
+    appleMusicArtistId: string;
+}
 
 interface FetchOption {
     headers?: { Authorization?: string };
@@ -199,6 +203,7 @@ export interface ApiDataContextType {
     ArtistYTM: ApiData<ArtistYTM | null>;
     AlbumYTM: ApiData<AlbumYTM | null>;
     YdbVideo: ApiData<YdbVideo | null>;
+    AppleMusicAccount: ApiData<AppleMusicAccount[]>;
 }
 
 export const SSSAPI_TOKEN = "s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I";
@@ -246,6 +251,14 @@ const ApiData: ApiDataContextType = {
     },
     BelongHistory: {
         url: "https://api.sssapi.app/HXy5cl24OnVmRtM9EtO_G",
+        fetchOption: sssApiFetchOption,
+        status: "idle",
+        data: [],
+        getData: async () => [],
+        getDataWithParams: async () => [],
+    },
+    AppleMusicAccount: {
+        url: "https://api.sssapi.app/p5X0V8UvwkMBE0QJqSfXb",
         fetchOption: sssApiFetchOption,
         status: "idle",
         data: [],

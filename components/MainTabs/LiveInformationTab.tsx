@@ -2,6 +2,7 @@ import { unescapeHtml } from "@/libs/unescapeHtml";
 import { Box, Divider, Typography } from "@mui/material";
 // import ical from "cal-parser";
 import { Fragment, useEffect, useState } from "react";
+import { useAppleMusic } from "@/contexts/AppleMusicContext";
 
 type Event = {
     dtstart: {
@@ -35,6 +36,7 @@ type Event = {
 
 export function LiveInformationTab() {
     const [events, setEvents] = useState<Event[]>([]);
+    const musicKit = useAppleMusic();
 
     useEffect(() => {
         async function fetchData() {
@@ -54,6 +56,51 @@ export function LiveInformationTab() {
 
     return (
         <Fragment>
+            <button
+                onClick={() => {
+                    musicKit.musicKitInstance?.authorize();
+                }}
+            >
+                認証開始
+            </button>
+            <button
+                onClick={() => {
+                    musicKit.musicKitInstance?.unauthorize();
+                }}
+            >
+                認証解除
+            </button>
+            <br />
+            認証{String(musicKit.musicKitInstance?.isAuthorized)}
+            <br />
+            国コード{String(musicKit.musicKitInstance?.storefrontCountryCode)}
+            <br />
+            サブスク加入の有無{String(musicKit.musicKitInstance?.previewOnly)}
+            {/* ↓ 画像のみ */}
+            <apple-music-artwork width="250"></apple-music-artwork>
+            {/* ↓ 再生ボタン付き */}
+            <apple-music-artwork-lockup
+                type="album"
+                content-id="1573386004"
+            ></apple-music-artwork-lockup>
+            <apple-music-card-player width="500"></apple-music-card-player>
+            <apple-music-video-player></apple-music-video-player>
+            <apple-music-playback-controls />
+            <apple-music-progress></apple-music-progress>
+            <apple-music-volume></apple-music-volume>
+            <button
+                onClick={() => {
+                    musicKit.musicKitInstance?.setQueue({
+                        album: "l.EWSEtM4",
+                        startPlaying: true,
+                    });
+                    musicKit.musicKitInstance?.play();
+                    console.log(musicKit.musicKitInstance?.nowPlayingItem);
+                }}
+            >
+                あわいに再生
+            </button>
+            {musicKit.musicKitInstance?.nowPlayingItem?.title}
             {events.map((x) => {
                 return (
                     <Box

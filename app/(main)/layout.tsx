@@ -216,169 +216,171 @@ export default function RootLayout({
     }, [apiData.Entity.data, apiData.YouTubeAccount.data]);
 
     // useMemoでタブ設定を作成
-    const tabMaps: TabMap[] = react.useMemo(
-        () =>
-            [
-                // {
-                //     value: "linkCollection",
-                //     icon: <AccountBoxIcon />,
-                //     label: "リンク集",
-                //     children: <LinkTab inputValue={inputValue} />,
-                //     scrollTo: 0,
-                //     onClick: () => {
-                //         setAvailableCategoryIds(["actor"]);
-                //         setLimitSearchCategory([]);
-                //         setFixedOptionValues([]);
-                //         setTextSuggestionCategory([]);
-                //     },
-                // },
-                // {
-                //     value: "songs",
-                //     icon: <MusicNoteIcon />,
-                //     label: "楽曲集",
-                //     children: (
-                //         <SongTab
-                //             key="song"
-                //             inputValue={inputValue}
-                //             playerItem={playerItem}
-                //             setPlayerItem={setPlayerItem}
-                //             setPlayerPlaylist={setPlayerPlaylist}
-                //         />
-                //     ),
-                //     scrollTo: 0,
-                //     onClick: () => {
-                //         setAvailableCategoryIds(["actor", "organization"]);
-                //         setLimitSearchCategory([]);
-                //         setFixedOptionValues([]);
-                //         // 検索候補を更新
-                //         setSearchSuggestion(entitySearchSuggestions());
-                //     },
-                // },
-                {
-                    value: "",
-                    icon: <YouTubeIcon />,
-                    label: "ぷらそにか",
-                    scrollTo: 0,
-                    children: (
-                        <TemporaryYouTubeTab
-                            key="tempYoutube"
-                            inputValue={inputValue}
-                            playerItem={playerItem}
-                            setPlayerItem={setPlayerItem}
-                            setPlayerPlaylist={setPlayerPlaylist}
-                            setIsPlayerFullscreen={setIsPlayerFullscreen}
-                        />
-                    ),
-                    onClick: () => {
-                        setAvailableCategoryIds([
-                            "",
-                            "actor",
-                            "organization",
-                            // "YouTubeChannel",
-                            "title",
-                            "description",
-                            "specialWord_plusonica",
-                            "musicArtistName",
-                            "musicTitle",
-                        ]);
-                        setLimitSearchCategory([
-                            // { categoryId: "actor", categoryLabel: "出演者" },
-                            // {
-                            //     categoryId: "organization",
-                            //     categoryLabel: "組織",
-                            // },
-                        ]);
-                        setFixedOptionValues(["UCZx7esGXyW6JXn98byfKEIA"]);
+    const tabMaps: TabMap[] = react.useMemo(() => {
+        const list = [
+            // {
+            //     value: "linkCollection",
+            //     icon: <AccountBoxIcon />,
+            //     label: "リンク集",
+            //     children: <LinkTab inputValue={inputValue} />,
+            //     scrollTo: 0,
+            //     onClick: () => {
+            //         setAvailableCategoryIds(["actor"]);
+            //         setLimitSearchCategory([]);
+            //         setFixedOptionValues([]);
+            //         setTextSuggestionCategory([]);
+            //     },
+            // },
+            // {
+            //     value: "songs",
+            //     icon: <MusicNoteIcon />,
+            //     label: "楽曲集",
+            //     children: (
+            //         <SongTab
+            //             key="song"
+            //             inputValue={inputValue}
+            //             playerItem={playerItem}
+            //             setPlayerItem={setPlayerItem}
+            //             setPlayerPlaylist={setPlayerPlaylist}
+            //         />
+            //     ),
+            //     scrollTo: 0,
+            //     onClick: () => {
+            //         setAvailableCategoryIds(["actor", "organization"]);
+            //         setLimitSearchCategory([]);
+            //         setFixedOptionValues([]);
+            //         // 検索候補を更新
+            //         setSearchSuggestion(entitySearchSuggestions());
+            //     },
+            // },
+            {
+                value: "",
+                icon: <YouTubeIcon />,
+                label: "ぷらそにか",
+                scrollTo: 0,
+                children: (
+                    <TemporaryYouTubeTab
+                        key="tempYoutube"
+                        inputValue={inputValue}
+                        playerItem={playerItem}
+                        setPlayerItem={setPlayerItem}
+                        setPlayerPlaylist={setPlayerPlaylist}
+                        setIsPlayerFullscreen={setIsPlayerFullscreen}
+                    />
+                ),
+                onClick: () => {
+                    setAvailableCategoryIds([
+                        "",
+                        "actor",
+                        "organization",
+                        // "YouTubeChannel",
+                        "title",
+                        "description",
+                        "specialWord_plusonica",
+                        "musicArtistName",
+                        "musicTitle",
+                    ]);
+                    setLimitSearchCategory([
+                        // { categoryId: "actor", categoryLabel: "出演者" },
+                        // {
+                        //     categoryId: "organization",
+                        //     categoryLabel: "組織",
+                        // },
+                    ]);
+                    setFixedOptionValues(["UCZx7esGXyW6JXn98byfKEIA"]);
 
-                        // const i = inputValue.find(
-                        //     (item) => item.value === "UCZx7esGXyW6JXn98byfKEIA",
-                        // );
-                        // if (!i) {
-                        //     setInputValue([
-                        //         {
-                        //             sort: 101,
-                        //             createdAt: new Date(),
-                        //             label: "ぷらそにか",
-                        //             value: "UCZx7esGXyW6JXn98byfKEIA",
-                        //             imgSrc: "https://yt3.ggpht.com/ytc/AIdro_lB6NxMtujj7oK0See-TGPL5eq-TjowmK6DFSjgLyCj0g=s88-c-k-c0x00ffffff-no-rj",
-                        //             categoryId: "YouTubeChannel",
-                        //             categoryLabel: "YouTube",
-                        //         },
-                        //         ...inputValue.filter(
-                        //             (item) =>
-                        //                 item.categoryId !== "YouTubeChannel",
-                        //         ),
-                        //     ]);
-                        // }
-                        setTextSuggestionCategory([
-                            {
-                                sort: 20,
-                                categoryId: "title",
-                                categoryLabel: "タイトル",
-                            },
-                            {
-                                sort: 22,
-                                categoryId: "description",
-                                categoryLabel: "概要欄",
-                            },
-                        ]);
+                    // const i = inputValue.find(
+                    //     (item) => item.value === "UCZx7esGXyW6JXn98byfKEIA",
+                    // );
+                    // if (!i) {
+                    //     setInputValue([
+                    //         {
+                    //             sort: 101,
+                    //             createdAt: new Date(),
+                    //             label: "ぷらそにか",
+                    //             value: "UCZx7esGXyW6JXn98byfKEIA",
+                    //             imgSrc: "https://yt3.ggpht.com/ytc/AIdro_lB6NxMtujj7oK0See-TGPL5eq-TjowmK6DFSjgLyCj0g=s88-c-k-c0x00ffffff-no-rj",
+                    //             categoryId: "YouTubeChannel",
+                    //             categoryLabel: "YouTube",
+                    //         },
+                    //         ...inputValue.filter(
+                    //             (item) =>
+                    //                 item.categoryId !== "YouTubeChannel",
+                    //         ),
+                    //     ]);
+                    // }
+                    setTextSuggestionCategory([
+                        {
+                            sort: 20,
+                            categoryId: "title",
+                            categoryLabel: "タイトル",
+                        },
+                        {
+                            sort: 22,
+                            categoryId: "description",
+                            categoryLabel: "概要欄",
+                        },
+                    ]);
 
-                        const result: MultiSearchBarSearchSuggestion[] = [];
+                    const result: MultiSearchBarSearchSuggestion[] = [];
 
-                        // スペシャル検索候補を追加
-                        result.push({
-                            label: "ぷらそにか(original)",
-                            value: "ぷらそにか(original)",
-                            categoryId: "specialWord_plusonica",
-                            categoryLabel: "特別な検索",
-                            categorySort: 999,
-                            icon: <MusicNote />,
-                        });
-                        result.push({
-                            label: "ぷらっとみゅーじっく♪",
-                            value: "ぷらっとみゅーじっく♪",
-                            categoryId: "specialWord_plusonica",
-                            categoryLabel: "特別な検索",
-                            categorySort: 999,
-                            icon: <MusicNote />,
-                        });
-                        // 人物を追加
-                        result.push(...entitySearchSuggestions());
-                        // アーティストを追加
-                        result.push(...ArtistsSearchSuggestions());
-                        // 楽曲名を追加
-                        result.push(...musicSearchSuggestions());
+                    // スペシャル検索候補を追加
+                    result.push({
+                        label: "ぷらそにか(original)",
+                        value: "ぷらそにか(original)",
+                        categoryId: "specialWord_plusonica",
+                        categoryLabel: "特別な検索",
+                        categorySort: 999,
+                        icon: <MusicNote />,
+                    });
+                    result.push({
+                        label: "ぷらっとみゅーじっく♪",
+                        value: "ぷらっとみゅーじっく♪",
+                        categoryId: "specialWord_plusonica",
+                        categoryLabel: "特別な検索",
+                        categorySort: 999,
+                        icon: <MusicNote />,
+                    });
+                    // 人物を追加
+                    result.push(...entitySearchSuggestions());
+                    // アーティストを追加
+                    result.push(...ArtistsSearchSuggestions());
+                    // 楽曲名を追加
+                    result.push(...musicSearchSuggestions());
 
-                        // 検索候補を更新
-                        setSearchSuggestion(result);
-                    },
+                    // 検索候補を更新
+                    setSearchSuggestion(result);
                 },
-                {
-                    value: "liveInformation",
-                    icon: <CalendarMonthIcon />,
-                    label: "LIVE情報(β版)",
-                    scrollTo: 0,
-                    children: <LiveInformationTab key="liveInformation" />,
-                    onClick: () => {
-                        setAvailableCategoryIds([]);
-                        setLimitSearchCategory([]);
-                        setFixedOptionValues([]);
-                    },
+            },
+            {
+                value: "liveInformation",
+                icon: <CalendarMonthIcon />,
+                label: "LIVE情報(β版)",
+                scrollTo: 0,
+                children: <LiveInformationTab key="liveInformation" />,
+                onClick: () => {
+                    setAvailableCategoryIds([]);
+                    setLimitSearchCategory([]);
+                    setFixedOptionValues([]);
                 },
-            ].map((item, index) => {
-                if (typeof window !== "undefined") {
-                    item.scrollTo = window.innerWidth * index;
-                }
-                return item;
-            }),
-        [
-            inputValue,
-            playerItem,
-            ArtistsSearchSuggestions,
-            musicSearchSuggestions,
-            entitySearchSuggestions,
-        ],
-    );
+            },
+        ];
+
+        list.map((item, index) => {
+            if (typeof window !== "undefined") {
+                item.scrollTo = window.innerWidth * index;
+            }
+            return item;
+        });
+
+        return list;
+    }, [
+        inputValue,
+        playerItem,
+        ArtistsSearchSuggestions,
+        musicSearchSuggestions,
+        entitySearchSuggestions,
+    ]);
 
     const tabScroll = TabScroll(tabMaps, setIsPlayerFullscreen);
 

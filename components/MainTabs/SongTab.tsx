@@ -129,9 +129,9 @@ export default function SongTab(props: SongTabProps) {
                                 // publishedAt={new Date(single. || 0)}
                                 onClick={() => {
                                     props.setPlayerItem({
-                                        videoId: single.videoId,
+                                        mediaId: single.videoId,
                                         title: single.title,
-                                        channelTitle: single.artists[0].name,
+                                        author: single.artists[0].name,
                                     });
                                 }}
                             />
@@ -160,7 +160,7 @@ export default function SongTab(props: SongTabProps) {
                                         browseId: album.browseId,
                                     });
                                 props.setPlayerItem({
-                                    videoId: albumData?.tracks[0].videoId,
+                                    mediaId: albumData?.tracks[0].videoId,
                                 });
                                 if (
                                     albumData &&
@@ -207,7 +207,7 @@ export default function SongTab(props: SongTabProps) {
                                         browseId: single.browseId,
                                     });
                                 props.setPlayerItem({
-                                    videoId: albumData?.tracks[0].videoId,
+                                    mediaId: albumData?.tracks[0].videoId,
                                     // arHeight: 1,
                                     // arWidth: 1
                                 });
@@ -243,9 +243,9 @@ export default function SongTab(props: SongTabProps) {
                                 // publishedAt={new Date(single. || 0)}
                                 onClick={() => {
                                     props.setPlayerItem({
-                                        videoId: video.videoId,
+                                        mediaId: video.videoId,
                                         title: video.title,
-                                        channelTitle: video.artists[0].name,
+                                        author: video.artists[0].name,
                                     });
                                 }}
                             />

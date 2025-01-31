@@ -11,6 +11,7 @@ import Album from "../Album";
 import Loading from "../Loading";
 import type { PlayerItem, PlayerPlaylist } from "../PlayerView";
 import Thumbnail from "../Thumbnail";
+import { PlayerType } from "../PlayerView";
 
 type TemporaryYouTubeTab = {
     inputValue: InputValue[];
@@ -365,7 +366,8 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                                     },
                                                 );
                                             props.setPlayerItem({
-                                                videoId:
+                                                type: PlayerType.YouTube,
+                                                mediaId:
                                                     albumData?.tracks[0]
                                                         .videoId,
                                             });
@@ -378,6 +380,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                                     videos: albumData?.tracks.map(
                                                         (item) => {
                                                             return {
+                                                                type: PlayerType.YouTube,
                                                                 videoId:
                                                                     item.videoId,
                                                                 title: item.title,
@@ -417,7 +420,8 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                                     },
                                                 );
                                             props.setPlayerItem({
-                                                videoId:
+                                                type: PlayerType.YouTube,
+                                                mediaId:
                                                     albumData?.tracks[0]
                                                         .videoId,
                                             });
@@ -443,125 +447,114 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                         (resultVideo.length !== 0 ? (
                             <>
                                 {resultVideo.map((item: Video) => (
-                                    <>
-                                        {/* 各アイテムを表示 */}
-                                        <Box
-                                            key={item.videoId}
-                                            sx={{
-                                                width: isMobile
-                                                    ? "100%"
-                                                    : "30%",
-                                                maxWidth: isMobile
-                                                    ? "100%"
-                                                    : "30%",
-                                                margin: "0 auto",
-                                            }}
-                                        >
-                                            <Thumbnail
-                                                // ↓ To Do 余裕があったら切り替えボタン
-                                                // thumbnailType={
-                                                //     props.isMobile
-                                                //         ? "list"
-                                                //         : undefined
-                                                // }
-                                                //
-                                                // isPlayingOnHover={
-                                                //     props.playerItem.videoId === "" ||
-                                                //     props.playerItem.videoId === undefined
-                                                // }
-                                                videoId={item.videoId ?? ""}
-                                                title={item.title ?? undefined}
-                                                viewCount={Number(
-                                                    item.viewCount,
-                                                )}
-                                                channelTitle={
-                                                    item.channelTitle ??
-                                                    undefined
-                                                }
-                                                publishedAt={
-                                                    new Date(
-                                                        item.publishedAt || 0,
-                                                    )
-                                                }
-                                                onClick={() => {
-                                                    props.setPlayerItem({
-                                                        videoId:
-                                                            item.videoId ??
-                                                            undefined,
-                                                    });
-                                                    // APIから受け取った値の型を変換する。
-                                                    const searchResult: Array<PlayerItem> =
-                                                        resultVideo
-                                                            ? resultVideo.map(
-                                                                  (
-                                                                      item: Video,
-                                                                  ) => {
-                                                                      const result: PlayerItem =
-                                                                          {
-                                                                              videoId:
-                                                                                  item.videoId ??
-                                                                                  undefined,
-                                                                              title:
-                                                                                  item.title ??
-                                                                                  undefined,
-                                                                              description:
-                                                                                  item.apiData &&
-                                                                                  JSON.parse(
-                                                                                      item.apiData,
-                                                                                  )
-                                                                                      .snippet
-                                                                                      .description,
-                                                                              viewCount:
-                                                                                  Number(
-                                                                                      item.viewCount,
-                                                                                  ),
-                                                                              channelId:
-                                                                                  item.channelId ??
-                                                                                  undefined,
-                                                                              channelTitle:
-                                                                                  item.channelTitle ??
-                                                                                  undefined,
-                                                                              publishedAt:
-                                                                                  item.publishedAt
-                                                                                      ? new Date(
-                                                                                            item.publishedAt,
+                                    <Box
+                                        //  各アイテムを表示
+                                        key={item.videoId}
+                                        sx={{
+                                            width: isMobile ? "100%" : "30%",
+                                            maxWidth: isMobile ? "100%" : "30%",
+                                            margin: "0 auto",
+                                        }}
+                                    >
+                                        <Thumbnail
+                                            // ↓ To Do 余裕があったら切り替えボタン
+                                            // thumbnailType={
+                                            //     props.isMobile
+                                            //         ? "list"
+                                            //         : undefined
+                                            // }
+                                            //
+                                            // isPlayingOnHover={
+                                            //     props.playerItem.videoId === "" ||
+                                            //     props.playerItem.videoId === undefined
+                                            // }
+                                            videoId={item.videoId ?? ""}
+                                            title={item.title ?? undefined}
+                                            viewCount={Number(item.viewCount)}
+                                            channelTitle={
+                                                item.channelTitle ?? undefined
+                                            }
+                                            publishedAt={
+                                                new Date(item.publishedAt || 0)
+                                            }
+                                            onClick={() => {
+                                                props.setPlayerItem({
+                                                    type: PlayerType.YouTube,
+                                                    mediaId:
+                                                        item.videoId ??
+                                                        undefined,
+                                                });
+                                                // APIから受け取った値の型を変換する。
+                                                const searchResult: Array<PlayerItem> =
+                                                    resultVideo
+                                                        ? resultVideo.map(
+                                                              (item: Video) => {
+                                                                  const result: PlayerItem =
+                                                                      {
+                                                                          type: PlayerType.YouTube,
+                                                                          mediaId:
+                                                                              item.videoId ??
+                                                                              undefined,
+                                                                          title:
+                                                                              item.title ??
+                                                                              undefined,
+                                                                          description:
+                                                                              item.apiData &&
+                                                                              JSON.parse(
+                                                                                  item.apiData,
+                                                                              )
+                                                                                  .snippet
+                                                                                  .description,
+                                                                          viewCount:
+                                                                              Number(
+                                                                                  item.viewCount,
+                                                                              ),
+                                                                          channelId:
+                                                                              item.channelId ??
+                                                                              undefined,
+                                                                          author:
+                                                                              item.channelTitle ??
+                                                                              undefined,
+                                                                          publishedAt:
+                                                                              item.publishedAt
+                                                                                  ? new Date(
+                                                                                        item.publishedAt,
+                                                                                    )
+                                                                                  : undefined,
+                                                                          actorId:
+                                                                              item.person
+                                                                                  ? item.person
+                                                                                        .split(
+                                                                                            / , |,| ,|, /,
                                                                                         )
-                                                                                      : undefined,
-                                                                              actorId:
-                                                                                  item.person
-                                                                                      ? item.person
-                                                                                            .split(
-                                                                                                / , |,| ,|, /,
-                                                                                            )
-                                                                                            .filter(
-                                                                                                (
-                                                                                                    v,
-                                                                                                ) =>
-                                                                                                    v,
-                                                                                            )
-                                                                                      : [],
-                                                                              organizationId:
-                                                                                  Object.keys(
-                                                                                      JSON.parse(
-                                                                                          item.organization ||
-                                                                                              "{}",
-                                                                                      ),
+                                                                                        .filter(
+                                                                                            (
+                                                                                                v,
+                                                                                            ) =>
+                                                                                                v,
+                                                                                        )
+                                                                                  : [],
+                                                                          organizationId:
+                                                                              Object.keys(
+                                                                                  JSON.parse(
+                                                                                      item.organization ||
+                                                                                          "{}",
                                                                                   ),
-                                                                          };
-                                                                      return result;
-                                                                  },
-                                                              )
-                                                            : [];
-                                                    props.setPlayerPlaylist({
-                                                        videos: searchResult,
-                                                    });
-                                                    props.setIsPlayerFullscreen(
-                                                        true,
-                                                    );
-                                                }}
-                                            />
-                                        </Box>
-                                    </>
+                                                                              ),
+                                                                      };
+                                                                  return result;
+                                                              },
+                                                          )
+                                                        : [];
+                                                props.setPlayerPlaylist({
+                                                    videos: searchResult,
+                                                });
+                                                props.setIsPlayerFullscreen(
+                                                    true,
+                                                );
+                                            }}
+                                        />
+                                    </Box>
                                 ))}
                             </>
                         ) : (

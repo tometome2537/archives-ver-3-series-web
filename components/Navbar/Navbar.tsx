@@ -39,6 +39,7 @@ import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import type { Dispatch, SetStateAction } from "react";
 import { Fragment, useEffect, useRef, useState } from "react";
+import { useAppleMusic } from "@/contexts/AppleMusicContext";
 
 type NavbarProps = {
     setNavbarHeight?: Dispatch<SetStateAction<number | undefined>>;
@@ -52,6 +53,8 @@ export default function Navbar(props: NavbarProps) {
     const { selectedMode, setColorMode } = useColorModeContext();
     // ブラウザ情報を取得
     const { isMobile } = useBrowserInfoContext();
+
+    const musicKit = useAppleMusic();
 
     // メニューの開閉
     const [menu, setMenu] = useState<boolean>(false);

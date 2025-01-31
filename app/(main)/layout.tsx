@@ -27,6 +27,8 @@ import YouTubeIcon from "@mui/icons-material/YouTube";
 import { AppBar } from "@mui/material";
 import react, { Fragment } from "react";
 import { useCallback } from "react";
+import { useAppleMusic } from "@/contexts/AppleMusicContext";
+import AppleMusicLibrary from "@/components/MainTabs/AppleMusicLibrary";
 
 export default function RootLayout({
     children,
@@ -37,6 +39,8 @@ export default function RootLayout({
     const apiData = useApiDataContext("YouTubeAccount", "Entity", "Music");
     // ブラウザ情報を取得
     const { isMobile } = useBrowserInfoContext();
+
+    const musicKit = useAppleMusic();
 
     // ⭐️ここからマルチサーチバー関連
     // 入力された値
@@ -357,7 +361,12 @@ export default function RootLayout({
                 icon: <CalendarMonthIcon />,
                 label: "LIVE情報(β版)",
                 scrollTo: 0,
-                children: <LiveInformationTab key="liveInformation" />,
+                children: (
+                    <LiveInformationTab
+                        key="liveInformation"
+                        playerItem={playerItem}
+                    />
+                ),
                 onClick: () => {
                     setAvailableCategoryIds([]);
                     setLimitSearchCategory([]);
@@ -365,6 +374,32 @@ export default function RootLayout({
                 },
             },
         ];
+
+        if (musicKit.instance?.isAuthorized) {
+            list.push({
+                value: "AppleMusic",
+                icon: <CalendarMonthIcon />,
+                label: "Apple Music",
+                scrollTo: 0,
+                children: (
+                    <AppleMusicLibrary
+                        key="AppleMusic"
+                        inputValue={inputValue}
+                    />
+                ),
+                onClick: () => {
+                    setAvailableCategoryIds([
+                        "",
+                        "actor",
+                        "organization",
+                        "musicArtistName",
+                        "musicTitle",
+                    ]);
+                    setLimitSearchCategory([]);
+                    setFixedOptionValues([]);
+                },
+            });
+        }
 
         list.map((item, index) => {
             if (typeof window !== "undefined") {
@@ -375,6 +410,7 @@ export default function RootLayout({
 
         return list;
     }, [
+        musicKit,
         inputValue,
         playerItem,
         ArtistsSearchSuggestions,
@@ -464,27 +500,25 @@ export default function RootLayout({
                 }}
             >
                 {/* Player */}
-                {playerItem && (
-                    <PlayerView
-                        inputValue={inputValue}
-                        setInputValue={setInputValue}
-                        searchSuggestion={searchSuggestion}
-                        playerItem={playerItem}
-                        setPlayerItem={setPlayerItem}
-                        playerPlaylist={playerPlaylist}
-                        setPlayerPlaylist={setPlayerPlaylist}
-                        isPlayerFullscreen={isPlayerFullscreen}
-                        setIsPlayerFullscreen={setIsPlayerFullscreen}
-                        style={{
-                            // ↓ header(Navbar)の分上に余白を作る。
-                            top: isPlayerFullscreen
-                                ? isMobile
-                                    ? "0"
-                                    : `${navbarHeight}px`
-                                : "auto",
-                        }}
-                    />
-                )}
+                <PlayerView
+                    inputValue={inputValue}
+                    setInputValue={setInputValue}
+                    searchSuggestion={searchSuggestion}
+                    playerItem={playerItem}
+                    setPlayerItem={setPlayerItem}
+                    playerPlaylist={playerPlaylist}
+                    setPlayerPlaylist={setPlayerPlaylist}
+                    isPlayerFullscreen={isPlayerFullscreen}
+                    setIsPlayerFullscreen={setIsPlayerFullscreen}
+                    style={{
+                        // ↓ header(Navbar)の分上に余白を作る。
+                        top: isPlayerFullscreen
+                            ? isMobile
+                                ? "0"
+                                : `${navbarHeight}px`
+                            : "auto",
+                    }}
+                />
                 {/* タブ切り替えボタン */}
                 {tabScroll.tabs()}
             </AppBar>

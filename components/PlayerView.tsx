@@ -1,4 +1,6 @@
 import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
+import type { MediaItem } from "@/contexts/AppleMusicContext";
+import { useAppleMusic } from "@/contexts/AppleMusicContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import rgbToHex from "@/libs/colorConverter";
 import { KeyboardArrowDown } from "@mui/icons-material";
@@ -19,8 +21,6 @@ import type { MultiSearchBarSearchSuggestion } from "./Navbar/SearchBar/MultiSea
 import Thumbnail from "./Thumbnail";
 import YouTubePlayerView from "./YouTubePlayerView";
 import type { YouTubePlayerState } from "./YouTubePlayerView";
-import type { MediaItem } from "@/contexts/AppleMusicContext";
-import { useAppleMusic } from "@/contexts/AppleMusicContext";
 
 export enum PlayerType {
     YouTube = "YouTube",
@@ -854,40 +854,34 @@ export default function PlayerView(props: PlayerProps) {
                                 {props.playerPlaylist
                                     ? props.playerPlaylist.videos.map(
                                           (item: PlayerItem) => (
-                                              <>
-                                                  <Box
-                                                      key={item.mediaId}
-                                                      sx={{
-                                                          maxWidth: "25vw",
-                                                          margin: "0 auto",
+                                              <Box
+                                                  key={item.mediaId}
+                                                  sx={{
+                                                      maxWidth: "25vw",
+                                                      margin: "0 auto",
+                                                  }}
+                                              >
+                                                  <Thumbnail
+                                                      videoId={
+                                                          item.mediaId
+                                                              ? item.mediaId
+                                                              : ""
+                                                      }
+                                                      title={item.title}
+                                                      viewCount={item.viewCount}
+                                                      channelTitle={item.author}
+                                                      publishedAt={
+                                                          item.publishedAt
+                                                      }
+                                                      onClick={(e) => {
+                                                          // ↓ 親要素のonClickを発火させたくない場合に追記
+                                                          e.stopPropagation();
+                                                          props.setPlayerItem(
+                                                              item,
+                                                          );
                                                       }}
-                                                  >
-                                                      <Thumbnail
-                                                          videoId={
-                                                              item.mediaId
-                                                                  ? item.mediaId
-                                                                  : ""
-                                                          }
-                                                          title={item.title}
-                                                          viewCount={
-                                                              item.viewCount
-                                                          }
-                                                          channelTitle={
-                                                              item.author
-                                                          }
-                                                          publishedAt={
-                                                              item.publishedAt
-                                                          }
-                                                          onClick={(e) => {
-                                                              // ↓ 親要素のonClickを発火させたくない場合に追記
-                                                              e.stopPropagation();
-                                                              props.setPlayerItem(
-                                                                  item,
-                                                              );
-                                                          }}
-                                                      />
-                                                  </Box>
-                                              </>
+                                                  />
+                                              </Box>
                                           ),
                                       )
                                     : null}

@@ -174,13 +174,19 @@ export default function Description(props: DescriptionProps) {
           })} に公開済み`
         : null;
 
-    useLayoutEffect(() => {
-        if (contentRef.current) {
-            const contentHeight =
-                contentRef.current.getBoundingClientRect().height;
-            setIsExpandable(contentHeight > maxLine * LINE_TO_PIXEL);
-        }
-    }, [maxLine]);
+    // useLayoutEffect(() => {
+    //     if (contentRef.current) {
+    //         const contentHeight =
+    //             contentRef.current.getBoundingClientRect().height;
+    //         console.log(
+    //             "a",
+    //             contentHeight,
+    //             contentRef.current.getBoundingClientRect(),
+    //         );
+    //         console.log("b", maxLine * LINE_TO_PIXEL);
+    //         setIsExpandable(contentHeight > maxLine * LINE_TO_PIXEL);
+    //     }
+    // }, [maxLine]);
 
     const toggle = () => setIsExpanded((prev) => !prev);
 
@@ -207,10 +213,7 @@ export default function Description(props: DescriptionProps) {
                     target: "_blank",
                 }}
                 style={{
-                    height:
-                        isExpanded || isExpandable === false
-                            ? "auto"
-                            : maxLine * LINE_TO_PIXEL,
+                    height: isExpanded ? "auto" : maxLine * LINE_TO_PIXEL,
                     overflow: "hidden",
                 }}
                 ref={contentRef}

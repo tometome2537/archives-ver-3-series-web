@@ -77,14 +77,20 @@ export default function Description(props: DescriptionProps) {
                         url.hostname === "youtu.be"
                             ? pathSegments[0]
                             : (url.searchParams.get("v") ?? "");
+
+                    const [label, setLabel] = useState<string>(content);
+                    fetchVideo(videoId).then((r) => {
+                        if (r === undefined) return;
+                        setLabel(r);
+                    });
+
                     return (
                         <Link {...attributes}>
                             <Chip
                                 size="small"
                                 avatar={<Avatar src={"/yt_logo.png"} />}
-                                // label={(() => {
-                                //     fetchVideo(videoId) ?? content;
-                                // })()}
+                                // label={(await fetchVideo(videoId)) ?? content}
+                                label={label}
                             />
                         </Link>
                     );

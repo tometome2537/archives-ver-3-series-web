@@ -1,22 +1,20 @@
 import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
-import { useApiDataContext } from "@/contexts/ApiDataContext";
-import { createContext, useContext, useEffect, useState } from "react";
 import { useAppleMusic } from "@/contexts/AppleMusicContext";
 import type { MediaItem, ResponseMusicApi } from "@/contexts/AppleMusicContext";
 import { AppleMusicTypes } from "@/contexts/AppleMusicContext";
-import { Box, Chip } from "@mui/material";
-import Image from "next/image";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
+import { Box } from "@mui/material";
+import { createElement, useEffect, useState } from "react";
 import Album from "../Album";
 
 type AppleMusicLibraryProps = {
     inputValue: InputValue[];
 };
+
 export default function AppleMusicLibrary(props: AppleMusicLibraryProps) {
     const { isMobile } = useBrowserInfoContext();
     const musicKit = useAppleMusic();
 
-    const [test, setTest] = useState();
     const [recentlyAdded, setRecentlyAdded] = useState<{
         title?: string;
         items: MediaItem[];
@@ -111,10 +109,10 @@ export default function AppleMusicLibrary(props: AppleMusicLibraryProps) {
                                     }}
                                 />
                             ) : (
-                                <apple-music-artwork-lockup
-                                    type={item.type}
-                                    content-id={item.id}
-                                />
+                                createElement("apple-music-artwork-lockup", {
+                                    type: item.type,
+                                    "content-id": item.id,
+                                })
                             )}
                         </Box>
                     </Box>

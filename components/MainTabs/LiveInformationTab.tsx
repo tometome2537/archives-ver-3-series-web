@@ -1,8 +1,8 @@
+import { useAppleMusic } from "@/contexts/AppleMusicContext";
 import { unescapeHtml } from "@/libs/unescapeHtml";
 import { Box, Divider, Typography } from "@mui/material";
 // import ical from "cal-parser";
 import { Fragment, useEffect, useState } from "react";
-import { useAppleMusic } from "@/contexts/AppleMusicContext";
 import type { PlayerItem } from "../PlayerView";
 
 type Event = {

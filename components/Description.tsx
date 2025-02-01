@@ -62,15 +62,13 @@ export default function Description(props: DescriptionProps) {
                     const r = await apiData.YdbVideo.getDataWithParams({
                         videoIds: videoId,
                     });
-                    console.log(r);
-                    return r?.videos[0].youTubeApi.snippet.title;
+                    return r?.videos[0]?.youTubeApi.snippet.title;
                 };
 
                 // 動画につながるリンクの場合
                 if (
                     url.hostname === "youtu.be" ||
-                    ((url.hostname === "youtube.com" ||
-                        url.hostname === "www.youtube.com") &&
+                    (/youtube.com/i.test(url.hostname) &&
                         pathSegments[0] === "watch")
                 ) {
                     const videoId =
@@ -89,8 +87,7 @@ export default function Description(props: DescriptionProps) {
                             <Chip
                                 size="small"
                                 avatar={<Avatar src={"/yt_logo.png"} />}
-                                // label={(await fetchVideo(videoId)) ?? content}
-                                label={label}
+                                label={label ?? content}
                             />
                         </Link>
                     );

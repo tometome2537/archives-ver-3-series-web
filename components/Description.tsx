@@ -60,9 +60,9 @@ export default function Description(props: DescriptionProps) {
 
                 const fetchVideo = async (videoId: string) => {
                     const r = await apiData.YdbVideo.getDataWithParams({
-                        videoIds: videoId,
+                        videoids: videoId,
                     });
-                    return r?.videos[0]?.youTubeApi.snippet.title;
+                    return r?.videos[0]?.videoYouTubeApi?.snippet.title;
                 };
 
                 // 動画につながるリンクの場合

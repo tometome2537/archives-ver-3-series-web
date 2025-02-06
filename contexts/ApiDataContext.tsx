@@ -158,7 +158,7 @@ export interface YdbVideo {
         videoOwnerChannelId: string;
         channelId?: string | undefined;
         privacyStatus: string;
-        youTubeApi: {
+        videoYouTubeApi?: {
             id: string;
             snippet: {
                 publishedAt: string;

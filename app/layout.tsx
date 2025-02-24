@@ -82,9 +82,9 @@ export async function generateMetadata(): Promise<Metadata> {
             type: "website",
             images: [
                 {
-                    url: "/banner1.PNG",
-                    width: 800,
-                    height: 600,
+                    url: "/twitter_card.png",
+                    width: 1600,
+                    height: 900,
                     alt: title,
                 },
             ],

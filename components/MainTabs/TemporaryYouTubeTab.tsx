@@ -381,13 +381,12 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                                         (item) => {
                                                             return {
                                                                 type: PlayerType.YouTube,
-                                                                videoId:
+                                                                mediaId:
                                                                     item.videoId,
                                                                 title: item.title,
-                                                                channelTitle:
-                                                                    item
-                                                                        .artists[0]
-                                                                        .name,
+                                                                author: item
+                                                                    .artists[0]
+                                                                    .name,
                                                                 duration:
                                                                     item?.duration_seconds,
                                                             };

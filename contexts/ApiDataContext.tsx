@@ -149,6 +149,30 @@ export interface AlbumYTM {
     }[];
     duration_seconds: number;
 }
+export interface YdbVideo {
+    status: string;
+    channelIds: string[];
+    videos: {
+        id: string;
+        videoId: string;
+        videoOwnerChannelId: string;
+        channelId?: string | undefined;
+        privacyStatus: string;
+        videoYouTubeApi?: {
+            id: string;
+            snippet: {
+                publishedAt: string;
+                title: string;
+                description: string;
+                channelTitle: string;
+            };
+        };
+    }[];
+}
+export interface AppleMusicAccount {
+    entityId: string;
+    appleMusicArtistId: string;
+}
 
 interface FetchOption {
     headers?: { Authorization?: string };
@@ -178,6 +202,8 @@ export interface ApiDataContextType {
     Video: ApiData<Video[]>;
     ArtistYTM: ApiData<ArtistYTM | null>;
     AlbumYTM: ApiData<AlbumYTM | null>;
+    YdbVideo: ApiData<YdbVideo | null>;
+    AppleMusicAccount: ApiData<AppleMusicAccount[]>;
 }
 
 export const SSSAPI_TOKEN = "s3a_aBU5U86DKPiAuUvWrPHx+q44l_tQJJJ=0L9I";
@@ -231,6 +257,14 @@ const ApiData: ApiDataContextType = {
         getData: async () => [],
         getDataWithParams: async () => [],
     },
+    AppleMusicAccount: {
+        url: "https://api.sssapi.app/p5X0V8UvwkMBE0QJqSfXb",
+        fetchOption: sssApiFetchOption,
+        status: "idle",
+        data: [],
+        getData: async () => [],
+        getDataWithParams: async () => [],
+    },
     Video: {
         url: "https://api.sssapi.app/mGZMorh9GOgyer1w4LvBp",
         fetchOption: {
@@ -255,6 +289,15 @@ const ApiData: ApiDataContextType = {
     AlbumYTM: {
         url: "https://api-py-tometome-org-254186269366.us-central1.run.app/ytm/get_album",
         // url: "http://127.0.0.1:8000/ytm/get_album",
+        fetchOption: {},
+        status: "idle",
+        data: null,
+        getData: async () => null,
+        getDataWithParams: async () => null,
+    },
+    YdbVideo: {
+        url: "https://api-py-tometome-org-254186269366.us-central1.run.app/ydb/video/list",
+        // url: "http://127.0.0.1:8000/ydb/video/list",
         fetchOption: {},
         status: "idle",
         data: null,

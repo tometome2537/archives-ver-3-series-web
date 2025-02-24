@@ -39,7 +39,7 @@ const getLogoPath = (hostname: string) => {
 };
 
 export default function Description(props: DescriptionProps) {
-    const videoData = useApiDataContext("Video");
+    const apiData = useApiDataContext();
 
     const linkifyOptions = {
         render: {
@@ -58,27 +58,36 @@ export default function Description(props: DescriptionProps) {
                     ? pathSegments[0].replace("@", "")
                     : content;
 
+                const fetchVideo = async (videoId: string) => {
+                    const r = await apiData.YdbVideo.getDataWithParams({
+                        videoids: videoId,
+                    });
+                    return r?.videos[0]?.videoYouTubeApi?.snippet.title;
+                };
+
                 // 動画につながるリンクの場合
                 if (
                     url.hostname === "youtu.be" ||
-                    ((url.hostname === "youtube.com" ||
-                        url.hostname === "www.youtube.com") &&
+                    (/youtube.com/i.test(url.hostname) &&
                         pathSegments[0] === "watch")
                 ) {
                     const videoId =
                         url.hostname === "youtu.be"
                             ? pathSegments[0]
                             : (url.searchParams.get("v") ?? "");
+
+                    const [label, setLabel] = useState<string>(content);
+                    fetchVideo(videoId).then((r) => {
+                        if (r === undefined) return;
+                        setLabel(r);
+                    });
+
                     return (
                         <Link {...attributes}>
                             <Chip
                                 size="small"
                                 avatar={<Avatar src={"/yt_logo.png"} />}
-                                label={
-                                    videoData.Video.data.find(
-                                        (x) => x.videoId === videoId,
-                                    )?.title ?? content
-                                }
+                                label={label ?? content}
                             />
                         </Link>
                     );
@@ -168,13 +177,19 @@ export default function Description(props: DescriptionProps) {
           })} に公開済み`
         : null;
 
-    useLayoutEffect(() => {
-        if (contentRef.current) {
-            const contentHeight =
-                contentRef.current.getBoundingClientRect().height;
-            setIsExpandable(contentHeight > maxLine * LINE_TO_PIXEL);
-        }
-    }, [maxLine]);
+    // useLayoutEffect(() => {
+    //     if (contentRef.current) {
+    //         const contentHeight =
+    //             contentRef.current.getBoundingClientRect().height;
+    //         console.log(
+    //             "a",
+    //             contentHeight,
+    //             contentRef.current.getBoundingClientRect(),
+    //         );
+    //         console.log("b", maxLine * LINE_TO_PIXEL);
+    //         setIsExpandable(contentHeight > maxLine * LINE_TO_PIXEL);
+    //     }
+    // }, [maxLine]);
 
     const toggle = () => setIsExpanded((prev) => !prev);
 
@@ -201,10 +216,7 @@ export default function Description(props: DescriptionProps) {
                     target: "_blank",
                 }}
                 style={{
-                    height:
-                        isExpanded || isExpandable === false
-                            ? "auto"
-                            : maxLine * LINE_TO_PIXEL,
+                    height: isExpanded ? "auto" : maxLine * LINE_TO_PIXEL,
                     overflow: "hidden",
                 }}
                 ref={contentRef}

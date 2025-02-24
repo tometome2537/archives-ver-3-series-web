@@ -1,7 +1,9 @@
+import { useAppleMusic } from "@/contexts/AppleMusicContext";
 import { unescapeHtml } from "@/libs/unescapeHtml";
 import { Box, Divider, Typography } from "@mui/material";
 // import ical from "cal-parser";
 import { Fragment, useEffect, useState } from "react";
+import type { PlayerItem } from "../PlayerView";
 
 type Event = {
     dtstart: {
@@ -33,8 +35,13 @@ type Event = {
     };
 };
 
-export function LiveInformationTab() {
+type LiveInformationTabProps = {
+    playerItem: PlayerItem | undefined;
+};
+
+export function LiveInformationTab(props: LiveInformationTabProps) {
     const [events, setEvents] = useState<Event[]>([]);
+    const musicKit = useAppleMusic();
 
     useEffect(() => {
         async function fetchData() {
@@ -54,6 +61,67 @@ export function LiveInformationTab() {
 
     return (
         <Fragment>
+            <button
+                type="button"
+                onClick={() => {
+                    musicKit.instance?.authorize();
+                }}
+            >
+                認証開始
+            </button>
+            <button
+                type="button"
+                onClick={() => {
+                    musicKit.instance?.unauthorize();
+                }}
+            >
+                認証解除
+            </button>
+            <br />
+            認証{String(musicKit.instance?.isAuthorized)}
+            <br />
+            国コード{String(musicKit.instance?.storefrontCountryCode)}
+            <br />
+            サブスク加入の有無
+            {String(!musicKit.instance?.previewOnly)}
+            <br />
+            {/* ↓ 画像のみ */}
+            {/* <apple-music-artwork width="250"></apple-music-artwork> */}
+            {/* ↓ 再生ボタン付き */}
+            {/* <apple-music-artwork-lockup /> */}
+            {/* <apple-music-card-player width="500"></apple-music-card-player>
+            <apple-music-video-player></apple-music-video-player>
+            <apple-music-playback-controls />
+            <apple-music-progress></apple-music-progress>
+            <apple-music-volume></apple-music-volume> */}
+            んんん{JSON.stringify(props.playerItem)}
+            <br />
+            <button
+                type="button"
+                onClick={() => {
+                    musicKit.instance?.setQueue({
+                        album: "l.bwDIIkb",
+                        startPlaying: true,
+                    });
+                    musicKit.instance?.play();
+                    console.log(musicKit.instance?.nowPlayingItem);
+                }}
+            >
+                future gazer 再生
+            </button>
+            <button
+                type="button"
+                onClick={() => {
+                    musicKit.instance?.setQueue({
+                        album: "l.t3Hwh4j",
+                        startPlaying: true,
+                    });
+                    musicKit.instance?.play();
+                    console.log(musicKit.instance?.nowPlayingItem);
+                }}
+            >
+                いつのまに 再生
+            </button>
             {events.map((x) => {
                 return (
                     <Box

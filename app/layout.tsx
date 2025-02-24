@@ -94,7 +94,7 @@ export async function generateMetadata(): Promise<Metadata> {
             site: "@MusicArchPJ",
             title: title,
             description: description,
-            images: ["/banner1.PNG"],
+            images: ["/twitter_card.png"],
         },
     };
 }

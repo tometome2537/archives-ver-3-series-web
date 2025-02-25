@@ -410,7 +410,7 @@ export default function RootLayout({
 
         return list;
     }, [
-        musicKit,
+        // musicKit,
         inputValue,
         playerItem,
         ArtistsSearchSuggestions,

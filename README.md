@@ -48,7 +48,7 @@ code --install-extension biomejs.biome
 npm install
 ```
 
-<!-- .env.example を参考に.env をファイルの作成。 -->
+.env.example を参考に.env をファイルの作成。
 
 サイトの立ち上げ。
 

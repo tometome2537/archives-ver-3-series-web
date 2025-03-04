@@ -54,22 +54,16 @@ const LimitedSearch: React.FC<LimitedSearchProps> = ({
             ...values,
         ]);
     };
+
     // 検索候補をcategoryIdが同じのに絞る
-    // ディープコピー
-    const deepCutSuggestions: MultiSearchBarSearchSuggestion[] = JSON.parse(
-        JSON.stringify(searchSuggestions),
-    );
-    const limitSearchSuggestion = deepCutSuggestions.filter(
-        (item: MultiSearchBarSearchSuggestion) => {
-            if (item.categoryId === categoryId) {
-                if (item.categoryLabelSecond) {
-                    // LimitSearchBarでは categoryLabelSecond を使用する。
-                    item.categoryLabel = item.categoryLabelSecond;
-                }
-                return item;
-            }
-        },
-    );
+    const limitSearchSuggestion = searchSuggestions
+        ? searchSuggestions
+              .filter((item) => item.categoryId === categoryId)
+              .map((item) => ({
+                  ...item,
+                  categoryLabel: item.categoryLabelSecond || item.categoryLabel,
+              }))
+        : [];
 
     return (
         <SearchBar

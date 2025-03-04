@@ -3,6 +3,7 @@ import { unescapeHtml } from "@/libs/unescapeHtml";
 import { Box, Button, Grid, Paper, Typography } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import type { PlayerItem } from "../PlayerView";
+import { useApiDataContext } from "@/contexts/ApiDataContext";
 
 // 型定義
 type Event = {
@@ -138,6 +139,8 @@ export function LiveInformationTab(props: LiveInformationTabProps) {
     const [events, setEvents] = useState<Event[]>([]);
     const musicKit = useAppleMusic();
 
+    const apiData = useApiDataContext("LiveInformation");
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -184,6 +187,9 @@ export function LiveInformationTab(props: LiveInformationTabProps) {
             ) : (
                 <Typography>イベント情報はありません</Typography>
             )}
+
+            {/* APIデータ */}
+            {apiData && JSON.stringify(apiData.LiveInformation.data, null, 2)}
         </Fragment>
     );
 }

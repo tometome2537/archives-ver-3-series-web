@@ -5,7 +5,28 @@ import { createContext, useContext, useEffect, useState } from "react";
 import type React from "react";
 
 // デンジャラス！！空白のセルをSSSAPIで取得するとnullになります！　つまり　↓ の型定義にすべて | null を付与する必要があります！
-
+export interface LiveInformation {
+    id: number;
+    tourId: number;
+    タイトル: string;
+    サブタイトル: string;
+    開場: string; // ISO8601の日時文字列
+    開演: string; // ISO8601の日時文字列
+    entityId: number | null;
+    出演者: string; // カンマ区切りの文字列
+    会場: string;
+    チケット: number;
+    ドリンク: number;
+    配信チケット: number;
+    前売りチケット: number;
+    学生チケット: number;
+    女性チケット: number;
+    配信開始日: string | null; // ISO8601の日時文字列またはnull
+    配信終了日: string | null; // ISO8601の日時文字列またはnull
+    チケット購入リンク: string | null;
+    情報元X: string | null;
+    情報元: string | null;
+}
 export interface BelongHistory {
     entityId: string | null;
     entityOrganizationId: string | null;
@@ -194,6 +215,7 @@ export interface ApiData<T> {
 }
 
 export interface ApiDataContextType {
+    LiveInformation: ApiData<LiveInformation[]>;
     YouTubeAccount: ApiData<YouTubeAccount[]>;
     Entity: ApiData<Entity[]>;
     Music: ApiData<Music[]>;
@@ -217,6 +239,14 @@ const sssApiFetchOption = {
 
 // idとURLの関係を定義
 const ApiData: ApiDataContextType = {
+    LiveInformation: {
+        url: "https://api.sssapi.app/mP3LAZCf0jeHQ3gvZFGVe",
+        fetchOption: sssApiFetchOption,
+        status: "idle",
+        data: [],
+        getData: async () => [],
+        getDataWithParams: async () => [],
+    },
     YouTubeAccount: {
         url: "https://api.sssapi.app/lUvQb56owZaGWWXIWXlCE",
         fetchOption: sssApiFetchOption,

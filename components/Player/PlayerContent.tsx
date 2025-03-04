@@ -6,6 +6,7 @@ import { Box } from "@mui/material";
 import Image from "next/image";
 import type { YouTubePlayer } from "react-youtube";
 import { type PlayerItem, PlayerType } from "./types";
+import { type Dispatch, Fragment, type SetStateAction } from "react";
 
 type PlayerContentProps = {
     isFullscreen: boolean;
@@ -14,7 +15,9 @@ type PlayerContentProps = {
     youTubePlayerState?: YouTubePlayerState;
     youTubePlayer?: YouTubePlayer;
     setYouTubePlayer: (player: YouTubePlayer) => void;
-    setYouTubePlayerState: (state: YouTubePlayerState) => void;
+    setYouTubePlayerState: Dispatch<
+        SetStateAction<YouTubePlayerState | undefined>
+    >;
     setIsFullscreen: (value: boolean) => void;
     artworkUrl?: string;
     artworkAlt?: string;
@@ -103,7 +106,7 @@ export default function PlayerContent({
                             }
                         }}
                         tabIndex={0}
-                        role="button"
+                        // role="button"
                         aria-label="Toggle player fullscreen"
                         sx={{
                             cursor: "pointer",

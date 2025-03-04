@@ -4,37 +4,7 @@ import { Box, Button, Grid, Paper, Typography } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import type { PlayerItem } from "../PlayerView";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
-
-// 型定義
-type Event = {
-    dtstart: {
-        value: string;
-    };
-    dtstamp: string;
-    uid: {
-        value: string;
-    };
-    created: string;
-    description: {
-        value: string;
-    };
-    lastModified: string;
-    location: {
-        value: string;
-    };
-    sequence: {
-        value: string;
-    };
-    status: {
-        value: "CONFIRMED" | "CANCELLED" | "TENTATIVE";
-    };
-    summary: {
-        value: string;
-    };
-    transp: {
-        value: "OPAQUE" | "TRANSPARENT";
-    };
-};
+import type { LiveInformation } from "@/contexts/ApiDataContext";
 
 type LiveInformationTabProps = {
     playerItem: PlayerItem | undefined;
@@ -47,7 +17,7 @@ const ALBUMS = {
 };
 
 // イベント表示コンポーネント
-const EventCard = ({ event }: { event: Event }) => (
+const EventCard = ({ event }: { event: LiveInformation }) => (
     <Paper
         elevation={2}
         sx={{
@@ -58,19 +28,21 @@ const EventCard = ({ event }: { event: Event }) => (
             mb: 2,
         }}
     >
-        <Typography variant="h6">{event.summary.value}</Typography>
-        <Typography variant="body1">
+        <Typography variant="h6">{event.タイトル}</Typography>
+        {/* <Typography variant="body1">
             {event.description.value.split("<br>").map((line, index) => (
                 <Typography key={`${event.uid.value}-line-${index}`}>
                     {unescapeHtml(line.replaceAll(/<[^>]+>/g, ""))}
                 </Typography>
             ))}
-        </Typography>
+        </Typography> */}
     </Paper>
 );
 
 // Apple Music操作コンポーネント
-const AppleMusicControls = ({ musicKit }: { musicKit: any }) => {
+const AppleMusicControls = ({
+    musicKit,
+}: { musicKit: ReturnType<typeof useAppleMusic> }) => {
     const playAlbum = (albumId: string) => {
         musicKit.instance?.setQueue({
             album: albumId,
@@ -136,35 +108,24 @@ const AppleMusicControls = ({ musicKit }: { musicKit: any }) => {
 };
 
 export function LiveInformationTab(props: LiveInformationTabProps) {
-    const [events, setEvents] = useState<Event[]>([]);
     const musicKit = useAppleMusic();
 
     const apiData = useApiDataContext("LiveInformation");
 
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await fetch("api/liveInfo");
-                const data = await response.text();
-
-                // データをパースしてイベント情報を設定する
-                // 現在はコメントアウトされていますが、将来的に実装する予定のコード
-                // const parsedCal = ical.parseString(data);
-                // setEvents(parsedCal.events);
-
-                // デモ用のダミーデータをセット
-                setEvents([]);
-            } catch (error) {
-                console.error("Error fetching events data:", error);
-                setEvents([]);
-            }
-        }
-
-        fetchData();
-    }, []);
-
     return (
         <Fragment>
+            {/* イベント一覧 */}
+            <Typography variant="h6" sx={{ mb: 2 }}>
+                イベント情報
+            </Typography>
+            {apiData.LiveInformation.data.length > 0 ? (
+                apiData.LiveInformation.data.map((event) => (
+                    <EventCard key={event.id} event={event} />
+                ))
+            ) : (
+                <Typography>イベント情報はありません</Typography>
+            )}
+
             {/* Apple Music コントロール */}
             <AppleMusicControls musicKit={musicKit} />
 
@@ -175,21 +136,6 @@ export function LiveInformationTab(props: LiveInformationTabProps) {
                     <pre>{JSON.stringify(props.playerItem, null, 2)}</pre>
                 </Box>
             )}
-
-            {/* イベント一覧 */}
-            <Typography variant="h6" sx={{ mb: 2 }}>
-                イベント情報
-            </Typography>
-            {events.length > 0 ? (
-                events.map((event) => (
-                    <EventCard key={event.uid.value} event={event} />
-                ))
-            ) : (
-                <Typography>イベント情報はありません</Typography>
-            )}
-
-            {/* APIデータ */}
-            {apiData && JSON.stringify(apiData.LiveInformation.data, null, 2)}
         </Fragment>
     );
 }

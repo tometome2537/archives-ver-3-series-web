@@ -53,7 +53,7 @@ const AppleMusicControls = ({
 
     return (
         <Grid container spacing={2} sx={{ mb: 3 }}>
-            <Grid xs={12}>
+            <Grid size={{ xs: 12 }}>
                 <Typography variant="h6">Apple Music認証</Typography>
             </Grid>
             <Grid>
@@ -72,7 +72,7 @@ const AppleMusicControls = ({
                     認証解除
                 </Button>
             </Grid>
-            <Grid xs={12}>
+            <Grid size={{ xs: 12 }}>
                 <Typography>
                     認証状態: {String(musicKit.instance?.isAuthorized)}
                 </Typography>
@@ -84,7 +84,7 @@ const AppleMusicControls = ({
                 </Typography>
             </Grid>
 
-            <Grid xs={12} sx={{ mt: 2 }}>
+            <Grid size={{ xs: 12 }} sx={{ mt: 2 }}>
                 <Typography variant="h6">アルバム再生</Typography>
             </Grid>
             <Grid>

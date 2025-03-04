@@ -1,6 +1,5 @@
 import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
-import { createContext, useContext, useEffect, useState } from "react";
 
 type LinkTabProps = {
     inputValue: InputValue[];

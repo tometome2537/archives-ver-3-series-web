@@ -1,42 +1,137 @@
 import { useAppleMusic } from "@/contexts/AppleMusicContext";
 import { unescapeHtml } from "@/libs/unescapeHtml";
-import { Box, Divider, Typography } from "@mui/material";
-// import ical from "cal-parser";
+import { Box, Button, Grid, Paper, Typography } from "@mui/material";
 import { Fragment, useEffect, useState } from "react";
 import type { PlayerItem } from "../PlayerView";
 
+// 型定義
 type Event = {
     dtstart: {
-        value: string; // ISO 8601 datetime string
+        value: string;
     };
-    dtstamp: string; // ISO 8601 datetime string
+    dtstamp: string;
     uid: {
-        value: string; // Unique identifier string
+        value: string;
     };
-    created: string; // ISO 8601 datetime string
+    created: string;
     description: {
-        value: string; // HTML content as a string
+        value: string;
     };
-    lastModified: string; // ISO 8601 datetime string
+    lastModified: string;
     location: {
-        value: string; // Address or location details
+        value: string;
     };
     sequence: {
-        value: string; // Sequence number as a string
+        value: string;
     };
     status: {
-        value: "CONFIRMED" | "CANCELLED" | "TENTATIVE"; // Status of the event
+        value: "CONFIRMED" | "CANCELLED" | "TENTATIVE";
     };
     summary: {
-        value: string; // Event title or summary
+        value: string;
     };
     transp: {
-        value: "OPAQUE" | "TRANSPARENT"; // Transparency status
+        value: "OPAQUE" | "TRANSPARENT";
     };
 };
 
 type LiveInformationTabProps = {
     playerItem: PlayerItem | undefined;
+};
+
+// アルバム定数
+const ALBUMS = {
+    FUTURE_GAZER: "l.bwDIIkb",
+    ITSU_NO_MANI: "l.t3Hwh4j",
+};
+
+// イベント表示コンポーネント
+const EventCard = ({ event }: { event: Event }) => (
+    <Paper
+        elevation={2}
+        sx={{
+            border: "1px solid",
+            borderColor: "grey.400",
+            borderRadius: 1,
+            p: 2,
+            mb: 2,
+        }}
+    >
+        <Typography variant="h6">{event.summary.value}</Typography>
+        <Typography variant="body1">
+            {event.description.value.split("<br>").map((line, index) => (
+                <Typography key={`${event.uid.value}-line-${index}`}>
+                    {unescapeHtml(line.replaceAll(/<[^>]+>/g, ""))}
+                </Typography>
+            ))}
+        </Typography>
+    </Paper>
+);
+
+// Apple Music操作コンポーネント
+const AppleMusicControls = ({ musicKit }: { musicKit: any }) => {
+    const playAlbum = (albumId: string) => {
+        musicKit.instance?.setQueue({
+            album: albumId,
+            startPlaying: true,
+        });
+        musicKit.instance?.play();
+    };
+
+    return (
+        <Grid container spacing={2} sx={{ mb: 3 }}>
+            <Grid item xs={12}>
+                <Typography variant="h6">Apple Music認証</Typography>
+            </Grid>
+            <Grid item>
+                <Button
+                    variant="contained"
+                    onClick={() => musicKit.instance?.authorize()}
+                >
+                    認証開始
+                </Button>
+            </Grid>
+            <Grid item>
+                <Button
+                    variant="outlined"
+                    onClick={() => musicKit.instance?.unauthorize()}
+                >
+                    認証解除
+                </Button>
+            </Grid>
+            <Grid item xs={12}>
+                <Typography>
+                    認証状態: {String(musicKit.instance?.isAuthorized)}
+                </Typography>
+                <Typography>
+                    国コード: {String(musicKit.instance?.storefrontCountryCode)}
+                </Typography>
+                <Typography>
+                    サブスク加入: {String(!musicKit.instance?.previewOnly)}
+                </Typography>
+            </Grid>
+
+            <Grid item xs={12} sx={{ mt: 2 }}>
+                <Typography variant="h6">アルバム再生</Typography>
+            </Grid>
+            <Grid item>
+                <Button
+                    variant="contained"
+                    onClick={() => playAlbum(ALBUMS.FUTURE_GAZER)}
+                >
+                    future gazer 再生
+                </Button>
+            </Grid>
+            <Grid item>
+                <Button
+                    variant="contained"
+                    onClick={() => playAlbum(ALBUMS.ITSU_NO_MANI)}
+                >
+                    いつのまに 再生
+                </Button>
+            </Grid>
+        </Grid>
+    );
 };
 
 export function LiveInformationTab(props: LiveInformationTabProps) {
@@ -48,11 +143,17 @@ export function LiveInformationTab(props: LiveInformationTabProps) {
             try {
                 const response = await fetch("api/liveInfo");
                 const data = await response.text();
-                // const parsedCal = ical.parseString(data);
 
+                // データをパースしてイベント情報を設定する
+                // 現在はコメントアウトされていますが、将来的に実装する予定のコード
+                // const parsedCal = ical.parseString(data);
                 // setEvents(parsedCal.events);
+
+                // デモ用のダミーデータをセット
+                setEvents([]);
             } catch (error) {
-                console.error("Error fetching YouTube accounts:", error);
+                console.error("Error fetching events data:", error);
+                setEvents([]);
             }
         }
 
@@ -61,92 +162,28 @@ export function LiveInformationTab(props: LiveInformationTabProps) {
 
     return (
         <Fragment>
-            <button
-                type="button"
-                onClick={() => {
-                    musicKit.instance?.authorize();
-                }}
-            >
-                認証開始
-            </button>
-            <button
-                type="button"
-                onClick={() => {
-                    musicKit.instance?.unauthorize();
-                }}
-            >
-                認証解除
-            </button>
-            <br />
-            認証{String(musicKit.instance?.isAuthorized)}
-            <br />
-            国コード{String(musicKit.instance?.storefrontCountryCode)}
-            <br />
-            サブスク加入の有無
-            {String(!musicKit.instance?.previewOnly)}
-            <br />
-            {/* ↓ 画像のみ */}
-            {/* <apple-music-artwork width="250"></apple-music-artwork> */}
-            {/* ↓ 再生ボタン付き */}
-            {/* <apple-music-artwork-lockup /> */}
-            {/* <apple-music-card-player width="500"></apple-music-card-player>
-            <apple-music-video-player></apple-music-video-player>
-            <apple-music-playback-controls />
-            <apple-music-progress></apple-music-progress>
-            <apple-music-volume></apple-music-volume> */}
-            んんん{JSON.stringify(props.playerItem)}
-            <br />
-            <button
-                type="button"
-                onClick={() => {
-                    musicKit.instance?.setQueue({
-                        album: "l.bwDIIkb",
-                        startPlaying: true,
-                    });
-                    musicKit.instance?.play();
-                    console.log(musicKit.instance?.nowPlayingItem);
-                }}
-            >
-                future gazer 再生
-            </button>
-            <button
-                type="button"
-                onClick={() => {
-                    musicKit.instance?.setQueue({
-                        album: "l.t3Hwh4j",
-                        startPlaying: true,
-                    });
-                    musicKit.instance?.play();
-                    console.log(musicKit.instance?.nowPlayingItem);
-                }}
-            >
-                いつのまに 再生
-            </button>
-            {events.map((x) => {
-                return (
-                    <Box
-                        key={x.uid.value}
-                        sx={{
-                            border: "1px solid",
-                            borderColor: "grey.400",
-                            borderRadius: 1,
-                            p: 2,
-                            mb: 2,
-                        }}
-                    >
-                        <Typography variant="h6">{x.summary.value}</Typography>
-                        <Typography variant="body1">
-                            {x.description.value.split("<br>").map((line) => (
-                                <Typography key={line}>
-                                    {unescapeHtml(
-                                        line.replaceAll(/<[^>]+>/g, ""),
-                                    )}
-                                </Typography>
-                            ))}
-                        </Typography>
-                    </Box>
-                );
-            })}
+            {/* Apple Music コントロール */}
+            <AppleMusicControls musicKit={musicKit} />
+
+            {/* プレーヤー情報 */}
+            {props.playerItem && (
+                <Box sx={{ mb: 3 }}>
+                    <Typography variant="h6">現在の再生情報</Typography>
+                    <pre>{JSON.stringify(props.playerItem, null, 2)}</pre>
+                </Box>
+            )}
+
+            {/* イベント一覧 */}
+            <Typography variant="h6" sx={{ mb: 2 }}>
+                イベント情報
+            </Typography>
+            {events.length > 0 ? (
+                events.map((event) => (
+                    <EventCard key={event.uid.value} event={event} />
+                ))
+            ) : (
+                <Typography>イベント情報はありません</Typography>
+            )}
         </Fragment>
     );
 }

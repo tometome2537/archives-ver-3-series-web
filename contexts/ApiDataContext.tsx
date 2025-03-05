@@ -27,6 +27,7 @@ export interface LiveInformation {
     情報元X: string | null;
     情報元: string | null;
 }
+
 export interface BelongHistory {
     entityId: string | null;
     entityOrganizationId: string | null;

@@ -1,10 +1,8 @@
-// Reference: https://ilxanlar.medium.com/ellipsis-the-art-of-truncation-in-web-applications-8b141ce33774
-
 import { Avatar, Box, Chip, Typography } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
 import Linkify from "linkify-react";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "./Link";
 import "linkify-plugin-hashtag";
 import "linkify-plugin-mention";
@@ -19,134 +17,169 @@ type DescriptionProps = {
 // 1行の高さ
 const LINE_TO_PIXEL = 32;
 
-const getLogoPath = (hostname: string) => {
-    switch (hostname) {
-        case "twitter.com":
-        case "x.com":
-            return "/x_logo.png";
-        case "instagram.com":
-        case "www.instagram.com":
-            return "/ig_logo.png";
-        case "tiktok.com":
-        case "www.tiktok.com":
-            return "/tiktok_logo.png";
-        case "youtube.com":
-        case "www.youtube.com":
-            return "/yt_logo.png";
-        default:
-            return "";
+const getLogoPath = (hostname: string): string => {
+    const logoMap: Record<string, string> = {
+        "twitter.com": "/x_logo.png",
+        "x.com": "/x_logo.png",
+        "instagram.com": "/ig_logo.png",
+        "www.instagram.com": "/ig_logo.png",
+        "tiktok.com": "/tiktok_logo.png",
+        "www.tiktok.com": "/tiktok_logo.png",
+        "youtube.com": "/yt_logo.png",
+        "www.youtube.com": "/yt_logo.png",
+    };
+
+    return logoMap[hostname] || "";
+};
+
+// YouTube動画タイトルフェッチ用フック
+const useYouTubeVideoTitle = (videoId: string) => {
+    const apiData = useApiDataContext();
+    const [label, setLabel] = useState<string>("");
+
+    const fetchVideo = async () => {
+        try {
+            const response = await apiData.YdbVideo.getDataWithParams({
+                videoids: videoId,
+            });
+            const title = response?.videos[0]?.videoYouTubeApi?.snippet.title;
+            if (title) setLabel(title);
+        } catch (error) {
+            console.error("Error fetching video title:", error);
+        }
+    };
+
+    // コンポーネントマウント時にフェッチを実行
+    useState(() => {
+        fetchVideo();
+    });
+
+    return { label };
+};
+
+// リンク描画用コンポーネント
+const LinkRenderer = ({
+    attributes,
+    content,
+}: {
+    attributes: { [attr: string]: React.ReactNode };
+    content: string;
+}) => {
+    const apiData = useApiDataContext();
+
+    try {
+        const url = new URL(content);
+        const pathSegments = url.pathname
+            .split("/")
+            .filter((segment) => segment);
+        const userId = pathSegments[0]
+            ? pathSegments[0].replace("@", "")
+            : content;
+
+        // YouTube動画リンク処理
+        if (
+            url.hostname === "youtu.be" ||
+            (/youtube.com/i.test(url.hostname) && pathSegments[0] === "watch")
+        ) {
+            const videoId =
+                url.hostname === "youtu.be"
+                    ? pathSegments[0]
+                    : (url.searchParams.get("v") ?? "");
+
+            const [label, setLabel] = useState<string>(content);
+
+            // 動画タイトルを取得
+            useState(() => {
+                apiData.YdbVideo.getDataWithParams({
+                    videoids: videoId,
+                })
+                    .then((r) => {
+                        const title =
+                            r?.videos[0]?.videoYouTubeApi?.snippet.title;
+                        if (title) setLabel(title);
+                    })
+                    .catch(console.error);
+            });
+
+            return (
+                <Link {...attributes}>
+                    <Chip
+                        size="small"
+                        avatar={<Avatar src="/yt_logo.png" />}
+                        label={label || content}
+                    />
+                </Link>
+            );
+        }
+
+        // その他のソーシャルメディアリンク処理
+        const avatarSrc = getLogoPath(url.hostname);
+        if (avatarSrc) {
+            return (
+                <Link {...attributes}>
+                    <Chip
+                        size="small"
+                        avatar={<Avatar src={avatarSrc} />}
+                        label={userId}
+                    />
+                </Link>
+            );
+        }
+
+        // 一般的なリンク
+        return <Link {...attributes}>{content}</Link>;
+    } catch {
+        return <Link {...attributes}>{content}</Link>;
     }
 };
 
+// ハッシュタグ描画コンポーネント
+const HashtagRenderer = ({
+    attributes,
+    content,
+}: {
+    attributes: { [attr: string]: React.ReactNode };
+    content: string;
+}) => (
+    <Link style={{ color: blue[400] }} underline="none" {...attributes}>
+        {content}
+    </Link>
+);
+
+// メンション描画コンポーネント
+const MentionRenderer = ({
+    attributes,
+    content,
+}: {
+    attributes: { [attr: string]: React.ReactNode };
+    content: string;
+}) => (
+    <Link style={{ color: blue[400] }} underline="none" {...attributes}>
+        {content}
+    </Link>
+);
+
 export default function Description(props: DescriptionProps) {
-    const apiData = useApiDataContext();
+    const { text, maxLine, date } = props;
+
+    const theme = useTheme();
+    const contentRef = useRef<HTMLDivElement>(null);
+    const [isExpanded, setIsExpanded] = useState(false);
+
+    const formattedDate = date
+        ? `${date.toLocaleDateString("ja-JP", {
+              year: "numeric",
+              month: "long",
+              day: "numeric",
+              hour12: false,
+          })} に公開済み`
+        : null;
 
     const linkifyOptions = {
         render: {
-            url: ({
-                attributes,
-                content,
-            }: {
-                attributes: { [attr: string]: React.ReactNode };
-                content: string;
-            }) => {
-                const url = new URL(content);
-                const pathSegments = url.pathname
-                    .split("/")
-                    .filter((segment) => segment);
-                const userId = pathSegments[0]
-                    ? pathSegments[0].replace("@", "")
-                    : content;
-
-                const fetchVideo = async (videoId: string) => {
-                    const r = await apiData.YdbVideo.getDataWithParams({
-                        videoids: videoId,
-                    });
-                    return r?.videos[0]?.videoYouTubeApi?.snippet.title;
-                };
-
-                // 動画につながるリンクの場合
-                if (
-                    url.hostname === "youtu.be" ||
-                    (/youtube.com/i.test(url.hostname) &&
-                        pathSegments[0] === "watch")
-                ) {
-                    const videoId =
-                        url.hostname === "youtu.be"
-                            ? pathSegments[0]
-                            : (url.searchParams.get("v") ?? "");
-
-                    const [label, setLabel] = useState<string>(content);
-                    fetchVideo(videoId).then((r) => {
-                        if (r === undefined) return;
-                        setLabel(r);
-                    });
-
-                    return (
-                        <Link {...attributes}>
-                            <Chip
-                                size="small"
-                                avatar={<Avatar src={"/yt_logo.png"} />}
-                                label={label ?? content}
-                            />
-                        </Link>
-                    );
-                }
-
-                const avatarSrc = getLogoPath(url.hostname);
-
-                if (avatarSrc !== "") {
-                    return (
-                        <Link {...attributes}>
-                            <Chip
-                                size="small"
-                                avatar={<Avatar src={avatarSrc} />}
-                                label={userId}
-                            />
-                        </Link>
-                    );
-                }
-
-                return <Link {...attributes}>{content}</Link>;
-            },
-            hashtag: ({
-                attributes,
-                content,
-            }: {
-                attributes: { [attr: string]: React.ReactNode };
-                content: string;
-            }) => {
-                try {
-                    return (
-                        <Link
-                            style={{ color: blue[400] }}
-                            underline="none"
-                            {...attributes}
-                        >
-                            {content}
-                        </Link>
-                    );
-                } catch {
-                    return <Link {...attributes}>{content}</Link>;
-                }
-            },
-            mention: ({
-                attributes,
-                content,
-            }: {
-                attributes: { [attr: string]: React.ReactNode };
-                content: string;
-            }) => {
-                return (
-                    <Link
-                        style={{ color: blue[400] }}
-                        underline="none"
-                        {...attributes}
-                    >
-                        {content}
-                    </Link>
-                );
-            },
+            url: LinkRenderer,
+            hashtag: HashtagRenderer,
+            mention: MentionRenderer,
         },
         formatHref: {
             hashtag: (href: string) =>
@@ -156,58 +189,18 @@ export default function Description(props: DescriptionProps) {
         },
     };
 
-    // テーマ設定を取得
-    const theme = useTheme();
-
-    const { text, maxLine } = props;
-
-    const contentRef = useRef<HTMLDivElement>(null);
-    const [isExpandable, setIsExpandable] = useState(true);
-    const [isExpanded, setIsExpanded] = useState(false);
-
-    const date = props.date
-        ? `${props.date.toLocaleDateString("ja-JP", {
-              year: "numeric", // 年
-              month: "long", // 月（長い形式）
-              day: "numeric", // 日
-              // hour: "2-digit", // 時（2桁形式）
-              // minute: "2-digit", // 分（2桁形式）
-              // second: "2-digit", // 秒（2桁形式）
-              hour12: false, // 24時間形式
-          })} に公開済み`
-        : null;
-
-    // useLayoutEffect(() => {
-    //     if (contentRef.current) {
-    //         const contentHeight =
-    //             contentRef.current.getBoundingClientRect().height;
-    //         console.log(
-    //             "a",
-    //             contentHeight,
-    //             contentRef.current.getBoundingClientRect(),
-    //         );
-    //         console.log("b", maxLine * LINE_TO_PIXEL);
-    //         setIsExpandable(contentHeight > maxLine * LINE_TO_PIXEL);
-    //     }
-    // }, [maxLine]);
-
     const toggle = () => setIsExpanded((prev) => !prev);
 
     return (
         <Box
             style={{
-                // 文字列内の\nを適切に反映させる。
                 whiteSpace: "pre-line",
                 backgroundColor: theme.palette.background.default,
                 margin: "0 10px",
                 borderRadius: "1em",
                 cursor: isExpanded ? "default" : "pointer",
             }}
-            onClick={() => {
-                if (isExpanded === false) {
-                    toggle();
-                }
-            }}
+            onClick={() => !isExpanded && toggle()}
         >
             <Linkify
                 as="p"
@@ -221,14 +214,10 @@ export default function Description(props: DescriptionProps) {
                 }}
                 ref={contentRef}
             >
-                {`${date}\n${text}`}
+                {formattedDate ? `${formattedDate}\n${text}` : text}
             </Linkify>
             <Typography
-                onClick={() => {
-                    if (isExpanded) {
-                        toggle();
-                    }
-                }}
+                onClick={() => isExpanded && toggle()}
                 style={{ cursor: "pointer" }}
             >
                 {isExpanded ? "一部を表示" : "...もっと見る"}

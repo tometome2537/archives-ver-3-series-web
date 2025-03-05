@@ -31,7 +31,7 @@ export function LiveInformationTab(props: LiveInformationTabProps) {
             {props.playerItem && (
                 <Box sx={{ mb: 3 }}>
                     <Typography variant="h6"> 現在の再生情報;</Typography>
-                    <pre>JSON.stringify(props.playerItem, null, 2)</pre>
+                    {JSON.stringify(props.playerItem, null, 2)}
                 </Box>
             )}
         </Fragment>

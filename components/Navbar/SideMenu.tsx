@@ -1,0 +1,62 @@
+"use client";
+
+import { useColorModeContext } from "@/contexts/ThemeContext";
+import packageJson from "@/package.json" assert { type: "json" };
+import Divider from "@mui/material/Divider";
+import Drawer from "@mui/material/Drawer";
+import List from "@mui/material/List";
+import { useTheme } from "@mui/material/styles";
+import { ContactSection } from "./SideMenuSections/ContactSection";
+import { CopyrightSection } from "./SideMenuSections/CopyrightSection";
+import { HeaderSection } from "./SideMenuSections/HeaderSection";
+import { LegalSection } from "./SideMenuSections/LegalSection";
+import { OfficialLinkSection } from "./SideMenuSections/OfficialLinkSection";
+import { ProjectLinkSection } from "./SideMenuSections/ProjectLinkSection";
+import { SpecialThanksSection } from "./SideMenuSections/SpecialThanksSection";
+import { ThemeSection } from "./SideMenuSections/ThemeSection";
+
+interface SideMenuProps {
+    open: boolean;
+    onClose: () => void;
+}
+
+export default function SideMenu({ open, onClose }: SideMenuProps) {
+    const theme = useTheme();
+    const { selectedMode, setColorMode } = useColorModeContext();
+
+    return (
+        <Drawer anchor={"left"} open={open} onClose={onClose}>
+            <List>
+                <HeaderSection onClose={onClose} />
+                <Divider sx={{ borderBottomWidth: 3 }} />
+
+                <OfficialLinkSection theme={theme} />
+                <Divider sx={{ borderBottomWidth: 3 }} />
+
+                <ThemeSection
+                    selectedMode={selectedMode}
+                    setColorMode={(mode) => {
+                        setColorMode(mode);
+                        onClose();
+                    }}
+                />
+                <Divider sx={{ borderBottomWidth: 3 }} />
+
+                <ProjectLinkSection theme={theme} />
+                <ContactSection />
+
+                <Divider sx={{ borderBottomWidth: 3 }} />
+                <SpecialThanksSection onClose={onClose} />
+
+                <Divider sx={{ borderBottomWidth: 3 }} />
+                <LegalSection />
+
+                <Divider sx={{ borderBottomWidth: 3 }} />
+                <CopyrightSection
+                    onClose={onClose}
+                    version={packageJson.version}
+                />
+            </List>
+        </Drawer>
+    );
+}

@@ -31,8 +31,9 @@ Biomeインストールコマンド
 code --install-extension biomejs.biome
 ```
 
-### ①node.js のインストール
+### ① 実行環境のインストール
 
+- Node.Jsを使用する場合
 <https://nodejs.org/ja/>
 
 .nvmrc のファイルで定義されているバージョンを使用。不定期にアップデートしてます。
@@ -40,13 +41,17 @@ code --install-extension biomejs.biome
 1 台の PC に複数バージョンの Node.Js を共存させる場合はこちらを参考にどうぞ。
 <https://tometome.notion.site/nvm-53d391fa3afb430e89e2bafbff852a1c>
 
+- bunを使用する場合
+<https://bun.sh>
+
 ### ② サイトの起動
 
 以下のコマンドで必要なライブラリをインストール
 
 ```bash
+# Node.jsの場合。
 npm install
-# or (早いけどバグがあるかも)
+# bunの場合。 (早いけどバグがあるかも)
 bun install
 ```
 
@@ -55,8 +60,9 @@ bun install
 サイトの立ち上げ。
 
 ```bash
+# Node.jsの場合。
 npm run dev
-# or (早いけどバグがあるかも)
+# bunの場合。 (早いけどバグがあるかも)
 bun run dev
 ```
 

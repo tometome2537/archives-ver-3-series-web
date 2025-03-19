@@ -45,7 +45,7 @@ code --install-extension biomejs.biome
 以下のコマンドで必要なライブラリをインストール
 
 ```bash
-npm install
+bun install
 ```
 
 .env.example を参考に.env をファイルの作成。
@@ -53,7 +53,7 @@ npm install
 サイトの立ち上げ。
 
 ```bash
-npm run dev
+bun run dev
 ```
 
 サイトを終了させる。

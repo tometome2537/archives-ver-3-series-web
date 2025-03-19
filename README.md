@@ -33,7 +33,8 @@ code --install-extension biomejs.biome
 
 ### ① 実行環境のインストール
 
-- Node.Jsを使用する場合
+#### Node.jsを使用する場合
+
 <https://nodejs.org/ja/>
 
 .nvmrc のファイルで定義されているバージョンを使用。不定期にアップデートしてます。
@@ -41,7 +42,8 @@ code --install-extension biomejs.biome
 1 台の PC に複数バージョンの Node.Js を共存させる場合はこちらを参考にどうぞ。
 <https://tometome.notion.site/nvm-53d391fa3afb430e89e2bafbff852a1c>
 
-- bunを使用する場合
+#### bunを使用する場合
+
 <https://bun.sh>
 
 ### ② サイトの起動

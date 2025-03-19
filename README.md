@@ -45,6 +45,8 @@ code --install-extension biomejs.biome
 以下のコマンドで必要なライブラリをインストール
 
 ```bash
+npm install
+# or (早いけどバグがあるかも)
 bun install
 ```
 
@@ -53,6 +55,8 @@ bun install
 サイトの立ち上げ。
 
 ```bash
+npm run dev
+# or (早いけどバグがあるかも)
 bun run dev
 ```
 

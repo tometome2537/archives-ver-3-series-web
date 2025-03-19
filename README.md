@@ -46,6 +46,8 @@ code --install-extension biomejs.biome
 
 ```bash
 npm install
+# or (早いけどバグがあるかも)
+bun install
 ```
 
 .env.example を参考に.env をファイルの作成。
@@ -54,6 +56,8 @@ npm install
 
 ```bash
 npm run dev
+# or (早いけどバグがあるかも)
+bun run dev
 ```
 
 サイトを終了させる。

@@ -45,9 +45,6 @@ export function ContactSection() {
                             whiteSpace: "pre-line",
                         }}
                         primary="お問い合わせ"
-                        secondary={
-                            "music-archives-project [a] googlegroups.com"
-                        }
                     />
                 </ListItemButton>
             </ListItem>

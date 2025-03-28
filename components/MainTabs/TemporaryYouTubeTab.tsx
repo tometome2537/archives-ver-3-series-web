@@ -305,6 +305,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                     return true;
                 }
                 setArtistYTM(null);
+                setAlbums([]);
                 return false;
             }
             if (inputValue.categoryId === "specialWord_plusonica") {
@@ -314,6 +315,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         });
         if (props.inputValue.length === 0) {
             setArtistYTM(null);
+            setAlbums([]);
         }
     }, [
         apiData.YouTubeAccount.data,

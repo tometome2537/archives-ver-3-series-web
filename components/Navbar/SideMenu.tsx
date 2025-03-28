@@ -6,6 +6,7 @@ import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
 import { useTheme } from "@mui/material/styles";
+import { BetaSiteLinkSection } from "./SideMenuSections/BetaSiteLinkSection";
 import { ContactSection } from "./SideMenuSections/ContactSection";
 import { CopyrightSection } from "./SideMenuSections/CopyrightSection";
 import { HeaderSection } from "./SideMenuSections/HeaderSection";
@@ -50,6 +51,9 @@ export default function SideMenu({ open, onClose }: SideMenuProps) {
 
                 <Divider sx={{ borderBottomWidth: 3 }} />
                 <LegalSection />
+
+                <Divider sx={{ borderBottomWidth: 3 }} />
+                <BetaSiteLinkSection theme={theme} />
 
                 <Divider sx={{ borderBottomWidth: 3 }} />
                 <CopyrightSection

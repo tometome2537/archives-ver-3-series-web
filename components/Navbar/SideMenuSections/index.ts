@@ -1,3 +1,4 @@
+export * from "./BetaSiteLinkSection";
 export * from "./HeaderSection";
 export * from "./OfficialLinkSection";
 export * from "./ThemeSection";

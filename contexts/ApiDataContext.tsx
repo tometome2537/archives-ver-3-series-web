@@ -103,24 +103,15 @@ export interface ArtistYTM {
     };
     albums?: {
         browseId: string | null;
-        results?: {
-            title: string;
-            browseId: string;
-            audioPlaylistId: string;
-            thumbnails: { url: string; width: number; height: number }[];
-        }[];
+        results?: AlbumsItem[];
         params: string | null;
     };
-    singles?: {
-        browseId: string | null;
-        results?: {
-            title: string;
-            year: string;
-            browseId: string;
-            thumbnails: { url: string; width: number; height: number }[];
-        }[];
-        params: string | null;
-    };
+    // ↓ singlesの項目は廃止された説 2025/03/28
+    // singles?: {
+    //     browseId: string | null;
+    //     results?: AlbumsItem[];
+    //     params: string | null;
+    // };
     videos?: {
         browseId: string | null;
         results?: {
@@ -134,6 +125,22 @@ export interface ArtistYTM {
         params: string | null;
     };
 }
+export interface AlbumsItem {
+    browseId: string;
+    playlistId: string;
+    title: string;
+    thumbnails: {
+        url: string;
+        width: number;
+        height: number;
+    }[];
+    type: string;
+    artists: {
+        name: string;
+        id: string | null;
+    }[];
+}
+
 export interface AlbumYTM {
     title: string;
     type: string;
@@ -224,6 +231,7 @@ export interface ApiDataContextType {
     BelongHistory: ApiData<BelongHistory[]>;
     Video: ApiData<Video[]>;
     ArtistYTM: ApiData<ArtistYTM | null>;
+    AlbumsYTM: ApiData<AlbumsItem[]>;
     AlbumYTM: ApiData<AlbumYTM | null>;
     YdbVideo: ApiData<YdbVideo | null>;
     AppleMusicAccount: ApiData<AppleMusicAccount[]>;
@@ -317,6 +325,15 @@ const ApiData: ApiDataContextType = {
         getData: async () => null,
         getDataWithParams: async () => null,
     },
+    AlbumsYTM: {
+        url: "https://api-py-tometome-org-254186269366.us-central1.run.app/ytm/get_artist_albums",
+        // url: "http://127.0.0.1:8000/ytm/get_artist_albums",
+        fetchOption: {},
+        status: "idle",
+        data: [],
+        getData: async () => [],
+        getDataWithParams: async () => [],
+    },
     AlbumYTM: {
         url: "https://api-py-tometome-org-254186269366.us-central1.run.app/ytm/get_album",
         // url: "http://127.0.0.1:8000/ytm/get_album",
@@ -371,7 +388,7 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
                             try {
                                 // status が "idle" の場合のみデータ取得処理を実行
                                 if (contextItem.status === "idle") {
-                                    console.log(`Fetching data for ${key}...`);
+                                    // console.log(`Fetching data for ${key}...`);
                                     // 通信開始前にstatusを"loading"に設定
                                     contextItem.status = "loading";
 
@@ -408,10 +425,10 @@ export const ApiDataProvider: React.FC<{ children: React.ReactNode }> = ({
                         const getDataWithParams = async (
                             getParams?: Record<string, string>,
                         ) => {
-                            console.log(
-                                `Fetching data for ${key}... with getParams:`,
-                                getParams,
-                            );
+                            // console.log(
+                            //     `Fetching data for ${key}... with getParams:`,
+                            //     getParams,
+                            // );
                             const url = buildUrl(contextItem.url, getParams);
                             // フェッチ処理
                             return await fetcher(

@@ -30,7 +30,7 @@ module.exports = nextConfig;
 
 // Injected content via Sentry wizard below
 
-const { withSentryConfig, setTag } = require("@sentry/nextjs");
+const { withSentryConfig } = require("@sentry/nextjs");
 
 module.exports = withSentryConfig(module.exports, {
   // For all available options, see:
@@ -38,9 +38,6 @@ module.exports = withSentryConfig(module.exports, {
 
   org: "tometome",
   project: "archives-ver-3-series-web",
-
-  // 本番環境でのみSentryにエラーを有効化する
-  enabled: process.env.NEXT_PUBLIC_STAGE === "prod",
 
   // Only print logs for uploading source maps in CI
   // silent: !process.env.CI,
@@ -68,6 +65,3 @@ module.exports = withSentryConfig(module.exports, {
   // https://vercel.com/docs/cron-jobs
   automaticVercelMonitors: true,
 });
-
-// 送信するタグを追加する
-setTag("NEXT_PUBLIC_STAGE", process.env.NEXT_PUBLIC_STAGE);

@@ -27,3 +27,4 @@ Sentry.init({
   debug: false,
 });
 Sentry.setTag("frontend", true);
+Sentry.setTag("NEXT_PUBLIC_STAGE", process.env.NEXT_PUBLIC_STAGE);

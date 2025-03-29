@@ -8,6 +8,8 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import Image from "next/image";
 import { Fragment } from "react";
+import InstagramIcon from "@/icon/InstagramIcon";
+import TikTokIcon from "@/icon/TikTokIcon";
 
 interface OfficialLinkSectionProps {
     theme: Theme;
@@ -56,15 +58,7 @@ export function OfficialLinkSection({ theme }: OfficialLinkSectionProps) {
                     target="_blank"
                 >
                     <ListItemIcon>
-                        <Image
-                            src="/ig_logo.png"
-                            alt="instagram ロゴ"
-                            width={23}
-                            height={23}
-                            style={{
-                                borderRadius: "20%",
-                            }}
-                        />
+                        <InstagramIcon sx={{ color: "#E1306C" }} />
                     </ListItemIcon>
                     <ListItemText primary="ぷらそにか公式 Instagram " />
                 </ListItemButton>
@@ -77,15 +71,7 @@ export function OfficialLinkSection({ theme }: OfficialLinkSectionProps) {
                     target="_blank"
                 >
                     <ListItemIcon>
-                        <Image
-                            src="/tiktok_logo.png"
-                            alt="tiktok ロゴ"
-                            width={20}
-                            height={20}
-                            style={{
-                                borderRadius: "20%",
-                            }}
-                        />
+                        <TikTokIcon sx={{ color: "#000000" }} />
                     </ListItemIcon>
                     <ListItemText primary="ぷらそにか公式 TikTok " />
                 </ListItemButton>

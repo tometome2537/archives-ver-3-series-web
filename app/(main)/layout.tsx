@@ -356,50 +356,50 @@ export default function RootLayout({
                     setSearchSuggestion(result);
                 },
             },
-            // {
-            //     value: "liveInformation",
-            //     icon: <CalendarMonthIcon />,
-            //     label: "LIVE情報(β版)",
-            //     scrollTo: 0,
-            //     children: (
-            //         <LiveInformationTab
-            //             key="liveInformation"
-            //             playerItem={playerItem}
-            //         />
-            //     ),
-            //     onClick: () => {
-            //         setAvailableCategoryIds([]);
-            //         setLimitSearchCategory([]);
-            //         setFixedOptionValues([]);
-            //     },
-            // },
+            {
+                value: "liveInformation",
+                icon: <CalendarMonthIcon />,
+                label: "LIVE情報(β版)",
+                scrollTo: 0,
+                children: (
+                    <LiveInformationTab
+                        key="liveInformation"
+                        playerItem={playerItem}
+                    />
+                ),
+                onClick: () => {
+                    setAvailableCategoryIds([]);
+                    setLimitSearchCategory([]);
+                    setFixedOptionValues([]);
+                },
+            },
         ];
 
-        // if (musicKit.instance?.isAuthorized) {
-        //     list.push({
-        //         value: "AppleMusic",
-        //         icon: <CalendarMonthIcon />,
-        //         label: "Apple Music",
-        //         scrollTo: 0,
-        //         children: (
-        //             <AppleMusicLibrary
-        //                 key="AppleMusic"
-        //                 inputValue={inputValue}
-        //             />
-        //         ),
-        //         onClick: () => {
-        //             setAvailableCategoryIds([
-        //                 "",
-        //                 "actor",
-        //                 "organization",
-        //                 "musicArtistName",
-        //                 "musicTitle",
-        //             ]);
-        //             setLimitSearchCategory([]);
-        //             setFixedOptionValues([]);
-        //         },
-        //     });
-        // }
+        if (musicKit.instance?.isAuthorized) {
+            list.push({
+                value: "AppleMusic",
+                icon: <CalendarMonthIcon />,
+                label: "Apple Music",
+                scrollTo: 0,
+                children: (
+                    <AppleMusicLibrary
+                        key="AppleMusic"
+                        inputValue={inputValue}
+                    />
+                ),
+                onClick: () => {
+                    setAvailableCategoryIds([
+                        "",
+                        "actor",
+                        "organization",
+                        "musicArtistName",
+                        "musicTitle",
+                    ]);
+                    setLimitSearchCategory([]);
+                    setFixedOptionValues([]);
+                },
+            });
+        }
 
         list.map((item, index) => {
             if (typeof window !== "undefined") {

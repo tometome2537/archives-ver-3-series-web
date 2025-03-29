@@ -186,7 +186,7 @@ export default function SongTab(props: SongTabProps) {
                     />
                 ))}
             </div>
-            <div>シングル</div>
+            {/* <div>シングル</div>
             <div
                 style={{
                     display: "flex",
@@ -216,7 +216,7 @@ export default function SongTab(props: SongTabProps) {
                         }}
                     />
                 ))}
-            </div>
+            </div> */}
             <div>ビデオ</div>
             <div
                 style={{

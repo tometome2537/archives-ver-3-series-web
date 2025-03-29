@@ -2,7 +2,11 @@ import LoadingPage from "@/components/LoadingPage";
 import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
 import type { Video } from "@/contexts/ApiDataContext";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
-import type { ArtistYTM, YouTubeAccount } from "@/contexts/ApiDataContext";
+import type {
+    ArtistYTM,
+    YouTubeAccount,
+    AlbumsItem,
+} from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { Box } from "@mui/material";
 import type { Dispatch, SetStateAction } from "react";
@@ -40,6 +44,8 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
     // YTMのAPI結果
     // 型定義を修正
     const [artistYTM, setArtistYTM] = useState<ArtistYTM | null>(null);
+
+    const [albums, setAlbums] = useState<AlbumsItem[]>([]);
 
     // API通信中かどうか
     const [loading, setLoading] = useState<LoadingState>(LoadingState.Loading);
@@ -231,8 +237,24 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             //     result.push(...res.singles.results);
             // }
             setArtistYTM(res);
+
+            // アルバム一覧を取得
+            const resAlbums = await apiData.AlbumsYTM.getDataWithParams({
+                channelId: `MPAD${channelId}`,
+                params: `MPAD${channelId}`,
+            });
+            // アルバムを前に並び替える。
+            const sortAlbums = resAlbums.sort((a, b) => {
+                const aIncludes = a.type.includes("アルバム") ? -1 : 1;
+                const bIncludes = b.type.includes("アルバム") ? -1 : 1;
+                return aIncludes - bIncludes;
+            });
+            setAlbums(sortAlbums);
         },
-        [apiData.ArtistYTM.getDataWithParams],
+        [
+            apiData.ArtistYTM.getDataWithParams,
+            apiData.AlbumsYTM.getDataWithParams,
+        ],
     );
 
     const fetchTopicYTM = useCallback(
@@ -283,6 +305,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                     return true;
                 }
                 setArtistYTM(null);
+                setAlbums([]);
                 return false;
             }
             if (inputValue.categoryId === "specialWord_plusonica") {
@@ -292,6 +315,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         });
         if (props.inputValue.length === 0) {
             setArtistYTM(null);
+            setAlbums([]);
         }
     }, [
         apiData.YouTubeAccount.data,
@@ -335,10 +359,9 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                 textAlign: "center",
                             }}
                         >
-                            {artistYTM.albums?.browseId ||
-                            artistYTM.singles?.browseId
-                                ? `${artistYTM?.name} さんのアルバムも聴いてみよう ♪ (一部抜粋)`
-                                : `${artistYTM?.name} さんのアルバムも聴いてみよう ♪`}
+                            {albums.length !== 0
+                                ? `${artistYTM?.name} さんのアルバムも聴いてみよう ♪`
+                                : ""}
                         </h4>
                         <Box
                             sx={{
@@ -348,21 +371,22 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                 marginBottom: "20px",
                             }}
                         >
-                            {artistYTM.albums?.results?.map((album) => (
+                            {albums.map((albumsItem) => (
                                 <Album
-                                    key={album.title}
+                                    key={albumsItem.title}
                                     style={{
                                         minWidth: isMobile ? "30vw" : "15vw",
                                     }}
-                                    title={album.title}
-                                    imgSrc={album.thumbnails[0].url}
+                                    title={albumsItem.title}
+                                    year={`${albumsItem.type}・${albumsItem.artists[0].name}`}
+                                    imgSrc={albumsItem.thumbnails[1].url}
                                     onClick={() => {
                                         const fetch = async () => {
                                             const albumData =
                                                 await apiData.AlbumYTM.getDataWithParams(
                                                     {
                                                         browseId:
-                                                            album.browseId,
+                                                            albumsItem.browseId,
                                                     },
                                                 );
                                             props.setPlayerItem({
@@ -394,36 +418,6 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                                     ),
                                                 });
                                             }
-                                        };
-                                        fetch();
-                                        props.setIsPlayerFullscreen(true);
-                                    }}
-                                />
-                            ))}
-                            {artistYTM.singles?.results?.map((single) => (
-                                <Album
-                                    key={single.title}
-                                    style={{
-                                        minWidth: isMobile ? "30vw" : "15vw",
-                                    }}
-                                    title={single.title}
-                                    year={single.year}
-                                    imgSrc={single.thumbnails[0].url}
-                                    onClick={() => {
-                                        const fetch = async () => {
-                                            const albumData =
-                                                await apiData.AlbumYTM.getDataWithParams(
-                                                    {
-                                                        browseId:
-                                                            single.browseId,
-                                                    },
-                                                );
-                                            props.setPlayerItem({
-                                                type: PlayerType.YouTube,
-                                                mediaId:
-                                                    albumData?.tracks[0]
-                                                        .videoId,
-                                            });
                                         };
                                         fetch();
                                         props.setIsPlayerFullscreen(true);

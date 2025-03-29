@@ -40,9 +40,6 @@ export default function Home() {
 第8条（利用規約の変更）
 1. 本規約は予告なく変更することがあります。
 2. 規約変更後に本サイトを利用した場合、変更後の規約に同意したものとみなされます。
-
-第9条（お問い合わせ）
-本サイトに関するお問い合わせは、[music-archives-project [a] googlegroups.com]までご連絡ください。
 `;
 
     return (

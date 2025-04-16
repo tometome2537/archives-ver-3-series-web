@@ -1,0 +1,260 @@
+openapi: 3.1.1
+info:
+  title: api node tometome
+  description: API documentation.
+  version: 1.0.0
+servers:
+  - url: https://api.node.tometome.giize.com
+  - url: http://localhost:3000
+tags:
+  - name: x
+  - name: YouTube
+paths:
+  /v1/x/user:
+    get:
+      tags:
+        - x
+      security:
+        - TokenAuth: []
+      summary: Retrieve user data
+      description: Fetches user information based on user ID.
+      parameters:
+        - name: userid
+          in: query
+          description: The ID of the user to retrieve.
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with user data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                      type: object
+                      description: User information.
+                      properties:
+                        id:
+                          type: string
+                        username:
+                          type: string
+                        username_history:
+                          type: array
+                          items:
+                            type: string
+                        post_last_updated:
+                          type: string
+                          format: date-time
+                        user_last_updated:
+                          type: string
+                          format: date-time
+
+  /v1/x/posts:
+    get:
+      tags:
+        - x
+      security:
+        - TokenAuth: []
+      summary: Retrieve posts and user data
+      description: Fetches posts and user information based on user ID or post ID.
+      parameters:
+        - name: userid
+          in: query
+          description: The ID of the user whose posts are to be retrieved.
+          required: false
+          schema:
+            type: string
+        - name: postid
+          in: query
+          description: The ID of a specific post to retrieve.
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful response with user and posts data.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  user:
+                    type: object
+                    description: User information.
+                    properties:
+                      id:
+                        type: string
+                      username:
+                        type: string
+                      username_history:
+                        type: array
+                        items:
+                          type: string
+                      post_last_updated:
+                        type: string
+                        format: date-time
+                      user_last_updated:
+                        type: string
+                        format: date-time
+                  posts:
+                    type: array
+                    description: List of posts.
+                    items:
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        text:
+                          type: string
+                        published_at:
+                          type: string
+                          format: date-time
+                        user_id:
+                          type: string
+                        reply_id:
+                          oneOf:
+                            - type: 
+                              - string
+                              - 'null'
+                        repost_id:
+                          oneOf:
+                            - type: 
+                              - string
+                              - 'null'
+                        quote_repost_id:
+                          oneOf:
+                            - type: 
+                              - string
+                              - 'null'
+                        urls:
+                          type: array
+                          items:
+                            type: string
+                        medias:
+                          type: array
+                          items:
+                            type: object
+                            properties:
+                              id:
+                                type: string
+                              type:
+                                type: string
+                              source_post_id:
+                                oneOf:
+                                  - type: 
+                                    - string
+                                    - 'null'
+                              source_user_id:
+                                oneOf:
+                                  - type: 
+                                    - string
+                                    - 'null'
+                              media:
+                                type: object
+                                properties:
+                                  url:
+                                    oneOf:
+                                      - type: 
+                                        - string
+                                        - 'null'
+                                  aspect_ratio:
+                                    type: object
+                                    properties:
+                                      width:
+                                        oneOf:
+                                          - type:
+                                            - string
+                                            - 'null'
+                                      height:
+                                        oneOf:
+                                          - type:
+                                            - string
+                                            - 'null'
+                              image:
+                                type: object
+                                properties:
+                                  url:
+                                    type: string
+                                  width:
+                                    type: integer
+                                  height:
+                                    type: integer
+                              media_type_version:
+                                type: string
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+
+  /v1/youtube/releases:
+    get:
+      tags:
+        - YouTube
+      summary: リリースされたアルバムのリストを返します。
+      parameters:
+        - name: channelid
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: YouTube releases
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  releases:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/youtube_release'
+
+
+components:
+  securitySchemes:
+    TokenAuth:
+      type: apiKey
+      in: header
+      name: Authorization
+      description: "入力形式 → `token <token>`"
+  schemas:
+    youtube_release:
+      type: object
+      properties:
+        id:
+          type: string
+        audio_playlist_id:
+          type: string
+        type:
+          type: string # To Do
+        title:
+          type: string
+        year:
+          type: integer
+        thumbnail_url:
+          type: string
+        duration:
+          type: integer
+        artist_channel_ids:
+          type: array
+          items:
+            type: string
+        track_video_ids:
+          type: array
+          items:
+            type: string
+        created_at:
+          type: string
+          format: date-time
+        last_updated:
+          type: string
+          format: date-time

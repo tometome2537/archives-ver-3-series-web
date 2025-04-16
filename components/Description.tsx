@@ -38,15 +38,15 @@ const useYouTubeVideoTitle = (videoId: string) => {
     const [label, setLabel] = useState<string>("");
 
     const fetchVideo = async () => {
-        try {
-            const response = await apiData.YdbVideo.getDataWithParams({
-                videoids: videoId,
-            });
-            const title = response?.videos[0]?.videoYouTubeApi?.snippet.title;
-            if (title) setLabel(title);
-        } catch (error) {
-            console.error("Error fetching video title:", error);
-        }
+        // try {
+        //     const response = await apiData.YdbVideo.getDataWithParams({
+        //         videoids: videoId,
+        //     });
+        //     const title = response?.videos[0]?.videoYouTubeApi?.snippet.title;
+        //     if (title) setLabel(title);
+        // } catch (error) {
+        //     console.error("Error fetching video title:", error);
+        // }
     };
 
     // コンポーネントマウント時にフェッチを実行
@@ -90,15 +90,15 @@ const LinkRenderer = ({
 
             // 動画タイトルを取得
             useState(() => {
-                apiData.YdbVideo.getDataWithParams({
-                    videoids: videoId,
-                })
-                    .then((r) => {
-                        const title =
-                            r?.videos[0]?.videoYouTubeApi?.snippet.title;
-                        if (title) setLabel(title);
-                    })
-                    .catch(console.error);
+                // apiData.YdbVideo.getDataWithParams({
+                //     videoids: videoId,
+                // })
+                //     .then((r) => {
+                //         const title =
+                //             r?.videos[0]?.videoYouTubeApi?.snippet.title;
+                //         if (title) setLabel(title);
+                //     })
+                //     .catch(console.error);
             });
 
             return (

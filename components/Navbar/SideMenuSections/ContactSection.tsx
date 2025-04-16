@@ -64,7 +64,7 @@ export function ContactSection() {
                         }}
                         primary="フィードバック"
                         secondary={
-                            "バグ報告・誤情報の報告もこちらからお願いします。\n削除依頼は上記メールアドレスへお願いします。"
+                            "バグ報告・誤情報の報告もこちらからお願いします。\n削除依頼もこちらからお願いします。"
                         }
                     />
                 </ListItemButton>

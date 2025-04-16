@@ -82,122 +82,7 @@ export interface Video {
     karaokeKey: string | null;
     apiData: string | null;
 }
-export interface ArtistYTM {
-    description: string;
-    views: number;
-    name: string;
-    channelId: string; // topicチャンネルのIDが返される。
-    subscribers: number;
-    thumbnails: { url: string; width: number; height: number }[];
-    songs?: {
-        browseId: string | null;
-        results?: {
-            videoId: string;
-            artists: { name: string; id: string }[];
-            album: { name: string; id: string };
-            title: string;
-            browseId: string;
-            audioPlaylistId: string;
-            thumbnails: { url: string; width: number; height: number }[];
-        }[];
-    };
-    albums?: {
-        browseId: string | null;
-        results?: AlbumsItem[];
-        params: string | null;
-    };
-    // ↓ singlesの項目は廃止された説 2025/03/28
-    // singles?: {
-    //     browseId: string | null;
-    //     results?: AlbumsItem[];
-    //     params: string | null;
-    // };
-    videos?: {
-        browseId: string | null;
-        results?: {
-            title: string;
-            videoId: string;
-            artists: { name: string; id: string }[];
-            playlistId: string;
-            thumbnails: { url: string; width: number; height: number }[];
-            views: string;
-        }[];
-        params: string | null;
-    };
-}
-export interface AlbumsItem {
-    browseId: string;
-    playlistId: string;
-    title: string;
-    thumbnails: {
-        url: string;
-        width: number;
-        height: number;
-    }[];
-    type: string;
-    artists: {
-        name: string;
-        id: string | null;
-    }[];
-}
 
-export interface AlbumYTM {
-    title: string;
-    type: string;
-    thumbnails: { url: string; width: number; height: number }[];
-    isExplicit: boolean;
-    description: string | null;
-    artists: { name: string; id: string }[];
-    trackCount: number;
-    duration: string;
-    audioPlaylistId: string;
-    tracks: {
-        videoId: string;
-        title: string;
-        artists: { name: string; id: string }[];
-        album: string;
-        likeStatus: string;
-        inLibrary: boolean | null;
-        thumbnails: { url: string; width: number; height: number }[];
-        isAvailable: boolean;
-        isExplicit: boolean;
-        videoType: string;
-        views: string;
-        trackNumber: number;
-        duration: string;
-        duration_seconds: number;
-    }[];
-    other_versions: {
-        title: string;
-        type: string;
-        artists: { name: string; id: string }[];
-        browseId: string;
-        audioPlaylistId: string;
-        thumbnails: { url: string; width: number; height: number }[];
-        isExplicit: boolean;
-    }[];
-    duration_seconds: number;
-}
-export interface YdbVideo {
-    status: string;
-    channelIds: string[];
-    videos: {
-        id: string;
-        videoId: string;
-        videoOwnerChannelId: string;
-        channelId?: string | undefined;
-        privacyStatus: string;
-        videoYouTubeApi?: {
-            id: string;
-            snippet: {
-                publishedAt: string;
-                title: string;
-                description: string;
-                channelTitle: string;
-            };
-        };
-    }[];
-}
 export interface AppleMusicAccount {
     entityId: string;
     appleMusicArtistId: string;
@@ -230,10 +115,6 @@ export interface ApiDataContextType {
     XAccount: ApiData<XAccount[]>;
     BelongHistory: ApiData<BelongHistory[]>;
     Video: ApiData<Video[]>;
-    ArtistYTM: ApiData<ArtistYTM | null>;
-    AlbumsYTM: ApiData<AlbumsItem[]>;
-    AlbumYTM: ApiData<AlbumYTM | null>;
-    YdbVideo: ApiData<YdbVideo | null>;
     AppleMusicAccount: ApiData<AppleMusicAccount[]>;
 }
 
@@ -315,42 +196,6 @@ const ApiData: ApiDataContextType = {
         data: [],
         getData: async () => [],
         getDataWithParams: async () => [],
-    },
-    ArtistYTM: {
-        url: "https://api-py-tometome-org-254186269366.us-central1.run.app/ytm/get_artist",
-        // url: "http://127.0.0.1:8000/ytm/get_artist",
-        fetchOption: {},
-        status: "idle",
-        data: null,
-        getData: async () => null,
-        getDataWithParams: async () => null,
-    },
-    AlbumsYTM: {
-        url: "https://api-py-tometome-org-254186269366.us-central1.run.app/ytm/get_artist_albums",
-        // url: "http://127.0.0.1:8000/ytm/get_artist_albums",
-        fetchOption: {},
-        status: "idle",
-        data: [],
-        getData: async () => [],
-        getDataWithParams: async () => [],
-    },
-    AlbumYTM: {
-        url: "https://api-py-tometome-org-254186269366.us-central1.run.app/ytm/get_album",
-        // url: "http://127.0.0.1:8000/ytm/get_album",
-        fetchOption: {},
-        status: "idle",
-        data: null,
-        getData: async () => null,
-        getDataWithParams: async () => null,
-    },
-    YdbVideo: {
-        url: "https://api-py-tometome-org-254186269366.us-central1.run.app/ydb/video/list",
-        // url: "http://127.0.0.1:8000/ydb/video/list",
-        fetchOption: {},
-        status: "idle",
-        data: null,
-        getData: async () => null,
-        getDataWithParams: async () => null,
     },
 };
 

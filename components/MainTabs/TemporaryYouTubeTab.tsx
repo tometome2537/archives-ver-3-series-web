@@ -2,11 +2,7 @@ import LoadingPage from "@/components/LoadingPage";
 import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
 import type { Video } from "@/contexts/ApiDataContext";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
-import type {
-    ArtistYTM,
-    YouTubeAccount,
-    AlbumsItem,
-} from "@/contexts/ApiDataContext";
+import type { YouTubeAccount } from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import { Box } from "@mui/material";
 import type { Dispatch, SetStateAction } from "react";
@@ -16,6 +12,10 @@ import Loading from "../Loading";
 import type { PlayerItem, PlayerPlaylist } from "../PlayerView";
 import Thumbnail from "../Thumbnail";
 import { PlayerType } from "../PlayerView";
+import {
+    YouTubeApi,
+    type YoutubeRelease,
+} from "@/src/openapi-client/api-node-tometome";
 
 type TemporaryYouTubeTab = {
     inputValue: InputValue[];
@@ -43,9 +43,9 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
     const [resultVideo, setResultVideo] = useState<Video[] | null>(null);
     // YTMのAPI結果
     // 型定義を修正
-    const [artistYTM, setArtistYTM] = useState<ArtistYTM | null>(null);
+    const [artistYTM, setArtistYTM] = useState<string | null>(null);
 
-    const [albums, setAlbums] = useState<AlbumsItem[]>([]);
+    const [albums, setAlbums] = useState<YoutubeRelease[]>([]);
 
     // API通信中かどうか
     const [loading, setLoading] = useState<LoadingState>(LoadingState.Loading);
@@ -226,51 +226,19 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         setLoading(LoadingState.AllLoaded);
     }, [props.inputValue, apiDataVideo]);
 
-    const fetchArtistYTM = useCallback(
-        async (channelId: string) => {
-            const res = await apiData.ArtistYTM.getDataWithParams({
-                channelId: channelId,
-            });
-            // const result = [];
-            // result.push(res?.albums?.results);
-            // if (res?.singles?.results) {
-            //     result.push(...res.singles.results);
-            // }
-            setArtistYTM(res);
-
-            // アルバム一覧を取得
-            const resAlbums = await apiData.AlbumsYTM.getDataWithParams({
-                channelId: `MPAD${channelId}`,
-                params: `MPAD${channelId}`,
-            });
-            // アルバムを前に並び替える。
-            const sortAlbums = resAlbums.sort((a, b) => {
-                const aIncludes = a.type.includes("アルバム") ? -1 : 1;
-                const bIncludes = b.type.includes("アルバム") ? -1 : 1;
-                return aIncludes - bIncludes;
-            });
-            setAlbums(sortAlbums);
-        },
-        [
-            apiData.ArtistYTM.getDataWithParams,
-            apiData.AlbumsYTM.getDataWithParams,
-        ],
-    );
-
-    const fetchTopicYTM = useCallback(
-        async (channelId: string) => {
-            const res = await apiData.ArtistYTM.getDataWithParams({
-                channelId: channelId,
-            });
-            // const result = [];
-            // result.push(res?.albums?.results);
-            // if (res?.singles?.results) {
-            //     result.push(...res.singles.results);
-            // }
-            fetchArtistYTM(res?.channelId ?? "");
-        },
-        [apiData.ArtistYTM.getDataWithParams, fetchArtistYTM],
-    );
+    const fetchReleases = useCallback(async (channelId: string) => {
+        const youtubeApi = new YouTubeApi();
+        const res = await youtubeApi.v1YoutubeReleasesGet({
+            channelid: channelId,
+        });
+        // アルバムを前に並び替える。
+        const sortAlbums = res.releases?.sort((a, b) => {
+            const aIncludes = a.type?.includes("album") ? -1 : 1;
+            const bIncludes = b.type?.includes("album") ? -1 : 1;
+            return aIncludes - bIncludes;
+        });
+        setAlbums(sortAlbums ?? []);
+    }, []);
 
     // YouTubeMusicの楽曲を表示する
     useEffect(() => {
@@ -294,14 +262,16 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                     item.entityId?.includes(inputValue.value),
                 );
                 if (topicCh) {
-                    fetchArtistYTM(topicCh.userId ?? "");
+                    fetchReleases(topicCh.userId ?? "");
+                    setArtistYTM(topicCh.name);
                     return true;
                 }
                 const OACCh = YMOACAccounts.find((item) =>
                     item.entityId?.includes(inputValue.value),
                 );
                 if (OACCh) {
-                    fetchTopicYTM(OACCh.userId ?? "");
+                    fetchReleases(OACCh.userId ?? "");
+                    setArtistYTM(OACCh.name);
                     return true;
                 }
                 setArtistYTM(null);
@@ -309,7 +279,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 return false;
             }
             if (inputValue.categoryId === "specialWord_plusonica") {
-                fetchArtistYTM("UC3tYTei6p55gWg2rr0g4ybQ");
+                fetchReleases("UC3tYTei6p55gWg2rr0g4ybQ");
                 return true;
             }
         });
@@ -317,12 +287,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
             setArtistYTM(null);
             setAlbums([]);
         }
-    }, [
-        apiData.YouTubeAccount.data,
-        props.inputValue,
-        fetchArtistYTM,
-        fetchTopicYTM,
-    ]);
+    }, [apiData.YouTubeAccount.data, props.inputValue, fetchReleases]);
 
     // ローディング中
     if (apiDataVideo.length === 0 && loading === LoadingState.Loading) {
@@ -360,7 +325,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                             }}
                         >
                             {albums.length !== 0
-                                ? `${artistYTM?.name} さんのアルバムも聴いてみよう ♪`
+                                ? `${artistYTM} さんのアルバムも聴いてみよう ♪`
                                 : ""}
                         </h4>
                         <Box
@@ -378,41 +343,24 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                                         minWidth: isMobile ? "30vw" : "15vw",
                                     }}
                                     title={albumsItem.title}
-                                    year={`${albumsItem.type}・${albumsItem.artists[0].name}`}
-                                    imgSrc={albumsItem.thumbnails[1].url}
+                                    year={`${albumsItem.type}・${albumsItem.year}年`}
+                                    imgSrc={albumsItem.thumbnailUrl}
                                     onClick={() => {
                                         const fetch = async () => {
-                                            const albumData =
-                                                await apiData.AlbumYTM.getDataWithParams(
-                                                    {
-                                                        browseId:
-                                                            albumsItem.browseId,
-                                                    },
-                                                );
+                                            const tracks =
+                                                albumsItem.trackVideoIds ?? [];
                                             props.setPlayerItem({
                                                 type: PlayerType.YouTube,
-                                                mediaId:
-                                                    albumData?.tracks[0]
-                                                        .videoId,
+                                                mediaId: tracks[0],
                                             });
-                                            if (
-                                                albumData &&
-                                                albumData.tracks.length !== 0
-                                            ) {
+                                            if (tracks.length !== 0) {
                                                 props.setPlayerPlaylist({
-                                                    title: albumData?.title,
-                                                    videos: albumData?.tracks.map(
+                                                    title: albumsItem?.title,
+                                                    videos: tracks.map(
                                                         (item) => {
                                                             return {
                                                                 type: PlayerType.YouTube,
-                                                                mediaId:
-                                                                    item.videoId,
-                                                                title: item.title,
-                                                                author: item
-                                                                    .artists[0]
-                                                                    .name,
-                                                                duration:
-                                                                    item?.duration_seconds,
+                                                                mediaId: item,
                                                             };
                                                         },
                                                     ),

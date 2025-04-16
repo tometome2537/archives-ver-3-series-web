@@ -325,7 +325,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                             }}
                         >
                             {albums.length !== 0
-                                ? `${artistYTM} さんのアルバムも聴いてみよう ♪`
+                                ? `${artistYTM.replace(" - Topic", "")} さんのアルバムも聴いてみよう ♪`
                                 : ""}
                         </h4>
                         <Box

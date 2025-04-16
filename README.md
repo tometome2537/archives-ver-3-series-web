@@ -58,7 +58,16 @@
   bun install
   ```
 
-- .env.example を参考に.env をファイルの作成。
+- 環境変数を追加する
+以下のリンクからファイルをダウンロード
+<https://drive.google.com/drive/folders/1tvweecfjmiAXSQwLxu3qCEMSSwynaWWq?usp=sharing>
+
+- 環境変数の復号化
+
+```bash
+brew install age
+age -d -i ./key.txt -o .env .env.age
+```
 
 - サイトの立ち上げ。
 

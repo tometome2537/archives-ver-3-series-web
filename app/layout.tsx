@@ -13,6 +13,7 @@ const inter = Inter({ subsets: ["latin"] });
 const title = "ぷらそにかアーカイブス";
 const description =
     "ぷらそにかアーカイブス - YouTubeチャンネル「ぷらそにか」の動画を詳細な検索機能、YouTubeの再生を提供します。";
+const keywords = "ぷらそにか,アーカイブス,YouTube,音楽,AppleMusic,YouTubeMusic";
 
 export default async function RootLayout({
     children,
@@ -35,8 +36,9 @@ export default async function RootLayout({
                 />
                 <meta charSet="UTF-8" />
                 {/* ↓ サーバーサイドで定義して返す必要がある。 */}
-                <meta name="title" content={title} />
+                <title>{title}</title>
                 <meta name="description" content={description} />
+                <meta name="keywords" content={keywords} />
                 {/* ↓ サイトのテーマに合わせてブラウザの設定を変更する */}
                 <meta
                     name="theme-color"

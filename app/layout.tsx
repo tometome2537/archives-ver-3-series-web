@@ -9,6 +9,11 @@ import { AppleMusicProvider } from "@/contexts/AppleMusicContext";
 
 const inter = Inter({ subsets: ["latin"] });
 
+// const title = "ミュージックアーカイブスプロジェクト";
+const title = "ぷらそにかアーカイブス";
+const description =
+    "ぷらそにかアーカイブス - YouTubeチャンネル「ぷらそにか」の動画を詳細な検索機能、YouTubeの再生を提供します。";
+
 export default async function RootLayout({
     children,
 }: {
@@ -29,6 +34,9 @@ export default async function RootLayout({
                     content="initial-scale=1, width=device-width"
                 />
                 <meta charSet="UTF-8" />
+                {/* ↓ サーバーサイドで定義して返す必要がある。 */}
+                <meta name="title" content={title} />
+                <meta name="description" content={description} />
                 {/* ↓ サイトのテーマに合わせてブラウザの設定を変更する */}
                 <meta
                     name="theme-color"
@@ -62,11 +70,6 @@ export default async function RootLayout({
 }
 
 export async function generateMetadata(): Promise<Metadata> {
-    // const title = "ミュージックアーカイブスプロジェクト";
-    const title = "ぷらそにかアーカイブス";
-    const description =
-        "ぷらそにかアーカイブス - YouTubeチャンネル「ぷらそにか」の動画を詳細な検索機能、YouTubeの再生を提供します。";
-
     return {
         title: title,
         description: description,

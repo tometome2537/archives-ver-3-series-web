@@ -177,8 +177,7 @@ export default function SearchBar(props: SearchBarProps) {
 
         // optionsリストをフィルタリングし、inputValueがオプションのラベルに含まれるものを返す
         return options.filter((option) => {
-            // ① inputValueLowerCaseでフィルタリング
-            // ①-1 入力途中の文字数に応じてフィルタリングを行う。
+            // 入力途中の文字数に応じてフィルタリングを行う。
             if (option.queryMinLengthForSuggestions) {
                 if (
                     inputValueLowerCase.length <
@@ -188,35 +187,30 @@ export default function SearchBar(props: SearchBarProps) {
                 }
             }
 
-            // ①-2 filterMatchTextnの検証
-            const r1 = option.filterMatchText
+            // ① inputValueLowerCaseでフィルタリング
+            // ①-1 filterMatchTextnの検証
+            const i1 = option.filterMatchText
                 ?.toLowerCase()
                 .includes(inputValueLowerCase);
-            if (r1) {
-                return r1;
+            if (i1) {
+                return i1;
             }
-            // ①-3 labelの検証
-            const r2 = String(option.label)
+            // ①-2 labelの検証
+            const i2 = String(option.label)
                 .toLowerCase()
                 .includes(inputValueLowerCase);
-            if (r2) {
-                return r2;
+            if (i2) {
+                return i2;
             }
 
             // ② hiraganaでフィルタリング
-            // ②-1 入力途中の文字数に応じてフィルタリングを行う。
-            if (option.queryMinLengthForSuggestions) {
-                if (hiragana.length < option.queryMinLengthForSuggestions) {
-                    return false;
-                }
-            }
 
-            // ②-2 filterMatchTextnの検証
+            // ②-1 filterMatchTextnの検証
             const h1 = option.filterMatchText?.toLowerCase().includes(hiragana);
             if (h1) {
                 return h1;
             }
-            // ②-3 labelの検証
+            // ②-2 labelの検証
             const h2 = String(option.label).toLowerCase().includes(hiragana);
             if (h2) {
                 return h2;

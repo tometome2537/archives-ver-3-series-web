@@ -168,9 +168,7 @@ export default function RootLayout({
                     label: item.name + (pickup ? " ♪" : ""),
                     value: item.id ?? "",
                     filterMatchText:
-                        (item.rubyJaHiragana ?? "") +
-                        (item.rubyEn ?? "") +
-                        (item.id ?? ""),
+                        (item.rubyJaHiragana ?? "") + (item.id ?? ""),
                     icon:
                         item.category === "person" ? (
                             <PersonIcon />

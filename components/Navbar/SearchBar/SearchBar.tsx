@@ -12,6 +12,7 @@ import { darken, lighten, styled } from "@mui/system";
 import type { SyntheticEvent } from "react";
 import * as React from "react";
 import { type Dispatch, type SetStateAction, useState } from "react";
+const { toHiragana } = require("@koozaki/romaji-conv");
 
 export interface SearchSuggestion {
     // 入力された値はsortの数値が大きい順に並び替えられる。
@@ -165,12 +166,16 @@ export default function SearchBar(props: SearchBarProps) {
         options: SearchSuggestion[], // フィルタリング対象のオプションリスト
         params: { inputValue: string }, // フィルタリングに使用するパラメータ（入力値）
     ): SearchSuggestion[] {
-        // 入力された値を小文字に変換して比較しやすくする
+        // ① 入力された値を小文字に変換して比較しやすくする
         const inputValueLowerCase = params.inputValue.toLowerCase();
+
+        // ② 入力された値がローマ字の場合はひらがなに変換する。
+        const hiragana = toHiragana(inputValueLowerCase);
 
         // optionsリストをフィルタリングし、inputValueがオプションのラベルに含まれるものを返す
         return options.filter((option) => {
-            // 入力途中の文字数をカウント
+            // ① inputValueLowerCaseでフィルタリング
+            // ①-1 入力途中の文字数に応じてフィルタリングを行う。
             if (option.queryMinLengthForSuggestions) {
                 if (
                     inputValueLowerCase.length <
@@ -180,19 +185,39 @@ export default function SearchBar(props: SearchBarProps) {
                 }
             }
 
-            // trueの場合のみ返す。
-            const r = option.filterMatchText
+            // ①-2 filterMatchTextnの検証
+            const r1 = option.filterMatchText
                 ?.toLowerCase()
                 .includes(inputValueLowerCase);
-            if (r) {
-                return r;
+            if (r1) {
+                return r1;
             }
-            // ↓ 無駄に見えて謎にエラー回避に役立ってる String()
-            // おそらくAPIで取得した値がstringでないのが原因。
-            // APIで取得する値がStringかどうかはTypeScriptでチェックしきれない。
-            return String(option.label)
+            // ①-3 labelの検証
+            const r2 = String(option.label)
                 .toLowerCase()
                 .includes(inputValueLowerCase);
+            if (r2) {
+                return r2;
+            }
+
+            // ② hiraganaでフィルタリング
+            // ②-1 入力途中の文字数に応じてフィルタリングを行う。
+            if (option.queryMinLengthForSuggestions) {
+                if (hiragana.length < option.queryMinLengthForSuggestions) {
+                    return false;
+                }
+            }
+
+            // ②-2 filterMatchTextnの検証
+            const h1 = option.filterMatchText?.toLowerCase().includes(hiragana);
+            if (h1) {
+                return h1;
+            }
+            // ②-3 labelの検証
+            const h2 = String(option.label).toLowerCase().includes(hiragana);
+            if (h2) {
+                return h2;
+            }
         });
     }
 

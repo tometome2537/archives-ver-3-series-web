@@ -1,6 +1,6 @@
 {
   "name": "map",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
@@ -15,6 +15,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@koozaki/romaji-conv": "^2.0.31",
     "@mui/icons-material": "^6.4.9",
     "@mui/material": "^6.4.9",
     "@mui/x-date-pickers": "^7.28.0",

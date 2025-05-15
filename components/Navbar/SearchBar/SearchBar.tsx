@@ -169,8 +169,11 @@ export default function SearchBar(props: SearchBarProps) {
         // ① 入力された値を小文字に変換して比較しやすくする
         const inputValueLowerCase = params.inputValue.toLowerCase();
 
-        // ② 入力された値がローマ字の場合はひらがなに変換する。
-        const hiragana = toHiragana(inputValueLowerCase);
+        // ② 入力された値がローマ字の場合はひらがなに変換する。(アルファベットは削除)
+        const hiragana = toHiragana(inputValueLowerCase).replace(
+            /[a-zA-Z]/g,
+            "",
+        );
 
         // optionsリストをフィルタリングし、inputValueがオプションのラベルに含まれるものを返す
         return options.filter((option) => {

@@ -6,7 +6,8 @@
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "api_tome_create": "openapi-generator generate -i ./src/openapi-client/api-node-tometome-openapi.yaml -g typescript-fetch -o ./src/openapi-client/api-node-tometome"
+    "api_tome_create": "openapi-generator generate -i ./src/openapi-client/api-node-tometome-openapi.yaml -g typescript-fetch -o ./src/openapi-client/api-node-tometome",
+    "create_license": "npx license-checker --json > app/license/licenses.json"
   },
   "engines": {
     "node": ">=22.0.0"

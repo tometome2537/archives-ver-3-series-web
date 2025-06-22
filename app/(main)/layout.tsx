@@ -170,30 +170,29 @@ export default function RootLayout({
                     filterMatchText:
                         (item.rubyJaHiragana ?? "") + (item.id ?? ""),
                     icon:
-                        item.category === "person" ? (
-                            <PersonIcon />
-                        ) : (
+                        item.category === "person" ? // <PersonIcon />
+                        undefined : (
                             <GroupsIcon />
                         ),
-                    imgSrc: (() => {
-                        try {
-                            const YouTubeAccount: YouTubeAccount | undefined =
-                                YouTubeAccounts.find((vvv) => {
-                                    // vvv.entityIdが存在し、item.idが含まれているかを確認する
-                                    if (vvv.entityId !== null) {
-                                        return vvv.entityId
-                                            .split(/ , |,| ,|, /)
-                                            .includes(item.id ?? "");
-                                    }
-                                });
-                            const data = YouTubeAccount
-                                ? JSON.parse(YouTubeAccount.apiData ?? "")
-                                : undefined;
-                            return data.snippet.thumbnails.default.url;
-                        } catch (error) {
-                            return undefined;
-                        }
-                    })(),
+                    // imgSrc: (() => {
+                    //     try {
+                    //         const YouTubeAccount: YouTubeAccount | undefined =
+                    //             YouTubeAccounts.find((vvv) => {
+                    //                 // vvv.entityIdが存在し、item.idが含まれているかを確認する
+                    //                 if (vvv.entityId !== null) {
+                    //                     return vvv.entityId
+                    //                         .split(/ , |,| ,|, /)
+                    //                         .includes(item.id ?? "");
+                    //                 }
+                    //             });
+                    //         const data = YouTubeAccount
+                    //             ? JSON.parse(YouTubeAccount.apiData ?? "")
+                    //             : undefined;
+                    //         return data.snippet.thumbnails.default.url;
+                    //     } catch (error) {
+                    //         return undefined;
+                    //     }
+                    // })(),
 
                     categoryId:
                         item.category === "person" ? "actor" : "organization",
@@ -354,23 +353,23 @@ export default function RootLayout({
                     setSearchSuggestion(result);
                 },
             },
-            {
-                value: "liveInformation",
-                icon: <CalendarMonthIcon />,
-                label: "LIVE情報(β版)",
-                scrollTo: 0,
-                children: (
-                    <LiveInformationTab
-                        key="liveInformation"
-                        playerItem={playerItem}
-                    />
-                ),
-                onClick: () => {
-                    setAvailableCategoryIds([]);
-                    setLimitSearchCategory([]);
-                    setFixedOptionValues([]);
-                },
-            },
+            // {
+            //     value: "liveInformation",
+            //     icon: <CalendarMonthIcon />,
+            //     label: "LIVE情報(β版)",
+            //     scrollTo: 0,
+            //     children: (
+            //         <LiveInformationTab
+            //             key="liveInformation"
+            //             playerItem={playerItem}
+            //         />
+            //     ),
+            //     onClick: () => {
+            //         setAvailableCategoryIds([]);
+            //         setLimitSearchCategory([]);
+            //         setFixedOptionValues([]);
+            //     },
+            // },
         ];
 
         if (musicKit.instance?.isAuthorized) {

@@ -36,7 +36,6 @@ export interface Entity {
     id: string | null;
     name: string | null;
     rubyJaHiragana: string | null;
-    rubyEn: string | null;
     category: string | null;
 }
 export interface XAccount {

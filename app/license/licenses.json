@@ -290,6 +290,15 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@jridgewell/trace-mapping",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@jridgewell/trace-mapping/LICENSE"
   },
+  "@koozaki/romaji-conv@2.0.31": {
+    "licenses": "MIT",
+    "repository": "https://github.com/koozaki/romaji-conv",
+    "publisher": "Kojiro Ozaki",
+    "email": "koujirou0111@gmail.com",
+    "url": "https://koozaki.com/",
+    "path": "/Users//Git/archives-ver-3-series-web/node_modules/@koozaki/romaji-conv",
+    "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@koozaki/romaji-conv/LICENSE"
+  },
   "@mui/core-downloads-tracker@6.4.9": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
@@ -1357,6 +1366,14 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/combined-stream",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/combined-stream/License"
   },
+  "commander@13.1.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/tj/commander.js",
+    "publisher": "TJ Holowaychuk",
+    "email": "tj@vision-media.ca",
+    "path": "/Users//Git/archives-ver-3-series-web/node_modules/@koozaki/romaji-conv/node_modules/commander",
+    "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@koozaki/romaji-conv/node_modules/commander/LICENSE"
+  },
   "commander@2.20.3": {
     "licenses": "MIT",
     "repository": "https://github.com/tj/commander.js",
@@ -1720,6 +1737,12 @@
     "url": "http://blog.izs.me/",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/fs.realpath",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/fs.realpath/LICENSE"
+  },
+  "fsevents@2.3.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/fsevents/fsevents",
+    "path": "/Users//Git/archives-ver-3-series-web/node_modules/fsevents",
+    "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/fsevents/LICENSE"
   },
   "function-bind@1.1.2": {
     "licenses": "MIT",
@@ -2153,7 +2176,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/bundler-plugin-core/node_modules/magic-string",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/bundler-plugin-core/node_modules/magic-string/LICENSE"
   },
-  "map@3.0.0": {
+  "map@3.2.0": {
     "licenses": "UNLICENSED",
     "private": true,
     "path": "/Users//Git/archives-ver-3-series-web",

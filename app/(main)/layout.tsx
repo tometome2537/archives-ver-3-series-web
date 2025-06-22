@@ -168,34 +168,31 @@ export default function RootLayout({
                     label: item.name + (pickup ? " ♪" : ""),
                     value: item.id ?? "",
                     filterMatchText:
-                        (item.rubyJaHiragana ?? "") +
-                        (item.rubyEn ?? "") +
-                        (item.id ?? ""),
+                        (item.rubyJaHiragana ?? "") + (item.id ?? ""),
                     icon:
-                        item.category === "person" ? (
-                            <PersonIcon />
-                        ) : (
+                        item.category === "person" ? // <PersonIcon />
+                        undefined : (
                             <GroupsIcon />
                         ),
-                    imgSrc: (() => {
-                        try {
-                            const YouTubeAccount: YouTubeAccount | undefined =
-                                YouTubeAccounts.find((vvv) => {
-                                    // vvv.entityIdが存在し、item.idが含まれているかを確認する
-                                    if (vvv.entityId !== null) {
-                                        return vvv.entityId
-                                            .split(/ , |,| ,|, /)
-                                            .includes(item.id ?? "");
-                                    }
-                                });
-                            const data = YouTubeAccount
-                                ? JSON.parse(YouTubeAccount.apiData ?? "")
-                                : undefined;
-                            return data.snippet.thumbnails.default.url;
-                        } catch (error) {
-                            return undefined;
-                        }
-                    })(),
+                    // imgSrc: (() => {
+                    //     try {
+                    //         const YouTubeAccount: YouTubeAccount | undefined =
+                    //             YouTubeAccounts.find((vvv) => {
+                    //                 // vvv.entityIdが存在し、item.idが含まれているかを確認する
+                    //                 if (vvv.entityId !== null) {
+                    //                     return vvv.entityId
+                    //                         .split(/ , |,| ,|, /)
+                    //                         .includes(item.id ?? "");
+                    //                 }
+                    //             });
+                    //         const data = YouTubeAccount
+                    //             ? JSON.parse(YouTubeAccount.apiData ?? "")
+                    //             : undefined;
+                    //         return data.snippet.thumbnails.default.url;
+                    //     } catch (error) {
+                    //         return undefined;
+                    //     }
+                    // })(),
 
                     categoryId:
                         item.category === "person" ? "actor" : "organization",
@@ -375,31 +372,31 @@ export default function RootLayout({
             // },
         ];
 
-        // if (musicKit.instance?.isAuthorized) {
-        //     list.push({
-        //         value: "AppleMusic",
-        //         icon: <CalendarMonthIcon />,
-        //         label: "Apple Music",
-        //         scrollTo: 0,
-        //         children: (
-        //             <AppleMusicLibrary
-        //                 key="AppleMusic"
-        //                 inputValue={inputValue}
-        //             />
-        //         ),
-        //         onClick: () => {
-        //             setAvailableCategoryIds([
-        //                 "",
-        //                 "actor",
-        //                 "organization",
-        //                 "musicArtistName",
-        //                 "musicTitle",
-        //             ]);
-        //             setLimitSearchCategory([]);
-        //             setFixedOptionValues([]);
-        //         },
-        //     });
-        // }
+        if (musicKit.instance?.isAuthorized) {
+            list.push({
+                value: "AppleMusic",
+                icon: <CalendarMonthIcon />,
+                label: "Apple Music",
+                scrollTo: 0,
+                children: (
+                    <AppleMusicLibrary
+                        key="AppleMusic"
+                        inputValue={inputValue}
+                    />
+                ),
+                onClick: () => {
+                    setAvailableCategoryIds([
+                        "",
+                        "actor",
+                        "organization",
+                        "musicArtistName",
+                        "musicTitle",
+                    ]);
+                    setLimitSearchCategory([]);
+                    setFixedOptionValues([]);
+                },
+            });
+        }
 
         list.map((item, index) => {
             if (typeof window !== "undefined") {

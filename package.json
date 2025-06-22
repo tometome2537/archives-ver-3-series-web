@@ -1,12 +1,13 @@
 {
   "name": "map",
-  "version": "3.1.0",
+  "version": "3.2.0",
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
     "start": "next start",
-    "api_tome_create": "openapi-generator generate -i ./src/openapi-client/api-node-tometome-openapi.yaml -g typescript-fetch -o ./src/openapi-client/api-node-tometome"
+    "api_tome_create": "openapi-generator generate -i ./src/openapi-client/api-node-tometome-openapi.yaml -g typescript-fetch -o ./src/openapi-client/api-node-tometome",
+    "create_license": "npx license-checker --json > app/license/licenses.json"
   },
   "engines": {
     "node": ">=22.0.0"
@@ -14,6 +15,7 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
+    "@koozaki/romaji-conv": "^2.0.31",
     "@mui/icons-material": "^6.4.9",
     "@mui/material": "^6.4.9",
     "@mui/x-date-pickers": "^7.28.0",

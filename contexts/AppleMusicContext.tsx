@@ -245,8 +245,8 @@ export const AppleMusicProvider: React.FC<{ children: React.ReactNode }> = ({
         document.addEventListener("musickitloaded", async () => {
             // tokenを取得
             const url =
-                "https://api-py-tometome-org-254186269366.us-central1.run.app/jwt/apple/music/map";
-            // const url = "http://127.0.0.1:8000/applemusictoken/map";
+                "https://api.node.tometome.giize.com/jwt/apple/music/map";
+            // const url = "http://127.0.0.1:8000/jwt/apple/music/map";
             const response = await fetch(url);
             if (!response.ok) {
                 throw "Failed to fetch Apple Music Token";

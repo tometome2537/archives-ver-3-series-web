@@ -73,6 +73,7 @@ export default async function RootLayout({
 
 export async function generateMetadata(): Promise<Metadata> {
     return {
+        metadataBase: new URL("https://music-archives-project.vercel.app"),
         title: title,
         description: description,
         icons: {

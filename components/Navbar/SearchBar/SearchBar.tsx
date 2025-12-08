@@ -9,6 +9,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useTheme } from "@mui/material/styles";
 import { darken, lighten, styled } from "@mui/system";
+// import { DatePicker } from "@mui/x-date-pickers";
+// import dayjs from "dayjs";
 import type { SyntheticEvent } from "react";
 import * as React from "react";
 import { type Dispatch, type SetStateAction, useState } from "react";
@@ -890,7 +892,7 @@ export default function SearchBar(props: SearchBarProps) {
                             onChange={(newValue) =>
                                 setDialogDatePickerValue({
                                     ...dialogDatePickerValue,
-                                    value: newValue, // 新しい日付の値に更新
+                                    value: newValue?.toString() ?? "", // 新しい日付の値に更新
                                 })
                             }
                         /> */}

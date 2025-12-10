@@ -271,13 +271,27 @@ export const AppleMusicProvider: React.FC<{ children: React.ReactNode }> = ({
                         // Ideally this image has a square aspect ratio and is 152px by 152px (2x image content to support Retina Displays). Display dimensions are 76px by 76px.
                     },
                 });
-            } catch (err) {
+            } catch {
                 // Handle configuration error
             }
 
             // MusicKit instance is available
+            const instance = window.MusicKit.getInstance();
             setData({
-                instance: window.MusicKit.getInstance(),
+                instance: instance,
+            });
+
+            // 認証状態が変わったときの処理
+            instance.addEventListener("authorizationStatusDidChange", () => {
+                // console.log("authorizationStatusDidChange fired");
+                // console.log("isAuthorized:", instance.isAuthorized);
+                // console.log("previewOnly:", instance.previewOnly);
+
+                // 認証状態が更新されたので、インスタンスを再度取得して状態を更新
+                setData((prevData) => ({
+                    ...prevData,
+                    instance: window.MusicKit.getInstance(),
+                }));
             });
         });
     }, []);

@@ -25,10 +25,11 @@ export default function AppleMusicLibrary(props: AppleMusicLibraryProps) {
             const fetchLibrary = async () => {
                 if (!musicKit.instance) return;
                 const r: ResponseMusicApi = await musicKit.instance.api.music(
-                    "/v1/catalog/jp/search",
+                    `/v1/catalog/${musicKit.instance?.storefrontCountryCode}/search`,
                     {
                         term: props.inputValue[0].value,
                         types: AppleMusicTypes.albums,
+                        // types: AppleMusicTypes.songs,
                         limit: 12,
                         sort: "-releaseDate",
                     },

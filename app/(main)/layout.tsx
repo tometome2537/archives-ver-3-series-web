@@ -353,23 +353,18 @@ export default function RootLayout({
                     setSearchSuggestion(result);
                 },
             },
-            {
-                value: "liveInformation",
-                icon: <CalendarMonthIcon />,
-                label: "LIVE情報(β版)",
-                scrollTo: 0,
-                children: (
-                    <LiveInformationTab
-                        key="liveInformation"
-                        playerItem={playerItem}
-                    />
-                ),
-                onClick: () => {
-                    setAvailableCategoryIds([]);
-                    setLimitSearchCategory([]);
-                    setFixedOptionValues([]);
-                },
-            },
+            // {
+            //     value: "liveInformation",
+            //     icon: <CalendarMonthIcon />,
+            //     label: "LIVE情報(β版)",
+            //     scrollTo: 0,
+            //     children: <LiveInformationTab key="liveInformation" />,
+            //     onClick: () => {
+            //         setAvailableCategoryIds([]);
+            //         setLimitSearchCategory([]);
+            //         setFixedOptionValues([]);
+            //     },
+            // },
         ];
 
         if (musicKit.instance?.isAuthorized) {

@@ -15,6 +15,7 @@ import { OfficialLinkSection } from "./SideMenuSections/OfficialLinkSection";
 import { ProjectLinkSection } from "./SideMenuSections/ProjectLinkSection";
 import { SpecialThanksSection } from "./SideMenuSections/SpecialThanksSection";
 import { ThemeSection } from "./SideMenuSections/ThemeSection";
+import { AppleMusicSection } from "./SideMenuSections/AppleMusicSection";
 
 interface SideMenuProps {
     open: boolean;
@@ -29,6 +30,9 @@ export default function SideMenu({ open, onClose }: SideMenuProps) {
         <Drawer anchor={"left"} open={open} onClose={onClose}>
             <List>
                 <HeaderSection onClose={onClose} />
+                <Divider sx={{ borderBottomWidth: 3 }} />
+
+                <AppleMusicSection theme={theme} />
                 <Divider sx={{ borderBottomWidth: 3 }} />
 
                 <OfficialLinkSection theme={theme} />

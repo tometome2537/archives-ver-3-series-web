@@ -282,6 +282,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
                 fetchReleases("UC3tYTei6p55gWg2rr0g4ybQ");
                 return true;
             }
+            return false;
         });
         if (props.inputValue.length === 0) {
             setArtistYTM(null);
@@ -298,12 +299,9 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
         return (
             <div>
                 VideoViewTemporary Error: {error}
-                <div
-                    onClick={fetchEvents} // クリックイベント
-                    onKeyDown={fetchEvents} // キーボードイベント
-                >
+                <button type="button" onClick={fetchEvents}>
                     再読み込み
-                </div>
+                </button>
             </div>
         );
     }

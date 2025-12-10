@@ -2,7 +2,7 @@ import { Avatar, Box, Chip, Typography } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
 import Linkify from "linkify-react";
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import Link from "./Link";
 import "linkify-plugin-hashtag";
 import "linkify-plugin-mention";
@@ -66,6 +66,10 @@ const LinkRenderer = ({
     content: string;
 }) => {
     const apiData = useApiDataContext();
+    const [label, setLabel] = useState<string>(content);
+
+    let videoId = "";
+    let isYouTubeLink = false;
 
     try {
         const url = new URL(content);
@@ -81,46 +85,35 @@ const LinkRenderer = ({
             url.hostname === "youtu.be" ||
             (/youtube.com/i.test(url.hostname) && pathSegments[0] === "watch")
         ) {
-            const videoId =
+            isYouTubeLink = true;
+            videoId =
                 url.hostname === "youtu.be"
                     ? pathSegments[0]
                     : (url.searchParams.get("v") ?? "");
-
-            const [label, setLabel] = useState<string>(content);
-
-            // 動画タイトルを取得
-            useState(() => {
-                // apiData.YdbVideo.getDataWithParams({
-                //     videoids: videoId,
-                // })
-                //     .then((r) => {
-                //         const title =
-                //             r?.videos[0]?.videoYouTubeApi?.snippet.title;
-                //         if (title) setLabel(title);
-                //     })
-                //     .catch(console.error);
-            });
-
-            return (
-                <Link {...attributes}>
-                    <Chip
-                        size="small"
-                        avatar={<Avatar src="/yt_logo.png" />}
-                        label={label || content}
-                    />
-                </Link>
-            );
         }
 
         // その他のソーシャルメディアリンク処理
         const avatarSrc = getLogoPath(url.hostname);
-        if (avatarSrc) {
+        if (avatarSrc && !isYouTubeLink) {
             return (
                 <Link {...attributes}>
                     <Chip
                         size="small"
                         avatar={<Avatar src={avatarSrc} />}
                         label={userId}
+                    />
+                </Link>
+            );
+        }
+
+        // YouTube リンク処理
+        if (isYouTubeLink) {
+            return (
+                <Link {...attributes}>
+                    <Chip
+                        size="small"
+                        avatar={<Avatar src="/yt_logo.png" />}
+                        label={label || content}
                     />
                 </Link>
             );

@@ -217,6 +217,8 @@ export default function SearchBar(props: SearchBarProps) {
             if (h2) {
                 return h2;
             }
+
+            return false;
         });
     }
 

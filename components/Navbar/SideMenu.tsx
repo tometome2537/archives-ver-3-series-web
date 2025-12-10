@@ -1,7 +1,7 @@
 "use client";
 
 import { useColorModeContext } from "@/contexts/ThemeContext";
-import packageJson from "@/package.json" assert { type: "json" };
+import packageJson from "@/package.json";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";

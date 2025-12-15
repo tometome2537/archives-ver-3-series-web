@@ -148,14 +148,14 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@babel/types",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@babel/types/LICENSE"
   },
-  "@biomejs/biome@2.3.8": {
+  "@biomejs/biome@2.3.9": {
     "licenses": "MIT OR Apache-2.0",
     "repository": "https://github.com/biomejs/biome",
     "publisher": "Emanuele Stoppa",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@biomejs/biome",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@biomejs/biome/LICENSE-APACHE"
   },
-  "@biomejs/cli-darwin-arm64@2.3.8": {
+  "@biomejs/cli-darwin-arm64@2.3.9": {
     "licenses": "MIT OR Apache-2.0",
     "repository": "https://github.com/biomejs/biome",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@biomejs/cli-darwin-arm64"
@@ -318,7 +318,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@jridgewell/trace-mapping",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@jridgewell/trace-mapping/LICENSE"
   },
-  "@koozaki/romaji-conv@2.0.32": {
+  "@koozaki/romaji-conv@2.0.34": {
     "licenses": "MIT",
     "repository": "https://github.com/koozaki/romaji-conv",
     "publisher": "Kojiro Ozaki",
@@ -383,21 +383,21 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/utils",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/utils/LICENSE"
   },
-  "@mui/x-date-pickers@8.21.0": {
+  "@mui/x-date-pickers@8.22.0": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/mui-x",
     "publisher": "MUI Team",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/x-date-pickers",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/x-date-pickers/LICENSE"
   },
-  "@mui/x-internals@8.21.0": {
+  "@mui/x-internals@8.22.0": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/mui-x",
     "publisher": "MUI Team",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/x-internals",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/x-internals/LICENSE"
   },
-  "@next/env@16.0.8": {
+  "@next/env@16.0.10": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "publisher": "Next.js Team",
@@ -405,13 +405,13 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@next/env",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@next/env/README.md"
   },
-  "@next/swc-darwin-arm64@16.0.8": {
+  "@next/swc-darwin-arm64@16.0.10": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@next/swc-darwin-arm64",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@next/swc-darwin-arm64/README.md"
   },
-  "@next/third-parties@16.0.8": {
+  "@next/third-parties@16.0.10": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@next/third-parties",
@@ -684,28 +684,28 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@rollup/rollup-darwin-arm64",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@rollup/rollup-darwin-arm64/README.md"
   },
-  "@sentry-internal/browser-utils@10.29.0": {
+  "@sentry-internal/browser-utils@10.30.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry-internal/browser-utils",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry-internal/browser-utils/LICENSE"
   },
-  "@sentry-internal/feedback@10.29.0": {
+  "@sentry-internal/feedback@10.30.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry-internal/feedback",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry-internal/feedback/LICENSE"
   },
-  "@sentry-internal/replay-canvas@10.29.0": {
+  "@sentry-internal/replay-canvas@10.30.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry-internal/replay-canvas",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry-internal/replay-canvas/LICENSE"
   },
-  "@sentry-internal/replay@10.29.0": {
+  "@sentry-internal/replay@10.30.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
@@ -719,7 +719,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/babel-plugin-component-annotate",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/babel-plugin-component-annotate/LICENSE"
   },
-  "@sentry/browser@10.29.0": {
+  "@sentry/browser@10.30.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
@@ -733,62 +733,62 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/bundler-plugin-core",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/bundler-plugin-core/LICENSE"
   },
-  "@sentry/cli-darwin@2.58.2": {
-    "licenses": "BSD-3-Clause",
+  "@sentry/cli-darwin@2.58.4": {
+    "licenses": "FSL-1.1-MIT",
     "repository": "https://github.com/getsentry/sentry-cli",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/cli-darwin",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/cli-darwin/README.md"
   },
-  "@sentry/cli@2.58.2": {
-    "licenses": "BSD-3-Clause",
+  "@sentry/cli@2.58.4": {
+    "licenses": "FSL-1.1-MIT",
     "repository": "https://github.com/getsentry/sentry-cli",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/cli",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/cli/LICENSE"
   },
-  "@sentry/core@10.29.0": {
+  "@sentry/core@10.30.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/core",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/core/LICENSE"
   },
-  "@sentry/nextjs@10.29.0": {
+  "@sentry/nextjs@10.30.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/nextjs",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/nextjs/LICENSE"
   },
-  "@sentry/node-core@10.29.0": {
+  "@sentry/node-core@10.30.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/node-core",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/node-core/LICENSE"
   },
-  "@sentry/node@10.29.0": {
+  "@sentry/node@10.30.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/node",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/node/LICENSE"
   },
-  "@sentry/opentelemetry@10.29.0": {
+  "@sentry/opentelemetry@10.30.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/opentelemetry",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/opentelemetry/LICENSE"
   },
-  "@sentry/react@10.29.0": {
+  "@sentry/react@10.30.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/react",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/react/LICENSE"
   },
-  "@sentry/vercel-edge@10.29.0": {
+  "@sentry/vercel-edge@10.30.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
@@ -852,7 +852,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@types/mysql",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@types/mysql/LICENSE"
   },
-  "@types/node@24.10.2": {
+  "@types/node@24.10.4": {
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@types/node",
@@ -1180,7 +1180,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/balanced-match",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/balanced-match/LICENSE.md"
   },
-  "baseline-browser-mapping@2.9.5": {
+  "baseline-browser-mapping@2.9.7": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/web-platform-dx/baseline-browser-mapping",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/baseline-browser-mapping",
@@ -1552,7 +1552,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/emoji-regex",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/emoji-regex/LICENSE-MIT.txt"
   },
-  "enhanced-resolve@5.18.3": {
+  "enhanced-resolve@5.18.4": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/enhanced-resolve",
     "publisher": "Tobias Koppers @sokra",
@@ -2200,7 +2200,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/bundler-plugin-core/node_modules/magic-string",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/bundler-plugin-core/node_modules/magic-string/LICENSE"
   },
-  "map@3.2.1": {
+  "map@3.3.0": {
     "licenses": "UNLICENSED",
     "private": true,
     "path": "/Users//Git/archives-ver-3-series-web",
@@ -2314,7 +2314,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/neo-async",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/neo-async/LICENSE"
   },
-  "next@16.0.8": {
+  "next@16.0.10": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/next",
@@ -2627,7 +2627,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/randombytes",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/randombytes/LICENSE"
   },
-  "react-dom@19.2.1": {
+  "react-dom@19.2.3": {
     "licenses": "MIT",
     "repository": "https://github.com/facebook/react",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/react-dom",
@@ -2654,7 +2654,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/hoist-non-react-statics/node_modules/react-is",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/hoist-non-react-statics/node_modules/react-is/LICENSE"
   },
-  "react-is@19.2.1": {
+  "react-is@19.2.3": {
     "licenses": "MIT",
     "repository": "https://github.com/facebook/react",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/react-is",
@@ -2674,7 +2674,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/react-youtube",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/react-youtube/README.md"
   },
-  "react@19.2.1": {
+  "react@19.2.3": {
     "licenses": "MIT",
     "repository": "https://github.com/facebook/react",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/react",
@@ -3046,7 +3046,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/supports-preserve-symlinks-flag",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/supports-preserve-symlinks-flag/LICENSE"
   },
-  "swr@2.3.7": {
+  "swr@2.3.8": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/swr",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/swr",
@@ -3059,7 +3059,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/tapable",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/tapable/LICENSE"
   },
-  "terser-webpack-plugin@5.3.15": {
+  "terser-webpack-plugin@5.3.16": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/terser-webpack-plugin",
     "publisher": "webpack Contrib Team",

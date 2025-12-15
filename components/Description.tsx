@@ -34,7 +34,7 @@ const getLogoPath = (hostname: string): string => {
 
 // YouTube動画タイトルフェッチ用フック
 const useYouTubeVideoTitle = (videoId: string) => {
-    const apiData = useApiDataContext();
+    // const apiData = useApiDataContext();
     const [label, setLabel] = useState<string>("");
 
     const fetchVideo = async () => {
@@ -65,9 +65,6 @@ const LinkRenderer = ({
     attributes: { [attr: string]: React.ReactNode };
     content: string;
 }) => {
-    const apiData = useApiDataContext();
-    const [label, setLabel] = useState<string>(content);
-
     let videoId = "";
     let isYouTubeLink = false;
 
@@ -76,11 +73,7 @@ const LinkRenderer = ({
         const pathSegments = url.pathname
             .split("/")
             .filter((segment) => segment);
-        const userId = pathSegments[0]
-            ? pathSegments[0].replace("@", "")
-            : content;
 
-        // YouTube動画リンク処理
         if (
             url.hostname === "youtu.be" ||
             (/youtube.com/i.test(url.hostname) && pathSegments[0] === "watch")
@@ -92,34 +85,31 @@ const LinkRenderer = ({
                     : (url.searchParams.get("v") ?? "");
         }
 
-        // その他のソーシャルメディアリンク処理
-        const avatarSrc = getLogoPath(url.hostname);
-        if (avatarSrc && !isYouTubeLink) {
-            return (
-                <Link {...attributes}>
-                    <Chip
-                        size="small"
-                        avatar={<Avatar src={avatarSrc} />}
-                        label={userId}
-                    />
-                </Link>
-            );
-        }
-
-        // YouTube リンク処理
         if (isYouTubeLink) {
             return (
                 <Link {...attributes}>
                     <Chip
                         size="small"
                         avatar={<Avatar src="/yt_logo.png" />}
-                        label={label || content}
+                        label={content}
                     />
                 </Link>
             );
         }
 
-        // 一般的なリンク
+        const avatarSrc = getLogoPath(url.hostname);
+        if (avatarSrc) {
+            return (
+                <Link {...attributes}>
+                    <Chip
+                        size="small"
+                        avatar={<Avatar src={avatarSrc} />}
+                        label={content}
+                    />
+                </Link>
+            );
+        }
+
         return <Link {...attributes}>{content}</Link>;
     } catch {
         return <Link {...attributes}>{content}</Link>;

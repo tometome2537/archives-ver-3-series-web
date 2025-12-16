@@ -246,7 +246,6 @@ export const AppleMusicProvider: React.FC<{ children: React.ReactNode }> = ({
             // tokenを取得
             const url =
                 "https://api.node.tometome.giize.com/jwt/apple/music/map";
-            // const url = "http://127.0.0.1:8000/jwt/apple/music/map";
             const response = await fetch(url);
             if (!response.ok) {
                 throw "Failed to fetch Apple Music Token";
@@ -256,14 +255,7 @@ export const AppleMusicProvider: React.FC<{ children: React.ReactNode }> = ({
             // Call configure() to configure an instance of MusicKit on the Web.
             try {
                 await window.MusicKit.configure({
-                    developerToken:
-                        process.env.NEXT_PUBLIC_STAGE === "dev"
-                            ? // 開発用のtokenには有効期限があります。
-                              // 有効期限が切れた場合は、とめとめまで報告してください。再発行します。
-                              // 本番用のtokenは開発環境では動作しません。
-                              // 2025-07-29 03:44:03 まで有効
-                              "eyJhbGciOiJFUzI1NiIsImtpZCI6IjVONDNYNlM5QVYiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJYNjc3MkwyVDc5IiwiZXhwIjoxNzUzNzYwNjQzLCJpYXQiOjE3MzgyMDg2NDMsIm9yaWdpbiI6WyJodHRwOi8vbG9jYWxob3N0OjMwMDAiXX0.qyiyRqQCcA75br0hlcuxa6Kvv8rI4jLQqDvqVF6ka6rqmdy4STOl3sJ6lYMLehrzBsLrLgyR4Lhc9nkDAIh68Q"
-                            : tokenJson.token,
+                    developerToken: tokenJson.token,
                     app: {
                         name: "ぷらそにかアーカイブス",
                         build: "2025.1.30",

@@ -5,13 +5,25 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import AppleMusicIcon from "@/icon/AppleMusicIcon";
 import { useAppleMusic } from "@/contexts/AppleMusicContext";
+import { useEffect } from "react";
 
 interface AppleMusicSectionProps {
     theme: Theme;
+    setMenu: (value: boolean) => void;
 }
 
-export function AppleMusicSection({ theme }: AppleMusicSectionProps) {
+export function AppleMusicSection({ theme, setMenu }: AppleMusicSectionProps) {
     const musicKit = useAppleMusic();
+
+    useEffect(() => {
+        if (!musicKit.isReady || !musicKit.instance) return;
+
+        if (musicKit.isAuthorizationStatusDidChange) {
+            setMenu(false);
+            musicKit.isAuthorizationStatusDidChange = false;
+        }
+    }, [musicKit, setMenu]);
+
     return (
         <ListItem disablePadding>
             {musicKit.instance?.isAuthorized ? (

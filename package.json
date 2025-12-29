@@ -7,8 +7,7 @@
     "build": "next build",
     "start": "next start",
     "api_tome_create": "openapi-generator generate -i ./src/openapi-client/api-node-tometome-openapi.yaml -g typescript-fetch -o ./src/openapi-client/api-node-tometome",
-    "create_license": "npx license-checker --json > app/license/licenses.json",
-    "license": "npx license-checker --json > app/license/licenses.json"
+    "create_license": "npx license-checker --json > app/license/licenses.json"
   },
   "engines": {
     "node": ">=24.0.0"
@@ -19,9 +18,10 @@
     "@koozaki/romaji-conv": "^2.0.34",
     "@mui/icons-material": "^7.3.6",
     "@mui/material": "^7.3.6",
-    "@mui/x-date-pickers": "^8.22.0",
-    "@next/third-parties": "^16.0.10",
-    "@sentry/nextjs": "^10.30.0",
+    "@mui/material-nextjs": "^7.3.6",
+    "@mui/x-date-pickers": "^8.23.0",
+    "@next/third-parties": "^16.1.1",
+    "@sentry/nextjs": "^10.32.1",
     "axios": "^1.13.2",
     "cal-parser": "^1.0.2",
     "dayjs": "^1.11.19",
@@ -30,7 +30,7 @@
     "linkify-plugin-mention": "^4.3.2",
     "linkify-react": "^4.3.2",
     "linkifyjs": "^4.3.2",
-    "next": "^16.0.10",
+    "next": "^16.1.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
     "react-icons": "^5.5.0",

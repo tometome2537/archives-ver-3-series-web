@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 
 /* ドキュメント https://js-cdn.music.apple.com/musickit/v3/docs/index.html?path=/story/get-started--page */
 
@@ -14,12 +14,14 @@ export type ResponseMusicApi = {
         };
     };
 };
+
 export enum AppleMusicTypes {
     albums = "albums",
     artists = "artists",
     songs = "songs",
     "library-albums" = "library-albums",
 }
+
 interface MusicKitApi {
     music(
         path: string,
@@ -132,24 +134,37 @@ interface NowPlayingItem {
     keyURLs: KeyURLs;
 }
 
+interface AppleMusicEvents {
+    // 権限の状態が変更される直前に発生。
+    authorizationStatusWillChange: undefined;
+    // 権限の状態が実際に変更された後に発生。
+    authorizationStatusDidChange: undefined;
+
+    nowPlayingItemDidChange: { item: MediaItem | null };
+    queueItemsDidChange: { items: MediaItem[] };
+    audioTrackChanged: { item: MediaItem | null };
+    mediaElementCreated: { element: HTMLElement };
+    mediaItemStateDidChange: { item: MediaItem; state: string };
+    playbackStateDidChange: { nowPlayingItem: MediaItem };
+    nowPlayingItemWillChange: { item: MediaItem | null };
+    // 必要に応じて他のイベントも追加
+}
+
 interface AppleMusicInstance {
     storefrontCountryCode: string; // 国コード デフォルトは"us"
     storefrontId: string;
     changeUserStorefront(storefrontId: string): void; // storefrontの変更
 
-    // Apple Music加入者はフルで再生可能。未加入は30秒程の視聴が可能(?)
-
     // 認証状態
     isAuthorized: boolean;
     previewOnly: boolean; // 視聴のみかどうか。
     // 認証を開始
-    authorize(): void;
+    authorize(): Promise<void>;
     // 認証解除
     unauthorize(): void;
 
     // 再生
     isPlaying: boolean; // Playerが再生可能かどうか
-    // queue: Queue; // 再生キュー
     queueIsEmpty: boolean; // 再生キューが空かどうか
     setQueue(queryParameters: {
         station?: string; // stationのID
@@ -158,11 +173,11 @@ interface AppleMusicInstance {
         length?: number; // 再生する曲の数
         startPlaying?: boolean;
         musicVideo?: string;
-    }): void;
+    }): Promise<void>;
     clearQueue(): void;
     nowPlayingItem: MediaItem | undefined; // 現在再生中の曲
     nowPlayingItemIndex: number; // 現在再生中の曲のインデックス
-    play(): void;
+    play(): Promise<void>;
     pause(): void;
     stop(): void;
     currentPlaybackDuration: number; // 曲の長さ
@@ -170,10 +185,6 @@ interface AppleMusicInstance {
     currentPlaybackTime: number; // 現在の再生位置
     currentPlaybackTimeRemaining: number; // 残り再生時間
     playbackRate: number; // 再生速度
-    // playbackState: PlaybackStates; // 再生状態
-    // repeatMode: PlayerRepeatMode; // リピートモード
-    // seekSeconds: SeekSecounds | undefined; // 再生位置を指定
-    // shuffleMode: PlayerShuffleMode;
 
     videoContainerElement: HTMLElement | undefined; // ビデオコンテナ
     volume: number; // 音量
@@ -199,30 +210,42 @@ interface AppleMusicInstance {
     ): void;
 }
 
-interface AppleMusicEvents {
-    // 権限の状態が変更される直前に発生。
-    authorizationStatusWillChange: undefined;
-    // 権限の状態が実際に変更された後に発生。
-    authorizationStatusDidChange: undefined;
-
-    nowPlayingItemDidChange: { item: MediaItem | null };
-    queueItemsDidChange: { items: MediaItem[] };
-    audioTrackChanged: { item: MediaItem | null };
-    mediaElementCreated: { element: HTMLElement };
-    mediaItemStateDidChange: { item: MediaItem; state: string };
-    playbackStateDidChange: { nowPlayingItem: MediaItem };
-    nowPlayingItemWillChange: { item: MediaItem | null };
-    // 必要に応じて他のイベントも追加
+/**
+ * window.MusicKit の型を明示（TSのany化を防ぐ）
+ */
+declare global {
+    interface Window {
+        MusicKit?: {
+            configure(config: {
+                developerToken: string;
+                app: {
+                    name: string;
+                    build: string;
+                    icon?: string;
+                };
+            }): Promise<void>;
+            getInstance(): AppleMusicInstance;
+        };
+    }
 }
 
 // MusicKit の型と設定
 interface AppleMusicContextProps {
     // インスタンス
     instance: AppleMusicInstance | null;
+    // 初期化済みフラグ（UI側で「読み込み中」制御に使える）
+    isReady: boolean;
+    // ログイン直後にtrueになるフラグ
+    isAuthorizationStatusDidChange: boolean;
+    // 初期化エラー（必要ならUIに出す）
+    error: string | null;
 }
 
 const AppleMusicContext = createContext<AppleMusicContextProps>({
     instance: null,
+    isReady: false,
+    isAuthorizationStatusDidChange: false,
+    error: null,
 });
 
 // Apple Musicのコンテキストプロバイダー
@@ -231,61 +254,124 @@ export const AppleMusicProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
     const [data, setData] = useState<AppleMusicContextProps>({
         instance: null,
+        isReady: false,
+        isAuthorizationStatusDidChange: false,
+        error: null,
     });
 
     useEffect(() => {
-        // MusicKitのスクリプトを読み込む
-        const script = document.createElement("script");
-        script.src = "https://js-cdn.music.apple.com/musickit/v3/musickit.js";
-        script.setAttribute("data-web-components", "");
-        script.async = true;
-        document.head.appendChild(script);
+        if (typeof window === "undefined") return;
 
-        // MusicKitのロードが完了したら。
-        document.addEventListener("musickitloaded", async () => {
-            // tokenを取得
-            const url =
-                "https://api.node.tometome.giize.com/jwt/apple/music/map";
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw "Failed to fetch Apple Music Token";
-            }
-            const tokenJson: { token: string } = await response.json();
+        let cancelled = false;
 
-            // Call configure() to configure an instance of MusicKit on the Web.
+        const initializeMusicKit = async () => {
             try {
+                // すでに MusicKit がロード済みならイベントを待たずに初期化へ
+                if (!window.MusicKit) {
+                    // MusicKitのスクリプトを読み込む（重複追加を避ける）
+                    const existing = document.querySelector(
+                        'script[src="https://js-cdn.music.apple.com/musickit/v3/musickit.js"]',
+                    );
+                    if (!existing) {
+                        const script = document.createElement("script");
+                        script.src =
+                            "https://js-cdn.music.apple.com/musickit/v3/musickit.js";
+                        script.setAttribute("data-web-components", "");
+                        script.async = true;
+                        document.head.appendChild(script);
+                    }
+
+                    // musickitloaded を一度だけ待つ
+                    await new Promise<void>((resolve) => {
+                        document.addEventListener(
+                            "musickitloaded",
+                            () => resolve(),
+                            { once: true },
+                        );
+                    });
+                }
+
+                if (!window.MusicKit) {
+                    throw new Error("MusicKit failed to load");
+                }
+
+                // tokenを取得
+                const url =
+                    "https://api.node.tometome.giize.com/jwt/apple/music/map";
+                const response = await fetch(url);
+                if (!response.ok) {
+                    throw new Error("Failed to fetch Apple Music Token");
+                }
+                const tokenJson: { token: string } = await response.json();
+
+                // configure（複数回呼ぶと事故りやすいので、できるだけ一度だけ）
                 await window.MusicKit.configure({
                     developerToken: tokenJson.token,
                     app: {
                         name: "ぷらそにかアーカイブス",
                         build: "2025.1.30",
-                        icon: "https://music-archives-project.vercel.app/icon_1024x1024.jpg", // URL
-                        // Ideally this image has a square aspect ratio and is 152px by 152px (2x image content to support Retina Displays). Display dimensions are 76px by 76px.
+                        icon: "https://music-archives-project.vercel.app/icon_1024x1024.jpg",
                     },
                 });
-            } catch {
-                // Handle configuration error
+
+                const instance = window.MusicKit.getInstance();
+
+                if (cancelled) return;
+
+                setData({
+                    instance,
+                    isReady: true,
+                    isAuthorizationStatusDidChange: false,
+                    error: null,
+                });
+
+                // 認証状態が変わったときの処理
+                const onAuthDidChange = () => {
+                    if (cancelled) return;
+                    // インスタンス参照は基本変わらないが、確実に最新参照を入れておく
+                    setData((prev) => ({
+                        ...prev,
+                        instance: window.MusicKit!.getInstance(),
+                        isAuthorizationStatusDidChange: true,
+                    }));
+                };
+
+                instance.addEventListener(
+                    "authorizationStatusDidChange",
+                    onAuthDidChange,
+                );
+
+                // クリーンアップでイベント解除
+                return () => {
+                    instance.removeEventListener(
+                        "authorizationStatusDidChange",
+                        onAuthDidChange,
+                    );
+                };
+            } catch (e) {
+                if (cancelled) return;
+                setData({
+                    instance: null,
+                    isReady: false,
+                    isAuthorizationStatusDidChange: false,
+                    error:
+                        e instanceof Error
+                            ? e.message
+                            : "Unknown initialization error",
+                });
             }
+        };
 
-            // MusicKit instance is available
-            const instance = window.MusicKit.getInstance();
-            setData({
-                instance: instance,
-            });
+        let cleanupFn: void | (() => void);
 
-            // 認証状態が変わったときの処理
-            instance.addEventListener("authorizationStatusDidChange", () => {
-                // console.log("authorizationStatusDidChange fired");
-                // console.log("isAuthorized:", instance.isAuthorized);
-                // console.log("previewOnly:", instance.previewOnly);
+        (async () => {
+            cleanupFn = await initializeMusicKit();
+        })();
 
-                // 認証状態が更新されたので、インスタンスを再度取得して状態を更新
-                setData((prevData) => ({
-                    ...prevData,
-                    instance: window.MusicKit.getInstance(),
-                }));
-            });
-        });
+        return () => {
+            cancelled = true;
+            if (typeof cleanupFn === "function") cleanupFn();
+        };
     }, []);
 
     return (
@@ -298,10 +384,5 @@ export const AppleMusicProvider: React.FC<{ children: React.ReactNode }> = ({
 // コンテキストの利用
 export const useAppleMusic = (): AppleMusicContextProps => {
     const context = useContext(AppleMusicContext);
-    if (!context) {
-        throw new Error(
-            "useAppleMusic must be used within a AppleMusicProvider",
-        );
-    }
     return context;
 };

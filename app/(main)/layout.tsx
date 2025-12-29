@@ -29,6 +29,7 @@ import react, { Fragment } from "react";
 import { useCallback } from "react";
 import { useAppleMusic } from "@/contexts/AppleMusicContext";
 import AppleMusicLibrary from "@/components/MainTabs/AppleMusicLibrary";
+import AppleMusicIcon from "@/icon/AppleMusicIcon";
 
 export default function RootLayout({
     children,
@@ -256,7 +257,7 @@ export default function RootLayout({
             // },
             {
                 value: "",
-                icon: <YouTubeIcon />,
+                icon: <YouTubeIcon sx={{ color: "rgb(236,44,46)" }} />,
                 label: "ぷらそにか",
                 scrollTo: 0,
                 children: (
@@ -367,11 +368,14 @@ export default function RootLayout({
             // },
         ];
 
-        if (musicKit.instance?.isAuthorized) {
+        if (
+            process.env.NEXT_PUBLIC_STAGE !== "prod" &&
+            musicKit.instance?.isAuthorized
+        ) {
             list.push({
                 value: "AppleMusic",
-                icon: <CalendarMonthIcon />,
-                label: "Apple Music",
+                icon: <AppleMusicIcon />,
+                label: "Apple Music(開発時のみ表示)",
                 scrollTo: 0,
                 children: (
                     <AppleMusicLibrary

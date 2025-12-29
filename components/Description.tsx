@@ -186,7 +186,7 @@ export default function Description(props: DescriptionProps) {
             onClick={() => !isExpanded && toggle()}
         >
             <Linkify
-                as="p"
+                as="span"
                 options={{
                     ...linkifyOptions,
                     target: "_blank",

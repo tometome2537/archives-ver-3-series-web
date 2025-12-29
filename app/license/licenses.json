@@ -148,14 +148,14 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@babel/types",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@babel/types/LICENSE"
   },
-  "@biomejs/biome@2.3.9": {
+  "@biomejs/biome@2.3.10": {
     "licenses": "MIT OR Apache-2.0",
     "repository": "https://github.com/biomejs/biome",
     "publisher": "Emanuele Stoppa",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@biomejs/biome",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@biomejs/biome/LICENSE-APACHE"
   },
-  "@biomejs/cli-darwin-arm64@2.3.9": {
+  "@biomejs/cli-darwin-arm64@2.3.10": {
     "licenses": "MIT OR Apache-2.0",
     "repository": "https://github.com/biomejs/biome",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@biomejs/cli-darwin-arm64"
@@ -341,6 +341,13 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/icons-material",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/icons-material/LICENSE"
   },
+  "@mui/material-nextjs@7.3.6": {
+    "licenses": "MIT",
+    "repository": "https://github.com/mui/material-ui",
+    "publisher": "MUI Team",
+    "path": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/material-nextjs",
+    "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/material-nextjs/LICENSE"
+  },
   "@mui/material@7.3.6": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
@@ -383,21 +390,21 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/utils",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/utils/LICENSE"
   },
-  "@mui/x-date-pickers@8.22.0": {
+  "@mui/x-date-pickers@8.23.0": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/mui-x",
     "publisher": "MUI Team",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/x-date-pickers",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/x-date-pickers/LICENSE"
   },
-  "@mui/x-internals@8.22.0": {
+  "@mui/x-internals@8.23.0": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/mui-x",
     "publisher": "MUI Team",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/x-internals",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@mui/x-internals/LICENSE"
   },
-  "@next/env@16.0.10": {
+  "@next/env@16.1.1": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "publisher": "Next.js Team",
@@ -405,13 +412,13 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@next/env",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@next/env/README.md"
   },
-  "@next/swc-darwin-arm64@16.0.10": {
+  "@next/swc-darwin-arm64@16.1.1": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@next/swc-darwin-arm64",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@next/swc-darwin-arm64/README.md"
   },
-  "@next/third-parties@16.0.10": {
+  "@next/third-parties@16.1.1": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@next/third-parties",
@@ -677,35 +684,35 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@rollup/pluginutils",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@rollup/pluginutils/LICENSE"
   },
-  "@rollup/rollup-darwin-arm64@4.53.3": {
+  "@rollup/rollup-darwin-arm64@4.54.0": {
     "licenses": "MIT",
     "repository": "https://github.com/rollup/rollup",
     "publisher": "Lukas Taegert-Atkinson",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@rollup/rollup-darwin-arm64",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@rollup/rollup-darwin-arm64/README.md"
   },
-  "@sentry-internal/browser-utils@10.30.0": {
+  "@sentry-internal/browser-utils@10.32.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry-internal/browser-utils",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry-internal/browser-utils/LICENSE"
   },
-  "@sentry-internal/feedback@10.30.0": {
+  "@sentry-internal/feedback@10.32.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry-internal/feedback",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry-internal/feedback/LICENSE"
   },
-  "@sentry-internal/replay-canvas@10.30.0": {
+  "@sentry-internal/replay-canvas@10.32.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry-internal/replay-canvas",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry-internal/replay-canvas/LICENSE"
   },
-  "@sentry-internal/replay@10.30.0": {
+  "@sentry-internal/replay@10.32.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
@@ -719,7 +726,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/babel-plugin-component-annotate",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/babel-plugin-component-annotate/LICENSE"
   },
-  "@sentry/browser@10.30.0": {
+  "@sentry/browser@10.32.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
@@ -746,49 +753,49 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/cli",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/cli/LICENSE"
   },
-  "@sentry/core@10.30.0": {
+  "@sentry/core@10.32.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/core",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/core/LICENSE"
   },
-  "@sentry/nextjs@10.30.0": {
+  "@sentry/nextjs@10.32.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/nextjs",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/nextjs/LICENSE"
   },
-  "@sentry/node-core@10.30.0": {
+  "@sentry/node-core@10.32.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/node-core",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/node-core/LICENSE"
   },
-  "@sentry/node@10.30.0": {
+  "@sentry/node@10.32.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/node",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/node/LICENSE"
   },
-  "@sentry/opentelemetry@10.30.0": {
+  "@sentry/opentelemetry@10.32.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/opentelemetry",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/opentelemetry/LICENSE"
   },
-  "@sentry/react@10.30.0": {
+  "@sentry/react@10.32.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/react",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/@sentry/react/LICENSE"
   },
-  "@sentry/vercel-edge@10.30.0": {
+  "@sentry/vercel-edge@10.32.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
@@ -1180,7 +1187,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/balanced-match",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/balanced-match/LICENSE.md"
   },
-  "baseline-browser-mapping@2.9.7": {
+  "baseline-browser-mapping@2.9.11": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/web-platform-dx/baseline-browser-mapping",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/baseline-browser-mapping",
@@ -1259,7 +1266,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/callsites",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/callsites/license"
   },
-  "caniuse-lite@1.0.30001760": {
+  "caniuse-lite@1.0.30001761": {
     "licenses": "CC-BY-4.0",
     "repository": "https://github.com/browserslist/caniuse-lite",
     "publisher": "Ben Briggs",
@@ -1581,7 +1588,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/es-errors",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/es-errors/LICENSE"
   },
-  "es-module-lexer@1.7.0": {
+  "es-module-lexer@2.0.0": {
     "licenses": "MIT",
     "repository": "https://github.com/guybedford/es-module-lexer",
     "publisher": "Guy Bedford",
@@ -1935,7 +1942,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/import-fresh",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/import-fresh/license"
   },
-  "import-in-the-middle@2.0.0": {
+  "import-in-the-middle@2.0.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/nodejs/import-in-the-middle",
     "publisher": "Bryan English",
@@ -2314,7 +2321,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/neo-async",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/neo-async/LICENSE"
   },
-  "next@16.0.10": {
+  "next@16.1.1": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/next",
@@ -2571,7 +2578,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/postgres-array",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/postgres-array/license"
   },
-  "postgres-bytea@1.0.0": {
+  "postgres-bytea@1.0.1": {
     "licenses": "MIT",
     "repository": "https://github.com/bendrucker/postgres-bytea",
     "publisher": "Ben Drucker",
@@ -2758,7 +2765,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/resolve",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/resolve/LICENSE"
   },
-  "rollup@4.53.3": {
+  "rollup@4.54.0": {
     "licenses": "MIT",
     "repository": "https://github.com/rollup/rollup",
     "publisher": "Rich Harris",
@@ -3148,7 +3155,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/unplugin",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/unplugin/LICENSE"
   },
-  "update-browserslist-db@1.2.2": {
+  "update-browserslist-db@1.2.3": {
     "licenses": "MIT",
     "repository": "https://github.com/browserslist/update-db",
     "publisher": "Andrey Sitnik",
@@ -3183,7 +3190,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/validate-npm-package-license",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/validate-npm-package-license/LICENSE"
   },
-  "watchpack@2.4.4": {
+  "watchpack@2.5.0": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/watchpack",
     "publisher": "Tobias Koppers @sokra",
@@ -3213,7 +3220,7 @@
     "path": "/Users//Git/archives-ver-3-series-web/node_modules/webpack-virtual-modules",
     "licenseFile": "/Users//Git/archives-ver-3-series-web/node_modules/webpack-virtual-modules/LICENSE"
   },
-  "webpack@5.103.0": {
+  "webpack@5.104.1": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/webpack",
     "publisher": "Tobias Koppers @sokra",

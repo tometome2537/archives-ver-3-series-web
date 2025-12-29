@@ -27,19 +27,21 @@ export default function Album(props: AlbumProps) {
             }}
             onClick={props.onClick}
         >
-            <Image
-                key={props.imgSrc}
-                src={props.imgSrc ?? ""}
-                alt={props.title ?? ""}
-                width={160} // アスペクト比のための幅
-                height={160} // アスペクト比のための高さ
-                style={{
-                    width: "100%",
-                    height: "auto",
-                    objectFit: "contain",
-                    borderRadius: "0.6em",
-                }}
-            />
+            {props.imgSrc && (
+                <Image
+                    key={props.imgSrc}
+                    src={props.imgSrc}
+                    alt={props.title ?? ""}
+                    width={160} // アスペクト比のための幅
+                    height={160} // アスペクト比のための高さ
+                    style={{
+                        width: "100%",
+                        height: "auto",
+                        objectFit: "contain",
+                        borderRadius: "0.6em",
+                    }}
+                />
+            )}
             <Typography
                 sx={{
                     // maxWidth: "30ch",

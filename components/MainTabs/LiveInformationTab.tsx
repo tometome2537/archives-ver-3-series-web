@@ -1,17 +1,13 @@
 import { useApiDataContext } from "@/contexts/ApiDataContext";
-import { useAppleMusic } from "@/contexts/AppleMusicContext";
+
 import { Box, Typography } from "@mui/material";
 import { Fragment } from "react";
-import { AppleMusicControls } from "../LiveInformation/AppleMusicControls";
 import { EventCard } from "../LiveInformation/EventCard";
 import type { PlayerItem } from "../PlayerView";
 
-type LiveInformationTabProps = {
-    playerItem: PlayerItem | undefined;
-};
+type LiveInformationTabProps = {};
 
 export function LiveInformationTab(props: LiveInformationTabProps) {
-    const musicKit = useAppleMusic();
     const apiData = useApiDataContext("LiveInformation");
 
     return (
@@ -26,13 +22,6 @@ export function LiveInformationTab(props: LiveInformationTabProps) {
                 ))
             ) : (
                 <Typography>イベント情報はありません</Typography>
-            )}
-            <AppleMusicControls musicKit={musicKit} />
-            {props.playerItem && (
-                <Box sx={{ mb: 3 }}>
-                    <Typography variant="h6"> 現在の再生情報;</Typography>
-                    {JSON.stringify(props.playerItem, null, 2)}
-                </Box>
             )}
         </Fragment>
     );

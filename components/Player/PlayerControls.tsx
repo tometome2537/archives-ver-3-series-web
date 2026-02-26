@@ -6,6 +6,7 @@ import IconButton from "@mui/material/IconButton";
 import { useTheme } from "@mui/material/styles";
 import Image from "next/image";
 import { PlayerType } from "./types";
+import AppleMusicIcon from "@/icon/AppleMusicIcon";
 
 type PlayerControlsProps = {
     isFullscreen: boolean;
@@ -85,16 +86,12 @@ export default function PlayerControls({
                 <IconButton
                     sx={{ marginY: 1 }}
                     component="a"
-                    href={`https://music.apple.com/jp/album/${title?.replace(" |　", "-")}/${mediaId}?i=${mediaId}`}
+                    // href={`https://music.apple.com/jp/album/${title?.replace(" |　", "-")}/${mediaId}?i=${mediaId}`}
+                    // href={`https://music.apple.com/jp/search?term=${new TextEncoder().encode(title?.replace(" |　", "-"))}`}
+                    href={`https://music.apple.com/jp/search?term=${title?.replace(" |　", "-")}`}
                     target="_blank"
                 >
-                    <Image
-                        src="/apple_music_logo.png"
-                        alt="Apple Music リンク"
-                        width={20}
-                        height={20}
-                        style={{ fontSize: "1.5rem" }}
-                    />
+                    <AppleMusicIcon />
                 </IconButton>
             )}
 

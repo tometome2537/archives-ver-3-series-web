@@ -6,6 +6,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import { AppleMusicProvider } from "@/contexts/AppleMusicContext";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -57,15 +58,17 @@ export default async function RootLayout({
                 )}
             </head>
             <body className={inter.className}>
-                <ThemeRegistry initColorMode={initColorMode}>
-                    <AppleMusicProvider>
-                        <ApiDataProvider>
-                            <BrowserInfoProvider>
-                                {children}
-                            </BrowserInfoProvider>
-                        </ApiDataProvider>
-                    </AppleMusicProvider>
-                </ThemeRegistry>
+                <AppRouterCacheProvider options={{ key: "mui", prepend: true }}>
+                    <ThemeRegistry initColorMode={initColorMode}>
+                        <AppleMusicProvider>
+                            <ApiDataProvider>
+                                <BrowserInfoProvider>
+                                    {children}
+                                </BrowserInfoProvider>
+                            </ApiDataProvider>
+                        </AppleMusicProvider>
+                    </ThemeRegistry>
+                </AppRouterCacheProvider>
             </body>
         </html>
     );
@@ -73,6 +76,7 @@ export default async function RootLayout({
 
 export async function generateMetadata(): Promise<Metadata> {
     return {
+        metadataBase: new URL("https://music-archives-project.vercel.app"),
         title: title,
         description: description,
         icons: {

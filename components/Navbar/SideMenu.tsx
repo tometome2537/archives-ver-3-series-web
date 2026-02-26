@@ -1,7 +1,7 @@
 "use client";
 
 import { useColorModeContext } from "@/contexts/ThemeContext";
-import packageJson from "@/package.json" assert { type: "json" };
+import packageJson from "@/package.json";
 import Divider from "@mui/material/Divider";
 import Drawer from "@mui/material/Drawer";
 import List from "@mui/material/List";
@@ -15,6 +15,7 @@ import { OfficialLinkSection } from "./SideMenuSections/OfficialLinkSection";
 import { ProjectLinkSection } from "./SideMenuSections/ProjectLinkSection";
 import { SpecialThanksSection } from "./SideMenuSections/SpecialThanksSection";
 import { ThemeSection } from "./SideMenuSections/ThemeSection";
+import { AppleMusicSection } from "./SideMenuSections/AppleMusicSection";
 
 interface SideMenuProps {
     open: boolean;
@@ -29,6 +30,9 @@ export default function SideMenu({ open, onClose }: SideMenuProps) {
         <Drawer anchor={"left"} open={open} onClose={onClose}>
             <List>
                 <HeaderSection onClose={onClose} />
+                <Divider sx={{ borderBottomWidth: 3 }} />
+
+                <AppleMusicSection theme={theme} setMenu={onClose} />
                 <Divider sx={{ borderBottomWidth: 3 }} />
 
                 <OfficialLinkSection theme={theme} />

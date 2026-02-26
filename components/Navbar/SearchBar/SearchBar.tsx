@@ -9,6 +9,8 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import { useTheme } from "@mui/material/styles";
 import { darken, lighten, styled } from "@mui/system";
+// import { DatePicker } from "@mui/x-date-pickers";
+// import dayjs from "dayjs";
 import type { SyntheticEvent } from "react";
 import * as React from "react";
 import { type Dispatch, type SetStateAction, useState } from "react";
@@ -215,6 +217,8 @@ export default function SearchBar(props: SearchBarProps) {
             if (h2) {
                 return h2;
             }
+
+            return false;
         });
     }
 
@@ -691,95 +695,87 @@ export default function SearchBar(props: SearchBarProps) {
                 )}
                 // 入力された値をタグ🏷️の見た目で表示する
                 renderTags={(value: Array<SearchSuggestion>, getTagProps) =>
-                    value.map((option: SearchSuggestion, index: number) => (
-                        <Box
-                            key={`${option.value}-${option.categoryId}`} // 一意なキーを設定
-                            sx={{
-                                position: "relative", // アイコンの位置を指定するために relative を設定
-                            }}
-                        >
-                            <Chip
-                                variant="outlined"
-                                sx={{
-                                    height: "auto",
-                                    "& .MuiChip-label": {
-                                        display: "flex",
-                                        alignItems: "center", // 垂直方向の中央揃え
-                                        // textAlign: "center",
-                                        maxWidth: "100%",
-                                        height: "3em",
-                                        lineHeight: "1.5", // 文字の上下間隔
-                                        whiteSpace: "nowrap", // 改行させない
-                                        overflow: "hidden", // オーバーフロー時に隠す
-                                        textOverflow: "ellipsis", // 長いテキストを省略して表示
-                                    },
-                                }}
-                                icon={
-                                    props.showTagIcon === false
-                                        ? undefined
-                                        : option.icon
-                                }
-                                avatar={
-                                    props.showTagIcon ===
-                                    false ? undefined : option.imgSrc ? (
-                                        <Avatar
-                                            alt={option.label}
-                                            src={option.imgSrc}
-                                        />
-                                    ) : option.icon ? undefined : (
-                                        <Avatar>{option.label[0]}</Avatar>
-                                    )
-                                }
-                                label={
-                                    <>
-                                        {option.label}
-                                        {option.categoryLabel && (
-                                            <>
-                                                <br />
-                                                {option.categoryLabel}
-                                            </>
-                                        )}
-                                    </>
-                                }
-                                color="success"
-                                {...getTagProps({ index })}
-                                // 外せない検索ワードのタグの色を薄く。
-                                disabled={
-                                    props.fixedOptionValues
-                                        ? props.fixedOptionValues.includes(
-                                              option.value,
-                                          )
-                                        : undefined
-                                }
-                                // 外せない検索ワードはタグ右側の❌のアイコンを非表示
-                                onDelete={
-                                    props.fixedOptionValues
-                                        ? props.fixedOptionValues.includes(
-                                              option.value,
-                                          )
+                    value.map((option: SearchSuggestion, index: number) => {
+                        const tagProps = getTagProps({ index });
+                        const { key, onDelete, ...restTagProps } = tagProps;
+
+                        const isFixed =
+                            props.fixedOptionValues?.includes(option.value) ??
+                            false;
+
+                        return (
+                            <Box
+                                key={`${option.value}-${option.categoryId}`} // BoxのkeyはそのままでOK
+                                sx={{ position: "relative" }}
+                            >
+                                <Chip
+                                    key={key} // ★React用keyはChipへ直渡し（spreadに混ぜない）
+                                    variant="outlined"
+                                    sx={{
+                                        height: "auto",
+                                        "& .MuiChip-label": {
+                                            display: "flex",
+                                            alignItems: "center",
+                                            maxWidth: "100%",
+                                            height: "3em",
+                                            lineHeight: "1.5",
+                                            whiteSpace: "nowrap",
+                                            overflow: "hidden",
+                                            textOverflow: "ellipsis",
+                                        },
+                                    }}
+                                    icon={
+                                        props.showTagIcon === false
                                             ? undefined
-                                            : getTagProps({ index }).onDelete
-                                        : getTagProps({ index }).onDelete
-                                }
-                            />
-                            {/* 有効化されていないcategoryIdのタグの上に❌を表示する。 */}
-                            {props.availableCategoryIds ? (
-                                props.availableCategoryIds.includes(
-                                    option.categoryId,
-                                ) ? null : ( // availableCategoryIdsが存在する場合のみincludesを呼び出す
-                                    <CloseIcon
-                                        sx={{
-                                            position: "absolute", // Box内の絶対位置に表示
-                                            top: "10%", // 上から20%の位置に配置
-                                            left: "40%", // 左から40%の位置に配置
-                                            color: theme.palette.warning.main,
-                                            fontSize: "2.5rem", // アイコンのサイズを調整
-                                        }}
-                                    />
-                                )
-                            ) : null}
-                        </Box>
-                    ))
+                                            : option.icon
+                                    }
+                                    avatar={
+                                        props.showTagIcon ===
+                                        false ? undefined : option.imgSrc ? (
+                                            <Avatar
+                                                alt={option.label}
+                                                src={option.imgSrc}
+                                            />
+                                        ) : option.icon ? undefined : (
+                                            <Avatar>{option.label[0]}</Avatar>
+                                        )
+                                    }
+                                    label={
+                                        <>
+                                            {option.label}
+                                            {option.categoryLabel && (
+                                                <>
+                                                    <br />
+                                                    {option.categoryLabel}
+                                                </>
+                                            )}
+                                        </>
+                                    }
+                                    color="success"
+                                    {...restTagProps} // ★keyを除いたpropsだけspread
+                                    disabled={isFixed ? true : undefined}
+                                    onDelete={isFixed ? undefined : onDelete}
+                                />
+
+                                {props.availableCategoryIds ? (
+                                    props.availableCategoryIds.includes(
+                                        option.categoryId,
+                                    ) ? null : (
+                                        <CloseIcon
+                                            sx={{
+                                                position: "absolute",
+                                                top: "10%",
+                                                left: "40%",
+                                                color: theme.palette.warning
+                                                    .main,
+                                                fontSize: "2.5rem",
+                                            }}
+                                        />
+                                    )
+                                ) : null}
+                            </Box>
+                        );
+                    })
                 }
             />
             <Dialog open={openDatePicker} onClose={handleDialogDateClose}>
@@ -890,7 +886,7 @@ export default function SearchBar(props: SearchBarProps) {
                             onChange={(newValue) =>
                                 setDialogDatePickerValue({
                                     ...dialogDatePickerValue,
-                                    value: newValue, // 新しい日付の値に更新
+                                    value: newValue?.toString() ?? "", // 新しい日付の値に更新
                                 })
                             }
                         /> */}

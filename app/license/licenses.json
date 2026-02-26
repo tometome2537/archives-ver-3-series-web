@@ -1,17 +1,4 @@
 {
-  "@apm-js-collab/code-transformer@0.8.2": {
-    "licenses": "Apache-2.0",
-    "repository": "https://github.com/apm-js-collab/orchestrion-js",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@apm-js-collab/code-transformer",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@apm-js-collab/code-transformer/LICENSE",
-    "noticeFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@apm-js-collab/code-transformer/NOTICE"
-  },
-  "@apm-js-collab/tracing-hooks@0.3.1": {
-    "licenses": "Apache-2.0",
-    "repository": "https://github.com/apm-js-collab/tracing-hooks",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@apm-js-collab/tracing-hooks",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@apm-js-collab/tracing-hooks/LICENSE"
-  },
   "@babel/code-frame@7.29.0": {
     "licenses": "MIT",
     "repository": "https://github.com/babel/babel",
@@ -36,7 +23,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/core",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/core/LICENSE"
   },
-  "@babel/generator@7.29.0": {
+  "@babel/generator@7.29.1": {
     "licenses": "MIT",
     "repository": "https://github.com/babel/babel",
     "publisher": "The Babel Team",
@@ -148,14 +135,14 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/types",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/types/LICENSE"
   },
-  "@biomejs/biome@2.3.13": {
+  "@biomejs/biome@2.3.15": {
     "licenses": "MIT OR Apache-2.0",
     "repository": "https://github.com/biomejs/biome",
     "publisher": "Emanuele Stoppa",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@biomejs/biome",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@biomejs/biome/LICENSE-APACHE"
   },
-  "@biomejs/cli-darwin-arm64@2.3.13": {
+  "@biomejs/cli-darwin-arm64@2.3.15": {
     "licenses": "MIT OR Apache-2.0",
     "repository": "https://github.com/biomejs/biome",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@biomejs/cli-darwin-arm64"
@@ -240,6 +227,14 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@emotion/weak-memoize",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@emotion/weak-memoize/LICENSE"
   },
+  "@fastify/otel@0.16.0": {
+    "licenses": "MIT",
+    "repository": "https://github.com/fastify/otel",
+    "publisher": "Carlos Fuentes - @metcoder95",
+    "url": "https://metcoder.dev",
+    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@fastify/otel",
+    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@fastify/otel/LICENSE"
+  },
   "@img/colour@1.0.0": {
     "licenses": "MIT",
     "repository": "https://github.com/lovell/colour",
@@ -261,14 +256,6 @@
     "email": "npm@lovell.info",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@img/sharp-libvips-darwin-arm64",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@img/sharp-libvips-darwin-arm64/README.md"
-  },
-  "@isaacs/cliui@8.0.2": {
-    "licenses": "ISC",
-    "repository": "https://github.com/yargs/cliui",
-    "publisher": "Ben Coe",
-    "email": "ben@npmjs.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@isaacs/cliui",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@isaacs/cliui/LICENSE.txt"
   },
   "@jridgewell/gen-mapping@0.3.13": {
     "licenses": "MIT",
@@ -318,7 +305,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@jridgewell/trace-mapping",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@jridgewell/trace-mapping/LICENSE"
   },
-  "@koozaki/romaji-conv@2.0.34": {
+  "@koozaki/romaji-conv@2.0.35": {
     "licenses": "MIT",
     "repository": "https://github.com/koozaki/romaji-conv",
     "publisher": "Kojiro Ozaki",
@@ -327,70 +314,70 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@koozaki/romaji-conv",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@koozaki/romaji-conv/LICENSE"
   },
-  "@mui/core-downloads-tracker@7.3.7": {
+  "@mui/core-downloads-tracker@7.3.8": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/core-downloads-tracker",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/core-downloads-tracker/LICENSE"
   },
-  "@mui/icons-material@7.3.7": {
+  "@mui/icons-material@7.3.8": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/icons-material",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/icons-material/LICENSE"
   },
-  "@mui/material-nextjs@7.3.7": {
+  "@mui/material-nextjs@7.3.8": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/material-nextjs",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/material-nextjs/LICENSE"
   },
-  "@mui/material@7.3.7": {
+  "@mui/material@7.3.8": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/material",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/material/LICENSE"
   },
-  "@mui/private-theming@7.3.7": {
+  "@mui/private-theming@7.3.8": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/private-theming",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/private-theming/LICENSE"
   },
-  "@mui/styled-engine@7.3.7": {
+  "@mui/styled-engine@7.3.8": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/styled-engine",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/styled-engine/LICENSE"
   },
-  "@mui/system@7.3.7": {
+  "@mui/system@7.3.8": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/system",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/system/LICENSE"
   },
-  "@mui/types@7.4.10": {
+  "@mui/types@7.4.11": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/types",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/types/LICENSE"
   },
-  "@mui/utils@7.3.7": {
+  "@mui/utils@7.3.8": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/utils",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/utils/LICENSE"
   },
-  "@mui/x-date-pickers@8.26.0": {
+  "@mui/x-date-pickers@8.27.2": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/mui-x",
     "publisher": "MUI Team",
@@ -431,6 +418,13 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@prisma/instrumentation/node_modules/@opentelemetry/api-logs",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@prisma/instrumentation/node_modules/@opentelemetry/api-logs/LICENSE"
   },
+  "@opentelemetry/api-logs@0.208.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/open-telemetry/opentelemetry-js",
+    "publisher": "OpenTelemetry Authors",
+    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@fastify/otel/node_modules/@opentelemetry/api-logs",
+    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@fastify/otel/node_modules/@opentelemetry/api-logs/LICENSE"
+  },
   "@opentelemetry/api-logs@0.211.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
@@ -445,7 +439,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/api",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/api/LICENSE"
   },
-  "@opentelemetry/context-async-hooks@2.5.0": {
+  "@opentelemetry/context-async-hooks@2.5.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
@@ -453,6 +447,13 @@
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/context-async-hooks/LICENSE"
   },
   "@opentelemetry/core@2.5.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/open-telemetry/opentelemetry-js",
+    "publisher": "OpenTelemetry Authors",
+    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-http/node_modules/@opentelemetry/core",
+    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-http/node_modules/@opentelemetry/core/LICENSE"
+  },
+  "@opentelemetry/core@2.5.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
@@ -620,6 +621,13 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/LICENSE"
   },
+  "@opentelemetry/instrumentation@0.208.0": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/open-telemetry/opentelemetry-js",
+    "publisher": "OpenTelemetry Authors",
+    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@fastify/otel/node_modules/@opentelemetry/instrumentation",
+    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@fastify/otel/node_modules/@opentelemetry/instrumentation/LICENSE"
+  },
   "@opentelemetry/instrumentation@0.211.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
@@ -634,21 +642,21 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/redis-common",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/redis-common/LICENSE"
   },
-  "@opentelemetry/resources@2.5.0": {
+  "@opentelemetry/resources@2.5.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/resources",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/resources/LICENSE"
   },
-  "@opentelemetry/sdk-trace-base@2.5.0": {
+  "@opentelemetry/sdk-trace-base@2.5.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/sdk-trace-base",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/sdk-trace-base/LICENSE"
   },
-  "@opentelemetry/semantic-conventions@1.39.0": {
+  "@opentelemetry/semantic-conventions@1.40.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
@@ -661,12 +669,6 @@
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/sql-common",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/sql-common/LICENSE"
-  },
-  "@pkgjs/parseargs@0.11.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/pkgjs/parseargs",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@pkgjs/parseargs",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@pkgjs/parseargs/LICENSE"
   },
   "@popperjs/core@2.11.8": {
     "licenses": "MIT",
@@ -698,125 +700,125 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@rollup/pluginutils",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@rollup/pluginutils/LICENSE"
   },
-  "@rollup/rollup-darwin-arm64@4.57.1": {
+  "@rollup/rollup-darwin-arm64@4.59.0": {
     "licenses": "MIT",
     "repository": "https://github.com/rollup/rollup",
     "publisher": "Lukas Taegert-Atkinson",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@rollup/rollup-darwin-arm64",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@rollup/rollup-darwin-arm64/README.md"
   },
-  "@sentry-internal/browser-utils@10.38.0": {
+  "@sentry-internal/browser-utils@10.40.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/browser-utils",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/browser-utils/LICENSE"
   },
-  "@sentry-internal/feedback@10.38.0": {
+  "@sentry-internal/feedback@10.40.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/feedback",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/feedback/LICENSE"
   },
-  "@sentry-internal/replay-canvas@10.38.0": {
+  "@sentry-internal/replay-canvas@10.40.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/replay-canvas",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/replay-canvas/LICENSE"
   },
-  "@sentry-internal/replay@10.38.0": {
+  "@sentry-internal/replay@10.40.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/replay",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/replay/LICENSE"
   },
-  "@sentry/babel-plugin-component-annotate@4.8.0": {
+  "@sentry/babel-plugin-component-annotate@5.1.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript-bundler-plugins",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/babel-plugin-component-annotate",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/babel-plugin-component-annotate/LICENSE"
   },
-  "@sentry/browser@10.38.0": {
+  "@sentry/browser@10.40.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/browser",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/browser/LICENSE"
   },
-  "@sentry/bundler-plugin-core@4.8.0": {
+  "@sentry/bundler-plugin-core@5.1.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript-bundler-plugins",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/bundler-plugin-core",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/bundler-plugin-core/LICENSE"
   },
-  "@sentry/cli-darwin@2.58.4": {
+  "@sentry/cli-darwin@2.58.5": {
     "licenses": "FSL-1.1-MIT",
     "repository": "https://github.com/getsentry/sentry-cli",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/cli-darwin",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/cli-darwin/README.md"
   },
-  "@sentry/cli@2.58.4": {
+  "@sentry/cli@2.58.5": {
     "licenses": "FSL-1.1-MIT",
     "repository": "https://github.com/getsentry/sentry-cli",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/cli",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/cli/LICENSE"
   },
-  "@sentry/core@10.38.0": {
+  "@sentry/core@10.40.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/core",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/core/LICENSE"
   },
-  "@sentry/nextjs@10.38.0": {
+  "@sentry/nextjs@10.40.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/nextjs",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/nextjs/LICENSE"
   },
-  "@sentry/node-core@10.38.0": {
+  "@sentry/node-core@10.40.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/node-core",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/node-core/LICENSE"
   },
-  "@sentry/node@10.38.0": {
+  "@sentry/node@10.40.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/node",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/node/LICENSE"
   },
-  "@sentry/opentelemetry@10.38.0": {
+  "@sentry/opentelemetry@10.40.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/opentelemetry",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/opentelemetry/LICENSE"
   },
-  "@sentry/react@10.38.0": {
+  "@sentry/react@10.40.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/react",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/react/LICENSE"
   },
-  "@sentry/vercel-edge@10.38.0": {
+  "@sentry/vercel-edge@10.40.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/vercel-edge",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/vercel-edge/LICENSE"
   },
-  "@sentry/webpack-plugin@4.8.0": {
+  "@sentry/webpack-plugin@5.1.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript-bundler-plugins",
     "publisher": "Sentry",
@@ -873,7 +875,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/mysql",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/mysql/LICENSE"
   },
-  "@types/node@24.10.9": {
+  "@types/node@24.10.14": {
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/node",
@@ -909,7 +911,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/react-transition-group",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/react-transition-group/LICENSE"
   },
-  "@types/react@19.2.10": {
+  "@types/react@19.2.14": {
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/react",
@@ -1064,7 +1066,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/acorn-import-phases",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/acorn-import-phases/LICENSE"
   },
-  "acorn@8.15.0": {
+  "acorn@8.16.0": {
     "licenses": "MIT",
     "repository": "https://github.com/acornjs/acorn",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/acorn",
@@ -1093,30 +1095,12 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/ajv-keywords",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/ajv-keywords/LICENSE"
   },
-  "ajv@8.17.1": {
+  "ajv@8.18.0": {
     "licenses": "MIT",
     "repository": "https://github.com/ajv-validator/ajv",
     "publisher": "Evgeny Poberezkin",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/ajv",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/ajv/LICENSE"
-  },
-  "ansi-regex@5.0.1": {
-    "licenses": "MIT",
-    "repository": "https://github.com/chalk/ansi-regex",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/string-width-cjs/node_modules/ansi-regex",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/string-width-cjs/node_modules/ansi-regex/license"
-  },
-  "ansi-regex@6.2.2": {
-    "licenses": "MIT",
-    "repository": "https://github.com/chalk/ansi-regex",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "https://sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/ansi-regex",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/ansi-regex/license"
   },
   "ansi-styles@3.2.1": {
     "licenses": "MIT",
@@ -1126,32 +1110,6 @@
     "url": "sindresorhus.com",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/ansi-styles",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/ansi-styles/license"
-  },
-  "ansi-styles@4.3.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/chalk/ansi-styles",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/wrap-ansi-cjs/node_modules/ansi-styles",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/wrap-ansi-cjs/node_modules/ansi-styles/license"
-  },
-  "ansi-styles@6.2.3": {
-    "licenses": "MIT",
-    "repository": "https://github.com/chalk/ansi-styles",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "https://sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/wrap-ansi/node_modules/ansi-styles",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/wrap-ansi/node_modules/ansi-styles/license"
-  },
-  "anymatch@3.1.3": {
-    "licenses": "ISC",
-    "repository": "https://github.com/micromatch/anymatch",
-    "publisher": "Elan Shanker",
-    "url": "https://github.com/es128",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/anymatch",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/anymatch/LICENSE"
   },
   "array-find-index@1.0.2": {
     "licenses": "MIT",
@@ -1176,7 +1134,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/asynckit",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/asynckit/LICENSE"
   },
-  "axios@1.13.4": {
+  "axios@1.13.5": {
     "licenses": "MIT",
     "repository": "https://github.com/axios/axios",
     "publisher": "Matt Zabriskie",
@@ -1198,23 +1156,20 @@
     "publisher": "Julian Gruber",
     "email": "mail@juliangruber.com",
     "url": "http://juliangruber.com",
+    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/read-package-json/node_modules/balanced-match",
+    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/read-package-json/node_modules/balanced-match/LICENSE.md"
+  },
+  "balanced-match@4.0.4": {
+    "licenses": "MIT",
+    "repository": "https://github.com/juliangruber/balanced-match",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/balanced-match",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/balanced-match/LICENSE.md"
   },
-  "baseline-browser-mapping@2.9.19": {
+  "baseline-browser-mapping@2.10.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/web-platform-dx/baseline-browser-mapping",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/baseline-browser-mapping",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/baseline-browser-mapping/LICENSE.txt"
-  },
-  "binary-extensions@2.3.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/sindresorhus/binary-extensions",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "https://sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/binary-extensions",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/binary-extensions/license"
   },
   "brace-expansion@1.1.12": {
     "licenses": "MIT",
@@ -1225,22 +1180,11 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/read-package-json/node_modules/brace-expansion",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/read-package-json/node_modules/brace-expansion/LICENSE"
   },
-  "brace-expansion@2.0.2": {
+  "brace-expansion@5.0.3": {
     "licenses": "MIT",
     "repository": "https://github.com/juliangruber/brace-expansion",
-    "publisher": "Julian Gruber",
-    "email": "mail@juliangruber.com",
-    "url": "http://juliangruber.com",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/brace-expansion",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/brace-expansion/LICENSE"
-  },
-  "braces@3.0.3": {
-    "licenses": "MIT",
-    "repository": "https://github.com/micromatch/braces",
-    "publisher": "Jon Schlinkert",
-    "url": "https://github.com/jonschlinkert",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/braces",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/braces/LICENSE"
   },
   "browserslist@4.28.1": {
     "licenses": "MIT",
@@ -1280,7 +1224,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/callsites",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/callsites/license"
   },
-  "caniuse-lite@1.0.30001766": {
+  "caniuse-lite@1.0.30001774": {
     "licenses": "CC-BY-4.0",
     "repository": "https://github.com/browserslist/caniuse-lite",
     "publisher": "Ben Briggs",
@@ -1294,14 +1238,6 @@
     "repository": "https://github.com/chalk/chalk",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/chalk",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/chalk/license"
-  },
-  "chokidar@3.6.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/paulmillr/chokidar",
-    "publisher": "Paul Miller",
-    "url": "https://paulmillr.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/chokidar",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/chokidar/LICENSE"
   },
   "chrome-trace-event@1.0.4": {
     "licenses": "MIT",
@@ -1338,14 +1274,6 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/color-convert",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/color-convert/LICENSE"
   },
-  "color-convert@2.0.1": {
-    "licenses": "MIT",
-    "repository": "https://github.com/Qix-/color-convert",
-    "publisher": "Heather Arthur",
-    "email": "fayearthur@gmail.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/wrap-ansi-cjs/node_modules/color-convert",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/wrap-ansi-cjs/node_modules/color-convert/LICENSE"
-  },
   "color-name@1.1.3": {
     "licenses": "MIT",
     "repository": "https://github.com/dfcreative/color-name",
@@ -1353,14 +1281,6 @@
     "email": "dfcreative@gmail.com",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/color-name",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/color-name/LICENSE"
-  },
-  "color-name@1.1.4": {
-    "licenses": "MIT",
-    "repository": "https://github.com/colorjs/color-name",
-    "publisher": "DY",
-    "email": "dfcreative@gmail.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/wrap-ansi-cjs/node_modules/color-name",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/wrap-ansi-cjs/node_modules/color-name/LICENSE"
   },
   "combined-stream@1.0.8": {
     "licenses": "MIT",
@@ -1430,14 +1350,6 @@
     "email": "david.dave.clark@gmail.com",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/cosmiconfig",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/cosmiconfig/LICENSE"
-  },
-  "cross-spawn@7.0.6": {
-    "licenses": "MIT",
-    "repository": "https://github.com/moxystudio/node-cross-spawn",
-    "publisher": "André Cruz",
-    "email": "andre@moxy.studio",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/cross-spawn",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/cross-spawn/LICENSE"
   },
   "csstype@3.2.3": {
     "licenses": "MIT",
@@ -1543,37 +1455,14 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/dunder-proto",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/dunder-proto/LICENSE"
   },
-  "eastasianwidth@0.2.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/komagata/eastasianwidth",
-    "publisher": "Masaki Komagata",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/eastasianwidth",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/eastasianwidth/README.md"
-  },
-  "electron-to-chromium@1.5.283": {
+  "electron-to-chromium@1.5.302": {
     "licenses": "ISC",
     "repository": "https://github.com/kilian/electron-to-chromium",
     "publisher": "Kilian Valkhof",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/electron-to-chromium",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/electron-to-chromium/LICENSE"
   },
-  "emoji-regex@8.0.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/mathiasbynens/emoji-regex",
-    "publisher": "Mathias Bynens",
-    "url": "https://mathiasbynens.be/",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/string-width-cjs/node_modules/emoji-regex",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/string-width-cjs/node_modules/emoji-regex/LICENSE-MIT.txt"
-  },
-  "emoji-regex@9.2.2": {
-    "licenses": "MIT",
-    "repository": "https://github.com/mathiasbynens/emoji-regex",
-    "publisher": "Mathias Bynens",
-    "url": "https://mathiasbynens.be/",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/emoji-regex",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/emoji-regex/LICENSE-MIT.txt"
-  },
-  "enhanced-resolve@5.18.4": {
+  "enhanced-resolve@5.19.0": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/enhanced-resolve",
     "publisher": "Tobias Koppers @sokra",
@@ -1716,14 +1605,6 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/fdir",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/fdir/LICENSE"
   },
-  "fill-range@7.1.1": {
-    "licenses": "MIT",
-    "repository": "https://github.com/jonschlinkert/fill-range",
-    "publisher": "Jon Schlinkert",
-    "url": "https://github.com/jonschlinkert",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/fill-range",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/fill-range/LICENSE"
-  },
   "find-root@1.1.0": {
     "licenses": "MIT",
     "repository": "https://github.com/js-n/find-root",
@@ -1748,15 +1629,6 @@
     "url": "https://ruben.verborgh.org/",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/follow-redirects",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/follow-redirects/LICENSE"
-  },
-  "foreground-child@3.3.1": {
-    "licenses": "ISC",
-    "repository": "https://github.com/tapjs/foreground-child",
-    "publisher": "Isaac Z. Schlueter",
-    "email": "i@izs.me",
-    "url": "http://blog.izs.me/",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/foreground-child",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/foreground-child/LICENSE"
   },
   "form-data@4.0.5": {
     "licenses": "MIT",
@@ -1821,15 +1693,6 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/get-proto",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/get-proto/LICENSE"
   },
-  "glob-parent@5.1.2": {
-    "licenses": "ISC",
-    "repository": "https://github.com/gulpjs/glob-parent",
-    "publisher": "Gulp Team",
-    "email": "team@gulpjs.com",
-    "url": "https://gulpjs.com/",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/glob-parent",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/glob-parent/LICENSE"
-  },
   "glob-to-regexp@0.4.1": {
     "licenses": "BSD-2-Clause",
     "repository": "https://github.com/fitzgen/glob-to-regexp",
@@ -1838,14 +1701,14 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/glob-to-regexp",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/glob-to-regexp/README.md"
   },
-  "glob@10.5.0": {
-    "licenses": "ISC",
+  "glob@13.0.6": {
+    "licenses": "BlueOak-1.0.0",
     "repository": "https://github.com/isaacs/node-glob",
     "publisher": "Isaac Z. Schlueter",
     "email": "i@izs.me",
     "url": "https://blog.izs.me/",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/glob",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/glob/LICENSE"
+    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/glob/LICENSE.md"
   },
   "glob@7.2.3": {
     "licenses": "ISC",
@@ -1988,15 +1851,6 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-arrayish",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-arrayish/LICENSE"
   },
-  "is-binary-path@2.1.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/sindresorhus/is-binary-path",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-binary-path",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-binary-path/license"
-  },
   "is-core-module@2.16.1": {
     "licenses": "MIT",
     "repository": "https://github.com/inspect-js/is-core-module",
@@ -2004,39 +1858,6 @@
     "email": "ljharb@gmail.com",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-core-module",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-core-module/LICENSE"
-  },
-  "is-extglob@2.1.1": {
-    "licenses": "MIT",
-    "repository": "https://github.com/jonschlinkert/is-extglob",
-    "publisher": "Jon Schlinkert",
-    "url": "https://github.com/jonschlinkert",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-extglob",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-extglob/LICENSE"
-  },
-  "is-fullwidth-code-point@3.0.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/sindresorhus/is-fullwidth-code-point",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-fullwidth-code-point",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-fullwidth-code-point/license"
-  },
-  "is-glob@4.0.3": {
-    "licenses": "MIT",
-    "repository": "https://github.com/micromatch/is-glob",
-    "publisher": "Jon Schlinkert",
-    "url": "https://github.com/jonschlinkert",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-glob",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-glob/LICENSE"
-  },
-  "is-number@7.0.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/jonschlinkert/is-number",
-    "publisher": "Jon Schlinkert",
-    "url": "https://github.com/jonschlinkert",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-number",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-number/LICENSE"
   },
   "is-reference@1.2.1": {
     "licenses": "MIT",
@@ -2053,14 +1874,6 @@
     "url": "http://blog.izs.me/",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/isexe",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/isexe/LICENSE"
-  },
-  "jackspeak@3.4.3": {
-    "licenses": "BlueOak-1.0.0",
-    "repository": "https://github.com/isaacs/jackspeak",
-    "publisher": "Isaac Z. Schlueter",
-    "email": "i@izs.me",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/jackspeak",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/jackspeak/LICENSE.md"
   },
   "jest-worker@27.5.1": {
     "licenses": "MIT",
@@ -2191,13 +2004,13 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/loose-envify",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/loose-envify/LICENSE"
   },
-  "lru-cache@10.4.3": {
-    "licenses": "ISC",
+  "lru-cache@11.2.6": {
+    "licenses": "BlueOak-1.0.0",
     "repository": "https://github.com/isaacs/node-lru-cache",
     "publisher": "Isaac Z. Schlueter",
     "email": "i@izs.me",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/path-scurry/node_modules/lru-cache",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/path-scurry/node_modules/lru-cache/LICENSE"
+    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/path-scurry/node_modules/lru-cache/LICENSE.md"
   },
   "lru-cache@5.1.1": {
     "licenses": "ISC",
@@ -2213,13 +2026,6 @@
     "publisher": "Rich Harris",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/magic-string",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/magic-string/LICENSE"
-  },
-  "magic-string@0.30.8": {
-    "licenses": "MIT",
-    "repository": "https://github.com/rich-harris/magic-string",
-    "publisher": "Rich Harris",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/bundler-plugin-core/node_modules/magic-string",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/bundler-plugin-core/node_modules/magic-string/LICENSE"
   },
   "map@3.3.0": {
     "licenses": "UNLICENSED",
@@ -2255,7 +2061,16 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/mime-types",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/mime-types/LICENSE"
   },
-  "minimatch@3.1.2": {
+  "minimatch@10.2.4": {
+    "licenses": "BlueOak-1.0.0",
+    "repository": "https://github.com/isaacs/minimatch",
+    "publisher": "Isaac Z. Schlueter",
+    "email": "i@izs.me",
+    "url": "http://blog.izs.me",
+    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/minimatch",
+    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/minimatch/LICENSE.md"
+  },
+  "minimatch@3.1.5": {
     "licenses": "ISC",
     "repository": "https://github.com/isaacs/minimatch",
     "publisher": "Isaac Z. Schlueter",
@@ -2263,15 +2078,6 @@
     "url": "http://blog.izs.me",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/read-package-json/node_modules/minimatch",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/read-package-json/node_modules/minimatch/LICENSE"
-  },
-  "minimatch@9.0.5": {
-    "licenses": "ISC",
-    "repository": "https://github.com/isaacs/minimatch",
-    "publisher": "Isaac Z. Schlueter",
-    "email": "i@izs.me",
-    "url": "http://blog.izs.me",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/minimatch",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/minimatch/LICENSE"
   },
   "minimist@1.2.8": {
     "licenses": "MIT",
@@ -2282,14 +2088,14 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/minimist",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/minimist/LICENSE"
   },
-  "minipass@7.1.2": {
-    "licenses": "ISC",
+  "minipass@7.1.3": {
+    "licenses": "BlueOak-1.0.0",
     "repository": "https://github.com/isaacs/minipass",
     "publisher": "Isaac Z. Schlueter",
     "email": "i@izs.me",
     "url": "http://blog.izs.me/",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/minipass",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/minipass/LICENSE"
+    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/minipass/LICENSE.md"
   },
   "mkdirp@0.5.6": {
     "licenses": "MIT",
@@ -2373,14 +2179,6 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/normalize-package-data",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/normalize-package-data/LICENSE"
   },
-  "normalize-path@3.0.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/jonschlinkert/normalize-path",
-    "publisher": "Jon Schlinkert",
-    "url": "https://github.com/jonschlinkert",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/normalize-path",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/normalize-path/LICENSE"
-  },
   "npm-normalize-package-bin@1.0.1": {
     "licenses": "ISC",
     "repository": "https://github.com/npm/npm-normalize-package-bin",
@@ -2453,15 +2251,6 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/p-locate",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/p-locate/license"
   },
-  "package-json-from-dist@1.0.1": {
-    "licenses": "BlueOak-1.0.0",
-    "repository": "https://github.com/isaacs/package-json-from-dist",
-    "publisher": "Isaac Z. Schlueter",
-    "email": "i@izs.me",
-    "url": "https://izs.me",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/package-json-from-dist",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/package-json-from-dist/LICENSE.md"
-  },
   "parent-module@1.0.1": {
     "licenses": "MIT",
     "repository": "https://github.com/sindresorhus/parent-module",
@@ -2498,15 +2287,6 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/path-is-absolute",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/path-is-absolute/license"
   },
-  "path-key@3.1.1": {
-    "licenses": "MIT",
-    "repository": "https://github.com/sindresorhus/path-key",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/path-key",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/path-key/license"
-  },
   "path-parse@1.0.7": {
     "licenses": "MIT",
     "repository": "https://github.com/jbgutierrez/path-parse",
@@ -2515,7 +2295,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/path-parse",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/path-parse/LICENSE"
   },
-  "path-scurry@1.11.1": {
+  "path-scurry@2.0.2": {
     "licenses": "BlueOak-1.0.0",
     "repository": "https://github.com/isaacs/path-scurry",
     "publisher": "Isaac Z. Schlueter",
@@ -2539,7 +2319,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/pg-int8",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/pg-int8/LICENSE"
   },
-  "pg-protocol@1.11.0": {
+  "pg-protocol@1.12.0": {
     "licenses": "MIT",
     "repository": "https://github.com/brianc/node-postgres",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/pg-protocol",
@@ -2558,14 +2338,6 @@
     "publisher": "Alexey Raspopov",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/picocolors",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/picocolors/LICENSE"
-  },
-  "picomatch@2.3.1": {
-    "licenses": "MIT",
-    "repository": "https://github.com/micromatch/picomatch",
-    "publisher": "Jon Schlinkert",
-    "url": "https://github.com/jonschlinkert",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/anymatch/node_modules/picomatch",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/anymatch/node_modules/picomatch/LICENSE"
   },
   "picomatch@4.0.3": {
     "licenses": "MIT",
@@ -2728,15 +2500,6 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/readdir-scoped-modules",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/readdir-scoped-modules/LICENSE"
   },
-  "readdirp@3.6.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/paulmillr/readdirp",
-    "publisher": "Thorsten Lorenz",
-    "email": "thlorenz@gmx.de",
-    "url": "thlorenz.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/readdirp",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/readdirp/LICENSE"
-  },
   "require-from-string@2.0.2": {
     "licenses": "MIT",
     "repository": "https://github.com/floatdrop/require-from-string",
@@ -2779,7 +2542,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/resolve",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/resolve/LICENSE"
   },
-  "rollup@4.57.1": {
+  "rollup@4.59.0": {
     "licenses": "MIT",
     "repository": "https://github.com/rollup/rollup",
     "publisher": "Rich Harris",
@@ -2830,7 +2593,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/semver",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/semver/LICENSE"
   },
-  "semver@7.7.3": {
+  "semver@7.7.4": {
     "licenses": "ISC",
     "repository": "https://github.com/npm/node-semver",
     "publisher": "GitHub Inc.",
@@ -2852,32 +2615,6 @@
     "email": "npm@lovell.info",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/sharp",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/sharp/LICENSE"
-  },
-  "shebang-command@2.0.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/kevva/shebang-command",
-    "publisher": "Kevin Mårtensson",
-    "email": "kevinmartensson@gmail.com",
-    "url": "github.com/kevva",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/shebang-command",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/shebang-command/license"
-  },
-  "shebang-regex@3.0.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/sindresorhus/shebang-regex",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/shebang-regex",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/shebang-regex/license"
-  },
-  "signal-exit@4.1.0": {
-    "licenses": "ISC",
-    "repository": "https://github.com/tapjs/signal-exit",
-    "publisher": "Ben Coe",
-    "email": "ben@npmjs.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/signal-exit",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/signal-exit/LICENSE.txt"
   },
   "sister@3.0.2": {
     "licenses": "BSD-3-Clause",
@@ -2958,7 +2695,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/spdx-expression-parse",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/spdx-expression-parse/LICENSE"
   },
-  "spdx-license-ids@3.0.22": {
+  "spdx-license-ids@3.0.23": {
     "licenses": "CC0-1.0",
     "repository": "https://github.com/jslicense/spdx-license-ids",
     "publisher": "Shinnosuke Watanabe",
@@ -2990,42 +2727,6 @@
     "url": "http://jaz-lounge.com",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/stacktrace-parser",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/stacktrace-parser/LICENSE"
-  },
-  "string-width@4.2.3": {
-    "licenses": "MIT",
-    "repository": "https://github.com/sindresorhus/string-width",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/string-width-cjs",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/string-width-cjs/license"
-  },
-  "string-width@5.1.2": {
-    "licenses": "MIT",
-    "repository": "https://github.com/sindresorhus/string-width",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "https://sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/string-width",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/string-width/license"
-  },
-  "strip-ansi@6.0.1": {
-    "licenses": "MIT",
-    "repository": "https://github.com/chalk/strip-ansi",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/string-width-cjs/node_modules/strip-ansi",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/string-width-cjs/node_modules/strip-ansi/license"
-  },
-  "strip-ansi@7.1.2": {
-    "licenses": "MIT",
-    "repository": "https://github.com/chalk/strip-ansi",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "https://sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/strip-ansi",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/strip-ansi/license"
   },
   "styled-jsx@5.1.6": {
     "licenses": "MIT",
@@ -3111,14 +2812,6 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/throttle-debounce",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/throttle-debounce/LICENSE.md"
   },
-  "to-regex-range@5.0.1": {
-    "licenses": "MIT",
-    "repository": "https://github.com/micromatch/to-regex-range",
-    "publisher": "Jon Schlinkert",
-    "url": "https://github.com/jonschlinkert",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/to-regex-range",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/to-regex-range/LICENSE"
-  },
   "tr46@0.0.3": {
     "licenses": "MIT",
     "repository": "https://github.com/Sebmaster/tr46.js",
@@ -3162,12 +2855,6 @@
     "repository": "https://github.com/nodejs/undici",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/undici-types",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/undici-types/LICENSE"
-  },
-  "unplugin@1.0.1": {
-    "licenses": "MIT",
-    "repository": "https://github.com/unjs/unplugin",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/unplugin",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/unplugin/LICENSE"
   },
   "update-browserslist-db@1.2.3": {
     "licenses": "MIT",
@@ -3220,21 +2907,14 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/webidl-conversions",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/webidl-conversions/LICENSE.md"
   },
-  "webpack-sources@3.3.3": {
+  "webpack-sources@3.3.4": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/webpack-sources",
     "publisher": "Tobias Koppers @sokra",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/webpack-sources",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/webpack-sources/LICENSE"
   },
-  "webpack-virtual-modules@0.5.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/sysgears/webpack-virtual-modules",
-    "publisher": "SysGears INC",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/webpack-virtual-modules",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/webpack-virtual-modules/LICENSE"
-  },
-  "webpack@5.104.1": {
+  "webpack@5.105.3": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/webpack",
     "publisher": "Tobias Koppers @sokra",
@@ -3257,24 +2937,6 @@
     "url": "http://blog.izs.me",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/which",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/which/LICENSE"
-  },
-  "wrap-ansi@7.0.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/chalk/wrap-ansi",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "https://sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/wrap-ansi-cjs",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/wrap-ansi-cjs/license"
-  },
-  "wrap-ansi@8.1.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/chalk/wrap-ansi",
-    "publisher": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "https://sindresorhus.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/wrap-ansi",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/wrap-ansi/license"
   },
   "wrappy@1.0.2": {
     "licenses": "ISC",

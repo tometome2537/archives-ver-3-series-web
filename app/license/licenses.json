@@ -135,14 +135,14 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/types",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/types/LICENSE"
   },
-  "@biomejs/biome@2.3.15": {
+  "@biomejs/biome@2.4.8": {
     "licenses": "MIT OR Apache-2.0",
     "repository": "https://github.com/biomejs/biome",
     "publisher": "Emanuele Stoppa",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@biomejs/biome",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@biomejs/biome/LICENSE-APACHE"
   },
-  "@biomejs/cli-darwin-arm64@2.3.15": {
+  "@biomejs/cli-darwin-arm64@2.4.8": {
     "licenses": "MIT OR Apache-2.0",
     "repository": "https://github.com/biomejs/biome",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@biomejs/cli-darwin-arm64"
@@ -391,7 +391,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/x-internals",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/x-internals/LICENSE"
   },
-  "@next/env@16.1.7": {
+  "@next/env@16.2.1": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "publisher": "Next.js Team",
@@ -399,13 +399,13 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/env",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/env/README.md"
   },
-  "@next/swc-darwin-arm64@16.1.7": {
+  "@next/swc-darwin-arm64@16.2.1": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/swc-darwin-arm64",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/swc-darwin-arm64/README.md"
   },
-  "@next/third-parties@16.1.7": {
+  "@next/third-parties@16.2.1": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/third-parties",
@@ -693,35 +693,35 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@rollup/pluginutils",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@rollup/pluginutils/LICENSE"
   },
-  "@rollup/rollup-darwin-arm64@4.59.0": {
+  "@rollup/rollup-darwin-arm64@4.60.0": {
     "licenses": "MIT",
     "repository": "https://github.com/rollup/rollup",
     "publisher": "Lukas Taegert-Atkinson",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@rollup/rollup-darwin-arm64",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@rollup/rollup-darwin-arm64/README.md"
   },
-  "@sentry-internal/browser-utils@10.44.0": {
+  "@sentry-internal/browser-utils@10.45.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/browser-utils",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/browser-utils/LICENSE"
   },
-  "@sentry-internal/feedback@10.44.0": {
+  "@sentry-internal/feedback@10.45.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/feedback",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/feedback/LICENSE"
   },
-  "@sentry-internal/replay-canvas@10.44.0": {
+  "@sentry-internal/replay-canvas@10.45.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/replay-canvas",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/replay-canvas/LICENSE"
   },
-  "@sentry-internal/replay@10.44.0": {
+  "@sentry-internal/replay@10.45.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
@@ -735,7 +735,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/babel-plugin-component-annotate",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/babel-plugin-component-annotate/LICENSE"
   },
-  "@sentry/browser@10.44.0": {
+  "@sentry/browser@10.45.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
@@ -762,49 +762,49 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/cli",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/cli/LICENSE"
   },
-  "@sentry/core@10.44.0": {
+  "@sentry/core@10.45.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/core",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/core/LICENSE"
   },
-  "@sentry/nextjs@10.44.0": {
+  "@sentry/nextjs@10.45.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/nextjs",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/nextjs/LICENSE"
   },
-  "@sentry/node-core@10.44.0": {
+  "@sentry/node-core@10.45.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/node-core",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/node-core/LICENSE"
   },
-  "@sentry/node@10.44.0": {
+  "@sentry/node@10.45.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/node",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/node/LICENSE"
   },
-  "@sentry/opentelemetry@10.44.0": {
+  "@sentry/opentelemetry@10.45.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/opentelemetry",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/opentelemetry/LICENSE"
   },
-  "@sentry/react@10.44.0": {
+  "@sentry/react@10.45.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/react",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/react/LICENSE"
   },
-  "@sentry/vercel-edge@10.44.0": {
+  "@sentry/vercel-edge@10.45.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
@@ -1158,7 +1158,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/balanced-match",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/balanced-match/LICENSE.md"
   },
-  "baseline-browser-mapping@2.10.8": {
+  "baseline-browser-mapping@2.10.10": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/web-platform-dx/baseline-browser-mapping",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/baseline-browser-mapping",
@@ -1210,7 +1210,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/callsites",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/callsites/license"
   },
-  "caniuse-lite@1.0.30001780": {
+  "caniuse-lite@1.0.30001781": {
     "licenses": "CC-BY-4.0",
     "repository": "https://github.com/browserslist/caniuse-lite",
     "publisher": "Ben Briggs",
@@ -2129,7 +2129,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/neo-async",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/neo-async/LICENSE"
   },
-  "next@16.1.7": {
+  "next@16.2.1": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/next",
@@ -2524,7 +2524,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/resolve",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/resolve/LICENSE"
   },
-  "rollup@4.59.0": {
+  "rollup@4.60.0": {
     "licenses": "MIT",
     "repository": "https://github.com/rollup/rollup",
     "publisher": "Rich Harris",
@@ -2732,7 +2732,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/swr",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/swr/LICENSE"
   },
-  "tapable@2.3.0": {
+  "tapable@2.3.1": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/tapable",
     "publisher": "Tobias Koppers @sokra",
@@ -2801,7 +2801,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/type-fest",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/type-fest/license"
   },
-  "typescript@5.9.3": {
+  "typescript@6.0.2": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/microsoft/TypeScript",
     "publisher": "Microsoft Corp.",
@@ -2922,7 +2922,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/yallist",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/yallist/LICENSE"
   },
-  "yaml@1.10.2": {
+  "yaml@1.10.3": {
     "licenses": "ISC",
     "repository": "https://github.com/eemeli/yaml",
     "publisher": "Eemeli Aro",

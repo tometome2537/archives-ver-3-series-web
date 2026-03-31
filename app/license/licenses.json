@@ -87,7 +87,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/helper-validator-option",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/helper-validator-option/LICENSE"
   },
-  "@babel/helpers@7.28.6": {
+  "@babel/helpers@7.29.2": {
     "licenses": "MIT",
     "repository": "https://github.com/babel/babel",
     "publisher": "The Babel Team",
@@ -95,7 +95,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/helpers",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/helpers/LICENSE"
   },
-  "@babel/parser@7.29.0": {
+  "@babel/parser@7.29.2": {
     "licenses": "MIT",
     "repository": "https://github.com/babel/babel",
     "publisher": "The Babel Team",
@@ -103,7 +103,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/parser",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/parser/LICENSE"
   },
-  "@babel/runtime@7.28.6": {
+  "@babel/runtime@7.29.2": {
     "licenses": "MIT",
     "repository": "https://github.com/babel/babel",
     "publisher": "The Babel Team",
@@ -135,14 +135,14 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/types",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@babel/types/LICENSE"
   },
-  "@biomejs/biome@2.3.15": {
+  "@biomejs/biome@2.4.10": {
     "licenses": "MIT OR Apache-2.0",
     "repository": "https://github.com/biomejs/biome",
     "publisher": "Emanuele Stoppa",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@biomejs/biome",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@biomejs/biome/LICENSE-APACHE"
   },
-  "@biomejs/cli-darwin-arm64@2.3.15": {
+  "@biomejs/cli-darwin-arm64@2.4.10": {
     "licenses": "MIT OR Apache-2.0",
     "repository": "https://github.com/biomejs/biome",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@biomejs/cli-darwin-arm64"
@@ -227,7 +227,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@emotion/weak-memoize",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@emotion/weak-memoize/LICENSE"
   },
-  "@fastify/otel@0.16.0": {
+  "@fastify/otel@0.17.1": {
     "licenses": "MIT",
     "repository": "https://github.com/fastify/otel",
     "publisher": "Carlos Fuentes - @metcoder95",
@@ -235,7 +235,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@fastify/otel",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@fastify/otel/LICENSE"
   },
-  "@img/colour@1.0.0": {
+  "@img/colour@1.1.0": {
     "licenses": "MIT",
     "repository": "https://github.com/lovell/colour",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@img/colour",
@@ -314,63 +314,63 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@koozaki/romaji-conv",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@koozaki/romaji-conv/LICENSE"
   },
-  "@mui/core-downloads-tracker@7.3.8": {
+  "@mui/core-downloads-tracker@7.3.9": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/core-downloads-tracker",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/core-downloads-tracker/LICENSE"
   },
-  "@mui/icons-material@7.3.8": {
+  "@mui/icons-material@7.3.9": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/icons-material",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/icons-material/LICENSE"
   },
-  "@mui/material-nextjs@7.3.8": {
+  "@mui/material-nextjs@7.3.9": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/material-nextjs",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/material-nextjs/LICENSE"
   },
-  "@mui/material@7.3.8": {
+  "@mui/material@7.3.9": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/material",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/material/LICENSE"
   },
-  "@mui/private-theming@7.3.8": {
+  "@mui/private-theming@7.3.9": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/private-theming",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/private-theming/LICENSE"
   },
-  "@mui/styled-engine@7.3.8": {
+  "@mui/styled-engine@7.3.9": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/styled-engine",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/styled-engine/LICENSE"
   },
-  "@mui/system@7.3.8": {
+  "@mui/system@7.3.9": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/system",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/system/LICENSE"
   },
-  "@mui/types@7.4.11": {
+  "@mui/types@7.4.12": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/types",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/types/LICENSE"
   },
-  "@mui/utils@7.3.8": {
+  "@mui/utils@7.3.9": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team",
@@ -391,7 +391,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/x-internals",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/x-internals/LICENSE"
   },
-  "@next/env@16.1.6": {
+  "@next/env@16.2.1": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "publisher": "Next.js Team",
@@ -399,13 +399,13 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/env",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/env/README.md"
   },
-  "@next/swc-darwin-arm64@16.1.6": {
+  "@next/swc-darwin-arm64@16.2.1": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/swc-darwin-arm64",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/swc-darwin-arm64/README.md"
   },
-  "@next/third-parties@16.1.6": {
+  "@next/third-parties@16.2.1": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/third-parties",
@@ -418,196 +418,196 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@prisma/instrumentation/node_modules/@opentelemetry/api-logs",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@prisma/instrumentation/node_modules/@opentelemetry/api-logs/LICENSE"
   },
-  "@opentelemetry/api-logs@0.208.0": {
+  "@opentelemetry/api-logs@0.212.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@fastify/otel/node_modules/@opentelemetry/api-logs",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@fastify/otel/node_modules/@opentelemetry/api-logs/LICENSE"
   },
-  "@opentelemetry/api-logs@0.211.0": {
+  "@opentelemetry/api-logs@0.213.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/api-logs",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/api-logs/LICENSE"
   },
-  "@opentelemetry/api@1.9.0": {
+  "@opentelemetry/api@1.9.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/api",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/api/LICENSE"
   },
-  "@opentelemetry/context-async-hooks@2.5.1": {
+  "@opentelemetry/context-async-hooks@2.6.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/context-async-hooks",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/context-async-hooks/LICENSE"
   },
-  "@opentelemetry/core@2.5.0": {
+  "@opentelemetry/core@2.6.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-http/node_modules/@opentelemetry/core",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-http/node_modules/@opentelemetry/core/LICENSE"
   },
-  "@opentelemetry/core@2.5.1": {
+  "@opentelemetry/core@2.6.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/core",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/core/LICENSE"
   },
-  "@opentelemetry/instrumentation-amqplib@0.58.0": {
+  "@opentelemetry/instrumentation-amqplib@0.60.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-amqplib",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-amqplib/LICENSE"
   },
-  "@opentelemetry/instrumentation-connect@0.54.0": {
+  "@opentelemetry/instrumentation-connect@0.56.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-connect",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-connect/LICENSE"
   },
-  "@opentelemetry/instrumentation-dataloader@0.28.0": {
+  "@opentelemetry/instrumentation-dataloader@0.30.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-dataloader",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-dataloader/LICENSE"
   },
-  "@opentelemetry/instrumentation-express@0.59.0": {
+  "@opentelemetry/instrumentation-express@0.61.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-express",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-express/LICENSE"
   },
-  "@opentelemetry/instrumentation-fs@0.30.0": {
+  "@opentelemetry/instrumentation-fs@0.32.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-fs",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-fs/LICENSE"
   },
-  "@opentelemetry/instrumentation-generic-pool@0.54.0": {
+  "@opentelemetry/instrumentation-generic-pool@0.56.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-generic-pool",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-generic-pool/LICENSE"
   },
-  "@opentelemetry/instrumentation-graphql@0.58.0": {
+  "@opentelemetry/instrumentation-graphql@0.61.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-graphql",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-graphql/LICENSE"
   },
-  "@opentelemetry/instrumentation-hapi@0.57.0": {
+  "@opentelemetry/instrumentation-hapi@0.59.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-hapi",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-hapi/LICENSE"
   },
-  "@opentelemetry/instrumentation-http@0.211.0": {
+  "@opentelemetry/instrumentation-http@0.213.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-http",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-http/LICENSE"
   },
-  "@opentelemetry/instrumentation-ioredis@0.59.0": {
+  "@opentelemetry/instrumentation-ioredis@0.61.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-ioredis",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-ioredis/LICENSE"
   },
-  "@opentelemetry/instrumentation-kafkajs@0.20.0": {
+  "@opentelemetry/instrumentation-kafkajs@0.22.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-kafkajs",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-kafkajs/LICENSE"
   },
-  "@opentelemetry/instrumentation-knex@0.55.0": {
+  "@opentelemetry/instrumentation-knex@0.57.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-knex",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-knex/LICENSE"
   },
-  "@opentelemetry/instrumentation-koa@0.59.0": {
+  "@opentelemetry/instrumentation-koa@0.61.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-koa",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-koa/LICENSE"
   },
-  "@opentelemetry/instrumentation-lru-memoizer@0.55.0": {
+  "@opentelemetry/instrumentation-lru-memoizer@0.57.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-lru-memoizer",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-lru-memoizer/LICENSE"
   },
-  "@opentelemetry/instrumentation-mongodb@0.64.0": {
+  "@opentelemetry/instrumentation-mongodb@0.66.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-mongodb",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-mongodb/LICENSE"
   },
-  "@opentelemetry/instrumentation-mongoose@0.57.0": {
+  "@opentelemetry/instrumentation-mongoose@0.59.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-mongoose",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-mongoose/LICENSE"
   },
-  "@opentelemetry/instrumentation-mysql2@0.57.0": {
+  "@opentelemetry/instrumentation-mysql2@0.59.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-mysql2",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-mysql2/LICENSE"
   },
-  "@opentelemetry/instrumentation-mysql@0.57.0": {
+  "@opentelemetry/instrumentation-mysql@0.59.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-mysql",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-mysql/LICENSE"
   },
-  "@opentelemetry/instrumentation-pg@0.63.0": {
+  "@opentelemetry/instrumentation-pg@0.65.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-pg",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-pg/LICENSE"
   },
-  "@opentelemetry/instrumentation-redis@0.59.0": {
+  "@opentelemetry/instrumentation-redis@0.61.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-redis",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-redis/LICENSE"
   },
-  "@opentelemetry/instrumentation-tedious@0.30.0": {
+  "@opentelemetry/instrumentation-tedious@0.32.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-tedious",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/instrumentation-tedious/LICENSE"
   },
-  "@opentelemetry/instrumentation-undici@0.21.0": {
+  "@opentelemetry/instrumentation-undici@0.23.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js-contrib",
     "publisher": "OpenTelemetry Authors",
@@ -621,14 +621,14 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@prisma/instrumentation/node_modules/@opentelemetry/instrumentation/LICENSE"
   },
-  "@opentelemetry/instrumentation@0.208.0": {
+  "@opentelemetry/instrumentation@0.212.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@fastify/otel/node_modules/@opentelemetry/instrumentation",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@fastify/otel/node_modules/@opentelemetry/instrumentation/LICENSE"
   },
-  "@opentelemetry/instrumentation@0.211.0": {
+  "@opentelemetry/instrumentation@0.213.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
@@ -642,14 +642,14 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/redis-common",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/redis-common/LICENSE"
   },
-  "@opentelemetry/resources@2.5.1": {
+  "@opentelemetry/resources@2.6.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/resources",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@opentelemetry/resources/LICENSE"
   },
-  "@opentelemetry/sdk-trace-base@2.5.1": {
+  "@opentelemetry/sdk-trace-base@2.6.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors",
@@ -678,7 +678,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@popperjs/core",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@popperjs/core/LICENSE.md"
   },
-  "@prisma/instrumentation@7.2.0": {
+  "@prisma/instrumentation@7.4.2": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/prisma/prisma",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@prisma/instrumentation",
@@ -700,35 +700,35 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@rollup/pluginutils",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@rollup/pluginutils/LICENSE"
   },
-  "@rollup/rollup-darwin-arm64@4.59.0": {
+  "@rollup/rollup-darwin-arm64@4.60.1": {
     "licenses": "MIT",
     "repository": "https://github.com/rollup/rollup",
     "publisher": "Lukas Taegert-Atkinson",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@rollup/rollup-darwin-arm64",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@rollup/rollup-darwin-arm64/README.md"
   },
-  "@sentry-internal/browser-utils@10.40.0": {
+  "@sentry-internal/browser-utils@10.46.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/browser-utils",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/browser-utils/LICENSE"
   },
-  "@sentry-internal/feedback@10.40.0": {
+  "@sentry-internal/feedback@10.46.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/feedback",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/feedback/LICENSE"
   },
-  "@sentry-internal/replay-canvas@10.40.0": {
+  "@sentry-internal/replay-canvas@10.46.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/replay-canvas",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry-internal/replay-canvas/LICENSE"
   },
-  "@sentry-internal/replay@10.40.0": {
+  "@sentry-internal/replay@10.46.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
@@ -742,7 +742,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/babel-plugin-component-annotate",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/babel-plugin-component-annotate/LICENSE"
   },
-  "@sentry/browser@10.40.0": {
+  "@sentry/browser@10.46.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
@@ -769,49 +769,49 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/cli",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/cli/LICENSE"
   },
-  "@sentry/core@10.40.0": {
+  "@sentry/core@10.46.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/core",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/core/LICENSE"
   },
-  "@sentry/nextjs@10.40.0": {
+  "@sentry/nextjs@10.46.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/nextjs",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/nextjs/LICENSE"
   },
-  "@sentry/node-core@10.40.0": {
+  "@sentry/node-core@10.46.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/node-core",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/node-core/LICENSE"
   },
-  "@sentry/node@10.40.0": {
+  "@sentry/node@10.46.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/node",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/node/LICENSE"
   },
-  "@sentry/opentelemetry@10.40.0": {
+  "@sentry/opentelemetry@10.46.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/opentelemetry",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/opentelemetry/LICENSE"
   },
-  "@sentry/react@10.40.0": {
+  "@sentry/react@10.46.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/react",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@sentry/react/LICENSE"
   },
-  "@sentry/vercel-edge@10.40.0": {
+  "@sentry/vercel-edge@10.46.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry",
@@ -875,7 +875,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/mysql",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/mysql/LICENSE"
   },
-  "@types/node@24.10.14": {
+  "@types/node@24.12.0": {
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/node",
@@ -1134,7 +1134,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/asynckit",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/asynckit/LICENSE"
   },
-  "axios@1.13.5": {
+  "axios@1.14.0": {
     "licenses": "MIT",
     "repository": "https://github.com/axios/axios",
     "publisher": "Matt Zabriskie",
@@ -1165,13 +1165,13 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/balanced-match",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/balanced-match/LICENSE.md"
   },
-  "baseline-browser-mapping@2.10.0": {
+  "baseline-browser-mapping@2.10.12": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/web-platform-dx/baseline-browser-mapping",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/baseline-browser-mapping",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/baseline-browser-mapping/LICENSE.txt"
   },
-  "brace-expansion@1.1.12": {
+  "brace-expansion@1.1.13": {
     "licenses": "MIT",
     "repository": "https://github.com/juliangruber/brace-expansion",
     "publisher": "Julian Gruber",
@@ -1180,7 +1180,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/read-package-json/node_modules/brace-expansion",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/read-package-json/node_modules/brace-expansion/LICENSE"
   },
-  "brace-expansion@5.0.3": {
+  "brace-expansion@5.0.5": {
     "licenses": "MIT",
     "repository": "https://github.com/juliangruber/brace-expansion",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/brace-expansion",
@@ -1200,13 +1200,6 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/buffer-from",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/buffer-from/LICENSE"
   },
-  "cal-parser@1.0.2": {
-    "licenses": "MIT",
-    "publisher": "Chris Gilardi",
-    "email": "cgilardi97@gmail.com",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/cal-parser",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/cal-parser/LICENSE.md"
-  },
   "call-bind-apply-helpers@1.0.2": {
     "licenses": "MIT",
     "repository": "https://github.com/ljharb/call-bind-apply-helpers",
@@ -1224,7 +1217,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/callsites",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/callsites/license"
   },
-  "caniuse-lite@1.0.30001774": {
+  "caniuse-lite@1.0.30001782": {
     "licenses": "CC-BY-4.0",
     "repository": "https://github.com/browserslist/caniuse-lite",
     "publisher": "Ben Briggs",
@@ -1359,7 +1352,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/csstype",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/csstype/LICENSE"
   },
-  "dayjs@1.11.19": {
+  "dayjs@1.11.20": {
     "licenses": "MIT",
     "repository": "https://github.com/iamkun/dayjs",
     "publisher": "iamkun",
@@ -1455,14 +1448,14 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/dunder-proto",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/dunder-proto/LICENSE"
   },
-  "electron-to-chromium@1.5.302": {
+  "electron-to-chromium@1.5.329": {
     "licenses": "ISC",
-    "repository": "https://github.com/kilian/electron-to-chromium",
+    "repository": "https://github.com/Kilian/electron-to-chromium",
     "publisher": "Kilian Valkhof",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/electron-to-chromium",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/electron-to-chromium/LICENSE"
   },
-  "enhanced-resolve@5.19.0": {
+  "enhanced-resolve@5.20.1": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/enhanced-resolve",
     "publisher": "Tobias Koppers @sokra",
@@ -1803,13 +1796,6 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/https-proxy-agent",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/https-proxy-agent/README.md"
   },
-  "ical-date-parser@4.0.0": {
-    "licenses": "MIT",
-    "repository": "https://github.com/zakangelle/ical-date-parser",
-    "publisher": "Zak Angelle",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/ical-date-parser",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/ical-date-parser/README.md"
-  },
   "import-fresh@3.3.1": {
     "licenses": "MIT",
     "repository": "https://github.com/sindresorhus/import-fresh",
@@ -1820,6 +1806,15 @@
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/import-fresh/license"
   },
   "import-in-the-middle@2.0.6": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/nodejs/import-in-the-middle",
+    "publisher": "Bryan English",
+    "email": "bryan.english@datadoghq.com",
+    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@prisma/instrumentation/node_modules/import-in-the-middle",
+    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@prisma/instrumentation/node_modules/import-in-the-middle/LICENSE",
+    "noticeFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@prisma/instrumentation/node_modules/import-in-the-middle/NOTICE"
+  },
+  "import-in-the-middle@3.0.0": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/nodejs/import-in-the-middle",
     "publisher": "Bryan English",
@@ -2004,7 +1999,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/loose-envify",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/loose-envify/LICENSE"
   },
-  "lru-cache@11.2.6": {
+  "lru-cache@11.2.7": {
     "licenses": "BlueOak-1.0.0",
     "repository": "https://github.com/isaacs/node-lru-cache",
     "publisher": "Isaac Z. Schlueter",
@@ -2027,7 +2022,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/magic-string",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/magic-string/LICENSE"
   },
-  "map@3.3.0": {
+  "map@3.3.1": {
     "licenses": "UNLICENSED",
     "private": true,
     "path": "/Users/tometome/Git/archives-ver-3-series-web",
@@ -2061,7 +2056,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/mime-types",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/mime-types/LICENSE"
   },
-  "minimatch@10.2.4": {
+  "minimatch@10.2.5": {
     "licenses": "BlueOak-1.0.0",
     "repository": "https://github.com/isaacs/minimatch",
     "publisher": "Isaac Z. Schlueter",
@@ -2141,7 +2136,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/neo-async",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/neo-async/LICENSE"
   },
-  "next@16.1.6": {
+  "next@16.2.1": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/next",
@@ -2154,7 +2149,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/node-fetch",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/node-fetch/LICENSE.md"
   },
-  "node-releases@2.0.27": {
+  "node-releases@2.0.36": {
     "licenses": "MIT",
     "repository": "https://github.com/chicoxyzzy/node-releases",
     "publisher": "Sergey Rubanov",
@@ -2319,7 +2314,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/pg-int8",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/pg-int8/LICENSE"
   },
-  "pg-protocol@1.12.0": {
+  "pg-protocol@1.13.0": {
     "licenses": "MIT",
     "repository": "https://github.com/brianc/node-postgres",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/pg-protocol",
@@ -2339,7 +2334,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/picocolors",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/picocolors/LICENSE"
   },
-  "picomatch@4.0.3": {
+  "picomatch@4.0.4": {
     "licenses": "MIT",
     "repository": "https://github.com/micromatch/picomatch",
     "publisher": "Jon Schlinkert",
@@ -2414,11 +2409,14 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/proxy-from-env",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/proxy-from-env/LICENSE"
   },
-  "randombytes@2.1.0": {
+  "proxy-from-env@2.1.0": {
     "licenses": "MIT",
-    "repository": "https://github.com/crypto-browserify/randombytes",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/randombytes",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/randombytes/LICENSE"
+    "repository": "https://github.com/Rob--W/proxy-from-env",
+    "publisher": "Rob Wu",
+    "email": "rob@robwu.nl",
+    "url": "https://robwu.nl/",
+    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/axios/node_modules/proxy-from-env",
+    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/axios/node_modules/proxy-from-env/LICENSE"
   },
   "react-dom@19.2.4": {
     "licenses": "MIT",
@@ -2426,7 +2424,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/react-dom",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/react-dom/LICENSE"
   },
-  "react-icons@5.5.0": {
+  "react-icons@5.6.0": {
     "licenses": "MIT",
     "repository": "https://github.com/react-icons/react-icons",
     "publisher": "Goran Gajic",
@@ -2542,28 +2540,12 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/resolve",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/resolve/LICENSE"
   },
-  "rollup@4.59.0": {
+  "rollup@4.60.1": {
     "licenses": "MIT",
     "repository": "https://github.com/rollup/rollup",
     "publisher": "Rich Harris",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/rollup",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/rollup/LICENSE.md"
-  },
-  "rrule@2.8.1": {
-    "licenses": "BSD-3-Clause",
-    "repository": "https://github.com/jakubroztocil/rrule",
-    "publisher": "Jakub Roztocil, Lars Schöning, and David Golightly",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/rrule",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/rrule/LICENCE"
-  },
-  "safe-buffer@5.2.1": {
-    "licenses": "MIT",
-    "repository": "https://github.com/feross/safe-buffer",
-    "publisher": "Feross Aboukhadijeh",
-    "email": "feross@feross.org",
-    "url": "https://feross.org",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/safe-buffer",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/safe-buffer/LICENSE"
   },
   "scheduler@0.27.0": {
     "licenses": "MIT",
@@ -2599,14 +2581,6 @@
     "publisher": "GitHub Inc.",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/sharp/node_modules/semver",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/sharp/node_modules/semver/LICENSE"
-  },
-  "serialize-javascript@6.0.2": {
-    "licenses": "BSD-3-Clause",
-    "repository": "https://github.com/yahoo/serialize-javascript",
-    "publisher": "Eric Ferraiuolo",
-    "email": "edf@ericf.me",
-    "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/serialize-javascript",
-    "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/serialize-javascript/LICENSE"
   },
   "sharp@0.34.5": {
     "licenses": "Apache-2.0",
@@ -2768,27 +2742,27 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/supports-preserve-symlinks-flag",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/supports-preserve-symlinks-flag/LICENSE"
   },
-  "swr@2.4.0": {
+  "swr@2.4.1": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/swr",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/swr",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/swr/LICENSE"
   },
-  "tapable@2.3.0": {
+  "tapable@2.3.2": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/tapable",
     "publisher": "Tobias Koppers @sokra",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/tapable",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/tapable/LICENSE"
   },
-  "terser-webpack-plugin@5.3.16": {
+  "terser-webpack-plugin@5.4.0": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/terser-webpack-plugin",
     "publisher": "webpack Contrib Team",
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/terser-webpack-plugin",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/terser-webpack-plugin/LICENSE"
   },
-  "terser@5.46.0": {
+  "terser@5.46.1": {
     "licenses": "BSD-2-Clause",
     "repository": "https://github.com/terser/terser",
     "publisher": "Mihai Bazon",
@@ -2843,7 +2817,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/type-fest",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/type-fest/license"
   },
-  "typescript@5.9.3": {
+  "typescript@6.0.2": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/microsoft/TypeScript",
     "publisher": "Microsoft Corp.",
@@ -2914,7 +2888,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/webpack-sources",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/webpack-sources/LICENSE"
   },
-  "webpack@5.105.3": {
+  "webpack@5.105.4": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/webpack",
     "publisher": "Tobias Koppers @sokra",
@@ -2964,7 +2938,7 @@
     "path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/yallist",
     "licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/yallist/LICENSE"
   },
-  "yaml@1.10.2": {
+  "yaml@1.10.3": {
     "licenses": "ISC",
     "repository": "https://github.com/eemeli/yaml",
     "publisher": "Eemeli Aro",

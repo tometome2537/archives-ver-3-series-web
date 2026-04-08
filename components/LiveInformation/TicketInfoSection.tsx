@@ -9,7 +9,7 @@ interface TicketInfoSectionProps {
 
 export const TicketInfoSection = ({ event }: TicketInfoSectionProps) => (
     <Fragment>
-        <Typography variant="body2" fontWeight="bold">
+        <Typography sx={{ variant: "body2", fontWeight: "bold" }}>
             チケット情報:
         </Typography>
         <Box

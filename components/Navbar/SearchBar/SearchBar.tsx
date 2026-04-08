@@ -349,7 +349,9 @@ export default function SearchBar(props: SearchBarProps) {
                 getOptionLabel={(option) =>
                     typeof option === "string" ? "？？？" : option.label
                 }
-                isOptionEqualToValue={(option, v) => option.value === v.value}
+                isOptionEqualToValue={(option, v) =>
+                    typeof v !== "string" && option.value === v.value
+                }
                 value={props.inputValues}
                 onChange={handleOnChange}
                 // 入力途中の文字列を取得
@@ -694,10 +696,17 @@ export default function SearchBar(props: SearchBarProps) {
                     </li>
                 )}
                 // 入力された値をタグ🏷️の見た目で表示する
-                renderTags={(value: Array<SearchSuggestion>, getTagProps) =>
-                    value.map((option: SearchSuggestion, index: number) => {
-                        const tagProps = getTagProps({ index });
-                        const { key, onDelete, ...restTagProps } = tagProps;
+                renderValue={(value, getItemProps) =>
+                    value.map((option, index) => {
+                        const itemProps = getItemProps({ index });
+                        const { key, onDelete, ...restProps } = itemProps;
+
+                        // freeSolo対策（重要）
+                        if (typeof option === "string") {
+                            return (
+                                <Chip key={key} label={option} {...restProps} />
+                            );
+                        }
 
                         const isFixed =
                             props.fixedOptionValues?.includes(option.value) ??
@@ -705,11 +714,11 @@ export default function SearchBar(props: SearchBarProps) {
 
                         return (
                             <Box
-                                key={`${option.value}-${option.categoryId}`} // BoxのkeyはそのままでOK
+                                key={`${option.value}-${option.categoryId}`}
                                 sx={{ position: "relative" }}
                             >
                                 <Chip
-                                    key={key} // ★React用keyはChipへ直渡し（spreadに混ぜない）
+                                    key={key}
                                     variant="outlined"
                                     sx={{
                                         height: "auto",
@@ -752,15 +761,15 @@ export default function SearchBar(props: SearchBarProps) {
                                         </>
                                     }
                                     color="success"
-                                    {...restTagProps} // ★keyを除いたpropsだけspread
+                                    {...restProps}
                                     disabled={isFixed ? true : undefined}
                                     onDelete={isFixed ? undefined : onDelete}
                                 />
 
-                                {props.availableCategoryIds ? (
-                                    props.availableCategoryIds.includes(
+                                {props.availableCategoryIds &&
+                                    !props.availableCategoryIds.includes(
                                         option.categoryId,
-                                    ) ? null : (
+                                    ) && (
                                         <CloseIcon
                                             sx={{
                                                 position: "absolute",
@@ -771,8 +780,7 @@ export default function SearchBar(props: SearchBarProps) {
                                                 fontSize: "2.5rem",
                                             }}
                                         />
-                                    )
-                                ) : null}
+                                    )}
                             </Box>
                         );
                     })
@@ -823,7 +831,13 @@ export default function SearchBar(props: SearchBarProps) {
                                 }
                                 label="Label"
                                 type="text"
-                                inputProps={{ readOnly: true }}
+                                slotProps={{
+                                    input: {
+                                        inputProps: {
+                                            readOnly: true,
+                                        },
+                                    },
+                                }}
                             />
                         </Stack>
                         <Stack>
@@ -860,7 +874,13 @@ export default function SearchBar(props: SearchBarProps) {
                                 }
                                 label="categoryId"
                                 type="text"
-                                inputProps={{ readOnly: true }}
+                                slotProps={{
+                                    input: {
+                                        inputProps: {
+                                            readOnly: true,
+                                        },
+                                    },
+                                }}
                             />
                             <TextField
                                 autoFocus
@@ -877,7 +897,13 @@ export default function SearchBar(props: SearchBarProps) {
                                 }
                                 label="categoryLabel"
                                 type="text"
-                                inputProps={{ readOnly: true }}
+                                slotProps={{
+                                    input: {
+                                        inputProps: {
+                                            readOnly: true,
+                                        },
+                                    },
+                                }}
                             />
                         </Stack>
                         {/* <DatePicker

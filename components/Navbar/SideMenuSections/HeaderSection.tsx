@@ -21,6 +21,7 @@ export function HeaderSection({ onClose }: HeaderSectionProps) {
                     />
                 </ListItemIcon>
                 <ListItemText
+                    sx={{ marginLeft: "1em" }}
                     primary="ぷらそにかアーカイブス"
                     secondary="当サイトはぷらそにかファンが制作しました。"
                 />

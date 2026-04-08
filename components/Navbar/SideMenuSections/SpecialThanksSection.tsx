@@ -16,7 +16,11 @@ export function SpecialThanksSection({ onClose }: SpecialThanksSectionProps) {
                 <ListItemButton onClick={onClose}>
                     <ListItemText
                         primary="Special Thanks"
-                        primaryTypographyProps={{ fontSize: "1.3rem" }}
+                        slotProps={{
+                            primary: {
+                                sx: { fontSize: "1.3rem" },
+                            },
+                        }}
                     />
                 </ListItemButton>
             </ListItem>

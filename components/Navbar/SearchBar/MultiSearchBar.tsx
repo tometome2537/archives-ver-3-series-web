@@ -66,8 +66,9 @@ const LimitedSearch: React.FC<LimitedSearchProps> = ({
                     // LimitSearchBarでは categoryLabelSecond を使用する。
                     item.categoryLabel = item.categoryLabelSecond;
                 }
-                return item;
+                return true;
             }
+            return false;
         },
     );
 
@@ -194,7 +195,7 @@ export default function MultiSearchBar(props: MultiSearchBarSearchBarProps) {
                         timeout="auto"
                         unmountOnExit
                     >
-                        <Stack gap={1}>
+                        <Stack sx={{ gap: 2 }}>
                             <Box>
                                 {/* <Typography>{v.categoryLabel}</Typography> */}
                                 <LimitedSearch

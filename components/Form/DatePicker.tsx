@@ -58,7 +58,7 @@ export const DatePicker: React.FC<MyDatePickerProps> = ({
                         fullWidth: true,
                         id: id,
                         label: label,
-                        autoComplete: autoComplete,
+                        // autoComplete: autoComplete,
                     },
                 }}
                 onChange={(newValue) => {

@@ -8,7 +8,7 @@ interface EventInfoRowProps {
 
 export const EventInfoRow = ({ label, children }: EventInfoRowProps) => (
     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 1 }}>
-        <Typography variant="body2" fontWeight="bold">
+        <Typography sx={{ variant: "body2", fontWeight: "bold" }}>
             {label}:
         </Typography>
         {children}

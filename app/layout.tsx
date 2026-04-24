@@ -6,7 +6,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { cookies } from "next/headers";
 import { AppleMusicProvider } from "@/contexts/AppleMusicContext";
-import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v16-appRouter";
+import { CssBaseline } from "@mui/material";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -63,6 +64,7 @@ export default async function RootLayout({
                         <AppleMusicProvider>
                             <ApiDataProvider>
                                 <BrowserInfoProvider>
+                                    <CssBaseline />
                                     {children}
                                 </BrowserInfoProvider>
                             </ApiDataProvider>

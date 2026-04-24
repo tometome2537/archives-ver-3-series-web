@@ -75,7 +75,6 @@ export const ThemeRegistry = (props: {
     return (
         <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>
-                <CssBaseline />
                 {props.children}
             </ThemeProvider>
         </ColorModeContext.Provider>

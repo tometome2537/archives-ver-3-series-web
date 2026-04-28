@@ -1,46 +1,49 @@
 {
-  "name": "map",
-  "version": "3.3.4",
-  "private": true,
-  "scripts": {
-    "dev": "next dev",
-    "update": "npm update --save && npm run create_license && npm outdated",
-    "build": "next build",
-    "start": "next start",
-    "api_tome_create": "openapi-generator generate -i ./src/openapi-client/api-node-tometome-openapi.yaml -g typescript-fetch -o ./src/openapi-client/api-node-tometome",
-    "create_license": "npx license-checker --json > app/license/licenses.json"
-  },
-  "engines": {
-    "node": "^24.0.0"
-  },
-  "dependencies": {
-    "@emotion/react": "^11.14.0",
-    "@emotion/styled": "^11.14.1",
-    "@koozaki/romaji-conv": "^2.0.35",
-    "@mui/icons-material": "^9.0.0",
-    "@mui/material": "^9.0.0",
-    "@mui/material-nextjs": "^9.0.0",
-    "@mui/x-date-pickers": "^9.0.2",
-    "@next/third-parties": "^16.2.4",
-    "@sentry/nextjs": "^10.50.0",
-    "dayjs": "^1.11.20",
-    "js-cookie": "^3.0.5",
-    "linkify-plugin-hashtag": "^4.3.2",
-    "linkify-plugin-mention": "^4.3.2",
-    "linkify-react": "^4.3.2",
-    "linkifyjs": "^4.3.2",
-    "next": "^16.2.4",
-    "react": "^19.2.5",
-    "react-dom": "^19.2.5",
-    "react-infinite-scroll-component": "^7.1.0",
-    "react-youtube": "^10.1.0"
-  },
-  "devDependencies": {
-    "@biomejs/biome": "~2.4.13",
-    "@types/js-cookie": "^3.0.6",
-    "@types/node": "^24.12.2",
-    "@types/react": "^19.2.14",
-    "license-checker": "^25.0.1",
-    "typescript": "^6.0.3"
-  }
+	"name": "map",
+	"version": "3.3.4",
+	"private": true,
+	"scripts": {
+		"dev": "next dev",
+		"update": "npm update --save && npm run create_license && npm outdated",
+		"build": "next build",
+		"start": "next start",
+		"lint": "biome lint --write",
+		"format": "biome format  --write",
+		"check": "biome check --write",
+		"api_tome_create": "openapi-generator generate -i ./src/openapi-client/api-node-tometome-openapi.yaml -g typescript-fetch -o ./src/openapi-client/api-node-tometome",
+		"create_license": "npx license-checker --json > app/license/licenses.json"
+	},
+	"engines": {
+		"node": "^24.0.0"
+	},
+	"dependencies": {
+		"@emotion/react": "^11.14.0",
+		"@emotion/styled": "^11.14.1",
+		"@koozaki/romaji-conv": "^2.0.35",
+		"@mui/icons-material": "^9.0.0",
+		"@mui/material": "^9.0.0",
+		"@mui/material-nextjs": "^9.0.0",
+		"@mui/x-date-pickers": "^9.0.2",
+		"@next/third-parties": "^16.2.4",
+		"@sentry/nextjs": "^10.50.0",
+		"dayjs": "^1.11.20",
+		"js-cookie": "^3.0.5",
+		"linkify-plugin-hashtag": "^4.3.2",
+		"linkify-plugin-mention": "^4.3.2",
+		"linkify-react": "^4.3.2",
+		"linkifyjs": "^4.3.2",
+		"next": "^16.2.4",
+		"react": "^19.2.5",
+		"react-dom": "^19.2.5",
+		"react-infinite-scroll-component": "^7.1.0",
+		"react-youtube": "^10.1.0"
+	},
+	"devDependencies": {
+		"@biomejs/biome": "~2.4.13",
+		"@types/js-cookie": "^3.0.6",
+		"@types/node": "^24.12.2",
+		"@types/react": "^19.2.14",
+		"license-checker": "^25.0.1",
+		"typescript": "^6.0.3"
+	}
 }

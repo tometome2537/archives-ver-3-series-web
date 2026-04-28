@@ -29,46 +29,46 @@ const formTemplate = `
 →`;
 
 export function ContactSection() {
-    return (
-        <>
-            <ListItem disablePadding>
-                <ListItemButton
-                    component="a"
-                    href="https://forms.gle/osqdRqh1MxWhA51A8"
-                    target="_blank"
-                >
-                    <ListItemIcon>
-                        <MailIcon sx={{ color: "rgb(50, 154, 229)" }} />
-                    </ListItemIcon>
-                    <ListItemText
-                        style={{
-                            whiteSpace: "pre-line",
-                        }}
-                        primary="お問い合わせ"
-                    />
-                </ListItemButton>
-            </ListItem>
+	return (
+		<>
+			<ListItem disablePadding>
+				<ListItemButton
+					component="a"
+					href="https://forms.gle/osqdRqh1MxWhA51A8"
+					target="_blank"
+				>
+					<ListItemIcon>
+						<MailIcon sx={{ color: "rgb(50, 154, 229)" }} />
+					</ListItemIcon>
+					<ListItemText
+						style={{
+							whiteSpace: "pre-line",
+						}}
+						primary="お問い合わせ"
+					/>
+				</ListItemButton>
+			</ListItem>
 
-            <ListItem disablePadding>
-                <ListItemButton
-                    component="a"
-                    href={`https://docs.google.com/forms/d/e/1FAIpQLScfUbL_mPDFJP921o6bjvGi8Dq0VeyhNDpySpHSF97ECwWr8w/viewform?usp=pp_url&entry.1432192910=${encodeURIComponent(formTemplate)}`}
-                    target="_blank"
-                >
-                    <ListItemIcon>
-                        <FeedbackIcon sx={{ color: "rgb(165, 82, 242)" }} />
-                    </ListItemIcon>
-                    <ListItemText
-                        style={{
-                            whiteSpace: "pre-line",
-                        }}
-                        primary="フィードバック"
-                        secondary={
-                            "バグ報告・誤情報の報告もこちらからお願いします。\n削除依頼もこちらからお願いします。"
-                        }
-                    />
-                </ListItemButton>
-            </ListItem>
-        </>
-    );
+			<ListItem disablePadding>
+				<ListItemButton
+					component="a"
+					href={`https://docs.google.com/forms/d/e/1FAIpQLScfUbL_mPDFJP921o6bjvGi8Dq0VeyhNDpySpHSF97ECwWr8w/viewform?usp=pp_url&entry.1432192910=${encodeURIComponent(formTemplate)}`}
+					target="_blank"
+				>
+					<ListItemIcon>
+						<FeedbackIcon sx={{ color: "rgb(165, 82, 242)" }} />
+					</ListItemIcon>
+					<ListItemText
+						style={{
+							whiteSpace: "pre-line",
+						}}
+						primary="フィードバック"
+						secondary={
+							"バグ報告・誤情報の報告もこちらからお願いします。\n削除依頼もこちらからお願いします。"
+						}
+					/>
+				</ListItemButton>
+			</ListItem>
+		</>
+	);
 }

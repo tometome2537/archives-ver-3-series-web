@@ -5,27 +5,27 @@ import ListItemText from "@mui/material/ListItemText";
 import Image from "next/image";
 
 interface HeaderSectionProps {
-    onClose: () => void;
+	onClose: () => void;
 }
 
 export function HeaderSection({ onClose }: HeaderSectionProps) {
-    return (
-        <ListItem disablePadding>
-            <ListItemButton onClick={onClose}>
-                <ListItemIcon>
-                    <Image
-                        src="/icon_border_radius.png"
-                        alt="ぷらそにかアーカイブスロゴ"
-                        width={40}
-                        height={40}
-                    />
-                </ListItemIcon>
-                <ListItemText
-                    sx={{ marginLeft: "1em" }}
-                    primary="ぷらそにかアーカイブス"
-                    secondary="当サイトはぷらそにかファンが制作しました。"
-                />
-            </ListItemButton>
-        </ListItem>
-    );
+	return (
+		<ListItem disablePadding>
+			<ListItemButton onClick={onClose}>
+				<ListItemIcon>
+					<Image
+						src="/icon_border_radius.png"
+						alt="ぷらそにかアーカイブスロゴ"
+						width={40}
+						height={40}
+					/>
+				</ListItemIcon>
+				<ListItemText
+					sx={{ marginLeft: "1em" }}
+					primary="ぷらそにかアーカイブス"
+					secondary="当サイトはぷらそにかファンが制作しました。"
+				/>
+			</ListItemButton>
+		</ListItem>
+	);
 }

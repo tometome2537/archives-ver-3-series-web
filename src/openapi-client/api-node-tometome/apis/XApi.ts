@@ -15,26 +15,50 @@
 
 import * as runtime from '../runtime';
 import type {
+  V1XPostPostIdGet200Response,
   V1XPostsGet200Response,
   V1XPostsGet500Response,
-  V1XUserGet200Response,
+  XText,
+  XTextPostRequest,
+  XUser,
 } from '../models/index';
 import {
+    V1XPostPostIdGet200ResponseFromJSON,
+    V1XPostPostIdGet200ResponseToJSON,
     V1XPostsGet200ResponseFromJSON,
     V1XPostsGet200ResponseToJSON,
     V1XPostsGet500ResponseFromJSON,
     V1XPostsGet500ResponseToJSON,
-    V1XUserGet200ResponseFromJSON,
-    V1XUserGet200ResponseToJSON,
+    XTextFromJSON,
+    XTextToJSON,
+    XTextPostRequestFromJSON,
+    XTextPostRequestToJSON,
+    XUserFromJSON,
+    XUserToJSON,
 } from '../models/index';
+
+export interface V1XPostPostIdGetRequest {
+    postId: string;
+}
 
 export interface V1XPostsGetRequest {
     userid?: string;
-    postid?: string;
+    username?: string;
+    relatedposts?: boolean;
+    count?: number;
 }
 
 export interface V1XUserGetRequest {
-    userid: string;
+    userid?: string;
+    username?: string;
+}
+
+export interface XTextGetRequest {
+    text: string;
+}
+
+export interface XTextPostOperationRequest {
+    xTextPostRequest?: XTextPostRequest;
 }
 
 /**
@@ -43,18 +67,72 @@ export interface V1XUserGetRequest {
 export class XApi extends runtime.BaseAPI {
 
     /**
-     * Fetches posts and user information based on user ID or post ID.
-     * Retrieve posts and user data
+     * Creates request options for v1XPostPostIdGet without sending the request
      */
-    async v1XPostsGetRaw(requestParameters: V1XPostsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1XPostsGet200Response>> {
+    async v1XPostPostIdGetRequestOpts(requestParameters: V1XPostPostIdGetRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['postId'] == null) {
+            throw new runtime.RequiredError(
+                'postId',
+                'Required parameter "postId" was null or undefined when calling v1XPostPostIdGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        if (this.configuration && this.configuration.apiKey) {
+            headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // TokenAuth authentication
+        }
+
+
+        let urlPath = `/v1/x/post/{postId}`;
+        urlPath = urlPath.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters['postId'])));
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     */
+    async v1XPostPostIdGetRaw(requestParameters: V1XPostPostIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1XPostPostIdGet200Response>> {
+        const requestOptions = await this.v1XPostPostIdGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => V1XPostPostIdGet200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     */
+    async v1XPostPostIdGet(requestParameters: V1XPostPostIdGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1XPostPostIdGet200Response> {
+        const response = await this.v1XPostPostIdGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for v1XPostsGet without sending the request
+     */
+    async v1XPostsGetRequestOpts(requestParameters: V1XPostsGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['userid'] != null) {
             queryParameters['userid'] = requestParameters['userid'];
         }
 
-        if (requestParameters['postid'] != null) {
-            queryParameters['postid'] = requestParameters['postid'];
+        if (requestParameters['username'] != null) {
+            queryParameters['username'] = requestParameters['username'];
+        }
+
+        if (requestParameters['relatedposts'] != null) {
+            queryParameters['relatedposts'] = requestParameters['relatedposts'];
+        }
+
+        if (requestParameters['count'] != null) {
+            queryParameters['count'] = requestParameters['count'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -63,12 +141,24 @@ export class XApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // TokenAuth authentication
         }
 
-        const response = await this.request({
-            path: `/v1/x/posts`,
+
+        let urlPath = `/v1/x/posts`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * Fetches posts and user information based on user ID or post ID.
+     * Retrieve posts and user data
+     */
+    async v1XPostsGetRaw(requestParameters: V1XPostsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1XPostsGet200Response>> {
+        const requestOptions = await this.v1XPostsGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => V1XPostsGet200ResponseFromJSON(jsonValue));
     }
@@ -83,21 +173,17 @@ export class XApi extends runtime.BaseAPI {
     }
 
     /**
-     * Fetches user information based on user ID.
-     * Retrieve user data
+     * Creates request options for v1XUserGet without sending the request
      */
-    async v1XUserGetRaw(requestParameters: V1XUserGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1XUserGet200Response>> {
-        if (requestParameters['userid'] == null) {
-            throw new runtime.RequiredError(
-                'userid',
-                'Required parameter "userid" was null or undefined when calling v1XUserGet().'
-            );
-        }
-
+    async v1XUserGetRequestOpts(requestParameters: V1XUserGetRequest): Promise<runtime.RequestOpts> {
         const queryParameters: any = {};
 
         if (requestParameters['userid'] != null) {
             queryParameters['userid'] = requestParameters['userid'];
+        }
+
+        if (requestParameters['username'] != null) {
+            queryParameters['username'] = requestParameters['username'];
         }
 
         const headerParameters: runtime.HTTPHeaders = {};
@@ -106,22 +192,126 @@ export class XApi extends runtime.BaseAPI {
             headerParameters["Authorization"] = await this.configuration.apiKey("Authorization"); // TokenAuth authentication
         }
 
-        const response = await this.request({
-            path: `/v1/x/user`,
+
+        let urlPath = `/v1/x/user`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
-
-        return new runtime.JSONApiResponse(response, (jsonValue) => V1XUserGet200ResponseFromJSON(jsonValue));
+        };
     }
 
     /**
      * Fetches user information based on user ID.
      * Retrieve user data
      */
-    async v1XUserGet(requestParameters: V1XUserGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1XUserGet200Response> {
+    async v1XUserGetRaw(requestParameters: V1XUserGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<XUser>> {
+        const requestOptions = await this.v1XUserGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => XUserFromJSON(jsonValue));
+    }
+
+    /**
+     * Fetches user information based on user ID.
+     * Retrieve user data
+     */
+    async v1XUserGet(requestParameters: V1XUserGetRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<XUser> {
         const response = await this.v1XUserGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for xTextGet without sending the request
+     */
+    async xTextGetRequestOpts(requestParameters: XTextGetRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['text'] == null) {
+            throw new runtime.RequiredError(
+                'text',
+                'Required parameter "text" was null or undefined when calling xTextGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['text'] != null) {
+            queryParameters['text'] = requestParameters['text'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/x-text`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * 投稿のテキストの文字数をカウントします。
+     * テキストデータの解析
+     */
+    async xTextGetRaw(requestParameters: XTextGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<XText>> {
+        const requestOptions = await this.xTextGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => XTextFromJSON(jsonValue));
+    }
+
+    /**
+     * 投稿のテキストの文字数をカウントします。
+     * テキストデータの解析
+     */
+    async xTextGet(requestParameters: XTextGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<XText> {
+        const response = await this.xTextGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for xTextPost without sending the request
+     */
+    async xTextPostRequestOpts(requestParameters: XTextPostOperationRequest): Promise<runtime.RequestOpts> {
+        const queryParameters: any = {};
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+        headerParameters['Content-Type'] = 'application/json';
+
+
+        let urlPath = `/x-text`;
+
+        return {
+            path: urlPath,
+            method: 'POST',
+            headers: headerParameters,
+            query: queryParameters,
+            body: XTextPostRequestToJSON(requestParameters['xTextPostRequest']),
+        };
+    }
+
+    /**
+     * 投稿のテキストの文字数をカウントします。
+     * テキストデータの解析
+     */
+    async xTextPostRaw(requestParameters: XTextPostOperationRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<XText>> {
+        const requestOptions = await this.xTextPostRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => XTextFromJSON(jsonValue));
+    }
+
+    /**
+     * 投稿のテキストの文字数をカウントします。
+     * テキストデータの解析
+     */
+    async xTextPost(requestParameters: XTextPostOperationRequest = {}, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<XText> {
+        const response = await this.xTextPostRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

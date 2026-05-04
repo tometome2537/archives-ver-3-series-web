@@ -13,13 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
-import type { YoutubeRelease } from './YoutubeRelease';
+import type { YoutubeReleases } from './YoutubeReleases';
 import {
-    YoutubeReleaseFromJSON,
-    YoutubeReleaseFromJSONTyped,
-    YoutubeReleaseToJSON,
-    YoutubeReleaseToJSONTyped,
-} from './YoutubeRelease';
+    YoutubeReleasesFromJSON,
+    YoutubeReleasesFromJSONTyped,
+    YoutubeReleasesToJSON,
+    YoutubeReleasesToJSONTyped,
+} from './YoutubeReleases';
 
 /**
  * 
@@ -29,10 +29,10 @@ import {
 export interface V1YoutubeReleasesGet200Response {
     /**
      * 
-     * @type {Array<YoutubeRelease>}
+     * @type {Array<YoutubeReleases>}
      * @memberof V1YoutubeReleasesGet200Response
      */
-    releases?: Array<YoutubeRelease>;
+    releases?: Array<YoutubeReleases>;
 }
 
 /**
@@ -52,7 +52,7 @@ export function V1YoutubeReleasesGet200ResponseFromJSONTyped(json: any, ignoreDi
     }
     return {
         
-        'releases': json['releases'] == null ? undefined : ((json['releases'] as Array<any>).map(YoutubeReleaseFromJSON)),
+        'releases': json['releases'] == null ? undefined : ((json['releases'] as Array<any>).map(YoutubeReleasesFromJSON)),
     };
 }
 
@@ -67,7 +67,7 @@ export function V1YoutubeReleasesGet200ResponseToJSONTyped(value?: V1YoutubeRele
 
     return {
         
-        'releases': value['releases'] == null ? undefined : ((value['releases'] as Array<any>).map(YoutubeReleaseToJSON)),
+        'releases': value['releases'] == null ? undefined : ((value['releases'] as Array<any>).map(YoutubeReleasesToJSON)),
     };
 }
 

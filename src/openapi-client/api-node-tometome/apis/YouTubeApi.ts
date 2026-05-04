@@ -15,14 +15,31 @@
 
 import * as runtime from '../runtime';
 import type {
+  V1YoutubeReleaseGet200Response,
   V1YoutubeReleasesGet200Response,
+  V1YoutubeSongsGet200Response,
+  V1YoutubeSongsGet429Response,
 } from '../models/index';
 import {
+    V1YoutubeReleaseGet200ResponseFromJSON,
+    V1YoutubeReleaseGet200ResponseToJSON,
     V1YoutubeReleasesGet200ResponseFromJSON,
     V1YoutubeReleasesGet200ResponseToJSON,
+    V1YoutubeSongsGet200ResponseFromJSON,
+    V1YoutubeSongsGet200ResponseToJSON,
+    V1YoutubeSongsGet429ResponseFromJSON,
+    V1YoutubeSongsGet429ResponseToJSON,
 } from '../models/index';
 
+export interface V1YoutubeReleaseGetRequest {
+    releaseid: string;
+}
+
 export interface V1YoutubeReleasesGetRequest {
+    channelid: string;
+}
+
+export interface V1YoutubeSongsGetRequest {
     channelid: string;
 }
 
@@ -32,9 +49,57 @@ export interface V1YoutubeReleasesGetRequest {
 export class YouTubeApi extends runtime.BaseAPI {
 
     /**
+     * Creates request options for v1YoutubeReleaseGet without sending the request
+     */
+    async v1YoutubeReleaseGetRequestOpts(requestParameters: V1YoutubeReleaseGetRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['releaseid'] == null) {
+            throw new runtime.RequiredError(
+                'releaseid',
+                'Required parameter "releaseid" was null or undefined when calling v1YoutubeReleaseGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['releaseid'] != null) {
+            queryParameters['releaseid'] = requestParameters['releaseid'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/v1/youtube/release`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
      * リリースされたアルバムのリストを返します。
      */
-    async v1YoutubeReleasesGetRaw(requestParameters: V1YoutubeReleasesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1YoutubeReleasesGet200Response>> {
+    async v1YoutubeReleaseGetRaw(requestParameters: V1YoutubeReleaseGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1YoutubeReleaseGet200Response>> {
+        const requestOptions = await this.v1YoutubeReleaseGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => V1YoutubeReleaseGet200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * リリースされたアルバムのリストを返します。
+     */
+    async v1YoutubeReleaseGet(requestParameters: V1YoutubeReleaseGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1YoutubeReleaseGet200Response> {
+        const response = await this.v1YoutubeReleaseGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for v1YoutubeReleasesGet without sending the request
+     */
+    async v1YoutubeReleasesGetRequestOpts(requestParameters: V1YoutubeReleasesGetRequest): Promise<runtime.RequestOpts> {
         if (requestParameters['channelid'] == null) {
             throw new runtime.RequiredError(
                 'channelid',
@@ -50,12 +115,23 @@ export class YouTubeApi extends runtime.BaseAPI {
 
         const headerParameters: runtime.HTTPHeaders = {};
 
-        const response = await this.request({
-            path: `/v1/youtube/releases`,
+
+        let urlPath = `/v1/youtube/releases`;
+
+        return {
+            path: urlPath,
             method: 'GET',
             headers: headerParameters,
             query: queryParameters,
-        }, initOverrides);
+        };
+    }
+
+    /**
+     * リリースされたアルバムのリストを返します。
+     */
+    async v1YoutubeReleasesGetRaw(requestParameters: V1YoutubeReleasesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1YoutubeReleasesGet200Response>> {
+        const requestOptions = await this.v1YoutubeReleasesGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
 
         return new runtime.JSONApiResponse(response, (jsonValue) => V1YoutubeReleasesGet200ResponseFromJSON(jsonValue));
     }
@@ -65,6 +141,54 @@ export class YouTubeApi extends runtime.BaseAPI {
      */
     async v1YoutubeReleasesGet(requestParameters: V1YoutubeReleasesGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1YoutubeReleasesGet200Response> {
         const response = await this.v1YoutubeReleasesGetRaw(requestParameters, initOverrides);
+        return await response.value();
+    }
+
+    /**
+     * Creates request options for v1YoutubeSongsGet without sending the request
+     */
+    async v1YoutubeSongsGetRequestOpts(requestParameters: V1YoutubeSongsGetRequest): Promise<runtime.RequestOpts> {
+        if (requestParameters['channelid'] == null) {
+            throw new runtime.RequiredError(
+                'channelid',
+                'Required parameter "channelid" was null or undefined when calling v1YoutubeSongsGet().'
+            );
+        }
+
+        const queryParameters: any = {};
+
+        if (requestParameters['channelid'] != null) {
+            queryParameters['channelid'] = requestParameters['channelid'];
+        }
+
+        const headerParameters: runtime.HTTPHeaders = {};
+
+
+        let urlPath = `/v1/youtube/songs`;
+
+        return {
+            path: urlPath,
+            method: 'GET',
+            headers: headerParameters,
+            query: queryParameters,
+        };
+    }
+
+    /**
+     * リリースされたアルバムのリストを返します。
+     */
+    async v1YoutubeSongsGetRaw(requestParameters: V1YoutubeSongsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<runtime.ApiResponse<V1YoutubeSongsGet200Response>> {
+        const requestOptions = await this.v1YoutubeSongsGetRequestOpts(requestParameters);
+        const response = await this.request(requestOptions, initOverrides);
+
+        return new runtime.JSONApiResponse(response, (jsonValue) => V1YoutubeSongsGet200ResponseFromJSON(jsonValue));
+    }
+
+    /**
+     * リリースされたアルバムのリストを返します。
+     */
+    async v1YoutubeSongsGet(requestParameters: V1YoutubeSongsGetRequest, initOverrides?: RequestInit | runtime.InitOverrideFunction): Promise<V1YoutubeSongsGet200Response> {
+        const response = await this.v1YoutubeSongsGetRaw(requestParameters, initOverrides);
         return await response.value();
     }
 

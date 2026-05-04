@@ -8,7 +8,7 @@ import { useApiDataContext } from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import {
 	YouTubeApi,
-	type YoutubeRelease,
+	type YoutubeReleases,
 } from "@/src/openapi-client/api-node-tometome";
 import Album from "../Album";
 import Loading from "../Loading";
@@ -44,7 +44,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 	// 型定義を修正
 	const [artistYTM, setArtistYTM] = useState<string | null>(null);
 
-	const [albums, setAlbums] = useState<YoutubeRelease[]>([]);
+	const [albums, setAlbums] = useState<YoutubeReleases[]>([]);
 
 	// API通信中かどうか
 	const [loading, setLoading] = useState<LoadingState>(LoadingState.Loading);
@@ -341,10 +341,14 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 									imgSrc={albumsItem.thumbnailUrl}
 									onClick={() => {
 										const fetch = async () => {
-											const tracks = albumsItem.trackVideoIds ?? [];
+											const youtubeApi = new YouTubeApi();
+											const res = await youtubeApi.v1YoutubeReleaseGet({
+												releaseid: albumsItem.releaseId ?? "",
+											});
+											const tracks = res.releaseItemsVideos ?? [];
 											props.setPlayerItem({
 												type: PlayerType.YouTube,
-												mediaId: tracks[0],
+												mediaId: tracks[0].id,
 											});
 											if (tracks.length !== 0) {
 												props.setPlayerPlaylist({
@@ -352,7 +356,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 													videos: tracks.map((item) => {
 														return {
 															type: PlayerType.YouTube,
-															mediaId: item,
+															mediaId: item.id,
 														};
 													}),
 												});

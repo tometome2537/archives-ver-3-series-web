@@ -22,7 +22,13 @@ paths:
         - name: userid
           in: query
           description: The ID of the user to retrieve.
-          required: true
+          required: false
+          schema:
+            type: string
+        - name: username
+          in: query
+          description: The ID of the user to retrieve.
+          required: false
           schema:
             type: string
       responses:
@@ -31,26 +37,30 @@ paths:
           content:
             application/json:
               schema:
+                $ref: '#/components/schemas/x_user'
+
+  /v1/x/post/{postId}:
+    get:
+      tags:
+        - x
+      security:
+        - TokenAuth: []
+      parameters:
+        - name: postId
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: JWT
+          content:
+            application/json:
+              schema:
                 type: object
                 properties:
-                  user:
-                      type: object
-                      description: User information.
-                      properties:
-                        id:
-                          type: string
-                        username:
-                          type: string
-                        username_history:
-                          type: array
-                          items:
-                            type: string
-                        post_last_updated:
-                          type: string
-                          format: date-time
-                        user_last_updated:
-                          type: string
-                          format: date-time
+                  post:
+                    $ref: '#/components/schemas/x_post'
 
   /v1/x/posts:
     get:
@@ -67,12 +77,24 @@ paths:
           required: false
           schema:
             type: string
-        - name: postid
+        - name: username
+          in: query
+          description: ユーザー名(@は含まない)。
+          required: false
+          schema:
+            type: string
+        - name: relatedposts
           in: query
           description: The ID of a specific post to retrieve.
           required: false
           schema:
-            type: string
+            type: boolean
+        - name: count
+          in: query
+          description: 取得する件数
+          required: false
+          schema:
+            type: number
       responses:
         '200':
           description: Successful response with user and posts data.
@@ -82,108 +104,18 @@ paths:
                 type: object
                 properties:
                   user:
-                    type: object
-                    description: User information.
-                    properties:
-                      id:
-                        type: string
-                      username:
-                        type: string
-                      username_history:
-                        type: array
-                        items:
-                          type: string
-                      post_last_updated:
-                        type: string
-                        format: date-time
-                      user_last_updated:
-                        type: string
-                        format: date-time
+                    $ref: '#/components/schemas/x_user'
                   posts:
                     type: array
                     description: List of posts.
                     items:
-                      type: object
-                      properties:
-                        id:
-                          type: string
-                        text:
-                          type: string
-                        published_at:
-                          type: string
-                          format: date-time
-                        user_id:
-                          type: string
-                        reply_id:
-                          oneOf:
-                            - type: 
-                              - string
-                              - 'null'
-                        repost_id:
-                          oneOf:
-                            - type: 
-                              - string
-                              - 'null'
-                        quote_repost_id:
-                          oneOf:
-                            - type: 
-                              - string
-                              - 'null'
-                        urls:
-                          type: array
-                          items:
-                            type: string
-                        medias:
-                          type: array
-                          items:
-                            type: object
-                            properties:
-                              id:
-                                type: string
-                              type:
-                                type: string
-                              source_post_id:
-                                oneOf:
-                                  - type: 
-                                    - string
-                                    - 'null'
-                              source_user_id:
-                                oneOf:
-                                  - type: 
-                                    - string
-                                    - 'null'
-                              media:
-                                type: object
-                                properties:
-                                  url:
-                                    oneOf:
-                                      - type: 
-                                        - string
-                                        - 'null'
-                                  aspect_ratio:
-                                    type: object
-                                    properties:
-                                      width:
-                                        oneOf:
-                                          - type:
-                                            - string
-                                            - 'null'
-                                      height:
-                                        oneOf:
-                                          - type:
-                                            - string
-                                            - 'null'
-                              image:
-                                type: object
-                                properties:
-                                  url:
-                                    type: string
-                                  width:
-                                    type: integer
-                                  height:
-                                    type: integer
-                              media_type_version:
-                                type: string
+                      $ref: '#/components/schemas/x_post'
+                  related_posts:
+                    type: array
+                    items:
+                      type: array
+                      items:
+                        $ref: '#/components/schemas/x_relate_post'
         '500':
           description: Internal server error.
           content:
@@ -193,6 +125,101 @@ paths:
                 properties:
                   message:
                     type: string
+
+  /x-text:
+    get:
+      tags:
+        - x
+      summary: テキストデータの解析
+      description: 投稿のテキストの文字数をカウントします。
+      parameters:
+        - name: text
+          in: query
+          description: 解析するテキスト
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: テキスト解析の結果
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/x_text'
+        '500':
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+    post:
+        tags:
+          - x
+        summary: テキストデータの解析
+        description: 投稿のテキストの文字数をカウントします。
+        requestBody:
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  text:
+                    type: string
+                required:
+                  - text
+        responses:
+          '200':
+            description: テキスト解析の結果
+            content:
+              application/json:
+                schema:
+                  $ref: '#/components/schemas/x_text'
+          '500':
+            description: Internal server error.
+            content:
+              application/json:
+                schema:
+                  type: object
+                  properties:
+                    message:
+                      type: string
+
+  /v1/youtube/songs:
+    get:
+      tags:
+        - YouTube
+      summary: リリースされたアルバムのリストを返します。
+      parameters:
+        - name: channelid
+          in: query
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: YouTube releases
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  songs:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/youtube_video'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Rate limit exceeded. Please try again later."
 
   /v1/youtube/releases:
     get:
@@ -216,7 +243,78 @@ paths:
                   releases:
                     type: array
                     items:
+                      $ref: '#/components/schemas/youtube_releases'
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Rate limit exceeded. Please try again later."
+
+  /v1/youtube/release:
+    get:
+      tags:
+        - YouTube
+      summary: リリースされたアルバムのリストを返します。
+      parameters:
+        - name: releaseid
+          in: query
+          required: true
+          example: "MPREb_QBTyp2wAmDf"
+          schema:
+            type: string
+      responses:
+        '200':
+          description: YouTube releases
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  release:
+                    $ref: '#/components/schemas/youtube_releases'
+                  releaseItems:
+                    type: array
+                    items:
                       $ref: '#/components/schemas/youtube_release'
+                  releaseItemsVideos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/youtube_video'
+
+        '429':
+          description: Rate limit exceeded
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: "Rate limit exceeded. Please try again later."
+
+  /jwt/apple/music/{name}:
+    get:
+      parameters:
+        - name: name
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: JWT
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
 
 
 components:
@@ -226,13 +324,133 @@ components:
       in: header
       name: Authorization
       description: "入力形式 → `token <token>`"
+
   schemas:
-    youtube_release:
+
+    x_user:
+      type: object
+      description: User information.
+      properties:
+        id:
+          type: string
+        display_name:
+          type: string
+        profile_image_url:
+          type: string
+        user_name:
+          type: string
+        user_name_history:
+          type: array
+          items:
+            type: string
+        post_last_updated:
+          type: string
+          format: date-time
+        user_last_updated:
+          type: string
+          format: date-time
+
+    x_post:
       type: object
       properties:
         id:
           type: string
-        audio_playlist_id:
+        text:
+          type: string
+        published_at:
+          type: string
+          format: date-time
+        user_id:
+          type: string
+        reply_id:
+          type: string
+        repost_id:
+          type: string
+        quote_repost_id:
+          type: string
+        urls:
+          type: array
+          items:
+            type: string
+        medias:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              type:
+                type: string
+              source_post_id:
+                type: string
+              source_user_id:
+                type: string
+              media:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  aspect_ratio:
+                    type: object
+                    properties:
+                      width:
+                        type: integer
+                      height:
+                        type: integer
+              image:
+                type: object
+                properties:
+                  url:
+                    type: string
+                  width:
+                    type: integer
+                  height:
+                    type: integer
+        media_type_version:
+            type: string
+
+    x_text:
+      type: object
+      properties:
+        weightedLength:
+          type: number
+        valid:
+          type: boolean
+        permillage:
+          type: number
+        validRangeStart:
+          type: number
+        validRangeEnd:
+          type: number
+        displayRangeStart:
+          type: number
+        displayRangeEnd:
+          type: number
+
+    x_relate_post:
+      allOf:
+        - $ref: '#/components/schemas/x_post'
+        - type: object
+          properties:
+            reply_by_ids:
+              type: array
+              items:
+                type: string
+            reposted_by_ids:
+              type: array
+              items:
+                type: string
+            quote_repost_by_ids:
+              type: array
+              items:
+                type: string
+
+    youtube_releases:
+      type: object
+      properties:
+        id:
+          type: string
+        release_id:
           type: string
         type:
           type: string # To Do
@@ -248,13 +466,54 @@ components:
           type: array
           items:
             type: string
-        track_video_ids:
-          type: array
-          items:
-            type: string
         created_at:
           type: string
           format: date-time
         last_updated:
           type: string
           format: date-time
+
+    youtube_release:
+      type: object
+      properties:
+        id:
+          type: string
+        list_index:
+         type: integer
+        title:
+          type: string
+        video_id:
+          type: string
+        duration:
+          type: integer
+        release_video_id:
+          type: string
+        playlist_id:
+          type: string
+
+    youtube_video:
+      type: object
+      properties:
+        id:
+          type: string
+        owner_channel_id:
+          type: string
+        channel_id:
+          type: string
+        published_at:
+          type: string
+          format: date-time
+        privacy_status:
+          type: string
+        short:
+          type: boolean
+        music_type:
+          type: string
+        thumbnail_url:
+          type: string
+        artist_id:
+          type: array
+          items:
+            type: string
+        duration:
+          type: integer

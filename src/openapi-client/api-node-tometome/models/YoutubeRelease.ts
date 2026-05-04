@@ -27,16 +27,10 @@ export interface YoutubeRelease {
     id?: string;
     /**
      * 
-     * @type {string}
+     * @type {number}
      * @memberof YoutubeRelease
      */
-    audioPlaylistId?: string;
-    /**
-     * 
-     * @type {string}
-     * @memberof YoutubeRelease
-     */
-    type?: string;
+    listIndex?: number;
     /**
      * 
      * @type {string}
@@ -45,16 +39,10 @@ export interface YoutubeRelease {
     title?: string;
     /**
      * 
-     * @type {number}
-     * @memberof YoutubeRelease
-     */
-    year?: number;
-    /**
-     * 
      * @type {string}
      * @memberof YoutubeRelease
      */
-    thumbnailUrl?: string;
+    videoId?: string;
     /**
      * 
      * @type {number}
@@ -63,28 +51,16 @@ export interface YoutubeRelease {
     duration?: number;
     /**
      * 
-     * @type {Array<string>}
+     * @type {string}
      * @memberof YoutubeRelease
      */
-    artistChannelIds?: Array<string>;
+    releaseVideoId?: string;
     /**
      * 
-     * @type {Array<string>}
+     * @type {string}
      * @memberof YoutubeRelease
      */
-    trackVideoIds?: Array<string>;
-    /**
-     * 
-     * @type {Date}
-     * @memberof YoutubeRelease
-     */
-    createdAt?: Date;
-    /**
-     * 
-     * @type {Date}
-     * @memberof YoutubeRelease
-     */
-    lastUpdated?: Date;
+    playlistId?: string;
 }
 
 /**
@@ -105,16 +81,12 @@ export function YoutubeReleaseFromJSONTyped(json: any, ignoreDiscriminator: bool
     return {
         
         'id': json['id'] == null ? undefined : json['id'],
-        'audioPlaylistId': json['audio_playlist_id'] == null ? undefined : json['audio_playlist_id'],
-        'type': json['type'] == null ? undefined : json['type'],
+        'listIndex': json['list_index'] == null ? undefined : json['list_index'],
         'title': json['title'] == null ? undefined : json['title'],
-        'year': json['year'] == null ? undefined : json['year'],
-        'thumbnailUrl': json['thumbnail_url'] == null ? undefined : json['thumbnail_url'],
+        'videoId': json['video_id'] == null ? undefined : json['video_id'],
         'duration': json['duration'] == null ? undefined : json['duration'],
-        'artistChannelIds': json['artist_channel_ids'] == null ? undefined : json['artist_channel_ids'],
-        'trackVideoIds': json['track_video_ids'] == null ? undefined : json['track_video_ids'],
-        'createdAt': json['created_at'] == null ? undefined : (new Date(json['created_at'])),
-        'lastUpdated': json['last_updated'] == null ? undefined : (new Date(json['last_updated'])),
+        'releaseVideoId': json['release_video_id'] == null ? undefined : json['release_video_id'],
+        'playlistId': json['playlist_id'] == null ? undefined : json['playlist_id'],
     };
 }
 
@@ -130,16 +102,12 @@ export function YoutubeReleaseToJSONTyped(value?: YoutubeRelease | null, ignoreD
     return {
         
         'id': value['id'],
-        'audio_playlist_id': value['audioPlaylistId'],
-        'type': value['type'],
+        'list_index': value['listIndex'],
         'title': value['title'],
-        'year': value['year'],
-        'thumbnail_url': value['thumbnailUrl'],
+        'video_id': value['videoId'],
         'duration': value['duration'],
-        'artist_channel_ids': value['artistChannelIds'],
-        'track_video_ids': value['trackVideoIds'],
-        'created_at': value['createdAt'] == null ? undefined : ((value['createdAt']).toISOString()),
-        'last_updated': value['lastUpdated'] == null ? undefined : ((value['lastUpdated']).toISOString()),
+        'release_video_id': value['releaseVideoId'],
+        'playlist_id': value['playlistId'],
     };
 }
 

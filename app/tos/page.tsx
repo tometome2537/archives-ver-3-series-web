@@ -1,11 +1,11 @@
 "use client";
 
-import Navbar from "@/components/Navbar/Navbar";
 import { Box } from "@mui/material";
+import Navbar from "@/components/Navbar/Navbar";
 
 export default function Home() {
-    // 利用規約の内容を文字列として格納する
-    const termsOfService: string = `
+	// 利用規約の内容を文字列として格納する
+	const termsOfService: string = `
 第1条（目的）
 本規約は、[ぷらそにかアーカイブス]（以下「本サイト」）の利用に関する基本的なルールを定め、ユーザーの皆様に快適かつ安全にご利用いただくためのガイドラインを提供することを目的とします。
 
@@ -42,17 +42,17 @@ export default function Home() {
 2. 規約変更後に本サイトを利用した場合、変更後の規約に同意したものとみなされます。
 `;
 
-    return (
-        <>
-            <Navbar />
-            <Box style={{ padding: "40px", fontFamily: "Arial, sans-serif" }}>
-                <h1 style={{ fontSize: "2.5rem", marginBottom: "20px" }}>
-                    利用規約(Terms Of Service)
-                </h1>
-                <pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
-                    {termsOfService}
-                </pre>
-            </Box>
-        </>
-    );
+	return (
+		<>
+			<Navbar />
+			<Box style={{ padding: "40px", fontFamily: "Arial, sans-serif" }}>
+				<h1 style={{ fontSize: "2.5rem", marginBottom: "20px" }}>
+					利用規約(Terms Of Service)
+				</h1>
+				<pre style={{ whiteSpace: "pre-wrap", wordWrap: "break-word" }}>
+					{termsOfService}
+				</pre>
+			</Box>
+		</>
+	);
 }

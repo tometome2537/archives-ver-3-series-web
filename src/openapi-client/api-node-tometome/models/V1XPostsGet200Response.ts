@@ -13,20 +13,27 @@
  */
 
 import { mapValues } from '../runtime';
-import type { V1XPostsGet200ResponsePostsInner } from './V1XPostsGet200ResponsePostsInner';
+import type { XUser } from './XUser';
 import {
-    V1XPostsGet200ResponsePostsInnerFromJSON,
-    V1XPostsGet200ResponsePostsInnerFromJSONTyped,
-    V1XPostsGet200ResponsePostsInnerToJSON,
-    V1XPostsGet200ResponsePostsInnerToJSONTyped,
-} from './V1XPostsGet200ResponsePostsInner';
-import type { V1XUserGet200ResponseUser } from './V1XUserGet200ResponseUser';
+    XUserFromJSON,
+    XUserFromJSONTyped,
+    XUserToJSON,
+    XUserToJSONTyped,
+} from './XUser';
+import type { XPost } from './XPost';
 import {
-    V1XUserGet200ResponseUserFromJSON,
-    V1XUserGet200ResponseUserFromJSONTyped,
-    V1XUserGet200ResponseUserToJSON,
-    V1XUserGet200ResponseUserToJSONTyped,
-} from './V1XUserGet200ResponseUser';
+    XPostFromJSON,
+    XPostFromJSONTyped,
+    XPostToJSON,
+    XPostToJSONTyped,
+} from './XPost';
+import type { XRelatePost } from './XRelatePost';
+import {
+    XRelatePostFromJSON,
+    XRelatePostFromJSONTyped,
+    XRelatePostToJSON,
+    XRelatePostToJSONTyped,
+} from './XRelatePost';
 
 /**
  * 
@@ -36,16 +43,22 @@ import {
 export interface V1XPostsGet200Response {
     /**
      * 
-     * @type {V1XUserGet200ResponseUser}
+     * @type {XUser}
      * @memberof V1XPostsGet200Response
      */
-    user?: V1XUserGet200ResponseUser;
+    user?: XUser;
     /**
      * List of posts.
-     * @type {Array<V1XPostsGet200ResponsePostsInner>}
+     * @type {Array<XPost>}
      * @memberof V1XPostsGet200Response
      */
-    posts?: Array<V1XPostsGet200ResponsePostsInner>;
+    posts?: Array<XPost>;
+    /**
+     * 
+     * @type {Array<Array<XRelatePost>>}
+     * @memberof V1XPostsGet200Response
+     */
+    relatedPosts?: Array<Array<XRelatePost>>;
 }
 
 /**
@@ -65,8 +78,9 @@ export function V1XPostsGet200ResponseFromJSONTyped(json: any, ignoreDiscriminat
     }
     return {
         
-        'user': json['user'] == null ? undefined : V1XUserGet200ResponseUserFromJSON(json['user']),
-        'posts': json['posts'] == null ? undefined : ((json['posts'] as Array<any>).map(V1XPostsGet200ResponsePostsInnerFromJSON)),
+        'user': json['user'] == null ? undefined : XUserFromJSON(json['user']),
+        'posts': json['posts'] == null ? undefined : ((json['posts'] as Array<any>).map(XPostFromJSON)),
+        'relatedPosts': json['related_posts'] == null ? undefined : json['related_posts'],
     };
 }
 
@@ -81,8 +95,9 @@ export function V1XPostsGet200ResponseToJSONTyped(value?: V1XPostsGet200Response
 
     return {
         
-        'user': V1XUserGet200ResponseUserToJSON(value['user']),
-        'posts': value['posts'] == null ? undefined : ((value['posts'] as Array<any>).map(V1XPostsGet200ResponsePostsInnerToJSON)),
+        'user': XUserToJSON(value['user']),
+        'posts': value['posts'] == null ? undefined : ((value['posts'] as Array<any>).map(XPostToJSON)),
+        'related_posts': value['relatedPosts'],
     };
 }
 

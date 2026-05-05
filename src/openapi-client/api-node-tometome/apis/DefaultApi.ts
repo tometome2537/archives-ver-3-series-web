@@ -12,15 +12,12 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  JwtAppleMusicNameGet200Response,
-} from '../models/index';
 import {
+    type JwtAppleMusicNameGet200Response,
     JwtAppleMusicNameGet200ResponseFromJSON,
     JwtAppleMusicNameGet200ResponseToJSON,
-} from '../models/index';
+} from '../models/JwtAppleMusicNameGet200Response';
 
 export interface JwtAppleMusicNameGetRequest {
     name: string;
@@ -48,7 +45,7 @@ export class DefaultApi extends runtime.BaseAPI {
 
 
         let urlPath = `/jwt/apple/music/{name}`;
-        urlPath = urlPath.replace(`{${"name"}}`, encodeURIComponent(String(requestParameters['name'])));
+        urlPath = urlPath.replace('{name}', encodeURIComponent(String(requestParameters['name'])));
 
         return {
             path: urlPath,

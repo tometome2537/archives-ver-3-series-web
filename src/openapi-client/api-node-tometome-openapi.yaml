@@ -243,7 +243,21 @@ paths:
                   releases:
                     type: array
                     items:
-                      $ref: '#/components/schemas/youtube_releases'
+                      type: object
+                      properties:
+                        id:
+                          type: string
+                        release_id:
+                          type: string
+                        type:
+                          type: string # To Do
+                        title:
+                          type: string
+                        year:
+                          type: integer
+                        thumbnail_url:
+                          type: string
+
         '429':
           description: Rate limit exceeded
           content:

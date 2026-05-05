@@ -13,13 +13,13 @@
  */
 
 import { mapValues } from '../runtime';
-import type { YoutubeReleases } from './YoutubeReleases';
+import type { V1YoutubeReleasesGet200ResponseReleasesInner } from './V1YoutubeReleasesGet200ResponseReleasesInner';
 import {
-    YoutubeReleasesFromJSON,
-    YoutubeReleasesFromJSONTyped,
-    YoutubeReleasesToJSON,
-    YoutubeReleasesToJSONTyped,
-} from './YoutubeReleases';
+    V1YoutubeReleasesGet200ResponseReleasesInnerFromJSON,
+    V1YoutubeReleasesGet200ResponseReleasesInnerFromJSONTyped,
+    V1YoutubeReleasesGet200ResponseReleasesInnerToJSON,
+    V1YoutubeReleasesGet200ResponseReleasesInnerToJSONTyped,
+} from './V1YoutubeReleasesGet200ResponseReleasesInner';
 
 /**
  * 
@@ -29,10 +29,10 @@ import {
 export interface V1YoutubeReleasesGet200Response {
     /**
      * 
-     * @type {Array<YoutubeReleases>}
+     * @type {Array<V1YoutubeReleasesGet200ResponseReleasesInner>}
      * @memberof V1YoutubeReleasesGet200Response
      */
-    releases?: Array<YoutubeReleases>;
+    releases?: Array<V1YoutubeReleasesGet200ResponseReleasesInner>;
 }
 
 /**
@@ -52,7 +52,7 @@ export function V1YoutubeReleasesGet200ResponseFromJSONTyped(json: any, ignoreDi
     }
     return {
         
-        'releases': json['releases'] == null ? undefined : ((json['releases'] as Array<any>).map(YoutubeReleasesFromJSON)),
+        'releases': json['releases'] == null ? undefined : ((json['releases'] as Array<any>).map(V1YoutubeReleasesGet200ResponseReleasesInnerFromJSON)),
     };
 }
 
@@ -67,7 +67,7 @@ export function V1YoutubeReleasesGet200ResponseToJSONTyped(value?: V1YoutubeRele
 
     return {
         
-        'releases': value['releases'] == null ? undefined : ((value['releases'] as Array<any>).map(YoutubeReleasesToJSON)),
+        'releases': value['releases'] == null ? undefined : ((value['releases'] as Array<any>).map(V1YoutubeReleasesGet200ResponseReleasesInnerToJSON)),
     };
 }
 

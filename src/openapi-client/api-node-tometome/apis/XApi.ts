@@ -12,30 +12,37 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  V1XPostPostIdGet200Response,
-  V1XPostsGet200Response,
-  V1XPostsGet500Response,
-  XText,
-  XTextPostRequest,
-  XUser,
-} from '../models/index';
 import {
+    type V1XPostPostIdGet200Response,
     V1XPostPostIdGet200ResponseFromJSON,
     V1XPostPostIdGet200ResponseToJSON,
+} from '../models/V1XPostPostIdGet200Response';
+import {
+    type V1XPostsGet200Response,
     V1XPostsGet200ResponseFromJSON,
     V1XPostsGet200ResponseToJSON,
+} from '../models/V1XPostsGet200Response';
+import {
+    type V1XPostsGet500Response,
     V1XPostsGet500ResponseFromJSON,
     V1XPostsGet500ResponseToJSON,
+} from '../models/V1XPostsGet500Response';
+import {
+    type XText,
     XTextFromJSON,
     XTextToJSON,
+} from '../models/XText';
+import {
+    type XTextPostRequest,
     XTextPostRequestFromJSON,
     XTextPostRequestToJSON,
+} from '../models/XTextPostRequest';
+import {
+    type XUser,
     XUserFromJSON,
     XUserToJSON,
-} from '../models/index';
+} from '../models/XUser';
 
 export interface V1XPostPostIdGetRequest {
     postId: string;
@@ -87,7 +94,7 @@ export class XApi extends runtime.BaseAPI {
 
 
         let urlPath = `/v1/x/post/{postId}`;
-        urlPath = urlPath.replace(`{${"postId"}}`, encodeURIComponent(String(requestParameters['postId'])));
+        urlPath = urlPath.replace('{postId}', encodeURIComponent(String(requestParameters['postId'])));
 
         return {
             path: urlPath,

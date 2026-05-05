@@ -1,22 +1,32 @@
 
-# V1YoutubeReleasesGet200Response
+# V1YoutubeReleasesGet200ResponseReleasesInner
 
 
 ## Properties
 
 Name | Type
 ------------ | -------------
-`releases` | [Array&lt;V1YoutubeReleasesGet200ResponseReleasesInner&gt;](V1YoutubeReleasesGet200ResponseReleasesInner.md)
+`id` | string
+`releaseId` | string
+`type` | string
+`title` | string
+`year` | number
+`thumbnailUrl` | string
 
 ## Example
 
 ```typescript
-import type { V1YoutubeReleasesGet200Response } from ''
+import type { V1YoutubeReleasesGet200ResponseReleasesInner } from ''
 
 // TODO: Update the object below with actual values
 const example = {
-  "releases": null,
-} satisfies V1YoutubeReleasesGet200Response
+  "id": null,
+  "releaseId": null,
+  "type": null,
+  "title": null,
+  "year": null,
+  "thumbnailUrl": null,
+} satisfies V1YoutubeReleasesGet200ResponseReleasesInner
 
 console.log(example)
 
@@ -25,7 +35,7 @@ const exampleJSON: string = JSON.stringify(example)
 console.log(exampleJSON)
 
 // Parse the JSON string back to an object
-const exampleParsed = JSON.parse(exampleJSON) as V1YoutubeReleasesGet200Response
+const exampleParsed = JSON.parse(exampleJSON) as V1YoutubeReleasesGet200ResponseReleasesInner
 console.log(exampleParsed)
 ```
 

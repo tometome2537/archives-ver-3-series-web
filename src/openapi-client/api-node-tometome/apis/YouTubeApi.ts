@@ -12,24 +12,27 @@
  * Do not edit the class manually.
  */
 
-
 import * as runtime from '../runtime';
-import type {
-  V1YoutubeReleaseGet200Response,
-  V1YoutubeReleasesGet200Response,
-  V1YoutubeSongsGet200Response,
-  V1YoutubeSongsGet429Response,
-} from '../models/index';
 import {
+    type V1YoutubeReleaseGet200Response,
     V1YoutubeReleaseGet200ResponseFromJSON,
     V1YoutubeReleaseGet200ResponseToJSON,
+} from '../models/V1YoutubeReleaseGet200Response';
+import {
+    type V1YoutubeReleasesGet200Response,
     V1YoutubeReleasesGet200ResponseFromJSON,
     V1YoutubeReleasesGet200ResponseToJSON,
+} from '../models/V1YoutubeReleasesGet200Response';
+import {
+    type V1YoutubeSongsGet200Response,
     V1YoutubeSongsGet200ResponseFromJSON,
     V1YoutubeSongsGet200ResponseToJSON,
+} from '../models/V1YoutubeSongsGet200Response';
+import {
+    type V1YoutubeSongsGet429Response,
     V1YoutubeSongsGet429ResponseFromJSON,
     V1YoutubeSongsGet429ResponseToJSON,
-} from '../models/index';
+} from '../models/V1YoutubeSongsGet429Response';
 
 export interface V1YoutubeReleaseGetRequest {
     releaseid: string;

@@ -6,6 +6,7 @@ export * from './V1XPostsGet200Response';
 export * from './V1XPostsGet500Response';
 export * from './V1YoutubeReleaseGet200Response';
 export * from './V1YoutubeReleasesGet200Response';
+export * from './V1YoutubeReleasesGet200ResponseReleasesInner';
 export * from './V1YoutubeSongsGet200Response';
 export * from './V1YoutubeSongsGet429Response';
 export * from './XPost';

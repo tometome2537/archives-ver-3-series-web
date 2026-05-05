@@ -8,7 +8,7 @@ import { useApiDataContext } from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import {
 	YouTubeApi,
-	type YoutubeReleases,
+	type V1YoutubeReleasesGet200Response,
 } from "@/src/openapi-client/api-node-tometome";
 import Album from "../Album";
 import Loading from "../Loading";
@@ -44,7 +44,9 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 	// 型定義を修正
 	const [artistYTM, setArtistYTM] = useState<string | null>(null);
 
-	const [albums, setAlbums] = useState<YoutubeReleases[]>([]);
+	const [albums, setAlbums] = useState<
+		NonNullable<V1YoutubeReleasesGet200Response["releases"]>
+	>([]);
 
 	// API通信中かどうか
 	const [loading, setLoading] = useState<LoadingState>(LoadingState.Loading);
@@ -229,12 +231,12 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 			channelid: channelId,
 		});
 		// アルバムを前に並び替える。
-		const sortAlbums = res.releases?.sort((a, b) => {
+		const sortAlbums = (res.releases ?? []).slice().sort((a, b) => {
 			const aIncludes = a.type?.includes("album") ? -1 : 1;
 			const bIncludes = b.type?.includes("album") ? -1 : 1;
 			return aIncludes - bIncludes;
 		});
-		setAlbums(sortAlbums ?? []);
+		setAlbums(sortAlbums);
 	}, []);
 
 	// YouTubeMusicの楽曲を表示する
@@ -276,6 +278,7 @@ export function TemporaryYouTubeTab(props: TemporaryYouTubeTab) {
 			}
 			if (inputValue.categoryId === "specialWord_plusonica") {
 				fetchReleases("UC3tYTei6p55gWg2rr0g4ybQ");
+				setArtistYTM("ぷらそにか");
 				return true;
 			}
 			return false;

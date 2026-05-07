@@ -391,7 +391,7 @@
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/x-internals",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@mui/x-internals/LICENSE"
 	},
-	"@next/env@16.2.4": {
+	"@next/env@16.2.5": {
 		"licenses": "MIT",
 		"repository": "https://github.com/vercel/next.js",
 		"publisher": "Next.js Team",
@@ -399,13 +399,13 @@
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/env",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/env/README.md"
 	},
-	"@next/swc-darwin-arm64@16.2.4": {
+	"@next/swc-darwin-arm64@16.2.5": {
 		"licenses": "MIT",
 		"repository": "https://github.com/vercel/next.js",
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/swc-darwin-arm64",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/swc-darwin-arm64/README.md"
 	},
-	"@next/third-parties@16.2.4": {
+	"@next/third-parties@16.2.5": {
 		"licenses": "MIT",
 		"repository": "https://github.com/vercel/next.js",
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@next/third-parties",
@@ -833,6 +833,12 @@
 	"@types/estree@1.0.8": {
 		"licenses": "MIT",
 		"repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
+		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/rollup/node_modules/@types/estree",
+		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/rollup/node_modules/@types/estree/LICENSE"
+	},
+	"@types/estree@1.0.9": {
+		"licenses": "MIT",
+		"repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/estree",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/estree/LICENSE"
 	},
@@ -854,7 +860,7 @@
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/mysql",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/mysql/LICENSE"
 	},
-	"@types/node@24.12.2": {
+	"@types/node@25.6.0": {
 		"licenses": "MIT",
 		"repository": "https://github.com/DefinitelyTyped/DefinitelyTyped",
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@types/node",
@@ -1173,7 +1179,7 @@
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/callsites",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/callsites/license"
 	},
-	"caniuse-lite@1.0.30001791": {
+	"caniuse-lite@1.0.30001792": {
 		"licenses": "CC-BY-4.0",
 		"repository": "https://github.com/browserslist/caniuse-lite",
 		"publisher": "Ben Briggs",
@@ -1369,7 +1375,7 @@
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/dotenv",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/dotenv/LICENSE"
 	},
-	"electron-to-chromium@1.5.349": {
+	"electron-to-chromium@1.5.352": {
 		"licenses": "ISC",
 		"repository": "https://github.com/Kilian/electron-to-chromium",
 		"publisher": "Kilian Valkhof",
@@ -1478,7 +1484,7 @@
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/fast-deep-equal",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/fast-deep-equal/LICENSE"
 	},
-	"fast-uri@3.1.1": {
+	"fast-uri@3.1.2": {
 		"licenses": "BSD-3-Clause",
 		"repository": "https://github.com/fastify/fast-uri",
 		"publisher": "Vincent Le Goff",
@@ -1683,7 +1689,7 @@
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-arrayish",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/is-arrayish/LICENSE"
 	},
-	"is-core-module@2.16.1": {
+	"is-core-module@2.16.2": {
 		"licenses": "MIT",
 		"repository": "https://github.com/inspect-js/is-core-module",
 		"publisher": "Jordan Harband",
@@ -1959,7 +1965,7 @@
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/neo-async",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/neo-async/LICENSE"
 	},
-	"next@16.2.4": {
+	"next@16.2.5": {
 		"licenses": "MIT",
 		"repository": "https://github.com/vercel/next.js",
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/next",
@@ -2232,7 +2238,7 @@
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/proxy-from-env",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/proxy-from-env/LICENSE"
 	},
-	"react-dom@19.2.5": {
+	"react-dom@19.2.6": {
 		"licenses": "MIT",
 		"repository": "https://github.com/facebook/react",
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/react-dom",
@@ -2252,7 +2258,7 @@
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/hoist-non-react-statics/node_modules/react-is",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/hoist-non-react-statics/node_modules/react-is/LICENSE"
 	},
-	"react-is@19.2.5": {
+	"react-is@19.2.6": {
 		"licenses": "MIT",
 		"repository": "https://github.com/facebook/react",
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/react-is",
@@ -2272,7 +2278,7 @@
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/react-youtube",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/react-youtube/README.md"
 	},
-	"react@19.2.5": {
+	"react@19.2.6": {
 		"licenses": "MIT",
 		"repository": "https://github.com/facebook/react",
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/react",
@@ -2616,7 +2622,7 @@
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/typescript",
 		"licenseFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/typescript/LICENSE.txt"
 	},
-	"undici-types@7.16.0": {
+	"undici-types@7.19.2": {
 		"licenses": "MIT",
 		"repository": "https://github.com/nodejs/undici",
 		"path": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/undici-types",

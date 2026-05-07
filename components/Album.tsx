@@ -40,6 +40,7 @@ export default function Album(props: AlbumProps) {
 						objectFit: "contain",
 						borderRadius: "0.6em",
 					}}
+					loading="eager"
 				/>
 			)}
 			<Typography

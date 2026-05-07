@@ -7,8 +7,8 @@ import type { Video, YouTubeAccount } from "@/contexts/ApiDataContext";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import {
-	YouTubeApi,
 	type V1YoutubeReleasesGet200Response,
+	YouTubeApi,
 } from "@/src/openapi-client/api-node-tometome";
 import Album from "../Album";
 import Loading from "../Loading";

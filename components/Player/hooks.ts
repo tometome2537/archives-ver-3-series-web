@@ -18,7 +18,7 @@ export function useAppleMusicEvents(
 
 		const handleItemChange = (event: { item: MediaItem | null }) => {
 			const item = event.item;
-			if (!item || !item.attributes) return;
+			if (!item?.attributes) return;
 
 			setPlayerItem({
 				type: PlayerType.AppleMusic,

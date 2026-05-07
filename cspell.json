@@ -1,4 +1,19 @@
 {
 	"version": "0.2",
-	"words": ["koozaki", "romaji", "romaji-conv", "tometome", "linkify"]
+	"words": [
+		"koozaki",
+		"romaji",
+		"romaji-conv",
+		"tometome",
+		"linkify",
+		"vercel",
+		"plusonica",
+		"videoid",
+		"videoids",
+		"channelid",
+		"youtu.be",
+		"releaseid",
+		"musickitloaded",
+		"unstarted"
+	]
 }

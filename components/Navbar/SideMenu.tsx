@@ -32,7 +32,7 @@ export default function SideMenu({ open, onClose }: SideMenuProps) {
 				<HeaderSection onClose={onClose} />
 				<Divider sx={{ borderBottomWidth: 3 }} />
 
-				<AppleMusicSection theme={theme} setMenu={onClose} />
+				<AppleMusicSection setMenu={onClose} />
 				<Divider sx={{ borderBottomWidth: 3 }} />
 
 				<OfficialLinkSection theme={theme} />

@@ -1,6 +1,6 @@
 "use client";
 
-import { createTheme, type PaletteMode } from "@mui/material";
+import { createTheme } from "@mui/material";
 
 export const lightTheme = createTheme({
 	palette: {

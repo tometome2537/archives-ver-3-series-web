@@ -1,5 +1,4 @@
 import { Box, Divider, Paper, Typography } from "@mui/material";
-import React from "react";
 import type { LiveInformation } from "@/contexts/ApiDataContext";
 import { ArtistChipList } from "./ArtistChipList";
 import { EventInfoRow } from "./EventInfoRow";

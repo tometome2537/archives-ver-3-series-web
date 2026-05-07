@@ -24,7 +24,7 @@ export type TabMap = {
 	onClick: () => void;
 };
 
-export default function TabScroll(
+export default function useTabScroll(
 	tabMaps: TabMap[],
 	setIsPlayerFullscreen: (value: React.SetStateAction<boolean>) => void,
 ) {
@@ -145,51 +145,49 @@ export default function TabScroll(
 
 	const mainContents = (): React.ReactNode => {
 		return (
-			<>
+			<Box
+				ref={scrollContainerRef}
+				sx={{
+					// ブラウザ画面の横幅ぴったりで親要素を展開。横スクロールを可能にする。
+					width: screenWidth,
+					overflowX: "scroll",
+				}}
+			>
 				<Box
-					ref={scrollContainerRef}
 					sx={{
-						// ブラウザ画面の横幅ぴったりで親要素を展開。横スクロールを可能にする。
-						width: screenWidth,
-						overflowX: "scroll",
+						// Viewの数だけ横に並べる。横幅はViewの数×ブラウザ画面の横幅。
+						width: tabMaps.length * screenWidth,
+						display: "flex",
 					}}
 				>
-					<Box
-						sx={{
-							// Viewの数だけ横に並べる。横幅はViewの数×ブラウザ画面の横幅。
-							width: tabMaps.length * screenWidth,
-							display: "flex",
-						}}
-					>
-						{tabMaps.map((x) => (
-							<Box
-								key={x.value}
+					{tabMaps.map((x) => (
+						<Box
+							key={x.value}
+							sx={{
+								// flexShrink: 0,
+								width: "100vw",
+								height: "100vh",
+								// ↓ tabViewの縦スクロールを切るのに必要。
+								overflowY: "scroll",
+								// scrollSnapAlign: "start",
+								borderRight: isTabScrolling ? 1 : 0,
+							}}
+						>
+							<Container
+								component="main"
 								sx={{
-									// flexShrink: 0,
-									width: "100vw",
-									height: "100vh",
-									// ↓ tabViewの縦スクロールを切るのに必要。
-									overflowY: "scroll",
-									// scrollSnapAlign: "start",
-									borderRight: isTabScrolling ? 1 : 0,
+									// overflowY: isPlayerFullscreen
+									//     ? "hidden"
+									//     : "auto",
+									paddingBottom: "40vh",
 								}}
 							>
-								<Container
-									component="main"
-									sx={{
-										// overflowY: isPlayerFullscreen
-										//     ? "hidden"
-										//     : "auto",
-										paddingBottom: "40vh",
-									}}
-								>
-									{x.children}
-								</Container>
-							</Box>
-						))}
-					</Box>
+								{x.children}
+							</Container>
+						</Box>
+					))}
 				</Box>
-			</>
+			</Box>
 		);
 	};
 

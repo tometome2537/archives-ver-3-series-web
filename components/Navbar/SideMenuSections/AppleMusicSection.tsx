@@ -1,4 +1,3 @@
-import type { Theme } from "@mui/material";
 import ListItem from "@mui/material/ListItem";
 import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
@@ -8,11 +7,10 @@ import { useAppleMusic } from "@/contexts/AppleMusicContext";
 import AppleMusicIcon from "@/icon/AppleMusicIcon";
 
 interface AppleMusicSectionProps {
-	theme: Theme;
 	setMenu: (value: boolean) => void;
 }
 
-export function AppleMusicSection({ theme, setMenu }: AppleMusicSectionProps) {
+export function AppleMusicSection({ setMenu }: AppleMusicSectionProps) {
 	const musicKit = useAppleMusic();
 
 	useEffect(() => {

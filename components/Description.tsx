@@ -2,11 +2,10 @@ import { Avatar, Box, Chip, Typography } from "@mui/material";
 import { blue } from "@mui/material/colors";
 import { useTheme } from "@mui/material/styles";
 import Linkify from "linkify-react";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 import Link from "./Link";
 import "linkify-plugin-hashtag";
 import "linkify-plugin-mention";
-import { useApiDataContext } from "@/contexts/ApiDataContext";
 
 type DescriptionProps = {
 	text: string;
@@ -33,29 +32,29 @@ const getLogoPath = (hostname: string): string => {
 };
 
 // YouTube動画タイトルフェッチ用フック
-const useYouTubeVideoTitle = (videoId: string) => {
-	// const apiData = useApiDataContext();
-	const [label, setLabel] = useState<string>("");
+// const useYouTubeVideoTitle = (videoId: string) => {
+// 	// const apiData = useApiDataContext();
+// 	const [label, setLabel] = useState<string>("");
 
-	const fetchVideo = async () => {
-		// try {
-		//     const response = await apiData.YdbVideo.getDataWithParams({
-		//         videoids: videoId,
-		//     });
-		//     const title = response?.videos[0]?.videoYouTubeApi?.snippet.title;
-		//     if (title) setLabel(title);
-		// } catch (error) {
-		//     console.error("Error fetching video title:", error);
-		// }
-	};
+// 	const fetchVideo = async () => {
+// 		// try {
+// 		//     const response = await apiData.YdbVideo.getDataWithParams({
+// 		//         videoids: videoId,
+// 		//     });
+// 		//     const title = response?.videos[0]?.videoYouTubeApi?.snippet.title;
+// 		//     if (title) setLabel(title);
+// 		// } catch (error) {
+// 		//     console.error("Error fetching video title:", error);
+// 		// }
+// 	};
 
-	// コンポーネントマウント時にフェッチを実行
-	useState(() => {
-		fetchVideo();
-	});
+// 	// コンポーネントマウント時にフェッチを実行
+// 	useState(() => {
+// 		fetchVideo();
+// 	});
 
-	return { label };
-};
+// 	return { label };
+// };
 
 // リンク描画用コンポーネント
 const LinkRenderer = ({
@@ -65,7 +64,7 @@ const LinkRenderer = ({
 	attributes: { [attr: string]: React.ReactNode };
 	content: string;
 }) => {
-	let videoId = "";
+	// let videoId = "";
 	let isYouTubeLink = false;
 
 	try {
@@ -77,10 +76,10 @@ const LinkRenderer = ({
 			(/youtube.com/i.test(url.hostname) && pathSegments[0] === "watch")
 		) {
 			isYouTubeLink = true;
-			videoId =
-				url.hostname === "youtu.be"
-					? pathSegments[0]
-					: (url.searchParams.get("v") ?? "");
+			// videoId =
+			// 	url.hostname === "youtu.be"
+			// 		? pathSegments[0]
+			// 		: (url.searchParams.get("v") ?? "");
 		}
 
 		if (isYouTubeLink) {

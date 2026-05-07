@@ -1,17 +1,17 @@
 "use client";
 
 import { MusicNote } from "@mui/icons-material";
-import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+// import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import GroupsIcon from "@mui/icons-material/Groups";
 import MusicNoteIcon from "@mui/icons-material/MusicNote";
-import PersonIcon from "@mui/icons-material/Person";
+// import PersonIcon from "@mui/icons-material/Person";
 import YouTubeIcon from "@mui/icons-material/YouTube";
 import { AppBar } from "@mui/material";
 import react, { Fragment, useCallback } from "react";
 import AppleMusicLibrary from "@/components/MainTabs/AppleMusicLibrary";
-import LinkTab from "@/components/MainTabs/LinkTab";
-import { LiveInformationTab } from "@/components/MainTabs/LiveInformationTab";
-import SongTab from "@/components/MainTabs/SongTab";
+// import LinkTab from "@/components/MainTabs/LinkTab";
+// import { LiveInformationTab } from "@/components/MainTabs/LiveInformationTab";
+// import SongTab from "@/components/MainTabs/SongTab";
 import { TemporaryYouTubeTab } from "@/components/MainTabs/TemporaryYouTubeTab";
 import Navbar from "@/components/Navbar/Navbar";
 import type { MultiSearchBarSearchSuggestion } from "@/components/Navbar/SearchBar/MultiSearchBar";
@@ -23,18 +23,14 @@ import type {
 import type { PlayerItem, PlayerPlaylist } from "@/components/PlayerView"; // 型としてのインポート
 import PlayerView from "@/components/PlayerView";
 import type { TabMap } from "@/components/TabScroll";
-import TabScroll from "@/components/TabScroll";
+import useTabScroll from "@/components/TabScroll";
 import type { Entity, YouTubeAccount } from "@/contexts/ApiDataContext";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
 import { useAppleMusic } from "@/contexts/AppleMusicContext";
 import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
 import AppleMusicIcon from "@/icon/AppleMusicIcon";
 
-export default function RootLayout({
-	children,
-}: {
-	children: React.ReactNode;
-}) {
+export default function RootLayout() {
 	// apiDataを取得
 	const apiData = useApiDataContext("YouTubeAccount", "Entity", "Music");
 	// ブラウザ情報を取得
@@ -403,7 +399,7 @@ export default function RootLayout({
 		entitySearchSuggestions,
 	]);
 
-	const tabScroll = TabScroll(tabMaps, setIsPlayerFullscreen);
+	const tabScroll = useTabScroll(tabMaps, setIsPlayerFullscreen);
 
 	return (
 		<Fragment>

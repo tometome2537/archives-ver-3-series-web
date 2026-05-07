@@ -74,11 +74,11 @@ export default function YouTubePlayerView(props: YouTubePlayerViewProps) {
 	const onStateChange: YouTubeProps["onStateChange"] = (event) => {
 		const stateMap: { [key: number]: State } = {
 			[-1]: State.unstarted,
-			[0]: State.ended,
-			[1]: State.playing,
-			[2]: State.paused,
-			[3]: State.buffering,
-			[5]: State.videoCued,
+			0: State.ended,
+			1: State.playing,
+			2: State.paused,
+			3: State.buffering,
+			5: State.videoCued,
 		};
 		const r = {
 			state: stateMap[event?.data] ?? State.undefined,

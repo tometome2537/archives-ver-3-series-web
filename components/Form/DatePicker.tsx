@@ -13,7 +13,6 @@ import type { JSX } from "react";
 type MyDatePickerProps = {
 	id: string;
 	label: string;
-	autoComplete?: string | undefined;
 	error?: boolean | undefined;
 	helperText?: string | undefined;
 	defaultValue?: dayjs.Dayjs | undefined;
@@ -25,7 +24,6 @@ type MyDatePickerProps = {
 export const DatePicker: React.FC<MyDatePickerProps> = ({
 	id,
 	label,
-	autoComplete,
 	error,
 	helperText,
 	value,

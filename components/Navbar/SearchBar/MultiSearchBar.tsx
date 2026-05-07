@@ -127,8 +127,8 @@ export default function MultiSearchBar(props: MultiSearchBarSearchBarProps) {
 	// リミットサーチバーが開いてるかどうか
 	const [isOpen, setIsOpen] = useState<boolean>(false);
 
-	// 入力履歴を保存(To DO)
-	const [inputValueHistory, setInputValueHistory] = useState<InputValue[]>([]);
+	// TODO:入力履歴を保存
+	// const [inputValueHistory, setInputValueHistory] = useState<InputValue[]>([]);
 
 	return (
 		<Box
@@ -186,7 +186,7 @@ export default function MultiSearchBar(props: MultiSearchBarSearchBarProps) {
 
 			{props.limitSearchCategory &&
 				props.limitSearchCategory.length !== 0 &&
-				props.limitSearchCategory.map((v, index) => (
+				props.limitSearchCategory.map((v) => (
 					<Collapse key={v.categoryId} in={isOpen} timeout="auto" unmountOnExit>
 						<Stack sx={{ gap: 2 }}>
 							<Box>

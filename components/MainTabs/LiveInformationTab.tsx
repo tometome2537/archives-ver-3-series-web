@@ -1,12 +1,9 @@
-import { Box, Typography } from "@mui/material";
+import { Typography } from "@mui/material";
 import { Fragment } from "react";
 import { useApiDataContext } from "@/contexts/ApiDataContext";
 import { EventCard } from "../LiveInformation/EventCard";
-import type { PlayerItem } from "../PlayerView";
 
-type LiveInformationTabProps = {};
-
-export function LiveInformationTab(props: LiveInformationTabProps) {
+export function LiveInformationTab() {
 	const apiData = useApiDataContext("LiveInformation");
 
 	return (

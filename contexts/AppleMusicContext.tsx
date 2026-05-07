@@ -74,66 +74,66 @@ export interface MediaItem {
 	duration: number; // 曲の長さ（秒単位）
 }
 
-interface TrackMetadata {
-	composerId: string;
-	genreId: number;
-	copyright: string;
-	year: number;
-	"sort-artist": string;
-	isMasteredForItunes: boolean;
-	vendorId: number;
-	artistId: string;
-	duration: number;
-	discNumber: number;
-	itemName: string;
-	trackCount: number;
-	xid: string;
-	bitRate: number;
-	fileExtension: string;
-	"sort-album": string;
-	genre: string;
-	rank: number;
-	"sort-name": string;
-	playlistId: string;
-	"sort-composer": string;
-	trackNumber: number;
-	releaseDate: string;
-	kind: string;
-	playlistArtistName: string;
-	gapless: boolean;
-	composerName: string;
-	discCount: number;
-	sampleRate: number;
-	playlistName: string;
-	explicit: number;
-	itemId: string;
-	s: number;
-	compilation: boolean;
-	artistName: string;
-}
+// interface TrackMetadata {
+// 	composerId: string;
+// 	genreId: number;
+// 	copyright: string;
+// 	year: number;
+// 	"sort-artist": string;
+// 	isMasteredForItunes: boolean;
+// 	vendorId: number;
+// 	artistId: string;
+// 	duration: number;
+// 	discNumber: number;
+// 	itemName: string;
+// 	trackCount: number;
+// 	xid: string;
+// 	bitRate: number;
+// 	fileExtension: string;
+// 	"sort-album": string;
+// 	genre: string;
+// 	rank: number;
+// 	"sort-name": string;
+// 	playlistId: string;
+// 	"sort-composer": string;
+// 	trackNumber: number;
+// 	releaseDate: string;
+// 	kind: string;
+// 	playlistArtistName: string;
+// 	gapless: boolean;
+// 	composerName: string;
+// 	discCount: number;
+// 	sampleRate: number;
+// 	playlistName: string;
+// 	explicit: number;
+// 	itemId: string;
+// 	s: number;
+// 	compilation: boolean;
+// 	artistName: string;
+// }
 
-interface Flavor {
-	flavor: string;
-	URL: string;
-	downloadKey: string;
-	artworkURL: string;
-	"file-size": number;
-	md5: string;
-}
+// interface Flavor {
+// 	flavor: string;
+// 	URL: string;
+// 	downloadKey: string;
+// 	artworkURL: string;
+// 	"file-size": number;
+// 	md5: string;
+// }
 
-interface KeyURLs {
-	"hls-key-cert-url": string;
-	"hls-key-server-url": string;
-	"widevine-cert-url": string;
-}
+// interface KeyURLs {
+// 	"hls-key-cert-url": string;
+// 	"hls-key-server-url": string;
+// 	"widevine-cert-url": string;
+// }
 
-interface NowPlayingItem {
-	chunkSize: number;
-	hashes: string[];
-	metadata: TrackMetadata;
-	flavors: Flavor[];
-	keyURLs: KeyURLs;
-}
+// interface NowPlayingItem {
+// 	chunkSize: number;
+// 	hashes: string[];
+// 	metadata: TrackMetadata;
+// 	flavors: Flavor[];
+// 	keyURLs: KeyURLs;
+// }
 
 interface AppleMusicEvents {
 	// 権限の状態が変更される直前に発生。
@@ -329,7 +329,7 @@ export const AppleMusicProvider: React.FC<{ children: React.ReactNode }> = ({
 					// インスタンス参照は基本変わらないが、確実に最新参照を入れておく
 					setData((prev) => ({
 						...prev,
-						instance: window.MusicKit!.getInstance(),
+						instance: window.MusicKit?.getInstance() ?? null,
 						isAuthorizationStatusDidChange: true,
 					}));
 				};
@@ -358,7 +358,7 @@ export const AppleMusicProvider: React.FC<{ children: React.ReactNode }> = ({
 			}
 		};
 
-		let cleanupFn: void | (() => void);
+		let cleanupFn: undefined | (() => void);
 
 		(async () => {
 			cleanupFn = await initializeMusicKit();

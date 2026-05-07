@@ -111,7 +111,6 @@ export default function Thumbnail({
 									height={360}
 									image={`https://img.youtube.com/vi/${videoId}/hqdefault.jpg`}
 									alt={title ? `Thumbnail of ${title}` : ""}
-									loading="eager"
 								/>
 							)}
 						</Box>
@@ -251,7 +250,6 @@ export default function Thumbnail({
 									objectFit: "contain",
 									borderRadius: "1.2em",
 								}}
-								loading="eager"
 							/>
 						</Box>
 					)}

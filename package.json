@@ -14,7 +14,7 @@
 		"create_license": "npx license-checker --json > app/license/licenses.json"
 	},
 	"engines": {
-		"node": "^26.0.0"
+		"node": "^24.0.0"
 	},
 	"dependencies": {
 		"@emotion/react": "^11.14.0",
@@ -24,7 +24,7 @@
 		"@mui/material": "^9.0.0",
 		"@mui/material-nextjs": "^9.0.0",
 		"@mui/x-date-pickers": "^9.0.4",
-		"@next/third-parties": "^16.2.5",
+		"@next/third-parties": "^16.2.4",
 		"@sentry/nextjs": "^10.51.0",
 		"dayjs": "^1.11.20",
 		"js-cookie": "^3.0.5",
@@ -32,16 +32,16 @@
 		"linkify-plugin-mention": "^4.3.2",
 		"linkify-react": "^4.3.2",
 		"linkifyjs": "^4.3.2",
-		"next": "^16.2.5",
-		"react": "^19.2.6",
-		"react-dom": "^19.2.6",
+		"next": "^16.2.4",
+		"react": "^19.2.5",
+		"react-dom": "^19.2.5",
 		"react-infinite-scroll-component": "^7.2.0",
 		"react-youtube": "^10.1.0"
 	},
 	"devDependencies": {
 		"@biomejs/biome": "~2.4.13",
 		"@types/js-cookie": "^3.0.6",
-		"@types/node": "^25.6.0",
+		"@types/node": "^24.12.2",
 		"@types/react": "^19.2.14",
 		"license-checker": "^25.0.1",
 		"typescript": "^6.0.3"

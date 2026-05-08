@@ -44,7 +44,9 @@ jobs:
           git add .
 
           # 変更が無ければ終了
-          git diff --cached --quiet && exit 0
-
-          git commit -m "chore: auto update"
-          git push
+          if git diff --cached --quiet; then
+            echo "No changes"
+          else
+            git commit -m "chore: auto update"
+            git push
+          fi

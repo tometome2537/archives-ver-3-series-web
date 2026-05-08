@@ -2,7 +2,7 @@ import PauseIcon from "@mui/icons-material/Pause";
 import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import { Box } from "@mui/material";
 import Image from "next/image";
-import { type Dispatch, Fragment, type SetStateAction } from "react";
+import type { Dispatch, SetStateAction } from "react";
 import type { YouTubePlayer } from "react-youtube";
 import type { YouTubePlayerState } from "@/components/YouTubePlayerView";
 import YouTubePlayerView from "@/components/YouTubePlayerView";

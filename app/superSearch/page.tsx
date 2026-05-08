@@ -1,6 +1,6 @@
 "use client";
 
-import { type Dispatch, useState } from "react";
+import { useState } from "react";
 import MultiSearchBar, {
 	type MultiSearchBarSearchSuggestion,
 } from "@/components/Navbar/SearchBar/MultiSearchBar";
@@ -9,7 +9,7 @@ import type {
 	InputValue,
 } from "@/components/Navbar/SearchBar/SearchBar";
 
-type CategoryId = "actor" | "organization" | "YouTubeChannel" | "text";
+// type CategoryId = "actor" | "organization" | "YouTubeChannel" | "text";
 
 // 検索候補
 const searchSuggestion: MultiSearchBarSearchSuggestion[] = [

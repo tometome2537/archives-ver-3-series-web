@@ -20,10 +20,9 @@ import PlayerContent from "./Player/PlayerContent";
 import PlayerControls from "./Player/PlayerControls";
 import PlayerInfo from "./Player/PlayerInfo";
 import PlayerPlaylist from "./Player/PlayerPlaylist";
-import {
-	type PlayerItem,
-	PlayerType,
-	type PlayerPlaylist as PlaylistType,
+import type {
+	PlayerItem,
+	PlayerPlaylist as PlaylistType,
 } from "./Player/types";
 import type { YouTubePlayerState } from "./YouTubePlayerView";
 
@@ -54,7 +53,7 @@ type PlayerProps = {
 
 export default function PlayerView(props: PlayerProps) {
 	const {
-		inputValue,
+		// inputValue,
 		setInputValue,
 		searchSuggestion,
 		isPlayerFullscreen,

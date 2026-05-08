@@ -1,5 +1,5 @@
 import { Box, Button, Link, Typography } from "@mui/material";
-import React, { Fragment } from "react";
+import { Fragment } from "react";
 import type { LiveInformation } from "@/contexts/ApiDataContext";
 import { formatDateTime } from "./utils";
 

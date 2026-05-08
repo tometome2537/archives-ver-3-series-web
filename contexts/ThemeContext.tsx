@@ -3,8 +3,7 @@
 "use client";
 
 import { type PaletteMode, useMediaQuery } from "@mui/material";
-import CssBaseline from "@mui/material/CssBaseline";
-import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { ThemeProvider } from "@mui/material/styles";
 import Cookies from "js-cookie";
 import React from "react";
 import { darkTheme, lightTheme } from "@/app/theme";

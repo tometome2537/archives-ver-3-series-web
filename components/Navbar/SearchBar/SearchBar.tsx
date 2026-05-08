@@ -347,35 +347,35 @@ export default function SearchBar(props: SearchBarProps) {
 				value={props.inputValues}
 				onChange={handleOnChange}
 				// 入力途中の文字列を取得
-				onInputChange={(event, newInputValue: string) => {
-					// ↓ 消さないで。
-					// 日付を入力するよう設定されている場合。
-					// if (
-					//     props.dateSuggestionCategory &&
-					//     props.dateSuggestionCategory.length !== 0
-					// ) {
-					// const date: Date = convertStringToDate(newInputValue);
-					// if (!Number.isNaN(date.getTime())) {
-					//     const year = date.getFullYear(); // 年を取得
-					//     const month = date.getMonth() + 1; // 月を取得（0から始まるため +1）
-					//     const day = date.getDate(); // 日を取得
-					//     const hours = date.getHours(); // 時を取得
-					//     const minutes = date.getMinutes(); // 分を取得
-					//     // フォーマットして表示
-					//     const formattedDate = `${year}年${month}月${day}日 ${hours}時${minutes}分`;
-					//     for (const i of props.dateSuggestionCategory) {
-					//         // 検索候補に追加
-					//         options.unshift({
-					//             sort: 999999999999,
-					//             label: formattedDate,
-					//             value: formattedDate,
-					//             categoryId: i.categoryId,
-					//             categoryLabel: i.categoryLabel, //`${i.categoryLabel}を入力するにはここをタップ`,
-					//         });
-					//     }
-					// }
-					// }
-				}}
+				// onInputChange={(event, newInputValue: string) => {
+				// ↓ 消さないで。
+				// 日付を入力するよう設定されている場合。
+				// if (
+				//     props.dateSuggestionCategory &&
+				//     props.dateSuggestionCategory.length !== 0
+				// ) {
+				// const date: Date = convertStringToDate(newInputValue);
+				// if (!Number.isNaN(date.getTime())) {
+				//     const year = date.getFullYear(); // 年を取得
+				//     const month = date.getMonth() + 1; // 月を取得（0から始まるため +1）
+				//     const day = date.getDate(); // 日を取得
+				//     const hours = date.getHours(); // 時を取得
+				//     const minutes = date.getMinutes(); // 分を取得
+				//     // フォーマットして表示
+				//     const formattedDate = `${year}年${month}月${day}日 ${hours}時${minutes}分`;
+				//     for (const i of props.dateSuggestionCategory) {
+				//         // 検索候補に追加
+				//         options.unshift({
+				//             sort: 999999999999,
+				//             label: formattedDate,
+				//             value: formattedDate,
+				//             categoryId: i.categoryId,
+				//             categoryLabel: i.categoryLabel, //`${i.categoryLabel}を入力するにはここをタップ`,
+				//         });
+				//     }
+				// }
+				// }
+				// }}
 				// 検索候補のフィルタリングをする。
 				filterOptions={(options, params) => {
 					const filtered: SearchSuggestion[] = filter(options, params);
@@ -482,7 +482,7 @@ export default function SearchBar(props: SearchBarProps) {
 							{React.Children.map(
 								// 検索候補の各項目を繰り返す。
 								params.children,
-								(child, index) => (
+								(child) => (
 									<Box
 										key={child?.toString()}
 										sx={{

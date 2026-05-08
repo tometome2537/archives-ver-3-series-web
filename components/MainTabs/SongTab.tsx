@@ -1,30 +1,27 @@
-import { Box } from "@mui/material";
-import Image from "next/image";
-import type { Dispatch, SetStateAction } from "react";
-import { useCallback, useEffect, useState } from "react";
-import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
-import { useApiDataContext } from "@/contexts/ApiDataContext";
-import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
-import Album from "../Album";
-import type { PlayerItem, PlayerPlaylist } from "../PlayerView";
-import Thumbnail from "../Thumbnail";
+// import { Box } from "@mui/material";
+// import Image from "next/image";
+// import type { Dispatch, SetStateAction } from "react";
+// import { useCallback, useEffect, useState } from "react";
+// import type { InputValue } from "@/components/Navbar/SearchBar/SearchBar";
+// import { useApiDataContext } from "@/contexts/ApiDataContext";
+// import { useBrowserInfoContext } from "@/contexts/BrowserInfoContext";
+// import Album from "../Album";
+// import type { PlayerItem, PlayerPlaylist } from "../PlayerView";
 
-type SongTabProps = {
-	inputValue: InputValue[];
+// import Thumbnail from "../Thumbnail";
 
-	playerItem: PlayerItem | undefined;
-	setPlayerItem: Dispatch<SetStateAction<PlayerItem | undefined>>;
-	setPlayerPlaylist: Dispatch<SetStateAction<PlayerPlaylist | undefined>>;
-};
+// type SongTabProps = {
+// 	inputValue: InputValue[];
 
-export default function SongTab(props: SongTabProps) {
-	const apiData = useApiDataContext("YouTubeAccount");
+// 	playerItem: PlayerItem | undefined;
+// 	setPlayerItem: Dispatch<SetStateAction<PlayerItem | undefined>>;
+// 	setPlayerPlaylist: Dispatch<SetStateAction<PlayerPlaylist | undefined>>;
+// };
+
+export default function SongTab() {
+	// const apiData = useApiDataContext("YouTubeAccount");
 	// ブラウザ情報を取得
-	const { isMobile } = useBrowserInfoContext();
+	// const { isMobile } = useBrowserInfoContext();
 
-	return (
-		<>
-			<div>SongTab</div>
-		</>
-	);
+	return <div>SongTab</div>;
 }

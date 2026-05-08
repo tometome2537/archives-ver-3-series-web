@@ -1,5 +1,4 @@
 import { Box, Chip } from "@mui/material";
-import React from "react";
 
 interface ArtistChipListProps {
 	artists: string;
@@ -7,7 +6,7 @@ interface ArtistChipListProps {
 
 export const ArtistChipList = ({ artists }: ArtistChipListProps) => (
 	<Box sx={{ display: "flex", flexWrap: "wrap", gap: 0.5 }}>
-		{artists.split(",").map((artist, index) => (
+		{artists.split(",").map((artist) => (
 			<Chip
 				key={artist.trim()}
 				label={artist.trim()}

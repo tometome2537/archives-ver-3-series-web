@@ -289,17 +289,17 @@
     "repository": "https://github.com/mui/mui-x",
     "publisher": "MUI Team"
   },
-  "@next/env@16.2.5": {
+  "@next/env@16.2.6": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js",
     "publisher": "Next.js Team",
     "email": "support@vercel.com"
   },
-  "@next/swc-darwin-arm64@16.2.5": {
+  "@next/swc-darwin-arm64@16.2.6": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js"
   },
-  "@next/third-parties@16.2.5": {
+  "@next/third-parties@16.2.6": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js"
   },
@@ -607,7 +607,7 @@
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped"
   },
-  "@types/node@24.12.2": {
+  "@types/node@24.12.3": {
     "licenses": "MIT",
     "repository": "https://github.com/DefinitelyTyped/DefinitelyTyped"
   },
@@ -988,7 +988,7 @@
     "repository": "https://github.com/Kilian/electron-to-chromium",
     "publisher": "Kilian Valkhof"
   },
-  "enhanced-resolve@5.21.0": {
+  "enhanced-resolve@5.21.1": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/enhanced-resolve",
     "publisher": "Tobias Koppers @sokra"
@@ -1190,15 +1190,13 @@
     "licenses": "Apache-2.0",
     "repository": "https://github.com/nodejs/import-in-the-middle",
     "publisher": "Bryan English",
-    "email": "bryan.english@datadoghq.com",
-    "noticeFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/@prisma/instrumentation/node_modules/import-in-the-middle/NOTICE"
+    "email": "bryan.english@datadoghq.com"
   },
   "import-in-the-middle@3.0.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/nodejs/import-in-the-middle",
     "publisher": "Bryan English",
-    "email": "bryan.english@datadoghq.com",
-    "noticeFile": "/Users/tometome/Git/archives-ver-3-series-web/node_modules/import-in-the-middle/NOTICE"
+    "email": "bryan.english@datadoghq.com"
   },
   "inflight@1.0.6": {
     "licenses": "ISC",
@@ -1347,7 +1345,7 @@
     "repository": "https://github.com/Rich-Harris/magic-string",
     "publisher": "Rich Harris"
   },
-  "map@3.3.9": {
+  "map@3.3.11": {
     "licenses": "UNLICENSED",
     "private": true
   },
@@ -1421,7 +1419,7 @@
     "licenses": "MIT",
     "repository": "https://github.com/suguru03/neo-async"
   },
-  "next@16.2.5": {
+  "next@16.2.6": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js"
   },

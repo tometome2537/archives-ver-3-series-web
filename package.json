@@ -11,7 +11,7 @@
 		"format": "biome format  --write",
 		"check": "biome check --write",
 		"api_tome_create": "openapi-generator generate -i ./src/openapi-client/api-node-tometome-openapi.yaml -g typescript-fetch -o ./src/openapi-client/api-node-tometome",
-		"create_license": "npx license-checker --json | jq 'with_entries(.value |= del(.path, .licenseFile))' > app/license/licenses.json"
+		"create_license": "npx license-checker --json | jq 'with_entries(.value |= del(.path, .licenseFile, .noticeFile))' > app/license/licenses.json"
 	},
 	"engines": {
 		"node": "^24.0.0"

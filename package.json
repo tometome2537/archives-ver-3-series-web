@@ -1,10 +1,10 @@
 {
 	"name": "map",
-	"version": "3.3.8",
+	"version": "3.3.9",
 	"private": true,
 	"scripts": {
 		"dev": "next dev",
-		"update": "npm outdated && npm update --save && npm run create_license && npm outdated",
+		"update": "npm outdated || true; npm update --save; npm run create_license; npm outdated || true",
 		"build": "next build",
 		"start": "next start",
 		"lint": "biome lint --write",

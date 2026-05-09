@@ -279,12 +279,12 @@
     "repository": "https://github.com/mui/material-ui",
     "publisher": "MUI Team"
   },
-  "@mui/x-date-pickers@9.0.4": {
+  "@mui/x-date-pickers@9.1.0": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/mui-x",
     "publisher": "MUI Team"
   },
-  "@mui/x-internals@9.0.4": {
+  "@mui/x-internals@9.1.0": {
     "licenses": "MIT",
     "repository": "https://github.com/mui/mui-x",
     "publisher": "MUI Team"
@@ -804,7 +804,7 @@
     "licenses": "MIT",
     "repository": "https://github.com/juliangruber/balanced-match"
   },
-  "baseline-browser-mapping@2.10.27": {
+  "baseline-browser-mapping@2.10.28": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/web-platform-dx/baseline-browser-mapping"
   },
@@ -815,7 +815,7 @@
     "email": "mail@juliangruber.com",
     "url": "http://juliangruber.com"
   },
-  "brace-expansion@5.0.5": {
+  "brace-expansion@5.0.6": {
     "licenses": "MIT",
     "repository": "https://github.com/juliangruber/brace-expansion"
   },
@@ -983,12 +983,12 @@
     "licenses": "BSD-2-Clause",
     "repository": "https://github.com/motdotla/dotenv"
   },
-  "electron-to-chromium@1.5.352": {
+  "electron-to-chromium@1.5.353": {
     "licenses": "ISC",
     "repository": "https://github.com/Kilian/electron-to-chromium",
     "publisher": "Kilian Valkhof"
   },
-  "enhanced-resolve@5.21.1": {
+  "enhanced-resolve@5.21.2": {
     "licenses": "MIT",
     "repository": "https://github.com/webpack/enhanced-resolve",
     "publisher": "Tobias Koppers @sokra"
@@ -1734,7 +1734,7 @@
     "repository": "https://github.com/npm/node-semver",
     "publisher": "GitHub Inc."
   },
-  "semver@7.7.4": {
+  "semver@7.8.0": {
     "licenses": "ISC",
     "repository": "https://github.com/npm/node-semver",
     "publisher": "GitHub Inc."
@@ -1864,9 +1864,9 @@
     "repository": "https://github.com/webpack/tapable",
     "publisher": "Tobias Koppers @sokra"
   },
-  "terser-webpack-plugin@5.5.0": {
+  "terser-webpack-plugin@5.6.0": {
     "licenses": "MIT",
-    "repository": "https://github.com/webpack/terser-webpack-plugin",
+    "repository": "https://github.com/webpack/minimizer-webpack-plugin",
     "publisher": "webpack Contrib Team"
   },
   "terser@5.47.1": {

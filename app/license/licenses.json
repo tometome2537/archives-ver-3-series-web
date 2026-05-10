@@ -106,7 +106,7 @@
     "repository": "https://github.com/biomejs/biome",
     "publisher": "Emanuele Stoppa"
   },
-  "@biomejs/cli-linux-x64@2.4.15": {
+  "@biomejs/cli-darwin-arm64@2.4.15": {
     "licenses": "MIT OR Apache-2.0",
     "repository": "https://github.com/biomejs/biome"
   },
@@ -174,15 +174,15 @@
     "licenses": "MIT",
     "repository": "https://github.com/lovell/colour"
   },
-  "@img/sharp-libvips-linux-x64@1.2.4": {
-    "licenses": "LGPL-3.0-or-later",
-    "repository": "https://github.com/lovell/sharp-libvips",
+  "@img/sharp-darwin-arm64@0.34.5": {
+    "licenses": "Apache-2.0",
+    "repository": "https://github.com/lovell/sharp",
     "publisher": "Lovell Fuller",
     "email": "npm@lovell.info"
   },
-  "@img/sharp-linux-x64@0.34.5": {
-    "licenses": "Apache-2.0",
-    "repository": "https://github.com/lovell/sharp",
+  "@img/sharp-libvips-darwin-arm64@1.2.4": {
+    "licenses": "LGPL-3.0-or-later",
+    "repository": "https://github.com/lovell/sharp-libvips",
     "publisher": "Lovell Fuller",
     "email": "npm@lovell.info"
   },
@@ -295,7 +295,7 @@
     "publisher": "Next.js Team",
     "email": "support@vercel.com"
   },
-  "@next/swc-linux-x64-gnu@16.2.6": {
+  "@next/swc-darwin-arm64@16.2.6": {
     "licenses": "MIT",
     "repository": "https://github.com/vercel/next.js"
   },
@@ -480,7 +480,7 @@
     "publisher": "Rich Harris",
     "email": "richard.a.harris@gmail.com"
   },
-  "@rollup/rollup-linux-x64-gnu@4.60.3": {
+  "@rollup/rollup-darwin-arm64@4.60.3": {
     "licenses": "MIT",
     "repository": "https://github.com/rollup/rollup",
     "publisher": "Lukas Taegert-Atkinson"
@@ -520,7 +520,7 @@
     "repository": "https://github.com/getsentry/sentry-javascript-bundler-plugins",
     "publisher": "Sentry"
   },
-  "@sentry/cli-linux-x64@2.58.5": {
+  "@sentry/cli-darwin@2.58.5": {
     "licenses": "FSL-1.1-MIT",
     "repository": "https://github.com/getsentry/sentry-cli"
   },
@@ -1099,6 +1099,10 @@
     "email": "i@izs.me",
     "url": "http://blog.izs.me/"
   },
+  "fsevents@2.3.3": {
+    "licenses": "MIT",
+    "repository": "https://github.com/fsevents/fsevents"
+  },
   "function-bind@1.1.2": {
     "licenses": "MIT",
     "repository": "https://github.com/Raynos/function-bind",
@@ -1186,15 +1190,13 @@
     "licenses": "Apache-2.0",
     "repository": "https://github.com/nodejs/import-in-the-middle",
     "publisher": "Bryan English",
-    "email": "bryan.english@datadoghq.com",
-    "noticeFile": "/home/runner/work/archives-ver-3-series-web/archives-ver-3-series-web/node_modules/@prisma/instrumentation/node_modules/import-in-the-middle/NOTICE"
+    "email": "bryan.english@datadoghq.com"
   },
   "import-in-the-middle@3.0.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/nodejs/import-in-the-middle",
     "publisher": "Bryan English",
-    "email": "bryan.english@datadoghq.com",
-    "noticeFile": "/home/runner/work/archives-ver-3-series-web/archives-ver-3-series-web/node_modules/import-in-the-middle/NOTICE"
+    "email": "bryan.english@datadoghq.com"
   },
   "inflight@1.0.6": {
     "licenses": "ISC",
@@ -1343,7 +1345,7 @@
     "repository": "https://github.com/Rich-Harris/magic-string",
     "publisher": "Rich Harris"
   },
-  "map@3.3.10": {
+  "map@3.3.11": {
     "licenses": "UNLICENSED",
     "private": true
   },

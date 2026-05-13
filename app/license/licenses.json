@@ -448,7 +448,7 @@
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors"
   },
-  "@opentelemetry/semantic-conventions@1.40.0": {
+  "@opentelemetry/semantic-conventions@1.41.1": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/open-telemetry/opentelemetry-js",
     "publisher": "OpenTelemetry Authors"
@@ -485,37 +485,37 @@
     "repository": "https://github.com/rollup/rollup",
     "publisher": "Lukas Taegert-Atkinson"
   },
-  "@sentry-internal/browser-utils@10.52.0": {
+  "@sentry-internal/browser-utils@10.53.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry"
   },
-  "@sentry-internal/feedback@10.52.0": {
+  "@sentry-internal/feedback@10.53.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry"
   },
-  "@sentry-internal/replay-canvas@10.52.0": {
+  "@sentry-internal/replay-canvas@10.53.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry"
   },
-  "@sentry-internal/replay@10.52.0": {
+  "@sentry-internal/replay@10.53.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry"
   },
-  "@sentry/babel-plugin-component-annotate@5.2.1": {
+  "@sentry/babel-plugin-component-annotate@5.3.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript-bundler-plugins",
     "publisher": "Sentry"
   },
-  "@sentry/browser@10.52.0": {
+  "@sentry/browser@10.53.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry"
   },
-  "@sentry/bundler-plugin-core@5.2.1": {
+  "@sentry/bundler-plugin-core@5.3.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript-bundler-plugins",
     "publisher": "Sentry"
@@ -529,42 +529,42 @@
     "repository": "https://github.com/getsentry/sentry-cli",
     "publisher": "Sentry"
   },
-  "@sentry/core@10.52.0": {
+  "@sentry/core@10.53.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry"
   },
-  "@sentry/nextjs@10.52.0": {
+  "@sentry/nextjs@10.53.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry"
   },
-  "@sentry/node-core@10.52.0": {
+  "@sentry/node-core@10.53.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry"
   },
-  "@sentry/node@10.52.0": {
+  "@sentry/node@10.53.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry"
   },
-  "@sentry/opentelemetry@10.52.0": {
+  "@sentry/opentelemetry@10.53.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry"
   },
-  "@sentry/react@10.52.0": {
+  "@sentry/react@10.53.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry"
   },
-  "@sentry/vercel-edge@10.52.0": {
+  "@sentry/vercel-edge@10.53.1": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript",
     "publisher": "Sentry"
   },
-  "@sentry/webpack-plugin@5.2.1": {
+  "@sentry/webpack-plugin@5.3.0": {
     "licenses": "MIT",
     "repository": "https://github.com/getsentry/sentry-javascript-bundler-plugins",
     "publisher": "Sentry"
@@ -983,7 +983,7 @@
     "licenses": "BSD-2-Clause",
     "repository": "https://github.com/motdotla/dotenv"
   },
-  "electron-to-chromium@1.5.353": {
+  "electron-to-chromium@1.5.354": {
     "licenses": "ISC",
     "repository": "https://github.com/Kilian/electron-to-chromium",
     "publisher": "Kilian Valkhof"
@@ -1424,7 +1424,7 @@
     "repository": "https://github.com/bitinn/node-fetch",
     "publisher": "David Frank"
   },
-  "node-releases@2.0.38": {
+  "node-releases@2.0.44": {
     "licenses": "MIT",
     "repository": "https://github.com/chicoxyzzy/node-releases",
     "publisher": "Sergey Rubanov",

@@ -27,7 +27,7 @@
 		"@next/third-parties": "^16.2.6",
 		"@sentry/nextjs": "^10.53.1",
 		"dayjs": "^1.11.20",
-		"js-cookie": "^3.0.5",
+		"js-cookie": "^3.0.7",
 		"linkify-plugin-hashtag": "^4.3.3",
 		"linkify-plugin-mention": "^4.3.3",
 		"linkify-react": "^4.3.3",

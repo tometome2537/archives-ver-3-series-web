@@ -804,7 +804,7 @@
     "licenses": "MIT",
     "repository": "https://github.com/juliangruber/balanced-match"
   },
-  "baseline-browser-mapping@2.10.29": {
+  "baseline-browser-mapping@2.10.30": {
     "licenses": "Apache-2.0",
     "repository": "https://github.com/web-platform-dx/baseline-browser-mapping"
   },
@@ -983,7 +983,7 @@
     "licenses": "BSD-2-Clause",
     "repository": "https://github.com/motdotla/dotenv"
   },
-  "electron-to-chromium@1.5.356": {
+  "electron-to-chromium@1.5.357": {
     "licenses": "ISC",
     "repository": "https://github.com/Kilian/electron-to-chromium",
     "publisher": "Kilian Valkhof"
@@ -1233,7 +1233,7 @@
     "licenses": "MIT",
     "repository": "https://github.com/facebook/jest"
   },
-  "js-cookie@3.0.5": {
+  "js-cookie@3.0.7": {
     "licenses": "MIT",
     "repository": "https://github.com/js-cookie/js-cookie",
     "publisher": "Klaus Hartl"
